@@ -1,4 +1,4 @@
-// vhamml.v
+// cli.v
 module vhammll
 
 // import hamml
