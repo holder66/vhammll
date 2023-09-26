@@ -4,8 +4,8 @@ module vhamml
 import os
 
 fn testsuite_begin() ? {
-	if os.is_file('vhamml') {
-		os.rm('vhamml')!
+	if os.is_file('vhammll') {
+		os.rm('vhammll')!
 	}
 	os.execute_or_panic('v .')
 	if os.is_dir('tempfolder_cli') {
@@ -15,8 +15,8 @@ fn testsuite_begin() ? {
 }
 
 fn testsuite_end() ? {
-	if os.is_file('vhamml') {
-		os.rm('vhamml')!
+	if os.is_file('vhammll') {
+		os.rm('vhammll')!
 	}
 	os.rmdir_all('tempfolder_cli')!
 }
@@ -112,11 +112,11 @@ fn testsuite_end() ? {
 
 fn test_purge_for_missing_class_values() {
 	os.execute_or_panic('v .')
-	println(os.execute_or_panic('./vhamml analyze -pmc datasets/class_missing_developer.tab'))
-	println(os.execute_or_panic('./vhamml rank -pmc datasets/class_missing_developer.tab'))
-	println(os.execute_or_panic('./vhamml make -a 7 -b 3,7 - pmc datasets/class_missing_developer.tab'))
+	println(os.execute_or_panic('./vhammll analyze -pmc datasets/class_missing_developer.tab'))
+	println(os.execute_or_panic('./vhammll rank -pmc datasets/class_missing_developer.tab'))
+	println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc datasets/class_missing_developer.tab'))
 
-	println(os.execute_or_panic('./vhamml analyze -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	println(os.execute_or_panic('./vhamml rank -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	println(os.execute_or_panic('./vhamml make -a 7 -b 3,7 - pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+	println(os.execute_or_panic('./vhammll analyze -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+	println(os.execute_or_panic('./vhammll rank -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+	println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
 }
