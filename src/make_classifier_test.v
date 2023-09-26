@@ -1,5 +1,5 @@
 // make_classifier_test
-module vhamml
+module vhammll
 
 import os
 

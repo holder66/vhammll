@@ -1,5 +1,5 @@
 // data_dict_test.v
-module vhamml
+module vhammll
 
 // import math
 import os

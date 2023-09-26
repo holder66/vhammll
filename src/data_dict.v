@@ -1,5 +1,5 @@
 // data_dict.v
-module vhamml
+module vhammll
 
 import os
 import regex

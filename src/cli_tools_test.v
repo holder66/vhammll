@@ -1,5 +1,5 @@
 // cli_functions_test.v
-module vhamml
+module vhammll
 
 // test_flag
 fn test_flag() {

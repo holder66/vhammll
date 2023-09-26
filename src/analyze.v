@@ -1,5 +1,5 @@
 // analyze.v
-module vhamml
+module vhammll
 
 import math
 import math.stats

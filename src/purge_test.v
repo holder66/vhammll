@@ -1,5 +1,5 @@
 // purge_test.v
-module vhamml
+module vhammll
 
 // test_purge
 fn test_purge() ? {

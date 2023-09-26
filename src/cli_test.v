@@ -1,23 +1,35 @@
 // cli_test.v
-module vhamml
+module vhammll
 
 import os
 
+const (
+	main_text = '// temp.v
+module main
+import vhammll
+
+fn main() {
+	vhammll.cli()!
+}'
+)
+
 fn testsuite_begin() ? {
-	if os.is_file('vhammll') {
-		os.rm('vhammll')!
-	}
-	os.execute_or_panic('v .')
+	os.chdir('..')!
+	mut f := os.create(os.abs_path('') + '/temp.v')!
+	f.write_string(main_text)!
+	f.close()
+
+	os.execute_or_panic('v -keepc run temp.v')
 	if os.is_dir('tempfolder_cli') {
 		os.rmdir_all('tempfolder_cli')!
 	}
 	os.mkdir_all('tempfolder_cli')!
+
 }
 
 fn testsuite_end() ? {
-	if os.is_file('vhammll') {
-		os.rm('vhammll')!
-	}
+	if os.exists('temp') {os.rm('temp')!}
+	if os.exists('temp.v') {os.rm('temp.v')!}
 	os.rmdir_all('tempfolder_cli')!
 }
 
@@ -90,19 +102,30 @@ fn testsuite_end() ? {
 // 	println(os.execute_or_panic('v run . append -k tempfolder_cli/bcw.cl -o tempfolder_cli/bcw-ext.cl tempfolder_cli/bcw.inst'))
 // }
 
-// // test_rank_attributes
-// fn test_rank_attributes() {
-// 	// os.execute_or_panic('v hamnn.v')
-// 	// println(os.execute_or_panic('v run . rank -h'))
-// 	println(os.execute_or_panic('v run . rank'))
-// 	println(os.execute_or_panic('v run . rank datasets/developer.tab'))
-// 	println(os.execute_or_panic('v run . rank -x -b 3,3 datasets/iris.tab'))
-// 	println(os.execute_or_panic('v run . rank -b 2,6 -x -a 2 datasets/iris.tab'))
-// 	println(os.execute_or_panic('v run . rank --bins 4,12  -x datasets/iris.tab'))
-// 	println(os.execute_or_panic('v run . rank -x -g datasets/anneal.tab'))
-// }
+fn test_rank_attributes() {
+	mut r := os.execute_or_panic('./temp rank')
+	// println(r.output)
+	assert r.output.len == 558
+	assert r.output.contains('"rank" rank orders a dataset\'s attributes')
+	r = os.execute_or_panic('./temp rank vhammll/datasets/developer.tab')
+	// println(r.output)
+	assert r.output.len == 899
+	assert r.output.contains('5   age                              2  C           84.62     12')
+	r = os.execute_or_panic('./temp rank -x -b 3,3 vhammll/datasets/iris.tab')
+	// println(r.output)
+	assert r.output.len == 613
+	assert r.output.contains('4   sepal width                      1  C           34.67      3')
+	r = os.execute_or_panic('./temp rank -b 2,6 -x -a 2 vhammll/datasets/iris.tab')
+	// println(r.output)
+	assert r.output.len == 613
+	assert r.output.contains('Bin range for continuous attributes: from 2 to 6 with interval 1')
+	r = os.execute_or_panic('./temp rank -x -g vhammll/datasets/anneal.tab')
+	// println(r.output)
+	assert r.output.len == 2705
+	assert r.output.contains('8   carbon                           3  C           78.90      7')
+}
 
-// // test_display
+
 // fn test_display() {
 // 	println(os.execute_or_panic('v run . cross -c -b 2,4 -a 4 -o tempfolder_cli/cross_result.txt datasets/developer.tab'))
 // 	println(os.execute_or_panic('v run . display -e tempfolder_cli/cross_result.txt'))
@@ -110,13 +133,20 @@ fn testsuite_end() ? {
 // 	println(os.execute_or_panic('v run . display -g tempfolder_cli/rank_result.txt'))
 // }
 
-fn test_purge_for_missing_class_values() {
-	os.execute_or_panic('v .')
-	println(os.execute_or_panic('./vhammll analyze -pmc datasets/class_missing_developer.tab'))
-	println(os.execute_or_panic('./vhammll rank -pmc datasets/class_missing_developer.tab'))
-	println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc datasets/class_missing_developer.tab'))
-
-	println(os.execute_or_panic('./vhammll analyze -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	println(os.execute_or_panic('./vhammll rank -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+fn test_purge_for_missing_class_values() {	
+	mut r := os.execute_or_panic('./temp analyze -pmc vhammll/datasets/class_missing_developer.tab')
+	// println(r.output)
+	assert r.output.len == 2803
+	assert r.output.contains('6  SEC                                         5        1    7.7')
+	r = os.execute_or_panic('./temp rank -pmc vhammll/datasets/class_missing_developer.tab')
+	// println(r.output)
+	assert r.output.len == 913
+	assert r.output.contains('2   negative                         9  C          100.00     12')
+	r = os.execute_or_panic('./temp make -a 7 -b 3,7 - pmc vhammll/datasets/class_missing_developer.tab')
+	// println(r.output)
+	assert r.output.len == 1326
+	assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
+	// println(os.execute_or_panic('./vhammll analyze -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+	// println(os.execute_or_panic('./vhammll rank -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
+	// println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
 }

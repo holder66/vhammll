@@ -1,6 +1,6 @@
 // multiple.v
 
-module vhamml
+module vhammll
 
 import arrays
 

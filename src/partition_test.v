@@ -1,5 +1,5 @@
 // partition_test.v
-module vhamml
+module vhammll
 
 // test_get_partition_indices
 fn test_get_partition_indices() {

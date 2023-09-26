@@ -1,5 +1,5 @@
 // cli.v
-module vhamml
+module vhammll
 
 // import hamml
 import os
@@ -181,7 +181,7 @@ fn show_help(opts Options) string {
 		'validate' { validate_help }
 		'display' { display_help }
 		'examples' { examples_help }
-		else { vhamml_help }
+		else { vhammll_help }
 	}
 }
 

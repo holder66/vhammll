@@ -1,5 +1,5 @@
 // cross_validate.v
-module vhamml
+module vhammll
 
 import strconv
 import runtime

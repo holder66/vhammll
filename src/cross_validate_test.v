@@ -1,5 +1,5 @@
 // cross_validate_test.v
-module vhamml
+module vhammll
 
 // test_cross_validate
 fn test_cross_validate() ? {

@@ -1,5 +1,5 @@
 // load_arff_file
-module vhamml
+module vhammll
 
 import os
 import encoding.utf8

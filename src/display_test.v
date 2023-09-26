@@ -1,6 +1,6 @@
 // display_test.v
 
-module vhamml
+module vhammll
 
 import os
 

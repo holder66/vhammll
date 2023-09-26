@@ -1,5 +1,5 @@
 // verify.v
-module vhamml
+module vhammll
 
 /*
 Given a classifier and a verification dataset, classifies each instance

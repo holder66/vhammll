@@ -10,7 +10,7 @@ Thus, for Kaggle, adjust their test file by adding (if necessary) a row
 identifier attribute, and make sure that there is a class attribute whose
 values are empty.
 */
-module vhamml
+module vhammll
 
 import os
 

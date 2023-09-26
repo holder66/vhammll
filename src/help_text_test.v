@@ -1,6 +1,6 @@
 // help_text_test.v
 
-module vhamml
+module vhammll
 
 import os
 

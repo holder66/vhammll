@@ -1,9 +1,9 @@
 // constants.v
 
-module vhamml
+module vhammll
 
 const (
-	vhamml_help = "
+	vhammll_help = "
 
     Description:
     vhamml.v is a command line interface app to make use of the functionality
