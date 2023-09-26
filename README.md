@@ -1,11 +1,11 @@
-[![VHamML Continuous Integration](https://github.com/holder66/VHamML/actions/workflows/VHamML%20Continuous%20Integration.yml/badge.svg)](https://github.com/holder66/VHamML/actions/workflows/VHamML%20Continuous%20Integration.yml)
-![GitHub](https://img.shields.io/github/license/holder66/VHamML)
-# VHamML
+[![VHamMLLL Continuous Integration](https://github.com/holder66/VHamMLLL/actions/workflows/VHamMLL%20Continuous%20Integration.yml/badge.svg)](https://github.com/holder66/VHamMLL/actions/workflows/VHamMLL%20Continuous%20Integration.yml)
+![GitHub](https://img.shields.io/github/license/holder66/VHamMLL)
+# VHamMLL
 A machine learning (ML) library for classification using a nearest neighbor algorithm based on Hamming distances.
 
-You can incorporate the `VHamML` functions into your own code, or use the included Command Line Interface app (`src/vv`).
+You can incorporate the `VHamMLL` functions into your own code, or use the included Command Line Interface app (`cli.v`).
 
-You can use `VHamML` with your own datasets, or with a selection of publicly available datasets that are widely used for demonstrating and testing ML classifiers, in the `datasets` directory. These files are either in [ARFF (Attribute-Relation File Format)](https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/) or in [Orange file format](https://orange3.readthedocs.io/projects/orange-data-mining-library/en/latest/reference/data.io.html).
+You can use `VHamMLL` with your own datasets, or with a selection of publicly available datasets that are widely used for demonstrating and testing ML classifiers, in the `datasets` directory. These files are either in [ARFF (Attribute-Relation File Format)](https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/) or in [Orange file format](https://orange3.readthedocs.io/projects/orange-data-mining-library/en/latest/reference/data.io.html).
 
 Classification accuracy with datasets in the `datasets` directory:
 See this [table](https://henry.olders.ca/wordpress/?p=1885). Please note that these results were generated using an earlier version, with separate HamNN and VHamNN modules.
@@ -28,7 +28,7 @@ sudo ./v symlink	# add v to your PATH
 Clone this github repository:
 ```sh
 cd ~               # go back to your home directory
-git clone https://github.com/holder66/vhamml
+git clone https://github.com/holder66/vhammll
 ```
 Install the needed dependencies:
 ```sh

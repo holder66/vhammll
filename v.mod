@@ -1,6 +1,6 @@
 Module {
 	name: 'vhammll'
-	description: 'A nearest neighbor machine learning library and command line interface using Hamming distances'
+	description: 'A machine learning (ML) library and command line interface for classification using a nearest neighbor algorithm based on Hamming distances'
 	version: '0.1.1'
 	license: 'GPLv3'
 	dependencies: ['mewzax.chalk', 'vsl']
