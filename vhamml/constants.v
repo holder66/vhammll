@@ -1,6 +1,6 @@
 // constants.v
 
-module vhammll
+module vhamml
 
 const (
 	vhamml_help = "

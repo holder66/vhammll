@@ -1,5 +1,5 @@
 // cli.v
-module vhammll
+module vhamml
 
 // import hamml
 import os

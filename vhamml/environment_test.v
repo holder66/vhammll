@@ -1,6 +1,6 @@
 // environment_test.v
 
-module vhammll
+module vhamml
 
 // test_get_package_version
 fn test_get_package_version() {

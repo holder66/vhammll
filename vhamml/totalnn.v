@@ -1,6 +1,6 @@
 // totalnn.v
 
-module vhammll
+module vhamml
 
 // import arrays
 

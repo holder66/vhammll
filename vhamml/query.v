@@ -1,5 +1,5 @@
 // query.v
-module vhammll
+module vhamml
 
 import readline
 import strconv

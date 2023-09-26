@@ -1,5 +1,5 @@
 // purge_missings.v
-module vhammll
+module vhamml
 
 fn purge_instances_for_missing_class_values(mut ds Dataset) Dataset {
 	mut instances_to_purge := []int{}

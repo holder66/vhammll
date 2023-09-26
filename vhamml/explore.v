@@ -1,5 +1,5 @@
 // explore.v
-module vhammll
+module vhamml
 
 // explore runs a series of cross-validations or verifications,
 // over a range of attributes and a range of binning values.

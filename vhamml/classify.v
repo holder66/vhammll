@@ -1,5 +1,5 @@
 // classify.v
-module vhammll
+module vhamml
 
 // import math
 

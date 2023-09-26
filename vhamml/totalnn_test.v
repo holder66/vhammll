@@ -2,7 +2,7 @@
 
 // test_multiple_classifiers using the totalnn algorithm
 
-module vhammll
+module vhamml
 
 import os
 // import vtl

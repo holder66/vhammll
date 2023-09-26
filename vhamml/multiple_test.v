@@ -2,7 +2,7 @@
 
 // test_multiple_classifiers
 
-module vhammll
+module vhamml
 
 import os
 // import vtl

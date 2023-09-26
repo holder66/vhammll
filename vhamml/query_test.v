@@ -1,5 +1,5 @@
 // query_test.v
-module vhammll
+module vhamml
 
 // test_query
 fn test_query() ? {

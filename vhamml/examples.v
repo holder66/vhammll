@@ -1,5 +1,5 @@
 // examples.v
-module vhammll
+module vhamml
 
 import os
 import readline { read_line }

@@ -1,5 +1,5 @@
 // explore_test.v
-module vhammll
+module vhamml
 
 fn test_explore_cross() ? {
 	mut result := ExploreResult{}

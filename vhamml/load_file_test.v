@@ -1,5 +1,5 @@
 // load_file_test.v
-module vhammll
+module vhamml
 
 import math
 import os

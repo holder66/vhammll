@@ -1,5 +1,5 @@
 // rank_test.v
-module vhammll
+module vhamml
 
 // test_sum_along_row_unweighted
 fn test_sum_along_row_unweighted() {

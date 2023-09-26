@@ -1,5 +1,5 @@
 // tools_test.v
-module vhammll
+module vhamml
 
 // import arrays
 

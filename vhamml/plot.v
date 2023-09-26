@@ -1,4 +1,4 @@
-module vhammll
+module vhamml
 
 // import arrays
 import math

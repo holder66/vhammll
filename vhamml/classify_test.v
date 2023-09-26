@@ -1,5 +1,5 @@
 // classify_test.v
-module vhammll
+module vhamml
 
 // test_classify_instance
 fn test_classify_instance() {

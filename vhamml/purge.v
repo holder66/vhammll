@@ -1,5 +1,5 @@
 // purge
-module vhammll
+module vhamml
 
 // purge returns a Classifier struct with duplicate instances removed,
 // given a Classifier (as created by make_classifier(mut )).

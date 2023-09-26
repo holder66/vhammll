@@ -1,5 +1,5 @@
 // test_analyze
-module vhammll
+module vhamml
 
 import os
 

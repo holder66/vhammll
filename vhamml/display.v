@@ -1,5 +1,5 @@
 // display.v
-module vhammll
+module vhamml
 
 import os
 import json

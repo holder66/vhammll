@@ -1,5 +1,5 @@
 // rank
-module vhammll
+module vhamml
 
 import math
 

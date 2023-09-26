@@ -3,7 +3,7 @@
 # VHamML
 A machine learning (ML) library for classification using a nearest neighbor algorithm based on Hamming distances.
 
-You can incorporate the `VHamML` functions into your own code, or use the included Command Line Interface app (`src/vhamml.v`).
+You can incorporate the `VHamML` functions into your own code, or use the included Command Line Interface app (`src/vv`).
 
 You can use `VHamML` with your own datasets, or with a selection of publicly available datasets that are widely used for demonstrating and testing ML classifiers, in the `datasets` directory. These files are either in [ARFF (Attribute-Relation File Format)](https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/) or in [Orange file format](https://orange3.readthedocs.io/projects/orange-data-mining-library/en/latest/reference/data.io.html).
 

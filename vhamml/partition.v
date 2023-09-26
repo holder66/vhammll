@@ -1,5 +1,5 @@
 // partition.v
-module vhammll
+module vhamml
 
 // partition splits a dataset into a fold set of instances, and the remainder
 // of the dataset (ie with the fold instances taken out).
