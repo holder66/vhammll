@@ -3,7 +3,7 @@
 // this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
 // best explanation of multiclass metrics and how they're calculated
 
-module hamml
+module vhammll
 
 import arrays
 

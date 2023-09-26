@@ -1,5 +1,5 @@
 // cli_test.v
-module main
+module vhammll
 
 import os
 

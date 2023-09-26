@@ -1,5 +1,5 @@
 // load_file_test.v
-module hamml
+module vhammll
 
 fn test_file_type() {
 	assert file_type('datasets/iris.tab') == 'orange_older'

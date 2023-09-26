@@ -2,7 +2,7 @@
 // for some reason, we are unable to actually generate plots from this code.
 // It seems using the vhamm CLI is the only way to have plots actually show up.
 
-module hamml
+module vhammll
 
 // test_area_under_curve
 fn test_area_under_curve() {

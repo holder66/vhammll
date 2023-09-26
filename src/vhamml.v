@@ -1,7 +1,7 @@
 // vhamml.v
-module main
+module vhammll
 
-import hamml
+// import hamml
 import os
 import os.cmdline as oscmdline
 import time

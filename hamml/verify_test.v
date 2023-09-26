@@ -1,5 +1,5 @@
 // verify_test.v
-module hamml
+module vhammll
 
 import os
 

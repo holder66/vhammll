@@ -1,5 +1,5 @@
 // load_arff_test.v
-module hamml
+module vhammll
 
 fn test_load_arff_files() {
 	mut ds := Dataset{}

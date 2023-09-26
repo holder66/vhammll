@@ -1,5 +1,5 @@
 // structs.v
-module hamml
+module vhammll
 
 import time
 
