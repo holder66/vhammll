@@ -15,7 +15,18 @@ And have a look here for a more complete [description and potential use cases](h
 
 [Glossary of terms](https://github.com/holder66/vhamml/blob/master/docs/glossary.md)
 
-## Installation:
+## Usage:
+### To use the VHamMLL library in an existing Vlang project:
+`v install holder66.vhammll`
+
+You may also need to install its dependencies:
+`v install vsl`
+`v install Mewzax.chalk`
+
+In your v code, add:
+`import holder66.vhammll`
+
+### To use the library with the Command Line Interface (CLI):
 First, install V, if not already installed. On MacOS, Linux etc. you need `git` and a C compiler (For windows or android environments, see the [v lang documentation](https://github.com/vlang/v/blob/master/doc/docs.md#windows)).
 
 In a terminal:
@@ -24,25 +35,27 @@ git clone https://github.com/vlang/v
 cd v
 make
 sudo ./v symlink	# add v to your PATH
+v install holder66.vhammll
 ```
-Clone this github repository:
-```sh
-cd ~               # go back to your home directory
-git clone https://github.com/holder66/vhammll
+See above re needed dependencies.
+
+In a folder or directory that you want to use for your project, you will need to create a file with module `main`, and a function `main()`.
+You can do this in the terminal, or with a text editor. The file should contain:
+```v
+module main
+import holder66.vhammll
+
+fn main() {
+    vhammll.cli()!
+}
 ```
-Install the needed dependencies:
-```sh
-v install vsl
-v install Mewzax.chalk
-```
+Assuming you've named the file `main.v`, in the terminal:
+`v run main.v` or simply `v run .` followed by the command line arguments, eg
+`v run . --help`
+`v run . analyze <path_to_datafile`
 Go into the vhamml directory, compile the app, and try it out:
-```sh
-cd vhamml
-v .                # compiles all the files in the folder
-./vhamml --help    # displays help information about the various commands
-                   # and options available. More specific help information
-                   # is available for each command.
-```
+Command-specific help is available, like so:
+`v run . explore --help` or `v run . explore -h`
 That's it!
 
 ## Tutorial:
