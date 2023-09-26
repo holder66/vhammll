@@ -78,7 +78,7 @@ import math
 // -wr when ranking attributes, weight contributions by class prevalences;
 // -x --exclude, do not take into account missing values when ranking attributes;
 // ```
-fn cli() ! {
+pub fn cli() ! {
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
@@ -321,22 +321,7 @@ fn make(mut opts Options) {
 	}
 }
 
-// parse_range takes a string like '3,6,8' and returns [3, 6, 8]
-fn parse_range(arg string) []int {
-	if arg == '' {
-		return [0]
-	}
-	return arg.split(',').map(it.int())
-}
-
 // last returns the last element of a string array
 fn last(array []string) string {
 	return array[array.len - 1]
-}
-
-// print_array
-fn print_array(array []string) {
-	for line in array {
-		println(line)
-	}
 }

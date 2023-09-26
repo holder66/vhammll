@@ -16,15 +16,15 @@ pub fn data_dict(path string) DataDict {
 	text := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	// get file level info
 	mut dd := DataDict{
-		file_name: do_query(r'File Name = .*\\cf\d ?', r'\w+', text)[0]
-		number_of_variables: do_query(r'Number of variables = .*\\cf\d ', r'\w+', text)[0].int()
-		number_of_cases: do_query(r'Number of cases = .*\\cf\d ', r'\w+', text)[0].int()
+		file_name: do_merge_query(r'File Name = .*\\cf\d ?', r'\w+', text)[0]
+		number_of_variables: do_merge_query(r'Number of variables = .*\\cf\d ', r'\w+', text)[0].int()
+		number_of_cases: do_merge_query(r'Number of cases = .*\\cf\d ', r'\w+', text)[0].int()
 	}
 
 	// get variable level info
-	pos_list := do_query(r'Pos. =( }.{13} )|(.*\\cf\d ?)', r'(1,\d+)|(\d+)', text)
-	var_list := do_query(r'Variable =( }.* )|(.*\\cf\d ?)', r'\w{4,}\s*', text)
-	label_list := do_query(r'Variable label =( }.* )|(.*\\cf\d ?)', r'.*\\', text)
+	pos_list := do_merge_query(r'Pos. =( }.{13} )|(.*\\cf\d ?)', r'(1,\d+)|(\d+)', text)
+	var_list := do_merge_query(r'Variable =( }.* )|(.*\\cf\d ?)', r'\w{4,}\s*', text)
+	label_list := do_merge_query(r'Variable label =( }.* )|(.*\\cf\d ?)', r'.*\\', text)
 	mut ddv := DataDictVariable{}
 	for i in 0 .. dd.number_of_variables {
 		ddv.pos = pos_list[i].replace(',', '').int()
@@ -50,9 +50,9 @@ pub fn data_dict(path string) DataDict {
 		}
 		// println('val_labels_string: ${val_labels_string}')
 
-		vals_list := do_query(r'Value = }.* ', r'-?\d+.0', val_labels_string).map(it.int().str())
+		vals_list := do_merge_query(r'Value = }.* ', r'-?\d+.0', val_labels_string).map(it.int().str())
 		// println('vals_list: $vals_list')
-		labels_list := do_query(r'Label = .* ', r'[.?\w(*)*]+.*\\', val_labels_string)
+		labels_list := do_merge_query(r'Label = .* ', r'[.?\w(*)*]+.*\\', val_labels_string)
 		// println('labels_list: $labels_list')
 		if vals_list.len > 0 {
 			var.value_label_map = map[string]string{}
@@ -65,8 +65,8 @@ pub fn data_dict(path string) DataDict {
 	return dd
 }
 
-// do_query() returns a list of strings
-fn do_query(q1 string, q2 string, text string) []string {
+// do_merge_query() returns a list of strings
+fn do_merge_query(q1 string, q2 string, text string) []string {
 	mut re := regex.regex_opt(q1 + q2) or { panic(err) }
 	list := re.find_all_str(text)
 	re = regex.regex_opt(q1) or { panic(err) }

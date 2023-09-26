@@ -1,7 +1,7 @@
 // main.v
 module main
-import vhammll
+import vhamml
 
 fn main() {
-	vhammll.cli()!
+	vhamml.cli()!
 }
