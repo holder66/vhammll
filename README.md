@@ -51,11 +51,13 @@ fn main() {
 ```
 Assuming you've named the file `main.v`, in the terminal:
 `v run main.v` or simply `v run .` followed by the command line arguments, eg
-`v run . --help`
-`v run . analyze <path_to_datafile`
+`v run . --help` or `v run . analyze <path_to_dataset_file>`
 Go into the vhamml directory, compile the app, and try it out:
 Command-specific help is available, like so:
 `v run . explore --help` or `v run . explore -h`
+
+Note that the publicly available datasets included with the VHamMLL distribution can be found at `~/.vmodules/holder66/vhammll/datasets`.
+
 That's it!
 
 ## Tutorial:
