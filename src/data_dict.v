@@ -17,7 +17,8 @@ pub fn data_dict(path string) DataDict {
 	// get file level info
 	mut dd := DataDict{
 		file_name: do_merge_query(r'File Name = .*\\cf\d ?', r'\w+', text)[0]
-		number_of_variables: do_merge_query(r'Number of variables = .*\\cf\d ', r'\w+', text)[0].int()
+		number_of_variables: do_merge_query(r'Number of variables = .*\\cf\d ', r'\w+',
+			text)[0].int()
 		number_of_cases: do_merge_query(r'Number of cases = .*\\cf\d ', r'\w+', text)[0].int()
 	}
 

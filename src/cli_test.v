@@ -16,7 +16,7 @@ fn main() {
 fn testsuite_begin() ? {
 	os.chdir('..')!
 	mut f := os.create(os.abs_path('') + '/temp.v')!
-	f.write_string(main_text)!
+	f.write_string(vhammll.main_text)!
 	f.close()
 
 	os.execute_or_panic('v -keepc run temp.v')
@@ -24,12 +24,15 @@ fn testsuite_begin() ? {
 		os.rmdir_all('tempfolder_cli')!
 	}
 	os.mkdir_all('tempfolder_cli')!
-
 }
 
 fn testsuite_end() ? {
-	if os.exists('temp') {os.rm('temp')!}
-	if os.exists('temp.v') {os.rm('temp.v')!}
+	if os.exists('temp') {
+		os.rm('temp')!
+	}
+	if os.exists('temp.v') {
+		os.rm('temp.v')!
+	}
 	os.rmdir_all('tempfolder_cli')!
 }
 
@@ -125,7 +128,6 @@ fn test_rank_attributes() {
 	assert r.output.contains('8   carbon                           3  C           78.90      7')
 }
 
-
 // fn test_display() {
 // 	println(os.execute_or_panic('v run . cross -c -b 2,4 -a 4 -o tempfolder_cli/cross_result.txt datasets/developer.tab'))
 // 	println(os.execute_or_panic('v run . display -e tempfolder_cli/cross_result.txt'))
@@ -133,7 +135,7 @@ fn test_rank_attributes() {
 // 	println(os.execute_or_panic('v run . display -g tempfolder_cli/rank_result.txt'))
 // }
 
-fn test_purge_for_missing_class_values() {	
+fn test_purge_for_missing_class_values() {
 	mut r := os.execute_or_panic('./temp analyze -pmc vhammll/datasets/class_missing_developer.tab')
 	// println(r.output)
 	assert r.output.len == 2803

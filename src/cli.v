@@ -225,8 +225,8 @@ fn analyze(mut opts Options) {
 // specified by -o. It displays the extended classifier on the console.
 fn do_append(mut opts Options) ! {
 	opts.show_flag = true
-	ext_cl := append_instances(load_classifier_file(opts.classifierfile_path)!,
-		load_instances_file(opts.datafile_path)!, opts)
+	ext_cl := append_instances(load_classifier_file(opts.classifierfile_path)!, load_instances_file(opts.datafile_path)!,
+		opts)
 	if opts.expanded_flag {
 		println(ext_cl)
 	}
@@ -299,8 +299,7 @@ fn orange() {
 // Optionally (-o flag) it saves the RankingResult struct to a file.
 fn rank(mut opts Options) {
 	opts.show_flag = true
-	ra := rank_attributes(load_file(opts.datafile_path, opts.LoadOptions),
-		opts)
+	ra := rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
 	if opts.expanded_flag {
 		println(ra)
 	}
