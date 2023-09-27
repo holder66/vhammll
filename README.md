@@ -68,50 +68,55 @@ v run . examples go
 ## Updating:
 ```sh
 v up        # installs the latest release of V
-git pull    # When you're in the vhamml directory, this command pulls in the 
-            # latest version of vhamml
-v update    # get the latest version of the libraries, including holder66.vhamml
+v update    # get the latest version of the libraries, including holder66.vhammll
 v .         # recompile
 ```
+
 
 ## Getting help:
 The V lang community meets on [Discord](https://discord.gg/vlang)
 
 
-For bug reports, feature requests, etc., please raise an issue on [github](https://github.com/holder66/vhamml/issues)
+For bug reports, feature requests, etc., please raise an issue on [github](https://github.com/holder66/vhammll/issues)
 
 
 ## Speed things up:
 
-Using the -c (--concurrent) flag makes use of available CPU cores may speed things up.
-A huge speedup happens if you compile using the -prod (for production) option. The compilation itself takes longer, but the resulting code is highly optimized.
+Use the -c (--concurrent) arg (in the CLI) to make use of available CPU cores for
+some vhammll functions; this may speed things up (timings are on a MacBook Pro 2019)
+```sh
+v main.v
+./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 10.157 sec
+./main explore -c  ~/.vmodules/holder66/vhammll/datasets/iris.tab   # 4.910 sec
 ```
-v -prod .
+A huge speedup usually happens if you compile using the -prod (for production) option. The compilation itself takes longer, but the resulting code is highly optimized.
+```sh
+v -prod main.v
+./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 3.899 sec
+./main explore -c  ~/.vmodules/holder66/vhammll/datasets/iris.tab   # 4.849 sec!!
 ```
+Note that in this case, there is no speedup for `-prod` when the `-c` argument is used.
 
-And then run it, eg 
-```
-./vhamml explore -s -c datasets/iris.tab
-```
 
 ## Examples showing use of the Command Line Interface
-Please see [examples_of_command_line_usage.md](https://github.com/holder66/vhamml/blob/master/docs/examples_of_command_line_usage.md)
+Please see [examples_of_command_line_usage.md](https://github.com/holder66/vhammll/blob/master/docs/examples_of_command_line_usage.md)
+
 
 ## Example: typical use case, a clinical risk calculator
 
 Health care professionals frequently make use of calculators to inform clinical decision-making. Data regarding symptoms, findings on physical examination, laboratory and imaging results, and outcome information such as diagnosis, risk for developing a condition, or response to specific treatments, is collected for a sample of patients, and then used to form the basis of a formula that can be used to predict the outcome information of interest for a new patient, based on how their symptoms and findings, etc. compare to those in the dataset.
 
-Please see [clinical_calculator_example.md](https://github.com/holder66/vhamml/blob/master/docs/clinical_calculator_example.md).
+Please see [clinical_calculator_example.md](https://github.com/holder66/vhammll/blob/master/docs/clinical_calculator_example.md).
 
 ## Example: finding useful information embedded in noise
 
-Please see a worked example here: [noisy_data.md](https://github.com/holder66/vhamml/blob/master/docs/noisy_data.md)
+Please see a worked example here: [noisy_data.md](https://github.com/holder66/vhammll/blob/master/docs/noisy_data.md)
 
 
 ## MNIST dataset
-The mnist_train.tab file is too large to keep in the repository. If you wish to experiment with it, it can be downloaded by right-clicking on [this link](http://henry.olders.ca/datasets/mnist_train.tab) in a web browser, or downloaded via the command line:
+The mnist_train.tab file is too large to keep in the repository. If you wish to experiment with it, it can be downloaded by right-clicking on [this link](https://henry.olders.ca/datasets/mnist_train.tab) in a web browser, or downloaded via the command line:
 ```
-wget http://henry.olders.ca/datasets/mnist_train.tab
+wget https://henry.olders.ca/datasets/mnist_train.tab
 ```
 
 The process of development in its early stages is described in [this essay](https://henry.olders.ca/wordpress/?p=731) written in 1989.

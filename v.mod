@@ -3,5 +3,5 @@ Module {
 	description: 'A machine learning (ML) library and command line interface for classification using a nearest neighbor algorithm based on Hamming distances'
 	version: '0.1.2'
 	license: 'GPLv3'
-	dependencies: ['mewzak.chalk', 'vsl']
+	dependencies: ['mewzax.chalk', 'vsl']
 }
