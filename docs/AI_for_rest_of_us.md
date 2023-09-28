@@ -30,7 +30,7 @@ While this may sound artificial, it is actually how things work in real life. In
 
 Besides making computation simpler, the process of binning itself can improve accuracy by enhancing contrast. But, more importantly, by treating all attributes as categorical (“discrete”), it becomes possible to rank-order them in their ability to distinguish between classes. This is essential in some domains (for example, micro-array genetic data) where most of the attributes represent just “noise” and degrade classification accuracy. 
 
-So how is all this going to benefit you, a potential AI user? First, ease of use of the VHamML algorithm. There are really only two parameters that you can adjust: the number of attributes to use, and the number of bins for number (“continous”) attributes to be sliced into. An “explore” tool makes it easy to find good values for those two parameters.
+So how is all this going to benefit you, a potential AI user? First, ease of use of the VHamMLL algorithm. There are really only two parameters that you can adjust: the number of attributes to use, and the number of bins for number (“continous”) attributes to be sliced into. An “explore” tool makes it easy to find good values for those two parameters.
 
 Besides the two parameters, there are also a couple of "switches" that can be set on or off. One switch controls whether or not prevalence weighting is to be applied when counting up nearest neighbors. Another switch controls whether duplicate instances will be deleted or not when training a classifier. A third switch determines whether to take into account missing values when rank ordering attributes.
 
@@ -38,11 +38,11 @@ Second, there is no need for you to preprocess data, to normalize values, or to 
 
 Third, no need to choose different algorithms for binary class problems or multiclass situations, or for dealing with continuous or discrete attributes or any mix;
 
-Fourth, the algorithm will give you more useful responses if you feed it fine grained information. For example, questionnaires often have a single score result, but the single score may account quite imperfectly for the contribution of each individual question to that final score. The VHamML algorithm, if given the responses to the individual questions, will weight individual responses appropriately;
+Fourth, the algorithm will give you more useful responses if you feed it fine grained information. For example, questionnaires often have a single score result, but the single score may account quite imperfectly for the contribution of each individual question to that final score. The VHamMLL algorithm, if given the responses to the individual questions, will weight individual responses appropriately;
 
 Fifth, issues with possible linear nonseparability (for example with physiologic data where hormesis may play a role) are moot. For example, training the algorithm to perform with 100% accuracy on the XOR (Exclusive Or) function requires only 4 training cases;
 
-Finally, no need to learn to use a whole variety of different pieces of software (or to assemble a team with all the expertise; for example, a [recent article](https://www.sciencedirect.com/science/article/pii/S193131282200049X?via%3Dihub) cited 26 different items of software and algorithms). The VHamML library contains all the functions you are likely to need, and includes a command line application that lets you use those functions without needing to code or learn complicated platforms like MatLab, R, or SciKitLearn.
+Finally, no need to learn to use a whole variety of different pieces of software (or to assemble a team with all the expertise; for example, a [recent article](https://www.sciencedirect.com/science/article/pii/S193131282200049X?via%3Dihub) cited 26 different items of software and algorithms). The VHamMLL library contains all the functions you are likely to need, and includes a command line application that lets you use those functions without needing to code or learn complicated platforms like MatLab, R, or SciKitLearn.
 
-But if you do have the urge to “roll your own” and write code to use the VHamML library of functions, I think you’ll find [V a most congenial programming language](https://vlang.io): simple, fast, safe, easy to learn, and fun to use!
+But if you do have the urge to “roll your own” and write code to use the VHamMLL library of functions, I think you’ll find [V a most congenial programming language](https://vlang.io): simple, fast, safe, easy to learn, and fun to use!
 _

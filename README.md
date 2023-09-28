@@ -19,9 +19,11 @@ And have a look here for a more complete [description and potential use cases](h
 ### To use the VHamMLL library in an existing Vlang project:
 `v install holder66.vhammll`
 
-You may also need to install its dependencies:
-`v install vsl`
-`v install Mewzax.chalk`
+You may also need to install its dependencies, if not automatically installed:
+```sh
+v install vsl
+v install Mewzax.chalk
+```
 
 In your v code, add:
 `import holder66.vhammll`
@@ -49,10 +51,9 @@ fn main() {
     vhammll.cli()!
 }
 ```
-Assuming you've named the file `main.v`, in the terminal:
-`v run main.v` or simply `v run .` followed by the command line arguments, eg
+Assuming you've named the directory or folder `vhamml` and the file within `main.v`, in the terminal:
+`v run .` followed by the command line arguments, eg
 `v run . --help` or `v run . analyze <path_to_dataset_file>`
-Go into the vhamml directory, compile the app, and try it out:
 Command-specific help is available, like so:
 `v run . explore --help` or `v run . explore -h`
 
@@ -61,7 +62,7 @@ Note that the publicly available datasets included with the VHamMLL distribution
 That's it!
 
 ## Tutorial:
-```
+```sh
 v run . examples go
 ```
 
@@ -82,7 +83,7 @@ For bug reports, feature requests, etc., please raise an issue on [github](https
 
 ## Speed things up:
 
-Use the -c (--concurrent) arg (in the CLI) to make use of available CPU cores for
+Use the -c (--concurrent) argument (in the CLI) to make use of available CPU cores for
 some vhammll functions; this may speed things up (timings are on a MacBook Pro 2019)
 ```sh
 v main.v

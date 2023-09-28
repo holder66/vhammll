@@ -7,16 +7,22 @@ while the other 52 had a prostate tumor. For each case, there
 are 12534 data points, of which one is the class attribute. Can this
 mass of data be used to predict whether a person has a tumor or is normal?
 
-To try the example on your own installation, start by compiling an optimized version, `v -prod .`
+To try the example on your own installation, start by compiling an optimized version.
+In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
+(see the README)
+```sh
+% cd vhamml
+% v -prod .
+```
 
 Note: processing times are on a 2019 Macbook Pro.
 
 ```sh
-./vhamml rank -w -wr -s datasets/prostata.tab 
+% ./vhamml rank -w -wr -s ~/.vmodules/holder66/vhammll/datasets/prostata.tab 
 ```   
 ```sh
 
-Attributes Sorted by Rank Value, for "datasets/prostata.tab"
+Attributes Sorted by Rank Value, for "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
 Missing values: included
 Bin range for continuous attributes: from 1 to 16 with interval 1
 Weighted by class prevalences
@@ -49,10 +55,10 @@ processing time: 0 hrs 0 min  1.518 sec
 Accumulated experience with the algorithm suggests that using a fixed number
 of bins often gives good results. 
 ```sh
-./vhamml rank -w -wr -s -b 6 datasets/prostata.tab
+% ./vhamml rank -w -wr -s -b 6 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 ```sh
-Attributes Sorted by Rank Value, for "datasets/prostata.tab"
+Attributes Sorted by Rank Value, for "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
 Missing values: included
 Bin range for continuous attributes: from 1 to 6 with interval 1
 Weighted by class prevalences
@@ -79,14 +85,14 @@ which is optimized over a range.
 Here are the results for exploring over a range of attributes from 1 to 20, 
 and a binning range from 2 to 12:
 ```sh
-./vhamml explore -e -g -w -wr -b 2,12 -a 1,20 datasets/prostata.tab
+% % ./vhamml explore -e -g -w -wr -b 2,12 -a 1,20 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 Note the flags: -c calls for parallel processing, using all available CPU cores
 on you machine; -e for expanded output to the console; -g results in graphical
 plots of the results as ROC curves.
 ```sh
 
-Explore leave-one-out cross-validation using classifiers from "datasets/prostata.tab"
+Explore leave-one-out cross-validation using classifiers from "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
 Binning range for continuous attributes: from 2 to 12 with interval 1
 Missing values: included
 Weighting nearest neighbor counts by class prevalences
@@ -332,11 +338,11 @@ all continuous attributes in some cases provides better results. We can try this
 with the -u flag, over an abbreviated range of attributes and bins:
 
 ```sh
-./vhamml explore -e -g -w -wr -b 6,12 -a 3,5 -u datasets/prostata.tab
+% ./vhamml explore -e -g -w -wr -b 6,12 -a 3,5 -u ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 ```sh
 
-Explore leave-one-out cross-validation using classifiers from "datasets/prostata.tab"
+Explore leave-one-out cross-validation using classifiers from "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
 Binning range for continuous attributes: from 6 to 12 with interval 1
 (same number of bins for all continous attributes)
 Missing values: included
@@ -379,12 +385,12 @@ gives us the best balanced accuracy of 94.33%, marginally better than when using
 Using the "cross" command with the -e flag provides additional statistics, including a confusion matrix:
 ```sh
 
-./vhamml cross -b 6,6 -a 3 -e -w -wr datasets/prostata.tab
+% ./vhamml cross -b 6,6 -a 3 -e -w -wr ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 
 ```sh
 
-Cross-validation of "datasets/prostata.tab"
+Cross-validation of "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
 Partitioning: leave-one-out
 Number of attributes: 3
 Binning range for continuous attributes: from 6 to 6 with interval 1
@@ -417,7 +423,7 @@ Let's stick with these settings, and create a classifier that
 can be used for predicting outcomes:
 
 ```sh
-./vhamml make -a 3 -b 6 -u -c -o ../classifiers/prostata_classifier datasets/prostata.tab
+% ./vhamml make -a 3 -b 6 -u -c -o ../classifiers/prostata_classifier ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 
 Note the use of the -o flag to specify a file where the classifier is to be saved in a file for later use.
