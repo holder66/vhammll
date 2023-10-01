@@ -93,7 +93,7 @@ pub fn cli() ! {
 			'append' { do_append(mut opts)! }
 			'cross' { cross(mut opts) }
 			'display' { do_display(opts) }
-			// 'examples' { examples()! }
+			'examples' { examples()! }
 			'explore' { do_explore(mut opts) }
 			'make' { make(mut opts) }
 			'orange' { orange() }

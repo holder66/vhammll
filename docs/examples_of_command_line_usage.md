@@ -11,7 +11,7 @@ In your terminal, navigate to directory/folder `vhamml` containing the `main.v` 
 Now you can run the app with command line entries starting with `% ./vhamml`, 
 as in `% ./vhamml analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`.
 Sometimes, it may be more convenient and quicker to start with `% v run .`, as in
-`% % v run . verify -c -t ~/.vmodules/holder66/vhammll/~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/~/.vmodules/holder66/vhammll/datasets/bcw350train`.
+`% v run . verify -c -t ~/.vmodules/holder66/vhammll/~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/~/.vmodules/holder66/vhammll/datasets/bcw350train`.
 
 ## Getting help
 `% v run . --help` or
@@ -27,7 +27,7 @@ For individual commands, use this pattern:
 `% v run . analyze`
 
 ## Analyzing a dataset
-`% % ./vhamml analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`
+`% ./vhamml analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`
 
 ## Discovering which attributes are most useful
 `% ./vhamml rank --show --graph ~/.vmodules/holder66/vhammll/~/.vmodules/holder66/vhammll/datasets/anneal.tab` or
