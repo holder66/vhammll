@@ -20,7 +20,7 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 		'orange_older' { load_orange_older_file(path) }
 		'arff' { load_arff_file(path) }
 		'UKDA' { load_orange_newer_file(path, opts) }
-		'csv' { load_csv_file(path)}
+		'csv' { load_csv_file(path) }
 		else { panic('unrecognized file type') }
 	}
 }
@@ -37,7 +37,9 @@ pub fn file_type(path string) string {
 	if path.contains('UKDA') {
 		return 'UKDA'
 	}
-	if os.file_ext(path) == '.csv' { return 'csv' }
+	if os.file_ext(path) == '.csv' {
+		return 'csv'
+	}
 	header := os.read_lines(path.trim_space()) or { panic('Failed to open ${path} in file_type()') }
 	if header[0].contains('#') {
 		return 'orange_newer'
@@ -164,15 +166,6 @@ fn set_class_struct(ds Dataset) Class {
 		classes: class_counts.keys()
 	}
 	return cl
-}
-
-fn extract_types(word string) []string {
-	type_att := word.split('#')
-	if type_att.len == 1 {
-		return ['', type_att[0]]
-	} else {
-		return type_att
-	}
 }
 
 // identify_class_attribute returns the index for the class attribute; if

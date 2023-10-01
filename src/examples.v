@@ -14,7 +14,6 @@ fn run_example(before string, after string, cmd string) ! {
 	// if line[0] != u8(115) {
 	if !line.contains_u8(115) {
 		println(os.execute_or_panic(cmd).output)
-	
 	}
 	println('\n${after}\n\n')
 }

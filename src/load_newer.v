@@ -38,6 +38,15 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	return ds
 }
 
+fn extract_types(word string) []string {
+	type_att := word.split('#')
+	if type_att.len == 1 {
+		return ['', type_att[0]]
+	} else {
+		return type_att
+	}
+}
+
 // infer_attribute_types_newer gets inferred attribute types for orange-newer files
 // returns an array to plug into the Dataset struct
 /*
