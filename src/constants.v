@@ -64,6 +64,8 @@ const (
     -g --graph:      generates plots that show in your default web browser;
     -h --help:        
     -k --classifier: followed by the path to a file for a saved Classifier;
+    -ka --kaggle:    followed by the path to a file for submission to a Kaggle
+                     competition (for the validate command);
     -m --multiple:   classify using more than one trained classifier, followed
                      by the path to a json file with parameters to generate
                      each classifier;
@@ -329,6 +331,8 @@ Options:
   -c --concurrent: permit parallel processing to use multiple cores (TODO);
   -e --expanded: display the ValidateResult struct on the console;
   -k --classifier: followed by the path to a file for a saved Classifier;
+  -ka --kaggle:    followed by the path to a file for submission to a Kaggle
+  competition;
   -w --weight: weight the number of nearest neighbor counts
   by class prevalences when classifying;
   -wr: when ranking attributes, weight contributions by class prevalences.

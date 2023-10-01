@@ -108,7 +108,7 @@ fn test_display_validate_result() ? {
 	cl := make_classifier(mut ds, opts)
 	opts.outputfile_path = 'tempfolder_display/validate_result'
 	opts.testfile_path = 'datasets/bcw174validate'
-	_ = validate(cl, opts)?
+	_ = validate(cl, opts)!
 	display_file(opts.outputfile_path, opts)
 }
 

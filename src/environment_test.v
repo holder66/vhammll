@@ -4,7 +4,7 @@ module vhammll
 
 // test_get_package_version
 fn test_get_package_version() {
-	assert get_package_version() == '0.1.1'
+	assert get_package_version() == '0.1.3'
 }
 
 // test_get_environment
