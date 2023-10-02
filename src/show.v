@@ -141,7 +141,7 @@ pub fn show_analyze(result AnalyzeResult) {
 }
 
 // show_rank_attributes
-fn show_rank_attributes(result RankingResult) {
+pub fn show_rank_attributes(result RankingResult) {
 	mut exclude_phrase := 'included'
 	if result.exclude_flag {
 		exclude_phrase = 'excluded'
@@ -186,7 +186,7 @@ pub fn show_classifier(cl Classifier) {
 }
 
 // show_parameters
-fn show_parameters(p Parameters) {
+pub fn show_parameters(p Parameters) {
 	if p.number_of_attributes.len == 1 {
 		println('Number of attributes: ' +
 			if p.number_of_attributes[0] == 0 { 'all' } else { '${p.number_of_attributes[0]}' })
@@ -201,7 +201,7 @@ fn show_parameters(p Parameters) {
 }
 
 // show_validate
-fn show_validate(result ValidateResult) {
+pub fn show_validate(result ValidateResult) {
 	println(chalk.fg(chalk.style('\nValidation of "${result.validate_file_path}" using a classifier from "${result.datafile_path}"',
 		'underline'), 'magenta'))
 	show_parameters(result.Parameters)
@@ -219,8 +219,7 @@ fn show_validate(result ValidateResult) {
 }
 
 // show_verify
-
-fn show_verify(result CrossVerifyResult, opts Options) {
+pub fn show_verify(result CrossVerifyResult, opts Options) {
 	println(chalk.fg(chalk.style('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
 		'from "${result.datafile_path}"', 'underline'), 'magenta'))
@@ -241,7 +240,7 @@ fn show_verify(result CrossVerifyResult, opts Options) {
 }
 
 // show_multiple_classifiers_options
-fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
+pub fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
 	mut row_labels := ['Classifier:', 'Number of attributes:', 'Binning:', 'Ranking using weighting:',
 		'Weighting:', 'Balance prevalences:', 'Purging:', 'True counts:', 'False counts:',
 		'Raw accuracy:', 'Balanced accuracy:', 'Maximum Hamming Distance:']
@@ -273,7 +272,7 @@ fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifi
 }
 
 // show_crossvalidation
-fn show_crossvalidation(result CrossVerifyResult) {
+pub fn show_crossvalidation(result CrossVerifyResult) {
 	// println('result in show_crossvalidation: $result')
 	println(chalk.fg(chalk.style('\nCross-validation of "${result.datafile_path}"' +
 		if result.multiple_classify_options_file_path != '' { ' using multiple classifiers' } else { '' },
@@ -298,7 +297,7 @@ fn show_crossvalidation(result CrossVerifyResult) {
 }
 
 // show_cross_or_verify_result
-fn show_cross_or_verify_result(result CrossVerifyResult) {
+pub fn show_cross_or_verify_result(result CrossVerifyResult) {
 	println(chalk.fg(chalk.style('Results:', 'bold'), 'green'))
 	// mut metrics := get_metrics(result)
 	if !result.expanded_flag {
@@ -311,7 +310,7 @@ fn show_cross_or_verify_result(result CrossVerifyResult) {
 }
 
 // show_expanded_result
-fn show_expanded_result(result CrossVerifyResult) {
+pub fn show_expanded_result(result CrossVerifyResult) {
 	println(chalk.fg('    Class                   Instances    True Positives    Precision    Recall    F1 Score',
 		'green'))
 	show_multiple_classes_stats(result)
