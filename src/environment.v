@@ -11,7 +11,7 @@ import v.vmod
 // computer, the operating system and its version,
 // the version and build of V, the version of HamNN,
 // and the date and time. It returns an Environment struct.
-pub fn get_environment() Environment {
+fn get_environment() Environment {
 	mut env := Environment{}
 	env.collect_info()
 	env.hamnn_version = get_package_version()

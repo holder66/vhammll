@@ -70,7 +70,7 @@ fn integer_element_counts(array []int) map[int]int {
 	return counts
 }
 
-pub fn element_counts[T](array []T) map[T]int {
+fn element_counts[T](array []T) map[T]int {
 	mut counts := map[T]int{}
 	for element in array {
 		counts[element]++
@@ -105,7 +105,7 @@ fn parse_range(arg string) []int {
 // }
 
 // print_array
-pub fn print_array(array []string) {
+fn print_array(array []string) {
 	for line in array {
 		println(line)
 	}

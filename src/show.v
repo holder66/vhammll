@@ -240,7 +240,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 }
 
 // show_multiple_classifiers_options
-pub fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
+fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
 	mut row_labels := ['Classifier:', 'Number of attributes:', 'Binning:', 'Ranking using weighting:',
 		'Weighting:', 'Balance prevalences:', 'Purging:', 'True counts:', 'False counts:',
 		'Raw accuracy:', 'Balanced accuracy:', 'Maximum Hamming Distance:']

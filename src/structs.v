@@ -79,7 +79,7 @@ pub mut:
 	bins                    int
 }
 
-struct Binning {
+pub struct Binning {
 mut:
 	lower    int
 	upper    int
@@ -121,7 +121,7 @@ pub mut:
 	history                  []HistoryEvent
 }
 
-struct HistoryEvent {
+pub struct HistoryEvent {
 pub mut:
 	event_date               time.Time
 	instances_count          int
@@ -133,12 +133,10 @@ pub mut:
 
 struct Parameters {
 pub mut:
-	// AttributeRange
 	binning              Binning
 	number_of_attributes []int = [0]
 	uniform_bins         bool
 	exclude_flag         bool
-	// multiple_flag bool
 	purge_flag               bool
 	weighting_flag           bool
 	weight_ranking_flag      bool
@@ -353,8 +351,8 @@ pub mut:
 	confusion_matrix                [][]string
 }
 
-pub struct AttributeRange {
-pub mut:
+struct AttributeRange {
+mut:
 	start        int
 	end          int
 	att_interval int
