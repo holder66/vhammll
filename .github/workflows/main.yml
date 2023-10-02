@@ -1,0 +1,44 @@
+name: VHamMLL Continuous Integration
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  schedule:
+   - cron: "31 1,12 * * *"
+
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v2
+
+      - name: Check if code is formatted
+        run: |
+          v fmt -diff .
+          v fmt -verify .
+
+      - name: Install dependencies
+        run: |
+          v install vsl
+          v install Mewzax.chalk
+
+      - name: Build ${{ github.event.repository.name }}
+        run: v -shared .
+
+      - name: Run Tests
+        run: |
+          VTEST_ONLY=analyze,append,classify,cross_validate,environment,explore,load_file,make_classifier,partition,rank,tools,validate,verify v test .
