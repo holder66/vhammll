@@ -1,4 +1,4 @@
-[![VHamMLLL Continuous Integration](https://github.com/holder66/VHamMLLL/actions/workflows/VHamMLL%20Continuous%20Integration.yml/badge.svg)](https://github.com/holder66/VHamMLL/actions/workflows/VHamMLL%20Continuous%20Integration.yml)
+[![VHamMLLL Continuous Integration](https://github.com/holder66/VHamMLLL/actions/workflows/main.yml/badge.svg)](https://github.com/holder66/VHamMLL/actions/workflows/main.yml)
 ![GitHub](https://img.shields.io/github/license/holder66/VHamMLL)
 # VHamMLL
 A machine learning (ML) library for classification using a nearest neighbor algorithm based on Hamming distances.
