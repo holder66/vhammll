@@ -212,7 +212,8 @@ pub fn show_validate(result ValidateResult) {
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
 	println('Number of instances validated: ${result.inferred_classes.len}')
-	println(chalk.fg(chalk.style('  Index   Inferred Class    Nearest Neighbor Counts by Class (${result.classes})', 'underline'), 'cyan'))
+	println(chalk.fg(chalk.style('  Index   Inferred Class    Nearest Neighbor Counts by Class (${result.classes})',
+		'underline'), 'cyan'))
 	for i, val in result.inferred_classes {
 		println('${i:7}   ${val:-14}    ${result.counts[i]}')
 	}

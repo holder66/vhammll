@@ -133,10 +133,10 @@ pub mut:
 
 struct Parameters {
 pub mut:
-	binning              Binning
-	number_of_attributes []int = [0]
-	uniform_bins         bool
-	exclude_flag         bool
+	binning                  Binning
+	number_of_attributes     []int = [0]
+	uniform_bins             bool
+	exclude_flag             bool
 	purge_flag               bool
 	weighting_flag           bool
 	weight_ranking_flag      bool
