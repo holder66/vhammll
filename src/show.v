@@ -186,7 +186,7 @@ pub fn show_classifier(cl Classifier) {
 }
 
 // show_parameters
-pub fn show_parameters(p Parameters) {
+fn show_parameters(p Parameters) {
 	if p.number_of_attributes.len == 1 {
 		println('Number of attributes: ' +
 			if p.number_of_attributes[0] == 0 { 'all' } else { '${p.number_of_attributes[0]}' })
@@ -297,7 +297,7 @@ pub fn show_crossvalidation(result CrossVerifyResult) {
 }
 
 // show_cross_or_verify_result
-pub fn show_cross_or_verify_result(result CrossVerifyResult) {
+fn show_cross_or_verify_result(result CrossVerifyResult) {
 	println(chalk.fg(chalk.style('Results:', 'bold'), 'green'))
 	// mut metrics := get_metrics(result)
 	if !result.expanded_flag {
@@ -310,7 +310,7 @@ pub fn show_cross_or_verify_result(result CrossVerifyResult) {
 }
 
 // show_expanded_result
-pub fn show_expanded_result(result CrossVerifyResult) {
+fn show_expanded_result(result CrossVerifyResult) {
 	println(chalk.fg('    Class                   Instances    True Positives    Precision    Recall    F1 Score',
 		'green'))
 	show_multiple_classes_stats(result)
