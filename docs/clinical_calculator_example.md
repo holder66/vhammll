@@ -8,7 +8,7 @@ First, display information about the dataset:
 In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
 (see the README)
 ```sh
-% v run . analyze ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+ v run . analyze ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -52,17 +52,16 @@ The Class Attribute: "Class" (2 classes)
 Class Value           Cases
 benign                  458
 malignant               241
-processing time: 0 hrs 0 min  0.076 sec
+processing time: 0 hrs 0 min  0.105 sec
 
 ```
 
 Rank order the attributes according to their contribution to separating the classes: 
 
 ```sh
-% v run . rank ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab 
+v run . rank ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
-
 
 Attributes Sorted by Rank Value, for "/Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab"
 Missing values: included
@@ -78,7 +77,7 @@ Unweighted by class prevalences
      7   Marginal Adhesion                4  D           72.82      0
      8   Clump Thickness                  1  D           72.25      0
      9   Mitoses                          9  D           57.94      0
-processing time: 0 hrs 0 min  0.008 sec
+processing time: 0 hrs 0 min  0.005 sec
 
 ```
 
@@ -86,7 +85,7 @@ We can run a set of exploratory cross-validations using leave-one-out
 folding, and with the -w flag to weight the results using class prevalences.
 
 ```sh
-% v run . explore -w -wr -x -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run . explore -w -wr -x -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 Note the additional flags: -w to prevalence-weight nearest neighbor counts; -wr to prevalence-weight when ranking attributes; -x to exclude missing values; -c to exploit parallel processing by using all the available CPU cores on your machine; -e to show extended results.
 ```sh
@@ -124,53 +123,48 @@ processing time: 0 hrs 0 min  5.554 sec
 
 ```
 
-While using all 9 attributes gives the best classification result (balanced accuracy 95.68%; F1 Score 0.944) using only 2 attributes gives the lowest false positive rate.
-It is possible that a number of the instances in this dataset are duplicates, ie have the same attribute values, when only considering a small number of attributes. Let's redo the explore but with the -p or --purge flag:
+While using all 9 attributes gives the best classification result (balanced accuracy 95.68%; F1 Score 0.944) using only 2 attributes gives the lowest false positive rate. Four attributes gives a balanced accuracy of 95.02%, not far from using all 9 attributes.
+
+Picking the best combination of attributes to be used, and bin range when there are continuous attributes, is often a matter of experience and judgment.
+For the purposes of this example, however, let us train our classifier using 4 attributes. Using the "cross" command to see additional stats:
 
 ```sh
-% v run . explore -w -wr -x -c -e -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run . cross -a 4 -w -wr  -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
-Explore leave-one-out cross-validation using classifiers from "/Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab"
-Number of attributes: all
+Cross-validation of "/Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab"
+Partitioning: leave-one-out
+Number of attributes: 4
 Binning range for continuous attributes: not applicable (no continuous attributes used)
-Missing values: excluded
-Purging of duplicate instances: true
+Missing values: included
+Purging of duplicate instances: false
 Prevalence weighting for ranking attributes: true
 Prevalence weighting for nearest neighbor counts: true
 Add instances to balance class prevalences: false
-Over attribute range from 1 to 9 by interval 1
+Results:
+    Class                   Instances    True Positives    Precision    Recall    F1 Score
+    benign                        458     439 ( 95.85%)        0.969     0.959       0.964
+    malignant                     241     227 ( 94.19%)        0.923     0.942       0.932
+        Totals                    699     666 (accuracy: raw: 95.28% balanced: 95.02%)
+             Macro Averages:                                   0.946     0.950       0.948
+          Weighted Averages:                                   0.953     0.953       0.953
 A correct classification to "malignant" is a True Positive (TP);
 A correct classification to "benign" is a True Negative (TN).
-Attributes    Bins        Purged instances     (%)     TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced
-         1              624.1 out of 698.0 (89.41)    203    38   442    16   0.842  0.965  0.927  0.921     0.883         92.27%    90.37%
-         2              551.0 out of 698.0 (78.94)    200    41   441    17   0.830  0.963  0.922  0.915     0.873         91.70%    89.64%
-         3              468.2 out of 698.0 (67.08)    211    30   442    16   0.876  0.965  0.930  0.936     0.902         93.42%    92.03%
-         4              402.3 out of 698.0 (57.64)    216    25   446    12   0.896  0.974  0.947  0.947     0.921         94.71%    93.50%
-         5              335.4 out of 698.0 (48.05)    214    27   446    12   0.888  0.974  0.947  0.943     0.916         94.42%    93.09%
-         6              312.5 out of 698.0 (44.76)    214    27   448    10   0.888  0.978  0.955  0.943     0.920         94.71%    93.31%
-         7              284.5 out of 698.0 (40.76)    216    25   447    11   0.896  0.976  0.952  0.947     0.923         94.85%    93.61%
-         8              212.6 out of 698.0 (30.46)    223    18   444    14   0.925  0.969  0.941  0.961     0.933         95.42%    94.74%
-         9              209.6 out of 698.0 (30.03)    227    14   444    14   0.942  0.969  0.942  0.969     0.942         95.99%    95.57%
-Command line arguments: ['explore', '-w', '-wr', '-x', '-c', '-e', '-p', '/Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab']
-Maximum accuracies obtained:
-                raw accuracy:  95.99% [227, 14, 444, 14] using 9 attributes, 30.03% instances purged.
-           balanced accuracy:  95.57% [227, 14, 444, 14] using 9 attributes, 30.03% instances purged.
-              true positives:     227 [227, 14, 444, 14] using 9 attributes, 30.03% instances purged.
-              true negatives:     448 [214, 27, 448, 10] using 6 attributes, 44.76% instances purged.
-
-processing time: 0 hrs 0 min 44.424 sec
-
+   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced
+  227    14   439    19   0.942  0.959  0.923  0.969     0.932         95.28%    95.02%
+Confusion Matrix:
+Predicted Classes (columns)       benign  malignant
+      Actual Classes (rows)
+                     benign          439         19
+                  malignant           14        227
+processing time: 0 hrs 0 min  0.715 sec
 ```
 
-We can see that deleting duplicate instances each time a classifier is built increases processing time, and reduces balaned accuracy by a small amount. Nevertheless, deleting so many instances will make the eventual classifier considerably smaller in terms of memory footprint, and therefore faster classifications.
-
-Picking the best combination of attributes to be used, and bin range when there are continuous attributes, is often a matter of experience and judgment.
-For the purposes of this example, however, let us train our classifier using 4 attributes, with purging of duplicates:
+Using the "make" command generates a classifier (which can be saved to a file with the -o option):
 
 ```sh
-% v run . make -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run . make -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -178,7 +172,7 @@ Classifier from "/Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-c
 Number of attributes: 4
 Binning range for continuous attributes: from 1 to 16 with interval 1
 Missing values: included
-Purging of duplicate instances: true
+Purging of duplicate instances: false
 Prevalence weighting for ranking attributes: true
 Prevalence weighting for nearest neighbor counts: true
 Add instances to balance class prevalences: false
@@ -189,15 +183,15 @@ Index  Attribute                   Type  Rank Value   Uniques       Min        M
     5  Single Epithelial Cell Size D          79.34        10
 
 Classifier History:
-Date & Time (UTC)    Event   From file                   Original Instances  After purging
-2023-09-27 21:52:00  make    /Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab        699            296
-processing time: 0 hrs 0 min  0.085 sec
+Date & Time (UTC)    Event   From file                   Original Instances
+2023-10-03 16:48:48  make    /Users/henryolders/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab        699
+processing time: 0 hrs 0 min  0.101 sec
 ```
 
 We can use this trained classifier as a clinical calculator, to classify a new sample of breast tissue (with values of 8, 9, 7, and 8 for the four attributes identified above) as either malignant or benign:
 
 ```sh
-% v run . make -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run . query -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -215,9 +209,8 @@ Uniformity of Cell Shape 9
 Bare Nuclei        7
 Single Epithelial Cell Size 8
 Do you want to proceed? (y/n) y
-For the classes ['benign', 'malignant'] the prevalence-weighted nearest neighbor counts are [0, 396], so the inferred class is 'malignant'
-processing time: 0 hrs 0 min 28.791 sec
-
+For the classes ['benign', 'malignant'] the prevalence-weighted nearest neighbor counts are [0, 1832], so the inferred class is 'malignant'
+processing time: 0 hrs 0 min 26.570 sec
 ```
 
 The classifier imputes the class of the new sample as malignant. This is based on finding 1832 "malignant" nearest neighbours, vs no "benign" nearest neighbours (weighted values; without weighting by class prevalence, the nearest
@@ -226,9 +219,10 @@ neighbour counts would be 4 for malignant and 0 for benign).
 In the real world, important information may not be available. Suppose we have a breast tissue sample where we only have information on the uniformity of cell shape which has a value of 2, and single epithelial cell size with a value of 3:
 
 ```sh
-% v run . query -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run . query -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
+
 
 Possible values for "Uniformity of Cell Size": ['1', '10', '2', '3', '4', '5', '6', '7', '8', '9']
 Please enter one of these values for attribute "Uniformity of Cell Size": 
@@ -244,11 +238,8 @@ Uniformity of Cell Shape 2
 Bare Nuclei        
 Single Epithelial Cell Size 3
 Do you want to proceed? (y/n) y
-For the classes ['benign', 'malignant'] the prevalence-weighted nearest neighbor counts are [197, 0], so the inferred class is 'benign'
-processing time: 0 hrs 0 min 24.125 sec
-
-
-
+For the classes ['benign', 'malignant'] the prevalence-weighted nearest neighbor counts are [241, 0], so the inferred class is 'benign'
+processing time: 0 hrs 0 min 23.481 sec
 ```
 
-This sample is classified as benign, with weighted nearest neighbours 197 for and none against this inferred classification.
+This sample is classified as benign, with weighted nearest neighbours 241 for and none against this inferred classification.
