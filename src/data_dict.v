@@ -9,7 +9,9 @@ import regex
 // This version is specific to the UKDA data dictionary format.
 //
 // Example:
-// `dd := data_dict('~/mcs6_cm_derived_ukda_data_dictionary.rtf')`
+// ```sh
+// dd := data_dict('~/mcs6_cm_derived_ukda_data_dictionary.rtf')
+// ```
 
 pub fn data_dict(path string) DataDict {
 	// println(path)

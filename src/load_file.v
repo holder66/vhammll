@@ -10,7 +10,9 @@ import regex
 // suitable for generating a classifier
 //
 // Example:
-// `ds := load_file('datasets/iris.tab')`
+// ```sh
+// ds := load_file('datasets/iris.tab')
+// ```
 
 pub fn load_file(path string, opts LoadOptions) Dataset {
 	// println(path)
@@ -29,7 +31,9 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 // formatted, eg 'orange_newer', 'orange_older', 'arff'
 //
 // Example:
-// `assert file_type('datasets/iris.tab') == 'orange_older'`
+// ```sh
+// assert file_type('datasets/iris.tab') == 'orange_older'
+// ```
 pub fn file_type(path string) string {
 	if os.file_ext(path) == '.arff' {
 		return 'arff'
@@ -52,7 +56,9 @@ pub fn file_type(path string) string {
 // returns a Classifier struct.
 //
 // Example:
-// `cl := load_classifier_file('tempfolder/saved_classifier.txt')`
+// ```sh
+// cl := load_classifier_file('tempfolder/saved_classifier.txt')
+// ```
 pub fn load_classifier_file(path string) !Classifier {
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	cl := json.decode(Classifier, s) or { panic('Failed to parse json') }
@@ -64,7 +70,9 @@ pub fn load_classifier_file(path string) !Classifier {
 // appending to a classifier.
 //
 // Example:
-// `instances := load_instances_file('tempfolder/saved_validate_result.txt')`
+// ````sh
+// instances := load_instances_file('tempfolder/saved_validate_result.txt')
+// ```
 pub fn load_instances_file(path string) !ValidateResult {
 	// mut instances := ValidateResult{}
 	// mut s := ''
