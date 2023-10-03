@@ -12,10 +12,10 @@ import math
 // In a terminal, type:
 // `v run . --help`
 // ```sh
-// Usage: v run . [command] [flags] datafile
+// Usage: v run . [command] [flags] <path_to_datafile>
+// Datafiles should be either tab-delimited, or have extension .csv or .arff
 // Commands: analyze | append | cross | display | examples | explore
-// | make | orange |
-//           query | rank | validate | verify
+// | make | orange | query | rank | validate | verify
 // Flags and options:
 // -a --attributes, can be one, two, or 3 integers; a single integer will
 //    be used by make_classifier to produce a classifier with that number
@@ -37,14 +37,15 @@ import math
 //    with low prevalence, to more closely balance prevalences;
 // -c --concurrent, permit parallel processing to use multiple cores;
 // -d --dictionary, followed by the path to a dataset dictionary. Adds the
-//    metadata from the dictionary to the dataset struct;
+//    metadata from the dictionary to the dataset struct (UKDA data dictionaries
+//    only for now);
 // -e --expanded, expanded results on the console;
 // -f --folds, default is leave-one-out;
 // -g --graph, displays a plot;
 // -h --help,
 // -k --classifier, followed by the path to a file for a saved Classifier
-// -ka --kaggle, followed by the path to a file for submission to a Kaggle
-//    competition;
+// -ka --kaggle, followed by the path to a file. Used with the "validate" command,
+// 	  a csv file suitable for submission to a Kaggle competition is created;
 // -m --multiple, classify using more than one trained classifier, followed by
 //    the path to a json file with parameters to generate each classifier;
 // -ma when multiple classifiers are used, stop classifying when matches

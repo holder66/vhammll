@@ -64,8 +64,9 @@ const (
     -g --graph:      generates plots that show in your default web browser;
     -h --help:        
     -k --classifier: followed by the path to a file for a saved Classifier;
-    -ka --kaggle:    followed by the path to a file for submission to a Kaggle
-                     competition (for the validate command);
+    -ka --kaggle:    followed by the path to a file. Used with the 'validate' 
+                     command, a csv file suitable for submission to a Kaggle 
+                     competition is created;
     -m --multiple:   classify using more than one trained classifier, followed
                      by the path to a json file with parameters to generate
                      each classifier;
