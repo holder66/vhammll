@@ -46,7 +46,7 @@ fn test_display_multiple_options() ? {
 	mut opts := Options{
 		expanded_flag: true
 	}
-	display_file('tempfolder_display/bcw.opts', opts)
+	display_file('tempfolder_display/bcw.opts', expanded_flag: true)
 }
 
 fn test_display_classifier() ? {
@@ -61,9 +61,9 @@ fn test_display_classifier() ? {
 	opts.outputfile_path = 'tempfolder_display/classifierfile'
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(mut ds, opts)
-	path := 'tempfolder_display/classifierfile'
-	opts.show_flag = true
-	display_file(path, opts)
+	// path := 'tempfolder_display/classifierfile'
+	// opts.show_flag = true
+	display_file(opts.outputfile_path, show_flag: true)
 }
 
 fn test_display_analyze_result() ? {

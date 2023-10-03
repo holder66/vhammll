@@ -6,10 +6,10 @@ import json
 
 // display_file displays on the console, a results file as produced by other
 // hamnn functions.
-//
-// Example:
-// `display_file('path_to_saved_results_file', settings)`
 // ```sh
+// Example:
+// `display_file('path_to_saved_results_file', expanded_flag: true)`
+// 
 // Output options:
 // expanded_flag: display additional information on the console, including
 // 	a confusion matrix for cross-validation or verification operations;
