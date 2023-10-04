@@ -5,7 +5,6 @@ import os
 import json
 // 
 
-
 // display_file displays on the console, a results file as produced by other
 // hamnn functions.
 // ```sh
