@@ -14,11 +14,11 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 		attribute_names: types_attributes.map(it[1])
 		attribute_types: types_attributes.map(it[0])
 		// ox_spectra: content[1..].map(extract_words(it))
-		DataDict: if opts.dictionaryfile_path != '' {
-			data_dict(opts.dictionaryfile_path)
-		} else {
-			DataDict{}
-		}
+		// DataDict: if opts.dictionaryfile_path != '' {
+		// 	data_dict(opts.dictionaryfile_path)
+		// } else {
+		// 	DataDict{}
+		// }
 	}
 	// ds.data = transpose(ds.ox_spectra)
 	ds.data = transpose(content[1..].map(extract_words(it)))
@@ -71,24 +71,9 @@ fn infer_attribute_types_newer(ds Dataset) []string {
 				'i'
 			}
 			attr_type == '' {
-				if ds.DataDict == DataDict{} {
 					// println('and now here')
 					infer_type_from_data(ds.data[i])
-				} else {
-					if ds.attribute_names[i] in ukda_metadata {
-						'm'
-					} else {
-						// test whether the data dictionary specifies more than one
-						// label (other than labels for missing values, eg negative
-						// integers)
-						if ds.variables[i].value_label_map.keys().filter(it !in missings).len > 1 {
-							'D'
-						} else {
-							infer_type_from_data(ds.data[i])
-						}
-					}
 				}
-			}
 			else {
 				panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')
 			}

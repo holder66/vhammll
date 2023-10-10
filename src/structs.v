@@ -26,25 +26,25 @@ struct ContinuousAttribute {
 	maximum f32
 }
 
-pub struct DataDict {
-pub mut:
-	file_name           string
-	number_of_variables int
-	number_of_cases     int
-	variables           []DataDictVariable
-}
+// pub struct DataDict {
+// pub mut:
+// 	file_name           string
+// 	number_of_variables int
+// 	number_of_cases     int
+// 	variables           []DataDictVariable
+// }
 
-pub struct DataDictVariable {
-pub mut:
-	pos             int
-	variable        string
-	variable_label  string
-	value_label_map map[string]string
-}
+// pub struct DataDictVariable {
+// pub mut:
+// 	pos             int
+// 	variable        string
+// 	variable_label  string
+// 	value_label_map map[string]string
+// }
 
 pub struct Dataset {
 	Class
-	DataDict
+	// DataDict
 pub mut:
 	struct_type                  string = '.Dataset'
 	path                         string
@@ -264,7 +264,7 @@ pub mut:
 }
 
 pub struct AnalyzeResult {
-	DataDict
+	// DataDict
 pub mut:
 	struct_type         string = '.AnalyzeResult'
 	environment         Environment

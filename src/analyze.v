@@ -25,7 +25,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		datafile_type: file_type(ds.path)
 		class_name: ds.class_name
 		class_counts: ds.class_counts
-		DataDict: ds.DataDict
+		// DataDict: ds.DataDict
 	}
 	// println(result.DataDict)
 
