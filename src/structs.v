@@ -6,7 +6,6 @@ import time
 pub const (
 	missings                   = ['?', '', 'NA', '-9', '-8', '-5', '-3', '-2', '-1', ' ']
 	integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-	ukda_metadata              = ['MCSID']
 )
 
 pub struct Class {
@@ -25,22 +24,6 @@ struct ContinuousAttribute {
 	minimum f32
 	maximum f32
 }
-
-// pub struct DataDict {
-// pub mut:
-// 	file_name           string
-// 	number_of_variables int
-// 	number_of_cases     int
-// 	variables           []DataDictVariable
-// }
-
-// pub struct DataDictVariable {
-// pub mut:
-// 	pos             int
-// 	variable        string
-// 	variable_label  string
-// 	value_label_map map[string]string
-// }
 
 pub struct Dataset {
 	Class
@@ -264,7 +247,6 @@ pub mut:
 }
 
 pub struct AnalyzeResult {
-	// DataDict
 pub mut:
 	struct_type         string = '.AnalyzeResult'
 	environment         Environment

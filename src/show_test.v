@@ -29,37 +29,6 @@ fn test_show_analyze() {
 
 	ar = analyze_dataset(load_file('datasets/iris.tab'), opts)
 	show_analyze(ar)
-
-	// UKDA file with a data dictionary
-	// home_dir := os.home_dir()
-	// if os.exists(home_dir + '/UKDA') {
-	// 	opts.dictionaryfile_path = home_dir +
-	// 		'/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_accelerometer_derived_ukda_data_dictionary.rtf'
-	// 	ds = load_file(home_dir + '/UKDA/UKDA-8156-tab/tab/mcs6_cm_accelerometer_derived.tab',
-	// 		dictionaryfile_path: opts.dictionaryfile_path
-	// 	)
-	// 	ar = analyze_dataset(ds, opts)
-	// 	// println(ar.attributes.filter(it.name == 'FCACCYEAR'))
-	// 	show_analyze(ar)
-
-	// 	opts.dictionaryfile_path = home_dir +
-	// 		'/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_cognitive_assessment_ukda_data_dictionary.rtf'
-	// 	ds = load_file(home_dir + '/UKDA/UKDA-8156-tab/tab/mcs6_cm_cognitive_assessment.tab',
-	// 		dictionaryfile_path: opts.dictionaryfile_path
-	// 	)
-	// 	ar = analyze_dataset(ds, opts)
-	// 	show_analyze(ar)
-
-	// 	opts.dictionaryfile_path = home_dir +
-	// 		'/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_interview_ukda_data_dictionary.rtf'
-	// 	ds = load_file(home_dir + '/UKDA/UKDA-8156-tab/tab/mcs6_cm_interview.tab',
-	// 		dictionaryfile_path: opts.dictionaryfile_path
-	// 	)
-	// 	ar = analyze_dataset(ds, opts)
-	// 	show_analyze(ar)
-	// } else {
-	// 	println('UKDA files not found; skipping tests on UKDA datasets')
-	// }
 }
 
 fn test_show_append() ? {
