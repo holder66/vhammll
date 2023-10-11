@@ -36,21 +36,7 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder_cli')!
 }
 
-// fn test_ukda_files() {
-// 	os.execute_or_panic('v -prod .')
-// 	mut data_files := os.walk_ext('/Users/henryolders/UKDA/UKDA-8156-tab/tab', 'tab')
-// 	mut dict_files := os.walk_ext('/Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries', 'rtf')
-// 	data_files.sort()
-// 	dict_files.sort()
-// 	assert data_files.len == dict_files.len
-// 	for i, datafile in data_files {
-// 		println(datafile)
-// 		println(dict_files[i])
-// 		if !datafile.contains('income') && !datafile.contains('parent_interview') {
-// 		println(os.execute_or_panic('./vhamml analyze -d ${dict_files[i]} $datafile'))
-// 	}
-// 	}
-// }
+
 
 // test_explore
 // fn test_explore() {
@@ -148,7 +134,3 @@ fn test_purge_for_missing_class_values() {
 	// println(r.output)
 	assert r.output.len == 1326
 	assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
-	// println(os.execute_or_panic('./vhammll analyze -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	// println(os.execute_or_panic('./vhammll rank -pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-	// println(os.execute_or_panic('./vhammll make -a 7 -b 3,7 - pmc -d /Users/henryolders/UKDA/UKDA-8156-tab/mrdoc/ukda_data_dictionaries/mcs6_cm_derived_ukda_data_dictionary.rtf /Users/henryolders/UKDA/UKDA-8156-tab/tab/mods_for_vhamml/mcs6_cm_derived_FCUK90O6.tab'))
-}
