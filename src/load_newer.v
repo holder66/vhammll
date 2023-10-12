@@ -4,7 +4,6 @@ module vhammll
 import os
 
 // load_orange_newer_file loads from an orange-newer file into a Dataset struct
-// It also load UKDA data files with data dictionaries
 fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	attribute_words := extract_words(content[0])
@@ -14,11 +13,6 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 		attribute_names: types_attributes.map(it[1])
 		attribute_types: types_attributes.map(it[0])
 		// ox_spectra: content[1..].map(extract_words(it))
-		// DataDict: if opts.dictionaryfile_path != '' {
-		// 	data_dict(opts.dictionaryfile_path)
-		// } else {
-		// 	DataDict{}
-		// }
 	}
 	// ds.data = transpose(ds.ox_spectra)
 	ds.data = transpose(content[1..].map(extract_words(it)))

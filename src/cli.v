@@ -304,9 +304,6 @@ fn rank(mut opts Options) {
 fn make(mut opts Options) {
 	opts.show_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// if opts.dictionaryfile_path != '' {
-	// 	ds.DataDict = data_dict(opts.dictionaryfile_path)
-	// }
 	cl := make_classifier(mut ds, opts)
 	if opts.expanded_flag {
 		println(cl)

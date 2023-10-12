@@ -44,7 +44,6 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 	mut pr := analyze_dataset(ds, opts)
 	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'
-	assert pr.dictionaryfile_path == ''
 	assert pr.class_name == 'gender'
 	assert pr.class_counts == {
 		'm': 8
@@ -77,7 +76,7 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 	pr = analyze_dataset(ds, opts)
 	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'
-	assert pr.dictionaryfile_path == ''
+
 	assert pr.class_name == 'gender'
 	assert pr.class_counts == {
 		'm': 8

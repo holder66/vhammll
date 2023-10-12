@@ -21,7 +21,6 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 	mut result := AnalyzeResult{
 		environment: get_environment()
 		datafile_path: ds.path
-		dictionaryfile_path: opts.dictionaryfile_path
 		datafile_type: file_type(ds.path)
 		class_name: ds.class_name
 		class_counts: ds.class_counts
