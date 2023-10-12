@@ -26,8 +26,7 @@ struct ContinuousAttribute {
 }
 
 pub struct Dataset {
-	Class
-	// DataDict
+	Class // DataDict
 pub mut:
 	struct_type                  string = '.Dataset'
 	path                         string

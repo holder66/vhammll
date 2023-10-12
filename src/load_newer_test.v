@@ -1,8 +1,6 @@
 // load_newer_test.v
 module vhammll
 
-import os
-
 fn test_infer_attribute_types_newer() {
 	mut ds := load_orange_newer_file('datasets/developer.tab')
 	// println('types from file: $ds.attribute_types')
@@ -13,5 +11,3 @@ fn test_infer_attribute_types_newer() {
 	assert infer_attribute_types_newer(load_file('datasets/developer.tab')) == ['i', 'D', 'C',
 		'c', 'C', 'C', 'D', 'D', 'C', 'C']
 }
-
-

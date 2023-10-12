@@ -71,9 +71,9 @@ fn infer_attribute_types_newer(ds Dataset) []string {
 				'i'
 			}
 			attr_type == '' {
-					// println('and now here')
-					infer_type_from_data(ds.data[i])
-				}
+				// println('and now here')
+				infer_type_from_data(ds.data[i])
+			}
 			else {
 				panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')
 			}

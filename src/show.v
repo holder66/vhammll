@@ -26,10 +26,11 @@ fn pad(l int) string {
 // analyze_dataset().
 pub fn show_analyze(result AnalyzeResult) {
 	mut show := []string{}
-	show << chalk.fg(chalk.style('\nAnalysis of Dataset:', 'underline'), 'magenta') + chalk.fg(' ${result.datafile_path} ', 'light_gray') + chalk.fg('(File Type: ${result.datafile_type})', 'magenta')
+	show << chalk.fg(chalk.style('\nAnalysis of Dataset:', 'underline'), 'magenta') +
+		chalk.fg(' ${result.datafile_path} ', 'light_gray') +
+		chalk.fg('(File Type: ${result.datafile_type})', 'magenta')
 	show << chalk.fg(chalk.style('All Attributes:', 'bold'), 'green')
-	show << chalk.fg(chalk.style(
-		' Index  Name${' ':36}Count  Uniques  Missing      %  Type',
+	show << chalk.fg(chalk.style(' Index  Name${' ':36}Count  Uniques  Missing      %  Type',
 		'underline'), 'blue')
 	mut total_count := 0
 	mut total_missings := 0
@@ -57,8 +58,8 @@ pub fn show_analyze(result AnalyzeResult) {
 	disc_atts := result.attributes.filter(it.for_training && it.att_type == 'D')
 	show << chalk.fg(chalk.style('Discrete Attributes for Training', 'bold'), 'green') +
 		' (${disc_atts.len} attributes)'
-	show << chalk.fg(chalk.style(' Index  Name${' ':34}Uniques  Missing      %',
-		'underline'), 'blue')
+	show << chalk.fg(chalk.style(' Index  Name${' ':34}Uniques  Missing      %', 'underline'),
+		'blue')
 	for attr in disc_atts {
 		show << '${attr.id:6}  ${attr.name:-37} ${attr.uniques:7}  ${attr.missing:7}  ${attr.missing * 100 / f32(attr.count):5.1f}'
 	}
@@ -72,7 +73,7 @@ pub fn show_analyze(result AnalyzeResult) {
 	for attr in cont_atts {
 		show <<
 			'${attr.id:6}  ${attr.name:-37} ${attr.uniques:7}  ${attr.missing:7}  ${attr.missing * 100 / f32(attr.count):5.1f}' +
-			 ' ${attr.min:10.3g} ${attr.max:10.3g} ${attr.mean:10.3g} ${attr.median:10.3g}'
+			' ${attr.min:10.3g} ${attr.max:10.3g} ${attr.mean:10.3g} ${attr.median:10.3g}'
 	}
 	show << chalk.fg(chalk.style('The Class Attribute: "${result.class_name}"', 'bold'), 'green') +
 		' (${result.class_counts.len} classes)'
