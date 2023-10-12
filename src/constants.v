@@ -56,9 +56,6 @@ const (
     -bp, --balanced-prevalences: multiply the number of instances for classes
                      with low prevalence, to more closely balance prevalences;
     -c --concurrent: enable parallel processing to use multiple cores;
-    -d --dictionary: followed by the path to a dataset dictionary. Adds the 
-                     metadata from the dictionary to the dataset struct
-                     NOTE: this is implemented only for UKDA datasets;
     -e --expanded:   show expanded results on the console;
     -f --folds:      default is leave-one-out;
     -g --graph:      generates plots that show in your default web browser;

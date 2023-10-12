@@ -36,9 +36,6 @@ import math
 // -bp, --balanced-prevalences, multiply the number of instances for classes
 //    with low prevalence, to more closely balance prevalences;
 // -c --concurrent, permit parallel processing to use multiple cores;
-// -d --dictionary, followed by the path to a dataset dictionary. Adds the
-//    metadata from the dictionary to the dataset struct (UKDA data dictionaries
-//    only for now);
 // -e --expanded, expanded results on the console;
 // -f --folds, default is leave-one-out;
 // -g --graph, displays a plot;
@@ -163,7 +160,6 @@ fn get_options(args []string) Options {
 	opts.multiple_classify_options_file_path = option(args, ['-m', '--multiple'])
 	opts.settingsfile_path = option(args, ['-ms'])
 	opts.kagglefile_path = option(args, ['-ka', '--kaggle'])
-	opts.dictionaryfile_path = option(args, ['-d', '--dictionary'])
 	return opts
 }
 
@@ -214,10 +210,6 @@ fn flag(args []string, what []string) bool {
 // analyze prints out to the console
 fn analyze(mut opts Options) {
 	opts.show_flag = true
-	// load_opts := LoadOptions{
-	// dictionaryfile_path: opts.dictionaryfile_path
-	// class_missing_purge_flag: opts.class_missing_purge_flag
-	// }
 	analyze_dataset(load_file(opts.datafile_path, opts.LoadOptions), opts)
 }
 

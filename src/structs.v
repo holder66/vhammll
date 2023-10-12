@@ -138,7 +138,6 @@ pub mut:
 [params]
 pub struct LoadOptions {
 pub mut:
-	dictionaryfile_path      string
 	class_missing_purge_flag bool
 }
 
@@ -251,7 +250,6 @@ pub mut:
 	environment         Environment
 	datafile_path       string
 	datafile_type       string
-	dictionaryfile_path string
 	class_name          string
 	class_counts        map[string]int
 	attributes          []Attribute
