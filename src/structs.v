@@ -246,15 +246,15 @@ pub mut:
 
 pub struct AnalyzeResult {
 pub mut:
-	struct_type         string = '.AnalyzeResult'
-	environment         Environment
-	datafile_path       string
-	datafile_type       string
-	class_name          string
-	class_counts        map[string]int
-	attributes          []Attribute
-	overall_min         f32
-	overall_max         f32
+	struct_type   string = '.AnalyzeResult'
+	environment   Environment
+	datafile_path string
+	datafile_type string
+	class_name    string
+	class_counts  map[string]int
+	attributes    []Attribute
+	overall_min   f32
+	overall_max   f32
 }
 
 pub struct ClassifyResult {
