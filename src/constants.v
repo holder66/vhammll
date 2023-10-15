@@ -242,37 +242,38 @@ Usage: v run . orange
 Options: none
 
 
-  NEWER ORANGE FORMAT:
-    Prefixed attributes contain a one- or two-lettered prefix, followed by `#`
-    and the attribute name. The first letter of the prefix can be:
-      m for meta-attributes
-      i to ignore the attribute
-      c to define the class attribute
-  
-    the second letter of the prefix can be:
-      D for discrete
-      C for continuous
-      S for string
-      B for basket
+NEWER ORANGE FORMAT:
+A single-line header consisting of attribute names prefixed by an optional
+'<flags>#'' string, i.e. flags followed by a hash ('#') sign. The flags can 
+be a consistent combination of:
+
+c for class attribute (also known as a target variable or dependent variable),
+i for attribute to be ignored,
+m for meta attributes (not used in learning),
+C for attributes that are continuous (numeric),
+D for attributes that are discrete (categorical),
+T for attributes that represent date and/or time in one of the ISO 8601 formats,
+S for string attributes.
+
     if there are no prefixes for an attribute (ie just the attribute name)
     then the attribute will be treated as discrete, unless the actual values
     are numbers, in which case it will be treated as continuous.
   
-    OLDER ORANGE FORMAT:
-    the information about variable type, etc is contained in two lines:
-      in the second line:
-      d or discrete or a list of values: denotes a discrete attribute
-      c or continuous: denotes a continuous attribute
-      string denotes a string variable, which we ignore
-      basket: these are continuous-valued meta attributes; ignore
-      it may also contain a string of values separated by spaces. Use these
-      as the values for a discrete attribute.
-    the third line contains optional flags:
-      i or ignore
-      c or class: there can only be one class attribute. If none is found,
-       use the last attribute as the class attribute.
-      m or meta: meta attribute, eg weighting information; ignore
-      -dc followed by a value: indicates how a don't care is represented.
+OLDER ORANGE FORMAT:
+the information about variable type, etc is contained in two lines:
+  in the second line:
+  d or discrete or a list of values: denotes a discrete attribute
+  c or continuous: denotes a continuous attribute
+  string denotes a string variable, which we ignore
+  basket: these are continuous-valued meta attributes; ignore
+  it may also contain a string of values separated by spaces. Use these
+  as the values for a discrete attribute.
+the third line contains optional flags:
+  i or ignore
+  c or class: there can only be one class attribute. If none is found,
+   use the last attribute as the class attribute.
+  m or meta: meta attribute, eg weighting information; ignore
+  -dc followed by a value: indicates how a don't care is represented.
     "
 
 	verify_help = '
