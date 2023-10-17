@@ -82,6 +82,7 @@ fn plot_rank(result RankingResult) {
 			range: [0.0, 100]
 		}
 		annotations: [annotation1, annotation2]
+		// annotations: [annotation1]
 	)
 	plt.show() or { panic(err) }
 }

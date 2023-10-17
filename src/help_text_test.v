@@ -27,10 +27,10 @@ fn testsuite_begin() ? {
 	f.close()
 
 	os.execute_or_panic('v -keepc run temp.v')
-	if os.is_dir('tempfolder_cli') {
-		os.rmdir_all('tempfolder_cli')!
+	if os.is_dir('tempfolder_help_text') {
+		os.rmdir_all('tempfolder_help_text')!
 	}
-	os.mkdir_all('tempfolder_cli')!
+	os.mkdir_all('tempfolder_help_text')!
 }
 
 fn testsuite_end() ? {
@@ -40,7 +40,7 @@ fn testsuite_end() ? {
 	if os.exists('temp.v') {
 		os.rm('temp.v')!
 	}
-	os.rmdir_all('tempfolder_cli')!
+	os.rmdir_all('tempfolder_help_text')!
 }
 
 fn test_help() {

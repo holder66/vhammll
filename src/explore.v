@@ -25,7 +25,7 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
-	println(opts.classifier_indices)
+	// println(opts.classifier_indices)
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		path: opts.datafile_path
@@ -100,11 +100,11 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	}
 	// println(ds.class_counts.len)
 	if opts.graph_flag {
-		println('Just prior to plot_explore')
+		// println('Just prior to plot_explore')
 		plot_explore(results, opts)
-		println('Just after plot_explore')
+		// println('Just after plot_explore')
 		if ds.class_counts.len == 2 {
-			println('should be printing ROC here')
+			// println('should be printing ROC here')
 			plot_roc(results, opts)
 		}
 	}
