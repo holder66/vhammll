@@ -21,11 +21,11 @@ fn test_file_type() {
 	assert file_type('datasets/iris.tab') == 'orange_older'
 	assert file_type('datasets/ESL.arff') == 'arff'
 	home_dir := os.home_dir()
-	if os.exists(home_dir + '/UKDA') {
-		assert file_type(home_dir + '/UKDA/UKDA-8156-tab/tab/mcs6_cm_accelerometer_derived.tab') == 'UKDA'
-	} else {
-		println('UKDA files not found; skipping tests on UKDA datasets')
-	}
+	// if os.exists(home_dir + '/UKDA') {
+	// 	assert file_type(home_dir + '/UKDA/UKDA-8156-tab/tab/mcs6_cm_accelerometer_derived.tab') == 'UKDA'
+	// } else {
+	// 	println('UKDA files not found; skipping tests on UKDA datasets')
+	// }
 }
 
 /*

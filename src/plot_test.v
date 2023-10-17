@@ -4,38 +4,36 @@
 
 module vhammll
 
-// // test_area_under_curve
-// fn test_area_under_curve() {
-// 	mut x := []f64{}
-// 	mut y := []f64{}
-// 	x = [0.0, 1]
-// 	y = [0.0, 1]
-// 	assert area_under_curve(x, y) == 0.5
-// 	x = [0.2, 0.4]
-// 	y = [0.3, 0.4]
-// 	assert area_under_curve(x, y) == 0.07
-// 	x = [0.2, 0.3, 0.4]
-// 	y = [0.5, 0.3, 0.1]
-// 	assert area_under_curve(x, y) == 0.06
-// }
+fn test_area_under_curve() {
+	mut x := []f64{}
+	mut y := []f64{}
+	x = [0.0, 1]
+	y = [0.0, 1]
+	assert area_under_curve(x, y) == 0.5
+	x = [0.2, 0.4]
+	y = [0.3, 0.4]
+	assert area_under_curve(x, y) == 0.07
+	x = [0.2, 0.3, 0.4]
+	y = [0.5, 0.3, 0.1]
+	assert area_under_curve(x, y) == 0.06
+}
 
-// // test_rank_attributes_plot
-// fn test_rank_attributes_plot() {
-// 	mut result := RankingResult{}
-// 	mut opts := Options{
-// 		datafile_path: 'datasets/developer.tab'
-// 		graph_flag: true
-// 		command: 'rank'
-// 	}
-// 	result = rank_attributes(load_file(opts.datafile_path), opts)
-// 	opts.exclude_flag = true
-// 	result = rank_attributes(load_file(opts.datafile_path), opts)
-// 	opts.exclude_flag = false
-// 	opts.datafile_path = 'datasets/anneal.tab'
-// 	result = rank_attributes(load_file(opts.datafile_path), opts)
-// 	opts.exclude_flag = true
-// 	result = rank_attributes(load_file(opts.datafile_path), opts)
-// }
+fn test_rank_attributes_plot() {
+	mut result := RankingResult{}
+	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
+		graph_flag: true
+		command: 'rank'
+	}
+	result = rank_attributes(load_file(opts.datafile_path), opts)
+	opts.exclude_flag = true
+	result = rank_attributes(load_file(opts.datafile_path), opts)
+	opts.exclude_flag = false
+	opts.datafile_path = 'datasets/anneal.tab'
+	result = rank_attributes(load_file(opts.datafile_path), opts)
+	opts.exclude_flag = true
+	result = rank_attributes(load_file(opts.datafile_path), opts)
+}
 
 // // test_explore_plot
 // fn test_explore_plot() ? {

@@ -29,7 +29,7 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 
 // file_type returns a string identifying how a dataset is structured or
 // formatted, eg 'orange_newer', 'orange_older', 'arff', or 'csv'.
-// On the assumption that an 'orange_older' file will always identify 
+// On the assumption that an 'orange_older' file will always identify
 // a class attribute by having 'c' or 'class' in the third header line,
 // all other tab-delimited datafiles will be typed as 'orange_newer'.
 //
@@ -42,7 +42,7 @@ pub fn file_type(path string) string {
 	return match true {
 		os.file_ext(path) == '.arff' { 'arff' }
 		os.file_ext(path) == '.csv' { 'csv' }
-		header[2].split('\t').any(it == 'c' || it == 'class' ) { 'orange_older' }
+		header[2].split('\t').any(it == 'c' || it == 'class') { 'orange_older' }
 		else { 'orange_newer' }
 	}
 }

@@ -98,12 +98,16 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_explore_trailer(results, opts)
 	}
-	// if opts.graph_flag {
-	// 	plot_explore(results, opts)
-	// 	if ds.Class.class_counts.len == 2 {
-	// 		plot_roc(results, opts)
-	// 	}
-	// }
+	// println(ds.class_counts.len)
+	if opts.graph_flag {
+		println('Just prior to plot_explore')
+		plot_explore(results, opts)
+		println('Just after plot_explore')
+		if ds.class_counts.len == 2 {
+			println('should be printing ROC here')
+			plot_roc(results, opts)
+		}
+	}
 	if opts.append_settings_flag {
 		// save the settings for the explore results with the
 		// highest balanced accuracy, true positives, and true
