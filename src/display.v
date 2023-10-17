@@ -29,11 +29,11 @@ pub fn display_file(path string, opts Options) {
 				show_explore_line(result)
 			}
 			show_explore_trailer(saved_er, opts)
-			if opts.graph_flag {
-				// println(saved_er)
-				plot_explore(saved_er, opts)
-				plot_roc(saved_er, opts)
-			}
+			// if opts.graph_flag {
+			// 	// println(saved_er)
+			// 	plot_explore(saved_er, opts)
+			// 	plot_roc(saved_er, opts)
+			// }
 			if opts.append_settings_flag {
 				// save the settings for the explore results with the
 				// highest balanced accuracy, true positives, and true
@@ -48,9 +48,9 @@ pub fn display_file(path string, opts Options) {
 		s.contains('"struct_type":".RankingResult"') {
 			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
-			if opts.graph_flag {
-				plot_rank(saved_rr)
-			}
+			// if opts.graph_flag {
+			// 	plot_rank(saved_rr)
+			// }
 		}
 		s.contains('"struct_type":".AnalyzeResult"') {
 			saved_ar := json.decode(AnalyzeResult, s) or { panic('Failed to parse json') }
