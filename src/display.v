@@ -48,9 +48,9 @@ pub fn display_file(path string, opts Options) {
 		s.contains('"struct_type":".RankingResult"') {
 			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
-			// if opts.graph_flag {
-			// 	plot_rank(saved_rr)
-			// }
+			if opts.graph_flag {
+				plot_rank(saved_rr)
+			}
 		}
 		s.contains('"struct_type":".AnalyzeResult"') {
 			saved_ar := json.decode(AnalyzeResult, s) or { panic('Failed to parse json') }
