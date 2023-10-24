@@ -1,12 +1,17 @@
 // cli.v
 module vhammll
 
-// import hamml
 import os
 import os.cmdline as oscmdline
 import time
 import math
 // import runtime
+
+[params]
+pub struct Arguments {
+pub mut:
+	args []string
+}
 
 // the command line interface app for the holder66.vhamml ML library.
 // In a terminal, type:
@@ -76,12 +81,16 @@ import math
 // -wr when ranking attributes, weight contributions by class prevalences;
 // -x --exclude, do not take into account missing values when ranking attributes;
 // ```
-pub fn cli() ! {
+pub fn cli(args Arguments) ! {
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
-	mut opts := get_options(os.args[1..])
-
+	mut opts := Options{}
+	if args.args == [] {
+	 opts = get_options(os.args[1..])
+	} else {
+		opts = get_options(args.args)
+	}
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
