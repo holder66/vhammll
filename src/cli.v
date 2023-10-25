@@ -87,7 +87,7 @@ pub fn cli(args Arguments) ! {
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
 	mut opts := Options{}
 	if args.args == [] {
-	 opts = get_options(os.args[1..])
+		opts = get_options(os.args[1..])
 	} else {
 		opts = get_options(args.args)
 	}
