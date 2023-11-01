@@ -186,7 +186,7 @@ fn bin_values_array[T](values []T, min T, max T, bins int) []u8 {
 }
 
 // bin_single_value
-fn bin_single_value[T](value T, min T, max T, bins int) byte {
+fn bin_single_value[T](value T, min T, max T, bins int) u8 {
 	bin_size := (max - min) / bins
 	mut bin := u8(0)
 	if value == -math.max_f32 {
