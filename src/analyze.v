@@ -24,10 +24,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		datafile_type: file_type(ds.path)
 		class_name: ds.class_name
 		class_counts: ds.class_counts
-		// DataDict: ds.DataDict
 	}
-	// println(result.DataDict)
-
 	mut missing_vals := ds.data.map(missing_values(it))
 	// println('missing_values in analyze_dataset: $missing_vals')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
@@ -43,7 +40,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			count: ds.data[i].len
 			uniques: uniques_values(ds.data[i])
 			missing: missing_vals[i]
-			att_type: ds.inferred_attribute_types[i]
+			inferred_type: ds.inferred_attribute_types[i]
 			for_training: i in indices_of_useful_attributes
 		}
 		if i in indices_of_useful_attributes && ds.inferred_attribute_types[i] == 'C' {
