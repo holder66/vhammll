@@ -230,19 +230,19 @@ pub mut:
 
 pub struct Attribute {
 pub mut:
-	id           int
-	name         string
-	count        int
-	counts_map   map[string]int
-	uniques      int
-	missing      int
-	att_type     string
+	id            int
+	name          string
+	count         int
+	counts_map    map[string]int
+	uniques       int
+	missing       int
+	att_type      string
 	inferred_type string
-	for_training bool
-	min          f32
-	max          f32
-	mean         f32
-	median       f32
+	for_training  bool
+	min           f32
+	max           f32
+	mean          f32
+	median        f32
 }
 
 pub struct AnalyzeResult {
