@@ -237,6 +237,7 @@ pub mut:
 	uniques      int
 	missing      int
 	att_type     string
+	inferred_type string
 	for_training bool
 	min          f32
 	max          f32
