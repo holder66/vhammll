@@ -42,7 +42,7 @@ fn idx_true(a []bool) int {
 }
 
 // transpose a 2d array
-fn transpose[T](matrix [][]T) [][]T {
+pub fn transpose[T](matrix [][]T) [][]T {
 	mut matrix_t := [][]T{len: matrix[0].len, init: []T{len: matrix.len}}
 	for i, row_element in matrix {
 		for j, col_element in row_element {
