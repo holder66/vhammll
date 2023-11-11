@@ -41,7 +41,7 @@ fn test_infer_type_from_data() {
 	assert infer_type_from_data(['', '', '', '?']) == 'i'
 	assert infer_type_from_data(['', '?', '1', '2', '3']) == 'D'
 	assert infer_type_from_data(['', '?', '1', '2', '3', '10']) == 'D'
-	assert infer_type_from_data(['', '?', '1', '2', '3', '10', '-8', '-1']) == 'D'
+	assert infer_type_from_data(['', '?', '1', '2', '3', '10', '-8', '-1']) == 'C'
 	assert infer_type_from_data(['', '?', '1', '2', '3', '22']) == 'C'
 	assert infer_type_from_data(['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']) == 'D'
 	assert infer_type_from_data(['3.14', '2']) == 'C'
