@@ -19,7 +19,7 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 	// println(file_type(path))
 	return match file_type(path) {
 		'orange_newer' { load_orange_newer_file(path, opts) }
-		'orange_older' { load_orange_older_file(path) }
+		'orange_older' { load_orange_older_file(path, opts) }
 		'arff' { load_arff_file(path) }
 		'UKDA' { load_orange_newer_file(path, opts) }
 		'csv' { load_csv_file(path) }

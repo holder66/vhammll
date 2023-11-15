@@ -20,7 +20,7 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	ds.Class = set_class_struct(ds)
 	if opts.class_missing_purge_flag {
 		// println('gonna purge!')
-		ds = purge_instances_for_missing_class_values(mut ds)
+		ds.purge_instances_for_missing_class_values()
 	}
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)

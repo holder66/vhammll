@@ -40,7 +40,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			count: ds.data[i].len
 			uniques: uniques_values(ds.data[i])
 			missing: missing_vals[i]
-			att_type: ds.inferred_attribute_types[i]
+			// att_type: ds.inferred_attribute_types[i]
 			inferred_type: ds.inferred_attribute_types[i]
 			for_training: i in indices_of_useful_attributes
 		}
