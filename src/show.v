@@ -26,8 +26,7 @@ fn pad(l int) string {
 // analyze_dataset().
 pub fn show_analyze(result AnalyzeResult) {
 	mut show := []string{}
-	show << m_u('\nAnalysis of Dataset:') +
-		lg(' ${result.datafile_path} ') +
+	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') +
 		m('(File Type: ${result.datafile_type})')
 	show << g_b('All Attributes:')
 	show << b_u(' Index  Name${' ':36}Count  Uniques  Missing      %  Type')
@@ -55,8 +54,7 @@ pub fn show_analyze(result AnalyzeResult) {
 	}
 	show << 'Total:     ${types.len:6}'
 	disc_atts := result.attributes.filter(it.for_training && it.att_type == 'D')
-	show << g_b('Discrete Attributes for Training') +
-		' (${disc_atts.len} attributes)'
+	show << g_b('Discrete Attributes for Training') + ' (${disc_atts.len} attributes)'
 	show << b_u(' Index  Name${' ':34}Uniques  Missing      %')
 	for attr in disc_atts {
 		show << '${attr.id:6}  ${attr.name:-37} ${attr.uniques:7}  ${attr.missing:7}  ${attr.missing * 100 / f32(attr.count):5.1f}'
@@ -109,8 +107,7 @@ pub fn show_classifier(cl Classifier) {
 			if val.attribute_type == 'C' { '          ${val.minimum:10.2f} ${val.maximum:10.2f} ${val.bins:5}' } else { '      ${val.translation_table.len:4}' })
 	}
 	println(g_b('\nClassifier History:'))
-	println(b_u(
-		'Date & Time (UTC)    Event   From file                   Original Instances' +
+	println(b_u('Date & Time (UTC)    Event   From file                   Original Instances' +
 		if cl.purge_flag { '  After purging' } else { '' }))
 	// println(b_u('Date & Time (UTC)    Event   From file                   Original Instances  After purging',
 	// 'underline'), 'blue'))

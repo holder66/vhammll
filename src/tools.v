@@ -487,34 +487,41 @@ fn chlk(s string, style_code Styles) string {
 }
 
 fn m_u(s string) string {
-	return chlk(s, m_u)
-}
-fn lg(s string) string {
-	return chlk(s, lg)
-}
-fn m(s string) string {
-	return chlk(s, m)
-}
-fn g_b(s string) string {
-	return chlk(s, g_b)
-}
-fn b_u(s string) string {
-	return chlk(s, b_u)
-}
-fn dg(s string) string {
-	return chlk(s, dg)
-}
-fn c_u(s string) string {
-	return chlk(s, c_u)
+	return chlk(s, vhammll.m_u)
 }
 
-// purge_array filters an array of generic types, removing those elements 
+fn lg(s string) string {
+	return chlk(s, vhammll.lg)
+}
+
+fn m(s string) string {
+	return chlk(s, vhammll.m)
+}
+
+fn g_b(s string) string {
+	return chlk(s, vhammll.g_b)
+}
+
+fn b_u(s string) string {
+	return chlk(s, vhammll.b_u)
+}
+
+fn dg(s string) string {
+	return chlk(s, vhammll.dg)
+}
+
+fn c_u(s string) string {
+	return chlk(s, vhammll.c_u)
+}
+
+// purge_array filters an array of generic types, removing those elements
 // whose indices in the original array are in a list.
 fn purge_array[T](array []T, purge_indices []int) []T {
 	mut result := []T{cap: array.len}
 	for i, val in array {
-		if i !in purge_indices {result << val}
+		if i !in purge_indices {
+			result << val
+		}
 	}
 	return result
 }
-
