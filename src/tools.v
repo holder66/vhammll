@@ -5,6 +5,7 @@ module vhammll
 import math
 import os
 import json
+import mewzax.chalk
 
 // save_json_file
 pub fn save_json_file[T](u T, path string) {
@@ -442,4 +443,67 @@ fn close[T](a T, b T) bool {
 		return math.tolerance(a, b, 1e-6)
 	}
 	return math.tolerance(a, b, 1e-14)
+}
+
+struct Styles {
+	fg    string
+	style string
+}
+
+const (
+	m_u = Styles{
+		fg: 'magenta'
+		style: 'underline'
+	}
+	lg = Styles{
+		fg: 'light_gray'
+	}
+	m = Styles{
+		fg: 'magenta'
+	}
+	g_b = Styles{
+		fg: 'green'
+		style: 'bold'
+	}
+	b_u = Styles{
+		fg: 'blue'
+		style: 'underline'
+	}
+	dg = Styles{
+		fg: 'dark_gray'
+	}
+	c_u = Styles{
+		fg: 'cyan'
+		style: 'underline'
+	}
+)
+
+// chlk adds font colour and style information to a string
+fn chlk(s string, style_code Styles) string {
+	if style_code.style == '' {
+		return chalk.fg(s, style_code.fg)
+	}
+	return chalk.fg(chalk.style(s, style_code.style), style_code.fg)
+}
+
+fn m_u(s string) string {
+	return chlk(s, m_u)
+}
+fn lg(s string) string {
+	return chlk(s, lg)
+}
+fn m(s string) string {
+	return chlk(s, m)
+}
+fn g_b(s string) string {
+	return chlk(s, g_b)
+}
+fn b_u(s string) string {
+	return chlk(s, b_u)
+}
+fn dg(s string) string {
+	return chlk(s, dg)
+}
+fn c_u(s string) string {
+	return chlk(s, c_u)
 }
