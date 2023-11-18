@@ -13,7 +13,7 @@ pub mut:
 	class_name                 string   // the attribute which holds the class
 	classes                    []string // to ensure that the ordering remains the same
 	class_values               []string
-	missing_class_values       []int
+	missing_class_values       []int 	// these are the indices of the original class values array
 	class_counts               map[string]int
 	lcm_class_counts           i64
 	postpurge_class_counts     map[string]int
@@ -249,6 +249,7 @@ pub mut:
 }
 
 pub struct AnalyzeResult {
+	LoadOptions
 pub mut:
 	struct_type             string = '.AnalyzeResult'
 	environment             Environment
@@ -260,9 +261,11 @@ pub mut:
 	overall_min             f32
 	overall_max             f32
 	use_inferred_types_flag bool
+
 }
 
 pub struct ClassifyResult {
+	LoadOptions
 	Class
 pub mut:
 	struct_type                string = '.ClassifyResult'
@@ -293,6 +296,7 @@ pub mut:
 // Returned by cross_validate() and verify()
 pub struct CrossVerifyResult {
 	Parameters
+	LoadOptions
 	DisplaySettings
 	Metrics
 	BinaryMetrics
@@ -342,6 +346,7 @@ mut:
 
 pub struct ExploreResult {
 	Parameters
+	LoadOptions
 	AttributeRange
 	DisplaySettings
 pub mut:
@@ -366,6 +371,7 @@ pub mut:
 pub struct ValidateResult {
 	Class
 	Parameters
+	LoadOptions
 pub mut:
 	struct_type                     string = '.ValidateResult'
 	datafile_path                   string

@@ -237,9 +237,9 @@ fn gcd(a i64, b i64) i64 {
 	mut a1 := a
 	mut b1 := b
 	for a1 % b1 > 0 {
-		vhammll.r := a1 % b1
+		r := a1 % b1
 		a1 = b1
-		b1 = vhammll.r
+		b1 = r
 	}
 	return b1
 }

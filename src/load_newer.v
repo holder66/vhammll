@@ -12,6 +12,7 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 		path: path
 		attribute_names: types_attributes.map(it[1])
 		attribute_types: types_attributes.map(it[0])
+		class_missing_purge_flag: opts.class_missing_purge_flag
 		// ox_spectra: content[1..].map(extract_words(it))
 	}
 	// ds.data = transpose(ds.ox_spectra)

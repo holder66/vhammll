@@ -8,6 +8,7 @@ fn load_orange_older_file(path string, opts LoadOptions) Dataset {
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	mut ds := Dataset{
 		path: path
+		class_missing_purge_flag: opts.class_missing_purge_flag
 		attribute_names: extract_words(content[0])
 		attribute_types: extract_words(content[1])
 		attribute_flags: extract_words(content[2])

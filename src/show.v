@@ -27,6 +27,9 @@ pub fn show_analyze(result AnalyzeResult) {
 	mut show := []string{}
 	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') +
 		m('(File Type: ${result.datafile_type})')
+	if result.class_missing_purge_flag {
+		show << r('Note: instances with missing class values were purged.')
+	}
 	show << g_b('All Attributes:')
 	show << b_u(' Index  Name${' ':36}Count  Uniques  Missing      %  Type')
 	mut total_count := 0

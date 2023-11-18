@@ -24,6 +24,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		datafile_type: file_type(ds.path)
 		class_name: ds.class_name
 		class_counts: ds.class_counts
+		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it))
 	// println('missing_values in analyze_dataset: $missing_vals')
