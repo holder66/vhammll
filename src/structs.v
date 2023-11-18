@@ -13,6 +13,7 @@ pub mut:
 	class_name                 string   // the attribute which holds the class
 	classes                    []string // to ensure that the ordering remains the same
 	class_values               []string
+	missing_class_values []int
 	class_counts               map[string]int
 	lcm_class_counts           i64
 	postpurge_class_counts     map[string]int
@@ -27,6 +28,7 @@ struct ContinuousAttribute {
 
 pub struct Dataset {
 	Class // DataDict
+	LoadOptions
 pub mut:
 	struct_type                  string = '.Dataset'
 	path                         string
