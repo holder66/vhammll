@@ -168,17 +168,17 @@ fn test_majority_vote() ? {
 }
 
 fn test_purge_array() {
-	assert purge_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], []int) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-	assert purge_array([]int, []int) == []
-	assert purge_array([]int, [3]) == []
+	assert purge_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], []int{}) == [0, 1, 2, 3, 4, 5, 6, 7,
+		8, 9, 10]
+	assert purge_array([]int{}, []int{}) == []
+	assert purge_array([]int{}, [3]) == []
 	assert purge_array([2, 3, 4, 5, 6, 7, 8, 9, 10], [0]) == [3, 4, 5, 6, 7, 8, 9, 10]
 	assert purge_array([2, 3, 4, 5, 6, 7, 8, 9, 10], [10]) == [2, 3, 4, 5, 6, 7, 8, 9, 10]
 	assert purge_array([2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 8]) == [2, 4, 5, 6, 7, 8, 9]
-	assert purge_array(['?', '', 'NA', ' '], [1,2]) == ['?', ' ']
+	assert purge_array(['?', '', 'NA', ' '], [1, 2]) == ['?', ' ']
 }
 
 fn test_chlk1() {
-	
 	println(g_b('This should show in bold green'))
 	println(dg('Printout in dark grey'))
 	println(m('Now for magenta!'))

@@ -237,9 +237,9 @@ fn gcd(a i64, b i64) i64 {
 	mut a1 := a
 	mut b1 := b
 	for a1 % b1 > 0 {
-		r := a1 % b1
+		vhammll.r := a1 % b1
 		a1 = b1
-		b1 = r
+		b1 = vhammll.r
 	}
 	return b1
 }
@@ -496,32 +496,41 @@ fn chlk(s string, style_code Styles) string {
 }
 
 fn m_u(s string) string {
-	return chlk(s, m_u)
+	return chlk(s, vhammll.m_u)
 }
+
 fn lg(s string) string {
-	return chlk(s, lg)
+	return chlk(s, vhammll.lg)
 }
+
 fn m(s string) string {
-	return chlk(s, m)
+	return chlk(s, vhammll.m)
 }
+
 fn g_b(s string) string {
-	return chlk(s, g_b)
+	return chlk(s, vhammll.g_b)
 }
+
 fn b_u(s string) string {
-	return chlk(s, b_u)
+	return chlk(s, vhammll.b_u)
 }
+
 fn dg(s string) string {
-	return chlk(s, dg)
+	return chlk(s, vhammll.dg)
 }
+
 fn c_u(s string) string {
-	return chlk(s, c_u)
+	return chlk(s, vhammll.c_u)
 }
+
 fn r(s string) string {
-	return chlk(s, r)
+	return chlk(s, vhammll.r)
 }
+
 fn b(s string) string {
-	return chlk(s, b)
+	return chlk(s, vhammll.b)
 }
+
 fn g(s string) string {
-	return chlk(s, g)
-} 
+	return chlk(s, vhammll.g)
+}

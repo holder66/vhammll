@@ -135,7 +135,7 @@ pub mut:
 	verbose_flag  bool
 }
 
-[params]
+@[params]
 pub struct LoadOptions {
 pub mut:
 	class_missing_purge_flag bool
