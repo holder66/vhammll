@@ -458,7 +458,7 @@ const (
 	lg = Styles{
 		fg: 'light_gray'
 	}
-	m = Styles{
+	m_ = Styles{
 		fg: 'magenta'
 	}
 	g_b = Styles{
@@ -476,13 +476,13 @@ const (
 		fg: 'cyan'
 		style: 'underline'
 	}
-	r = Styles{
+	r_ = Styles{
 		fg: 'red'
 	}
-	b = Styles{
+	b_ = Styles{
 		fg: 'blue'
 	}
-	g = Styles{
+	g_ = Styles{
 		fg: 'green'
 	}
 )
@@ -504,7 +504,7 @@ fn lg(s string) string {
 }
 
 fn m(s string) string {
-	return chlk(s, vhammll.m)
+	return chlk(s, vhammll.m_)
 }
 
 fn g_b(s string) string {
@@ -524,15 +524,15 @@ fn c_u(s string) string {
 }
 
 fn r(s string) string {
-	return chlk(s, vhammll.r)
+	return chlk(s, vhammll.r_)
 }
 
 fn b(s string) string {
-	return chlk(s, vhammll.b)
+	return chlk(s, vhammll.b_)
 }
 
 fn g(s string) string {
-	return chlk(s, vhammll.g)
+	return chlk(s, vhammll.g_)
 }
 
 // purge_array filters an array of generic types, removing those elements
