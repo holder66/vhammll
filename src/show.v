@@ -11,7 +11,6 @@
 
 module vhammll
 
-import mewzax.chalk
 import arrays
 import strings
 // import math
@@ -27,8 +26,8 @@ fn pad(l int) string {
 pub fn show_analyze(result AnalyzeResult) {
 	mut show := []string{}
 	show << m_u('\nAnalysis of Dataset:') +
-		chalk.fg(' ${result.datafile_path} ', 'light_gray') +
-		chalk.fg('(File Type: ${result.datafile_type})', 'magenta')
+		lg(' ${result.datafile_path} ') +
+		m('(File Type: ${result.datafile_type})')
 	show << g_b('All Attributes:')
 	show << b_u(' Index  Name${' ':36}Count  Uniques  Missing      %  Type')
 	mut total_count := 0
@@ -247,8 +246,7 @@ fn show_cross_or_verify_result(result CrossVerifyResult) {
 
 // show_expanded_result
 fn show_expanded_result(result CrossVerifyResult) {
-	println(chalk.fg('    Class                   Instances    True Positives    Precision    Recall    F1 Score',
-		'green'))
+	println(g('    Class                   Instances    True Positives    Precision    Recall    F1 Score'))
 	show_multiple_classes_stats(result)
 	if result.class_counts.len == 2 {
 		println('A correct classification to "${result.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${result.pos_neg_classes[1]}" is a True Negative (TN).')
@@ -322,19 +320,19 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 		for j, item in rows {
 			match true {
 				i == 0 && j == 0 { // print first item in first row, ie 'predicted classes (columns)'
-					print(chalk.fg('${item}  ', 'red'))
+					print(r('${item}  '))
 				}
 				i == 0 { // print column headers, ie classes
 					padded_item = '${pad(l_max - item.len + 2)}' + item
-					print(chalk.fg('${padded_item}', 'red'))
+					print(r ('${padded_item}'))
 				}
 				i == 1 && j == 0 { // print 'actual classes' header
 					padded_item = '${pad(6)}' + item
-					print(chalk.fg('${padded_item}', 'blue'))
+					print(b('${padded_item}'))
 				}
 				j == 0 { // print first column (class names)
 					padded_item = '${pad(27 - item.len)}' + item + '  '
-					print(chalk.fg('${padded_item}', 'blue'))
+					print(b('${padded_item}'))
 				}
 				else { // print numeric values for each cell
 					padded_item = '${pad(l_max - item.len + 2)}' + item

@@ -176,3 +176,10 @@ fn test_purge_array() {
 	assert purge_array([2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 8]) == [2, 4, 5, 6, 7, 8, 9]
 	assert purge_array(['?', '', 'NA', ' '], [1,2]) == ['?', ' ']
 }
+
+fn test_chlk1() {
+	
+	println(g_b('This should show in bold green'))
+	println(dg('Printout in dark grey'))
+	println(m('Now for magenta!'))
+}

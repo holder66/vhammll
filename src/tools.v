@@ -476,6 +476,15 @@ const (
 		fg: 'cyan'
 		style: 'underline'
 	}
+	r = Styles{
+		fg: 'red'
+	}
+	b = Styles{
+		fg: 'blue'
+	}
+	g = Styles{
+		fg: 'green'
+	}
 )
 
 // chlk adds font colour and style information to a string
@@ -507,3 +516,12 @@ fn dg(s string) string {
 fn c_u(s string) string {
 	return chlk(s, c_u)
 }
+fn r(s string) string {
+	return chlk(s, r)
+}
+fn b(s string) string {
+	return chlk(s, b)
+}
+fn g(s string) string {
+	return chlk(s, g)
+} 
