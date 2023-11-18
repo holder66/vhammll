@@ -7,7 +7,7 @@ import time
 import math
 // import runtime
 
-[params]
+@[params]
 pub struct Arguments {
 pub mut:
 	args []string
