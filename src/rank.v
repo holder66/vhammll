@@ -59,7 +59,6 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	}
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
 		ds.Class.class_counts, opts.Parameters))
-	// println("we are here")
 	// println(opts.weight_ranking_flag)
 	if opts.verbose_flag && opts.command == 'rank' {
 		println('perfect_rank_value: ${perfect_rank_value}')
@@ -74,7 +73,6 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			binning = get_binning(opts.bins)
 		}
 	}
-	// println('binning here: $binning')
 
 	// for each usable attribute, calculate a rank value taking into
 	// account the class prevalences
@@ -114,7 +112,6 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			}
 		}
 		bin_numbers.reverse_in_place()
-		// println('bin numbers after reversing: $bin_numbers')
 		for bin_number in bin_numbers {
 			rank_value = i64(0)
 
@@ -136,6 +133,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 					// and class_values are strings
 					count = 0
 					for i, value in binned_values {
+						// println('binned_values i: $i')
 						if value == bin_value && ds.class_values[i] == class {
 							count += 1
 						}
@@ -148,7 +146,6 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 					rank_value += sum_along_row_unweighted(row)
 				}
 			}
-
 			// for each attribute, find the maximum for the rank_values and
 			// the corresponding number of bins
 			if rank_value >= maximum_rank_value {

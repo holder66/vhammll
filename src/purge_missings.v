@@ -1,7 +1,7 @@
 // purge_missings.v
 module vhammll
 
-fn purge_instances_for_missing_class_values(mut ds Dataset) Dataset {
+pub fn (mut ds Dataset) purge_instances_for_missing_class_values() Dataset {
 	mut instances_to_purge := []int{}
 	for i, class_val in ds.class_values {
 		if class_val in missings {
@@ -9,16 +9,17 @@ fn purge_instances_for_missing_class_values(mut ds Dataset) Dataset {
 		}
 	}
 	// println('instances_to_purge: ${instances_to_purge.len} $instances_to_purge')
-	// println(ds.class_values.filter(it !in missings))
 	mut result := []string{cap: ds.class_values.len}
 	for i, e in ds.class_values {
 		if i !in instances_to_purge {
 			result << e
 		}
 	}
+	// println('result.len: ${result.len}')
+
 	ds.classes = uniques(result)
-	ds.class_values = result
-	ds.class_counts = element_counts(result)
+	ds.class_values = purge_array(ds.class_values, instances_to_purge)
+	ds.class_counts = element_counts(ds.class_values)
 	// println(ds.data)
 	// println('result after clear: $result')
 	mut result_data := [][]string{cap: ds.class_values.len * ds.data.len}
@@ -39,6 +40,13 @@ fn purge_instances_for_missing_class_values(mut ds Dataset) Dataset {
 	}
 	// println('result_data: $result_data')
 	ds.data = result_data
+	// also purge the useful_discrete_attributes and the useful_continuous_attributes
+	for key, val in ds.useful_discrete_attributes {
+		ds.useful_discrete_attributes[key] = purge_array(val, instances_to_purge)
+	}
+	for key, val in ds.useful_continuous_attributes {
+		ds.useful_continuous_attributes[key] = purge_array(val, instances_to_purge)
+	}
 	// println(ds.data)
 	return ds
 }

@@ -11,3 +11,25 @@ fn test_infer_attribute_types_newer() {
 	assert infer_attribute_types_newer(load_file('datasets/developer.tab')) == ['i', 'D', 'C',
 		'c', 'C', 'C', 'D', 'D', 'C', 'C']
 }
+
+fn test_load_with_purge_instances_for_missing_class_values() {
+	mut ds := load_orange_newer_file('datasets/class_missing_developer.tab')
+	// println(ds)
+	mut dspmc := load_orange_newer_file('datasets/class_missing_developer.tab',
+		class_missing_purge_flag: true
+	)
+	// println(dspmc)
+	assert ds.class_values.len - 2 == dspmc.class_values.len
+	assert analyze_dataset(ds, Options{}).class_counts == {
+		'm': 8
+		'':  1
+		'f': 3
+		'X': 2
+		'?': 1
+	}
+	assert analyze_dataset(dspmc, Options{}).class_counts == {
+		'm': 8
+		'f': 3
+		'X': 2
+	}
+}

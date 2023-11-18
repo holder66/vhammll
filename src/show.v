@@ -2,9 +2,9 @@
 // in order to establish style consistency, aim to use magenta underline
 // for the first line of each output, and blue underline for table headings.
 // use bold green for subheadings
-// ie, println(m_u('\nfirst line', 'underline'), 'magenta'))
-// println(b_u('table header','underline'), 'blue'))
-// println(g_b('subheading','bold'), 'green'))
+// ie, println(m_u('\nfirst line')
+// println(b_u('table header')
+// println(g_b('subheading')
 //
 // this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
 // best explanation of multiclass metrics and how they're calculated
@@ -207,7 +207,6 @@ pub fn show_crossvalidation(result CrossVerifyResult) {
 	// println('result in show_crossvalidation: $result')
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
 		if result.multiple_classify_options_file_path != '' { ' using multiple classifiers' } else { '' }))
-
 	println('Partitioning: ' + if result.folds == 0 { 'leave-one-out' } else { '${result.folds}-fold' + if result.repetitions > 1 { ', ${result.repetitions} repetitions' + if result.random_pick { ' with random selection of instances' } else { '' }
 		 } else { ''
 		 }

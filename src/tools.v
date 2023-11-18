@@ -534,3 +534,15 @@ fn b(s string) string {
 fn g(s string) string {
 	return chlk(s, vhammll.g)
 }
+
+// purge_array filters an array of generic types, removing those elements
+// whose indices in the original array are in a list.
+fn purge_array[T](array []T, purge_indices []int) []T {
+	mut result := []T{cap: array.len}
+	for i, val in array {
+		if i !in purge_indices {
+			result << val
+		}
+	}
+	return result
+}

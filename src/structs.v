@@ -34,6 +34,7 @@ pub mut:
 	path                         string
 	attribute_names              []string
 	attribute_flags              []string
+	raw_attribute_types          []string
 	attribute_types              []string
 	inferred_attribute_types     []string
 	data                         [][]string
@@ -249,15 +250,16 @@ pub mut:
 
 pub struct AnalyzeResult {
 pub mut:
-	struct_type   string = '.AnalyzeResult'
-	environment   Environment
-	datafile_path string
-	datafile_type string
-	class_name    string
-	class_counts  map[string]int
-	attributes    []Attribute
-	overall_min   f32
-	overall_max   f32
+	struct_type             string = '.AnalyzeResult'
+	environment             Environment
+	datafile_path           string
+	datafile_type           string
+	class_name              string
+	class_counts            map[string]int
+	attributes              []Attribute
+	overall_min             f32
+	overall_max             f32
+	use_inferred_types_flag bool
 }
 
 pub struct ClassifyResult {

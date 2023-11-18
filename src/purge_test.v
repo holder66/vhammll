@@ -17,4 +17,11 @@ fn test_purge() ? {
 	assert cl.instances.len == 150
 	mut pcl := purge(cl)
 	assert pcl.instances.len == 12
+
+	// now for an orange_newer file
+	ds = load_file('datasets/class_missing_developer.tab')
+	cl = make_classifier(mut ds, opts)
+	assert cl.instances.len == 15
+	pcl = purge(cl)
+	assert pcl.instances.len == 13
 }

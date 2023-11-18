@@ -47,7 +47,7 @@ fn test_load_file_with_purging() ! {
 	// repeat with purging of instances where the class value is missing
 	// NOTE: this is not implemented for orange_older file types
 	ds = load_file(datafile, class_missing_purge_flag: true)
-	assert ds.class_counts != {
+	assert ds.class_counts == {
 		'Iris-setosa':     47
 		'Iris-versicolor': 48
 		'Iris-virginica':  47

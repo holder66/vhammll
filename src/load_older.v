@@ -4,7 +4,7 @@ module vhammll
 import os
 
 // load_orange_older_file loads from a file into a Dataset struct
-fn load_orange_older_file(path string) Dataset {
+fn load_orange_older_file(path string, opts LoadOptions) Dataset {
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	mut ds := Dataset{
 		path: path
@@ -18,9 +18,12 @@ fn load_orange_older_file(path string) Dataset {
 	ds.attribute_flags = pad_string_array_to_length(mut ds.attribute_flags, attr_count)
 	ds.inferred_attribute_types = infer_attribute_types_older(ds)
 	ds.Class = set_class_struct(ds)
-
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
+	if opts.class_missing_purge_flag {
+		// println('gonna purge!')
+		ds.purge_instances_for_missing_class_values()
+	}
 	return ds
 }
 

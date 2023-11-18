@@ -11,7 +11,7 @@ const (
 		'Options:',
 	]
 
-	main_text           = '// temp.v
+	main_text           = '// temphelp.v
 module main
 import vhammll
 
@@ -22,11 +22,11 @@ fn main() {
 
 fn testsuite_begin() ? {
 	os.chdir('..')!
-	mut f := os.create(os.abs_path('') + '/temp.v')!
+	mut f := os.create(os.abs_path('') + '/temphelp.v')!
 	f.write_string(vhammll.main_text)!
 	f.close()
 
-	os.execute_or_panic('v -keepc run temp.v')
+	os.execute_or_panic('v -keepc run temphelp.v')
 	if os.is_dir('tempfolder_help_text') {
 		os.rmdir_all('tempfolder_help_text')!
 	}
@@ -34,11 +34,11 @@ fn testsuite_begin() ? {
 }
 
 fn testsuite_end() ? {
-	if os.exists('temp') {
-		os.rm('temp')!
+	if os.exists('temphelp') {
+		os.rm('temphelp')!
 	}
-	if os.exists('temp.v') {
-		os.rm('temp.v')!
+	if os.exists('temphelp.v') {
+		os.rm('temphelp.v')!
 	}
 	os.rmdir_all('tempfolder_help_text')!
 }
@@ -47,7 +47,7 @@ fn test_help() {
 	flags := ['', '--help', '-h']
 
 	for flag in flags {
-		result := os.execute_or_panic('./temp ${flag}')
+		result := os.execute_or_panic('./temphelp ${flag}')
 		assert result.exit_code == 0
 		// assert result.output.contains('-k --classifier:')
 		for term in vhammll.output_search_terms {
@@ -62,7 +62,7 @@ fn test_command_help() {
 	flags := ['', '--help', '-h']
 	for command in commands {
 		for flag in flags {
-			result := os.execute_or_panic('./temp ${command} ${flag}')
+			result := os.execute_or_panic('./temphelp ${command} ${flag}')
 			assert result.exit_code == 0
 			for term in vhammll.output_search_terms {
 				assert result.output.contains(term)
