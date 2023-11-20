@@ -92,6 +92,7 @@ pub mut:
 
 pub struct Classifier {
 	Parameters
+	LoadOptions
 	Class
 pub mut:
 	struct_type              string = '.Classifier'

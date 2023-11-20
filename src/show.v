@@ -102,7 +102,7 @@ pub fn show_rank_attributes(result RankingResult) {
 // show_classifier outputs to the console information about a classifier
 pub fn show_classifier(cl Classifier) {
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
-	show_parameters(cl.Parameters)
+	show_parameters(cl.Parameters, cl.LoadOptions)
 	println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
 	for attr, val in cl.trained_attributes {
 		println('${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' +
@@ -121,7 +121,7 @@ pub fn show_classifier(cl Classifier) {
 }
 
 // show_parameters
-fn show_parameters(p Parameters) {
+fn show_parameters(p Parameters, load_options LoadOptions) {
 	if p.number_of_attributes.len == 1 {
 		println('Number of attributes: ' +
 			if p.number_of_attributes[0] == 0 { 'all' } else { '${p.number_of_attributes[0]}' })
@@ -133,6 +133,7 @@ fn show_parameters(p Parameters) {
 	println('Prevalence weighting for ranking attributes: ${p.weight_ranking_flag}')
 	println('Prevalence weighting for nearest neighbor counts: ${p.weighting_flag}')
 	println('Add instances to balance class prevalences: ${p.balance_prevalences_flag}')
+	println('Purging of instances with missing class values: ${load_options.class_missing_purge_flag}')
 }
 
 // show_validate

@@ -66,7 +66,8 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 		Class: ds.Class
 		Parameters: opts.Parameters
 		datafile_path: ds.path
-		struct_type: '.Classifier'
+		LoadOptions: ds.LoadOptions
+		// struct_type: '.Classifier'
 		// binning: get_binning(opts.bins)
 	}
 	// println('opts.binning: $opts.binning')
