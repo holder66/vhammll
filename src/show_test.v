@@ -171,6 +171,10 @@ fn test_show_explore_cross() ? {
 		command: 'explore'
 	}
 	results = explore(load_file(opts.datafile_path), opts)
+
+	// repeat for class missing purge
+	opts.datafile_path = 'datasets/class_missing_developer.tab'
+	results = explore(load_file(opts.datafile_path, class_missing_purge_flag: true), opts)
 }
 
 fn test_show_explore_verify() ? {

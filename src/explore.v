@@ -28,6 +28,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// println(opts.classifier_indices)
 	mut ex_opts := opts
 	mut results := ExploreResult{
+		LoadOptions: ds.LoadOptions
 		path: opts.datafile_path
 		testfile_path: opts.testfile_path
 		Parameters: opts.Parameters
