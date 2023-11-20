@@ -147,6 +147,8 @@ fn test_show_crossvalidation() ? {
 	println('\niris.tab with expanded results')
 	opts.expanded_flag = true
 	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
+	// now with purging for missing classes
+	cvr = cross_validate(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true), opts)
 }
 
 fn test_show_explore_cross() ? {

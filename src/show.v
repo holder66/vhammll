@@ -139,7 +139,7 @@ fn show_parameters(p Parameters, load_options LoadOptions) {
 // show_validate
 pub fn show_validate(result ValidateResult) {
 	println(m_u('\nValidation of "${result.validate_file_path}" using a classifier from "${result.datafile_path}"'))
-	show_parameters(result.Parameters)
+	show_parameters(result.Parameters, result.LoadOptions)
 	if result.purge_flag {
 		total_count := result.prepurge_instances_counts_array[0]
 		purged_count := total_count - result.classifier_instances_counts[0]
@@ -162,7 +162,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifiers_options(result.MultipleOptions, result.MultipleClassifiersArray)
 	} else {
-		show_parameters(result.Parameters)
+		show_parameters(result.Parameters, result.LoadOptions)
 	}
 	// println(result)
 	if result.purge_flag {
@@ -218,7 +218,7 @@ pub fn show_crossvalidation(result CrossVerifyResult) {
 	if result.multiple_classify_options_file_path != '' {
 		show_multiple_classifiers_options(result.MultipleOptions, result.MultipleClassifiersArray)
 	} else {
-		show_parameters(result.Parameters)
+		show_parameters(result.Parameters, result.LoadOptions)
 	}
 	if result.purge_flag {
 		total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or {} / f64(result.prepurge_instances_counts_array.len)
@@ -369,7 +369,7 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 		explore_type_string = 'verification of "${results.testfile_path}"'
 	}
 	println(m_u('\nExplore ${explore_type_string} using classifiers from "${results.path}"'))
-	show_parameters(results.Parameters)
+	show_parameters(results.Parameters, results.LoadOptions)
 	println('Over attribute range from ${results.start} to ${results.end} by interval ${results.att_interval}')
 	if !settings.expanded_flag {
 		println(b_u('Attributes     Bins' +
