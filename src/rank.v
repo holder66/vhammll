@@ -53,6 +53,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	// to get the denominator for calculating percentages of rank values,
 	// we get the rank value for the class attribute, which should be 100%
 	mut ranking_result := RankingResult{
+		LoadOptions: ds.LoadOptions
 		path: ds.path
 		exclude_flag: opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag

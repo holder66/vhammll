@@ -91,6 +91,7 @@ pub fn show_rank_attributes(result RankingResult) {
 	println('Bin range for continuous attributes: from ${result.binning.lower} to ${result.binning.upper} with interval ${result.binning.interval}')
 	println(if result.weight_ranking_flag { 'Weighted' } else { 'Unweighted' } +
 		' by class prevalences')
+	println('Purging of instances with missing class values: ${result.class_missing_purge_flag}')
 	println(b_u('         Name                         Index  Type   Rank Value   Bins'))
 	mut array_to_print := []string{}
 	for i, attr in result.array_of_ranked_attributes {

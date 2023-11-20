@@ -214,6 +214,8 @@ fn test_show_rank_attributes() {
 	opts.bins = [3, 3]
 	ds = load_file('datasets/iris.tab')
 	rr = rank_attributes(ds, opts)
+	// repeat for class missing purge
+	rr = rank_attributes(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag:true), opts)
 
 	ds = load_file('datasets/anneal.tab')
 	rr = rank_attributes(ds, opts)
