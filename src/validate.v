@@ -26,6 +26,7 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	mut test_ds := load_file(opts.testfile_path)
 	// instantiate a struct for the result
 	mut validate_result := ValidateResult{
+		LoadOptions: cl.LoadOptions
 		struct_type: '.ValidateResult'
 		inferred_classes: []string{}
 		validate_file_path: opts.testfile_path
