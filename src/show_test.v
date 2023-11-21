@@ -170,11 +170,13 @@ fn test_show_explore_cross() ? {
 		datafile_path: 'datasets/developer.tab'
 		command: 'explore'
 	}
-	results = explore(load_file(opts.datafile_path), opts)
+	mut ds := load_file(opts.datafile_path)
+	results = explore(mut ds, opts)
 
 	// repeat for class missing purge
 	opts.datafile_path = 'datasets/class_missing_developer.tab'
-	results = explore(load_file(opts.datafile_path, class_missing_purge_flag: true), opts)
+	ds = load_file(opts.datafile_path, class_missing_purge_flag: true)
+	results = explore(mut ds, opts)
 }
 
 fn test_show_explore_verify() ? {
@@ -192,11 +194,12 @@ fn test_show_explore_verify() ? {
 		datafile_path: 'datasets/bcw350train'
 		testfile_path: 'datasets/bcw174test'
 	}
-	results = explore(load_file(opts.datafile_path), opts)
+	mut ds := load_file(opts.datafile_path)
+	results = explore(mut ds, opts)
 	opts.weighting_flag = true
 	opts.expanded_flag = true
 	opts.number_of_attributes = [0]
-	results = explore(load_file(opts.datafile_path), opts)
+	results = explore(mut ds, opts)
 }
 
 fn test_show_rank_attributes() {
@@ -263,14 +266,14 @@ fn test_show_verify() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
-	// ds = load_file(opts.datafile_path)
-	// cl = make_classifier(mut ds, opts)
-	result = verify(opts)
+	ds = load_file(opts.datafile_path)
+	cl = make_classifier(mut ds, opts)
+	result = verify(cl, opts)
 	// println('result one in show_test: $result')
 	opts.weighting_flag = true
 	opts.expanded_flag = true
-	// cl = make_classifier(mut ds, opts)
-	result = verify(opts)
+	cl = make_classifier(mut ds, opts)
+	result = verify(cl, opts)
 
 	// println('result two in show_test: $result')
 }

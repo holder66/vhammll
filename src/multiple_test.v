@@ -40,7 +40,9 @@ fn test_multiple_verify() ? {
 	opts.weight_ranking_flag = true
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
-	result0 := verify(opts)
+	mut ds := load_file(opts.datafile_path)
+	cl := make_classifier(mut ds, opts)
+	result0 := verify(cl, opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -52,7 +54,7 @@ fn test_multiple_verify() ? {
 		}
 	}
 	opts.bins = [2, 2]
-	result1 := verify(opts)
+	result1 := verify(cl, opts)
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 20.0
@@ -70,7 +72,7 @@ fn test_multiple_verify() ? {
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	result = verify(opts)
+	result = verify(cl, opts)
 	// with both classifiers
 	show_expanded_result(result)
 	assert result.confusion_matrix_map == {
@@ -85,12 +87,12 @@ fn test_multiple_verify() ? {
 	}
 
 	opts.classifier_indices = [0]
-	result = verify(opts)
+	result = verify(cl, opts)
 	// with classifier 0
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 
 	opts.classifier_indices = [1]
-	result = verify(opts)
+	result = verify(cl, opts)
 	// with classifier 1
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
@@ -110,9 +112,9 @@ fn test_multiple_crossvalidate() ? {
 	opts.settingsfile_path = 'tempfolder4/2_class.opts'
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
-	mut er := explore(load_file(opts.datafile_path), opts)
-	opts.command = 'cross'
 	mut ds := load_file(opts.datafile_path)
+	mut er := explore(mut ds, opts)
+	opts.command = 'cross'
 	opts.verbose_flag = false
 	opts.expanded_flag = false
 	opts.number_of_attributes = [3]
@@ -155,7 +157,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 		command: 'explore'
 	}
 
-	ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path)
 	ft := [false, true]
 	for pf in ft {
 		opts.purge_flag = pf
@@ -163,7 +165,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 			opts.weight_ranking_flag = wr
 			for w in [false, true] {
 				opts.weighting_flag = w
-				er := explore(ds, opts)
+				er := explore(mut ds, opts)
 			}
 		}
 	}

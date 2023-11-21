@@ -17,9 +17,9 @@ import runtime
 // 		a confusion matrix.
 // outputfile_path: saves the result as a json file
 // ```
-pub fn verify(opts Options) CrossVerifyResult {
+pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 	// load the testfile as a Dataset struct
-	mut test_ds := load_file(opts.testfile_path)
+	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
 	// for each class, instantiate an entry in the confusion matrix map
 	for key1, _ in test_ds.class_counts {
@@ -30,6 +30,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	// instantiate a struct for the result
 	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
+		LoadOptions: opts.LoadOptions
 		Parameters: opts.Parameters
 		DisplaySettings: opts.DisplaySettings
 		MultipleOptions: opts.MultipleOptions

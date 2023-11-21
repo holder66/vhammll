@@ -123,7 +123,9 @@ fn test_display_verify_result() ? {
 		concurrency_flag: true
 		show_flag: true
 	}
-	_ = verify(opts)
+	mut ds := load_file(opts.datafile_path)
+	cl := make_classifier(mut ds, opts)
+	_ = verify(cl, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -167,7 +169,8 @@ fn test_display_explore_result_cross() ? {
 		graph_flag: true
 		// show_flag: true
 	}
-	_ = explore(load_file(opts.datafile_path), opts)
+	mut ds := load_file(opts.datafile_path)
+	_ = explore(mut ds, opts)
 	// mut settings := DisplaySettings{
 	// 	show_flag: true
 	// 	graph_flag: true
@@ -180,7 +183,7 @@ fn test_display_explore_result_cross() ? {
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(load_file(opts.datafile_path), opts)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -190,7 +193,8 @@ fn test_display_explore_result_cross() ? {
 	opts.number_of_attributes = [0]
 	opts.datafile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
-	_ = explore(load_file(opts.datafile_path), opts)
+	ds = load_file(opts.datafile_path)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -198,7 +202,8 @@ fn test_display_explore_result_cross() ? {
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(load_file(opts.datafile_path), opts)
+	ds = load_file(opts.datafile_path)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -216,7 +221,8 @@ fn test_display_explore_result_verify() ? {
 		outputfile_path: 'tempfolder_display/explore_result'
 		graph_flag: true
 	}
-	_ = explore(load_file(opts.datafile_path), opts)
+	mut ds := load_file(opts.datafile_path)
+	_ = explore(mut ds, opts)
 	// mut settings := DisplaySettings{
 	// 	show_flag: true
 	// }
@@ -226,7 +232,7 @@ fn test_display_explore_result_verify() ? {
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(load_file(opts.datafile_path), opts)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -237,7 +243,8 @@ fn test_display_explore_result_verify() ? {
 	opts.testfile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
 	opts.number_of_attributes = [0]
-	_ = explore(load_file(opts.datafile_path), opts)
+	ds = load_file(opts.datafile_path)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -245,7 +252,7 @@ fn test_display_explore_result_verify() ? {
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(load_file(opts.datafile_path), opts)
+	_ = explore(mut ds, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true

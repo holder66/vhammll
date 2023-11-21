@@ -107,7 +107,7 @@ pub fn cli(args Arguments) ! {
 			'query' { do_query(mut opts)! }
 			'rank' { rank(mut opts) }
 			'validate' { do_validate(mut opts)! }
-			'verify' { do_verify(mut opts) }
+			'verify' { do_verify(mut opts)! }
 			else { println('unrecognized command') }
 		}
 	}
@@ -241,15 +241,17 @@ fn do_display(opts Options) {
 	display_file(opts.datafile_path, opts)
 }
 
-// query
-fn do_query(mut opts Options) ! {
-	mut cl := Classifier{}
+fn get_classifier(opts Options) !Classifier {
 	if opts.classifierfile_path == '' {
 		mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-		cl = make_classifier(mut ds, opts)
-	} else {
-		cl = load_classifier_file(opts.classifierfile_path)!
+		return make_classifier(mut ds, opts)
 	}
+	return load_classifier_file(opts.classifierfile_path)!
+}
+
+// query
+fn do_query(mut opts Options) ! {
+	cl := get_classifier(opts)!
 	qr := query(cl, opts)
 	if opts.expanded_flag {
 		println(qr)
@@ -257,20 +259,15 @@ fn do_query(mut opts Options) ! {
 }
 
 // verify
-fn do_verify(mut opts Options) {
+fn do_verify(mut opts Options) ! {
+	cl := get_classifier(opts)!
 	opts.show_flag = true
-	verify(opts)
+	verify(cl, opts)
 }
 
 // validate
 fn do_validate(mut opts Options) ! {
-	mut cl := Classifier{}
-	if opts.classifierfile_path == '' {
-		mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-		cl = make_classifier(mut ds, opts)
-	} else {
-		cl = load_classifier_file(opts.classifierfile_path)!
-	}
+	cl := get_classifier(opts)!
 	opts.show_flag = true
 	var := validate(cl, opts)!
 	if opts.expanded_flag {
@@ -288,7 +285,8 @@ fn cross(mut opts Options) {
 // do_explore
 fn do_explore(mut opts Options) {
 	opts.show_flag = true
-	explore(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	explore(mut ds, opts)
 }
 
 // orange
