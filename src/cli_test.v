@@ -38,9 +38,9 @@ fn testsuite_end() ? {
 
 fn test_explore() {
 	println(os.execute_or_panic('./temp explore --help'))
-	// println(os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab'))
-	// println(os.execute_or_panic('./temp explore -g -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
-	// println(os.execute_or_panic('./temp explore -g -e -c -o tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
+	println(os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab'))
+	println(os.execute_or_panic('./temp explore -g -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
+	println(os.execute_or_panic('./temp explore -g -e -c -o tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
 	println(os.execute_or_panic('./temp cross -c -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
 }
 
@@ -100,10 +100,10 @@ fn test_rank_attributes() {
 	// println(r.output)
 	assert r.output.len == 666
 	assert r.output.contains('Bin range for continuous attributes: from 2 to 6 with interval 1')
-	// r = os.execute_or_panic('./temp rank -x -g vhammll/datasets/anneal.tab')
+	r = os.execute_or_panic('./temp rank -x -g vhammll/datasets/anneal.tab')
 	// println(r.output)
-	// assert r.output.len == 2506
-	// assert r.output.contains('8   carbon                           3  C           78.90      7')
+	assert r.output.len == 2594
+	assert r.output.contains('8   carbon                           3  C           78.90      7')
 }
 
 fn test_display() {
@@ -115,15 +115,15 @@ fn test_display() {
 
 fn test_purge_for_missing_class_values() {
 	mut r := os.execute_or_panic('./temp analyze -pmc vhammll/datasets/class_missing_developer.tab')
-	println(r.output)
-	// assert r.output.len == 2802
-	// assert r.output.contains('6  SEC                                         5        1    7.7')
+	// println(r.output)
+	assert r.output.len == 2031
+	assert r.output.contains('6  SEC                                        13        5        1    7.7')
 	r = os.execute_or_panic('./temp rank -pmc vhammll/datasets/class_missing_developer.tab')
-	println(r.output)
-	// assert r.output.len == 912
-	// assert r.output.contains('2   negative                         9  C          100.00     12')
+	// println(r.output)
+	assert r.output.len == 965
+	assert r.output.contains('2   negative                         9  C          100.00     12')
 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 - pmc vhammll/datasets/class_missing_developer.tab')
-	println(r.output)
-	// assert r.output.len == 1325
-	// assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
+	// println(r.output)
+	assert r.output.len == 1379
+	assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
 }

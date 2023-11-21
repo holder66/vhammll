@@ -155,7 +155,7 @@ pub fn show_validate(result ValidateResult) {
 }
 
 // show_verify
-pub fn show_verify(result CrossVerifyResult, opts Options) {
+pub fn show_verify(mut result CrossVerifyResult, opts Options) {
 	println(m_u('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
 		'from "${result.datafile_path}"'))
@@ -172,6 +172,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		purged_percent := 100 * f64(purged_count) / total_count
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
+	result.DisplaySettings = opts.DisplaySettings
 	show_cross_or_verify_result(result)
 }
 

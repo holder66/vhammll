@@ -132,6 +132,7 @@ pub mut:
 	maximum_hamming_distance int
 }
 
+@[params]
 struct DisplaySettings {
 pub mut:
 	show_flag     bool
@@ -306,6 +307,7 @@ pub struct CrossVerifyResult {
 	MultipleClassifiersArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
+	command string
 	datafile_path                       string
 	testfile_path                       string
 	multiple_classify_options_file_path string

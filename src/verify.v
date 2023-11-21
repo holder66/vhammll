@@ -114,12 +114,13 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 	// verify_result.command = 'verify'
 	// println('verify_result: $verify_result')
 	if opts.command == 'verify' && (verify_result.show_flag || verify_result.expanded_flag) {
-		show_verify(verify_result, opts)
+		show_verify(mut verify_result, opts)
 	}
 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('verify_result in verify(): ${verify_result}')
 	// }
 	if opts.outputfile_path != '' {
+		verify_result.command = 'verify'
 		save_json_file(verify_result, opts.outputfile_path)
 	}
 	// println(opts)

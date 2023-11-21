@@ -15,8 +15,10 @@ import json
 // graph_flag: generates plots for display in the default web browser.
 // ```
 pub fn display_file(path string, opts Options) {
+				// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
+	// println('s in display_file: $s')
 	match true {
 		s.contains('"struct_type":".ExploreResult"') {
 			// mut opts := Options{
@@ -61,12 +63,8 @@ pub fn display_file(path string, opts Options) {
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
-			// mut opts := Options{
-			// 	DisplaySettings: settings
-			// }
 			mut saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
-			// saved_vr.DisplaySettings = settings
-			show_verify(saved_vr, opts)
+			show_verify(mut saved_vr, opts)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') {
 			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
