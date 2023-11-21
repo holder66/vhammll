@@ -32,10 +32,13 @@ fn test_show_analyze() {
 	show_analyze(ar)
 
 	// with purging of instances whose class values are missing
-	ar = analyze_dataset(load_file('datasets/class_missing_developer.tab', class_missing_purge_flag: true), opts)
+	ar = analyze_dataset(load_file('datasets/class_missing_developer.tab',
+		class_missing_purge_flag: true
+	), opts)
 	show_analyze(ar)
 
-	ar = analyze_dataset(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true), opts)
+	ar = analyze_dataset(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
+		opts)
 	show_analyze(ar)
 }
 
@@ -148,7 +151,8 @@ fn test_show_crossvalidation() ? {
 	opts.expanded_flag = true
 	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
 	// now with purging for missing classes
-	cvr = cross_validate(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true), opts)
+	cvr = cross_validate(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
+		opts)
 }
 
 fn test_show_explore_cross() ? {
@@ -218,7 +222,8 @@ fn test_show_rank_attributes() {
 	ds = load_file('datasets/iris.tab')
 	rr = rank_attributes(ds, opts)
 	// repeat for class missing purge
-	rr = rank_attributes(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag:true), opts)
+	rr = rank_attributes(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
+		opts)
 
 	ds = load_file('datasets/anneal.tab')
 	rr = rank_attributes(ds, opts)

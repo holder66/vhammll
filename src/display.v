@@ -15,7 +15,7 @@ import json
 // graph_flag: generates plots for display in the default web browser.
 // ```
 pub fn display_file(path string, opts Options) {
-				// println('opts in display_file: $opts')
+	// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	// println('s in display_file: $s')
@@ -27,15 +27,9 @@ pub fn display_file(path string, opts Options) {
 			mut saved_er := json.decode(ExploreResult, s) or { panic('Failed to parse json') }
 			show_explore_header(saved_er, opts.DisplaySettings)
 			for mut result in saved_er.array_of_results {
-				result.DisplaySettings = opts.DisplaySettings
-				show_explore_line(result)
+				show_explore_line(result, opts.DisplaySettings)
 			}
 			show_explore_trailer(saved_er, opts)
-			// if opts.graph_flag {
-			// 	// println(saved_er)
-			// 	plot_explore(saved_er, opts)
-			// 	plot_roc(saved_er, opts)
-			// }
 			if opts.append_settings_flag {
 				// save the settings for the explore results with the
 				// highest balanced accuracy, true positives, and true
@@ -64,11 +58,11 @@ pub fn display_file(path string, opts Options) {
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
 			mut saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
-			show_verify(mut saved_vr, opts)
+			show_verify(saved_vr, opts)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') {
 			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
-			show_crossvalidation(saved_vr)
+			show_crossvalidation(saved_vr, opts)
 			if opts.append_settings_flag {
 				append_cross_settings_to_file(saved_vr, opts)
 			}

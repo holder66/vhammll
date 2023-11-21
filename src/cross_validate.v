@@ -124,7 +124,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
 	if opts.command == 'cross' && (opts.show_flag || opts.expanded_flag) {
-		show_crossvalidation(cross_result)
+		show_crossvalidation(cross_result, opts)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file(cross_result, opts.outputfile_path)

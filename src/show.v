@@ -155,7 +155,7 @@ pub fn show_validate(result ValidateResult) {
 }
 
 // show_verify
-pub fn show_verify(mut result CrossVerifyResult, opts Options) {
+pub fn show_verify(result CrossVerifyResult, opts Options) {
 	println(m_u('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
 		'from "${result.datafile_path}"'))
@@ -172,8 +172,7 @@ pub fn show_verify(mut result CrossVerifyResult, opts Options) {
 		purged_percent := 100 * f64(purged_count) / total_count
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
-	result.DisplaySettings = opts.DisplaySettings
-	show_cross_or_verify_result(result)
+	show_cross_or_verify_result(result, opts.DisplaySettings)
 }
 
 // show_multiple_classifiers_options
@@ -209,7 +208,7 @@ fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifi
 }
 
 // show_crossvalidation
-pub fn show_crossvalidation(result CrossVerifyResult) {
+pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 	// println('result in show_crossvalidation: $result')
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
 		if result.multiple_classify_options_file_path != '' { ' using multiple classifiers' } else { '' }))
@@ -228,14 +227,14 @@ pub fn show_crossvalidation(result CrossVerifyResult) {
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
 	}
-	show_cross_or_verify_result(result)
+	show_cross_or_verify_result(result, opts.DisplaySettings)
 }
 
 // show_cross_or_verify_result
-fn show_cross_or_verify_result(result CrossVerifyResult) {
+fn show_cross_or_verify_result(result CrossVerifyResult, display_settings DisplaySettings) {
 	println(g_b('Results:'))
 	// mut metrics := get_metrics(result)
-	if !result.expanded_flag {
+	if !display_settings.expanded_flag {
 		percent := (f32(result.correct_count) * 100 / result.labeled_classes.len)
 		println('correct inferences: ${result.correct_count} out of ${result.labeled_classes.len} (accuracy: raw:${percent:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)')
 	} else {
@@ -459,12 +458,12 @@ fn get_purged_percent(result CrossVerifyResult) (f64, f64, f64) {
 
 // show_explore_line displays on the console the results of each
 // cross-validation or verification during an explore session.
-fn show_explore_line(result CrossVerifyResult) {
+fn show_explore_line(result CrossVerifyResult, settings DisplaySettings) {
 	// println(result)
 	// do nothing if neither the -s or the -e flag was set
-	if result.show_flag || result.expanded_flag {
+	if settings.show_flag || settings.expanded_flag {
 		purged, total, purged_percent := get_purged_percent(result)
-		if !result.expanded_flag {
+		if !settings.expanded_flag {
 			accuracy_percent := (f32(result.correct_count) * 100 / result.labeled_classes.len)
 			println('${result.attributes_used:10}  ${get_show_bins(result.bin_values)}' +
 				if result.purge_flag {

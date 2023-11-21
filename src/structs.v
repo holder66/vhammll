@@ -13,7 +13,7 @@ pub mut:
 	class_name                 string   // the attribute which holds the class
 	classes                    []string // to ensure that the ordering remains the same
 	class_values               []string
-	missing_class_values       []int 	// these are the indices of the original class values array
+	missing_class_values       []int // these are the indices of the original class values array
 	class_counts               map[string]int
 	lcm_class_counts           i64
 	postpurge_class_counts     map[string]int
@@ -264,7 +264,6 @@ pub mut:
 	overall_min             f32
 	overall_max             f32
 	use_inferred_types_flag bool
-
 }
 
 pub struct ClassifyResult {
@@ -307,7 +306,7 @@ pub struct CrossVerifyResult {
 	MultipleClassifiersArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
-	command string
+	command                             string
 	datafile_path                       string
 	testfile_path                       string
 	multiple_classify_options_file_path string
