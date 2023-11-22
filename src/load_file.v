@@ -125,7 +125,7 @@ fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	// mut max_value := f32{0.}
 	mut cont_att := map[int][]f32{}
 	for i in 0 .. ds.attribute_names.len {
-		if ds.inferred_attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
+		if ds.attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
 			nums := ds.data[i].map(fn (w string) f32 {
 				if w in missings { return -math.max_f32
 				 } else { return f32(strconv.atof_quick(w))
@@ -141,7 +141,7 @@ fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	mut disc_att := map[int][]string{}
 	for i in 0 .. ds.attribute_names.len {
-		if ds.inferred_attribute_types[i] == 'D' && string_element_counts(ds.data[i]).len != 1 {
+		if ds.attribute_types[i] == 'D' && string_element_counts(ds.data[i]).len != 1 {
 			disc_att[i] = ds.data[i]
 		}
 	}
@@ -150,7 +150,7 @@ fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 
 // set_class_struct
 fn set_class_struct(ds Dataset) Class {
-	mut i := identify_class_attribute(ds.inferred_attribute_types)
+	mut i := identify_class_attribute(ds.attribute_types)
 	// i == -1 if no class attribute found
 	if i == -1 {
 		if ds.path.contains('UKDA') {
@@ -173,8 +173,8 @@ fn set_class_struct(ds Dataset) Class {
 
 // identify_class_attribute returns the index for the class attribute; if
 // none found, returns -1
-fn identify_class_attribute(inferred_attribute_types []string) int {
-	for i, val in inferred_attribute_types {
+fn identify_class_attribute(attribute_types []string) int {
+	for i, val in attribute_types {
 		if val == 'c' {
 			return i
 		}

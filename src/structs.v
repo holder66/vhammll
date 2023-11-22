@@ -242,6 +242,7 @@ pub mut:
 	counts_map    map[string]int
 	uniques       int
 	missing       int
+	raw_type string
 	att_type      string
 	inferred_type string
 	for_training  bool

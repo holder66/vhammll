@@ -11,24 +11,27 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	mut ds := Dataset{
 		path: path
 		attribute_names: types_attributes.map(it[1])
-		attribute_types: types_attributes.map(it[0])
+		raw_attribute_types: types_attributes.map(it[0])
 		class_missing_purge_flag: opts.class_missing_purge_flag
 		// ox_spectra: content[1..].map(extract_words(it))
 	}
+		// println(ds)
 	// ds.data = transpose(ds.ox_spectra)
 	ds.data = transpose(content[1..].map(extract_words(it)))
-	ds.inferred_attribute_types = infer_attribute_types_newer(ds)
+	ds.attribute_types = combine_raw_and_inferred_types(ds)
+	ds.inferred_attribute_types = []string{len: ds.attribute_names.len}
 	ds.Class = set_class_struct(ds)
 	if opts.class_missing_purge_flag {
 		// println('gonna purge!')
 		ds.purge_instances_for_missing_class_values()
 	}
+			// println(ds)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
 	if ds.attribute_types[0] == 'm' {
 		ds.row_identifiers = ds.data[0]
 	}
-	// println(ds)
+
 
 	return ds
 }
@@ -40,6 +43,22 @@ fn extract_types(word string) []string {
 	} else {
 		return type_att
 	}
+}
+
+fn combine_raw_and_inferred_types(ds Dataset) []string {
+	mut combined_types := ds.raw_attribute_types.clone()
+	for i, t in ds.raw_attribute_types {
+		combined_types[i] = match true {
+			t in ['C', 'D', 'c', 'i', 'm'] { t }
+			t.contains('c') { 'c' }
+			t in ['w', 'S', 'T'] { 'i' }
+			t == '' && ds.inferred_attribute_types[i] != '' { ds.inferred_attribute_types[i] }
+			else { infer_type_from_data(ds.data[i]) }
+			// else { panic('unrecognized attribute type "${t}" for attribute "${ds.attribute_names[i]}"') }
+		}
+		
+	}
+	return combined_types
 }
 
 // infer_attribute_types_newer gets inferred attribute types for orange-newer files
@@ -54,15 +73,15 @@ If no prefix, treat numbers as continuous, otherwise discrete
 fn infer_attribute_types_newer(ds Dataset) []string {
 	mut inferred_attribute_types := []string{}
 	mut inferred := ''
-	for i, attr_type in ds.attribute_types {
+	for i, attr_type in ds.raw_attribute_types {
 		inferred = match true {
-			attr_type in ['C', 'D', 'c', 'i'] {
+			attr_type in ['C', 'D', 'c', 'i', 'm'] {
 				attr_type
 			}
 			attr_type.contains('c') {
 				'c'
 			}
-			attr_type in ['m', 'w', 'S', 'T'] {
+			attr_type in ['w', 'S', 'T'] {
 				'i'
 			}
 			attr_type == '' {

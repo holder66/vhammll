@@ -33,7 +33,13 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 	mut max_values := []f32{}
 	mut min_values := []f32{}
 	mut atts := []Attribute{}
+	// println('indices_of_useful_attributes: $indices_of_useful_attributes')
+	// println('raw_attribute_types: ${ds.raw_attribute_types}')
+	// println('attribute_types: ${ds.attribute_types}')
+	// println('inferred_attribute_types: ${ds.inferred_attribute_types}')
 	for i, name in ds.attribute_names {
+					// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
+
 		mut att_info := Attribute{
 			id: i
 			name: name
@@ -41,17 +47,19 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			count: ds.data[i].len
 			uniques: uniques_values(ds.data[i])
 			missing: missing_vals[i]
-			// att_type: ds.inferred_attribute_types[i]
+			raw_type: ds.raw_attribute_types[i]
+			att_type: ds.attribute_types[i]
 			inferred_type: ds.inferred_attribute_types[i]
 			for_training: i in indices_of_useful_attributes
 		}
-		if i in indices_of_useful_attributes && ds.inferred_attribute_types[i] == 'C' {
+		// println('we are here')
+		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
 			att_info.max = array_max(ds.useful_continuous_attributes[i])
 			att_info.min = f32(array_min(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
 			att_info.mean = f32(stats.mean(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
 			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(it != -math.max_f32).sorted())
 		}
-		if i in indices_of_useful_attributes && ds.inferred_attribute_types[i] == 'D' {
+		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
 			att_info.counts_map = string_element_counts(ds.data[i])
 		}
 		atts << att_info
