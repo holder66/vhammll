@@ -27,18 +27,18 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it))
-	// println('missing_values in analyze_dataset: $missing_vals')
+	println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
 	mut atts := []Attribute{}
-	// println('indices_of_useful_attributes: $indices_of_useful_attributes')
-	// println('raw_attribute_types: ${ds.raw_attribute_types}')
-	// println('attribute_types: ${ds.attribute_types}')
-	// println('inferred_attribute_types: ${ds.inferred_attribute_types}')
+	println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
+	println('raw_attribute_types: ${ds.raw_attribute_types}')
+	println('attribute_types: ${ds.attribute_types}')
+	println('inferred_attribute_types: ${ds.inferred_attribute_types}')
 	for i, name in ds.attribute_names {
-					// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
+		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
 
 		mut att_info := Attribute{
 			id: i
@@ -66,10 +66,13 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		max_values << att_info.max
 		min_values << att_info.min
 	}
+	println('we are here: ${max_values} ${min_values}')
+
 	result.attributes = atts
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
-	// println([result.overall_min, result.overall_max])
+	println([result.overall_min, result.overall_max])
+	println('result in analyze_dataset: ${result}')
 	if opts.show_flag {
 		show_analyze(result)
 	}

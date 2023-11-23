@@ -19,7 +19,7 @@ fn load_orange_older_file(path string, opts LoadOptions) Dataset {
 	// println('ds.raw_attribute_types in load_older: $ds.raw_attribute_types')
 	ds.attribute_flags = pad_string_array_to_length(mut ds.attribute_flags, attr_count)
 	ds.attribute_types = get_specified_attribute_types_older(ds)
-	// ds.inferred_attribute_types = infer_attribute_types_older(ds)
+	ds.inferred_attribute_types = []string{len: attr_count}
 	// ds.attribute_types = combine_raw_and_inferred_types(ds)
 	ds.Class = set_class_struct(ds)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)

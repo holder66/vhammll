@@ -150,8 +150,6 @@ fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	return disc_att
 }
 
-
-
 // set_class_struct
 fn set_class_struct(ds Dataset) Class {
 	mut cl := Class{}
@@ -166,8 +164,12 @@ fn set_class_struct(ds Dataset) Class {
 		discrete_atts := ds.useful_discrete_attributes.keys()
 		// println('discrete_atts: $discrete_atts')
 		for {
-			println('i: $i')
-			if i in discrete_atts || i < 0 { break } else { i -= 1 }
+			println('i: ${i}')
+			if i in discrete_atts || i < 0 {
+				break
+			} else {
+				i -= 1
+			}
 		}
 	}
 	if i < 0 {

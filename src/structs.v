@@ -54,12 +54,12 @@ mut:
 
 pub struct RankedAttribute {
 pub mut:
-	attribute_index         int
-	attribute_name          string
-	attribute_type string
-	rank_value              f32
-	rank_value_array        []f32
-	bins                    int
+	attribute_index  int
+	attribute_name   string
+	attribute_type   string
+	rank_value       f32
+	rank_value_array []f32
+	bins             int
 }
 
 pub struct Binning {
@@ -242,7 +242,7 @@ pub mut:
 	counts_map    map[string]int
 	uniques       int
 	missing       int
-	raw_type string
+	raw_type      string
 	att_type      string
 	inferred_type string
 	for_training  bool

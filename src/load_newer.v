@@ -33,7 +33,6 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 		ds.row_identifiers = ds.data[0]
 	}
 
-
 	return ds
 }
 
@@ -57,7 +56,6 @@ fn combine_raw_and_inferred_types(ds Dataset) []string {
 			else { infer_type_from_data(ds.data[i]) }
 			// else { panic('unrecognized attribute type "${t}" for attribute "${ds.attribute_names[i]}"') }
 		}
-		
 	}
 	// println('ds.raw_attribute_types: ${ds.raw_attribute_types}')
 	// println('combined_types: $combined_types')
