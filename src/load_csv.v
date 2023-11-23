@@ -10,18 +10,18 @@ fn load_csv_file(path string) Dataset {
 	mut content_csv := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	mut content := content_csv.map(it.split(','))
 	mut attr_names := content[0]
-	mut attr_types := []string{len: attr_names.len}
-	attr_types[0] = 'm'
-	attr_types[attr_types.len - 1] = 'c'
-	// println(content)
+	mut raw_attr_types := []string{len: attr_names.len}
+	raw_attr_types[0] = 'm'
+	raw_attr_types[raw_attr_types.len - 1] = 'c'
 	mut ds := Dataset{
 		path: path
 		data: transpose(content[1..])
 		attribute_names: attr_names
-		attribute_types: attr_types
+		raw_attribute_types: raw_attr_types
+		inferred_attribute_types: []string{len: attr_names.len}
 	}
-	ds.inferred_attribute_types = infer_attribute_types_newer(ds)
-	ds.inferred_attribute_types = infer_attribute_types_newer(ds)
+	ds.attribute_types = combine_raw_and_inferred_types(ds)
+	// println('ds in load_csv_file: $ds')
 	ds.Class = set_class_struct(ds)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)

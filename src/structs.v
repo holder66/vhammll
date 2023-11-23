@@ -56,7 +56,7 @@ pub struct RankedAttribute {
 pub mut:
 	attribute_index         int
 	attribute_name          string
-	inferred_attribute_type string
+	attribute_type string
 	rank_value              f32
 	rank_value_array        []f32
 	bins                    int

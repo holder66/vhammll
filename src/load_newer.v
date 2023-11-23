@@ -15,17 +15,18 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 		class_missing_purge_flag: opts.class_missing_purge_flag
 		// ox_spectra: content[1..].map(extract_words(it))
 	}
-		// println(ds)
 	// ds.data = transpose(ds.ox_spectra)
 	ds.data = transpose(content[1..].map(extract_words(it)))
-	ds.attribute_types = combine_raw_and_inferred_types(ds)
 	ds.inferred_attribute_types = []string{len: ds.attribute_names.len}
+	ds.attribute_types = combine_raw_and_inferred_types(ds)
+
 	ds.Class = set_class_struct(ds)
+	// println('ds.Class: $ds.Class')
 	if opts.class_missing_purge_flag {
 		// println('gonna purge!')
 		ds.purge_instances_for_missing_class_values()
 	}
-			// println(ds)
+
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
 	if ds.attribute_types[0] == 'm' {
@@ -58,6 +59,8 @@ fn combine_raw_and_inferred_types(ds Dataset) []string {
 		}
 		
 	}
+	// println('ds.raw_attribute_types: ${ds.raw_attribute_types}')
+	// println('combined_types: $combined_types')
 	return combined_types
 }
 

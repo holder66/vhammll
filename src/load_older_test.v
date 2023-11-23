@@ -23,7 +23,7 @@ fn test_load_file() {
 	assert ds.attribute_names == ['sepal length', 'sepal width', 'petal length', 'petal width',
 		'iris']
 	assert ds.data[0][0..4] == ['5.1', '4.9', '4.7', '4.6']
-	assert ds.inferred_attribute_types == ['C', 'C', 'C', 'C', 'c']
+	assert ds.attribute_types == ['C', 'C', 'C', 'C', 'c']
 	assert ds.useful_continuous_attributes[1][0] == 3.5
 	assert ds.useful_discrete_attributes == {}
 
