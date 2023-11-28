@@ -4,21 +4,19 @@ module vhammll
 
 import os
 
-const (
-	output_search_terms = [
-		'Description:',
-		'Usage:',
-		'Options:',
-	]
+const output_search_terms = [
+	'Description:',
+	'Usage:',
+	'Options:',
+]
 
-	main_text           = '// temphelp.v
+const main_text = '// temphelp.v
 module main
 import vhammll
 
 fn main() {
 	vhammll.cli()!
 }'
-)
 
 fn testsuite_begin() ? {
 	os.chdir('..')!

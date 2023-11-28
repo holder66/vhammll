@@ -3,15 +3,13 @@ module vhammll
 
 import os
 
-const (
-	main_text = '// temp.v
+const main_text = '// temp.v
 module main
 import vhammll
 
 fn main() {
 	vhammll.cli()!
 }'
-)
 
 fn testsuite_begin() ? {
 	os.chdir('..')!
