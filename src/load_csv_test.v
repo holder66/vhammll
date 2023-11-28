@@ -19,5 +19,5 @@ fn test_load_csv_file() {
 		postpurge_class_counts: {}
 		postpurge_lcm_class_counts: 0
 	}
-	assert ds.inferred_attribute_types == ['i', 'D', 'D', 'D', 'D', 'c']
+	assert ds.attribute_types == ['m', 'D', 'D', 'D', 'D', 'c']
 }

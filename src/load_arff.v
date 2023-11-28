@@ -13,11 +13,11 @@ fn load_arff_file(path string) Dataset {
 	for line in attributes {
 		if line.ends_with('}') {
 			ds.attribute_names << strip(line.split('{')[0].split(' ')[1].trim_space())
-			ds.attribute_types << 'string'
+			ds.raw_attribute_types << 'string'
 			ds.attribute_flags << [line.split_any('{}')[1]]
 		} else {
 			ds.attribute_names << [strip(line.split_any(' \t')[1])]
-			ds.attribute_types << [line.split_any(' \t').last()]
+			ds.raw_attribute_types << [line.split_any(' \t').last()]
 			ds.attribute_flags << ['']
 		}
 	}
@@ -31,7 +31,8 @@ fn load_arff_file(path string) Dataset {
 	}
 	data := transpose(content[start_data..].filter(!it.starts_with('%')).filter(it != '').map(it.split(',')))
 	ds.data = data.map(it.map(strip(it)))
-	ds.inferred_attribute_types = infer_attribute_types_arff(ds)
+	ds.attribute_types = infer_attribute_types_arff(ds)
+	ds.inferred_attribute_types = []string{len: ds.attribute_names.len}
 	ds.Class = set_class_struct(ds)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
@@ -45,8 +46,9 @@ fn infer_attribute_types_arff(ds Dataset) []string {
 	// mut attr_flag := ''
 	mut inferred := ''
 	should_be_discrete := integer_range_for_discrete.map(it.str())
+	// println('we got to this place')
 	for i in 0 .. ds.attribute_names.len {
-		attr_type = ds.attribute_types[i].to_lower()
+		attr_type = ds.raw_attribute_types[i].to_lower()
 		// println(integer_range_for_discrete)
 		// println(ds.data[i].all(it in should_be_discrete))
 		if attr_type in ['numeric', 'real', 'integer'] {

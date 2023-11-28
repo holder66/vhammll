@@ -24,7 +24,7 @@ fn plot_rank(result RankingResult) {
 	for i in result.binning.lower .. result.binning.upper + 1 {
 		x << i
 	}
-	for attr in ranked_atts.filter(it.inferred_attribute_type == 'C') {
+	for attr in ranked_atts.filter(it.attribute_type == 'C') {
 		traces << RankTrace{
 			label: '${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f}'
 			rank_values: attr.rank_value_array.map(f64(it)).reverse()

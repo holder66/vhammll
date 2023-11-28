@@ -161,7 +161,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index_for_maximum_rank_value
 			attribute_name: ds.attribute_names[attr_index_for_maximum_rank_value]
-			inferred_attribute_type: ds.inferred_attribute_types[attr_index_for_maximum_rank_value]
+			attribute_type: ds.attribute_types[attr_index_for_maximum_rank_value]
 			rank_value: 100.0 * f32(maximum_rank_value) / perfect_rank_value
 			rank_value_array: rank_value_array
 			bins: bin_number_for_maximum_rank_value
@@ -174,7 +174,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index
 			attribute_name: ds.attribute_names[attr_index]
-			inferred_attribute_type: ds.inferred_attribute_types[attr_index]
+			attribute_type: ds.attribute_types[attr_index]
 			rank_value: 100.0 * f32(rank_value) / perfect_rank_value
 		}
 	}

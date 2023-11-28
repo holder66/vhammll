@@ -125,7 +125,7 @@ fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	// mut max_value := f32{0.}
 	mut cont_att := map[int][]f32{}
 	for i in 0 .. ds.attribute_names.len {
-		if ds.inferred_attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
+		if ds.attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
 			nums := ds.data[i].map(fn (w string) f32 {
 				if w in missings { return -math.max_f32
 				 } else { return f32(strconv.atof_quick(w))
@@ -141,40 +141,56 @@ fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	mut disc_att := map[int][]string{}
 	for i in 0 .. ds.attribute_names.len {
-		if ds.inferred_attribute_types[i] == 'D' && string_element_counts(ds.data[i]).len != 1 {
+		// println('i: $i ds.attribute_types[i]: ${ds.attribute_types[i]} uniques(ds.data[i]).len: ${uniques(ds.data[i]).len}')
+		if ds.attribute_types[i] == 'D' && uniques(ds.data[i]).len != 1 {
 			disc_att[i] = ds.data[i]
 		}
 	}
+	// println('disc_att: $disc_att')
 	return disc_att
 }
 
 // set_class_struct
 fn set_class_struct(ds Dataset) Class {
-	mut i := identify_class_attribute(ds.inferred_attribute_types)
+	mut cl := Class{}
+	// find the attribute whose type is 'c'
+	mut i := identify_class_attribute(ds.attribute_types)
+	// println('i in set_class_struct: $i')
 	// i == -1 if no class attribute found
+	// in this case, set the last Discrete attribute as the class
+	// attribute if it does not have a coded type
 	if i == -1 {
-		if ds.path.contains('UKDA') {
-			return Class{}
-		} else {
-			// make the last attribute the class attribute
-			i = ds.attribute_names.len - 1
+		i = ds.attribute_names.len
+		discrete_atts := ds.useful_discrete_attributes.keys()
+		// println('discrete_atts: $discrete_atts')
+		for {
+			println('i: ${i}')
+			if i in discrete_atts || i < 0 {
+				break
+			} else {
+				i -= 1
+			}
 		}
 	}
-	class_counts := string_element_counts(ds.data[i])
-	mut cl := Class{
-		class_name: ds.attribute_names[i]
-		class_values: ds.data[i]
-		// class_counts: string_element_counts(ds.data[i])
-		class_counts: class_counts
-		classes: class_counts.keys()
+	if i < 0 {
+		return Class{}
+	} else {
+		cl = Class{
+			class_name: ds.attribute_names[i]
+			class_values: ds.data[i]
+			class_counts: string_element_counts(ds.data[i])
+			// class_counts: class_counts
+			classes: uniques(ds.data[i])
+		}
 	}
+
 	return cl
 }
 
 // identify_class_attribute returns the index for the class attribute; if
 // none found, returns -1
-fn identify_class_attribute(inferred_attribute_types []string) int {
-	for i, val in inferred_attribute_types {
+fn identify_class_attribute(attribute_types []string) int {
+	for i, val in attribute_types {
 		if val == 'c' {
 			return i
 		}

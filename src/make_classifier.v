@@ -31,7 +31,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 		// println(ds.Class)
 		mut transposed_data := transpose(ds.data)
-		// println('transposed_data before: $transposed_data')
+		println('transposed_data before: ${transposed_data}')
 		mut multipliers := map[string]int{}
 		for class, count in ds.class_counts {
 			multipliers[class] = (ds.class_values.len - count) / count
@@ -109,13 +109,13 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 	mut attr_names := []string{}
 	for ra in ranked_attributes {
 		attr_names << ra.attribute_name
-		if ra.inferred_attribute_type == 'C' {
+		if ra.attribute_type == 'C' {
 			attr_values = ds.useful_continuous_attributes[ra.attribute_index]
 			min = array_min(attr_values.filter(it != -math.max_f32))
 			max = array_max(attr_values)
 			binned_values = discretize_attribute(attr_values, min, max, ra.bins)
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
-				attribute_type: ra.inferred_attribute_type
+				attribute_type: ra.attribute_type
 				minimum: min
 				maximum: max
 				bins: ra.bins
@@ -128,7 +128,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 			// use the translation table to generate an array of translated values
 			binned_values = attr_string_values.map(translation_table[it])
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
-				attribute_type: ra.inferred_attribute_type
+				attribute_type: ra.attribute_type
 				translation_table: translation_table
 				rank_value: ra.rank_value
 				index: ra.attribute_index
@@ -146,6 +146,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 		}
 	}
 	// println('maximum_hamming_distance: ${cl.maximum_hamming_distance}')
+	// println('attr_binned_values: $attr_binned_values')
 	cl.instances = transpose(attr_binned_values)
 	cl.attribute_ordering = attr_names
 	prepurge_instances_count := cl.instances.len

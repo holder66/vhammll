@@ -10,14 +10,17 @@ fn load_orange_older_file(path string, opts LoadOptions) Dataset {
 		path: path
 		class_missing_purge_flag: opts.class_missing_purge_flag
 		attribute_names: extract_words(content[0])
-		attribute_types: extract_words(content[1])
+		raw_attribute_types: extract_words(content[1])
 		attribute_flags: extract_words(content[2])
 		data: transpose(content[3..].map(extract_words(it)))
 	}
 	attr_count := ds.attribute_names.len
-	ds.attribute_types = pad_string_array_to_length(mut ds.attribute_types, attr_count)
+	ds.raw_attribute_types = pad_string_array_to_length(mut ds.raw_attribute_types, attr_count)
+	// println('ds.raw_attribute_types in load_older: $ds.raw_attribute_types')
 	ds.attribute_flags = pad_string_array_to_length(mut ds.attribute_flags, attr_count)
-	ds.inferred_attribute_types = infer_attribute_types_older(ds)
+	ds.attribute_types = get_specified_attribute_types_older(ds)
+	ds.inferred_attribute_types = []string{len: attr_count}
+	// ds.attribute_types = combine_raw_and_inferred_types(ds)
 	ds.Class = set_class_struct(ds)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
@@ -46,34 +49,35 @@ in the second line (ds.attribute_types):
   	'm' or 'meta': meta attribute, eg weighting information; ignore
   	'-dc' followed by a value: indicates how a don't care is represented.
 */
-fn infer_attribute_types_older(ds Dataset) []string {
-	mut inferred_attribute_types := []string{}
+fn get_specified_attribute_types_older(ds Dataset) []string {
+	mut specified_attribute_types := []string{}
 	mut attr_type := ''
 	mut attr_flag := ''
-	mut inferred := ''
+	mut specified := ''
 	for i in 0 .. ds.attribute_names.len {
-		attr_type = ds.attribute_types[i]
+		attr_type = ds.raw_attribute_types[i]
 		attr_flag = ds.attribute_flags[i]
 		if attr_flag in ['c', 'class'] {
-			inferred = 'c'
+			specified = 'c'
 		} else if attr_type in ['d', 'discrete'] {
-			inferred = 'D'
+			specified = 'D'
 		} else if attr_type in ['c', 'continuous'] {
-			inferred = 'C'
+			specified = 'C'
 		} else if attr_type in ['string', 'basket'] || attr_flag in ['i', 'ignore'] {
-			inferred = 'i'
+			specified = 'i'
 		}
 		// if the entry contains a list of items separated by spaces
 		else if attr_type.contains(' ') {
-			inferred = 'D'
+			specified = 'D'
 		} else if attr_type == '' && attr_flag == '' {
-			inferred = infer_type_from_data(ds.data[i])
+			// specified = ''
+			specified = infer_type_from_data(ds.data[i])
 		} else {
 			panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')
 		}
-		inferred_attribute_types << inferred
+		specified_attribute_types << specified
 	}
-	return inferred_attribute_types
+	return specified_attribute_types
 }
 
 // pad_string_array_to_length adds empty strings to arr to extend to length l

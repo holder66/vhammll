@@ -65,8 +65,9 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		}
 		uniques: 5
 		missing: 2
-		att_type: ''
-		inferred_type: 'c'
+		raw_type: 'c'
+		att_type: 'c'
+		inferred_type: ''
 		for_training: false
 		min: 0.0
 		max: 0.0
@@ -98,8 +99,9 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		}
 		uniques: 3
 		missing: 0
-		att_type: ''
-		inferred_type: 'c'
+		raw_type: 'c'
+		att_type: 'c'
+		inferred_type: ''
 		for_training: false
 		min: 0.0
 		max: 0.0

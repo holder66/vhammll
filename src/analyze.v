@@ -27,13 +27,19 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it))
-	// println('missing_values in analyze_dataset: $missing_vals')
+	println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
 	mut atts := []Attribute{}
+	println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
+	println('raw_attribute_types: ${ds.raw_attribute_types}')
+	println('attribute_types: ${ds.attribute_types}')
+	println('inferred_attribute_types: ${ds.inferred_attribute_types}')
 	for i, name in ds.attribute_names {
+		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
+
 		mut att_info := Attribute{
 			id: i
 			name: name
@@ -41,27 +47,32 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			count: ds.data[i].len
 			uniques: uniques_values(ds.data[i])
 			missing: missing_vals[i]
-			// att_type: ds.inferred_attribute_types[i]
+			raw_type: ds.raw_attribute_types[i]
+			att_type: ds.attribute_types[i]
 			inferred_type: ds.inferred_attribute_types[i]
 			for_training: i in indices_of_useful_attributes
 		}
-		if i in indices_of_useful_attributes && ds.inferred_attribute_types[i] == 'C' {
+		// println('we are here')
+		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
 			att_info.max = array_max(ds.useful_continuous_attributes[i])
 			att_info.min = f32(array_min(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
 			att_info.mean = f32(stats.mean(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
 			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(it != -math.max_f32).sorted())
 		}
-		if i in indices_of_useful_attributes && ds.inferred_attribute_types[i] == 'D' {
+		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
 			att_info.counts_map = string_element_counts(ds.data[i])
 		}
 		atts << att_info
 		max_values << att_info.max
 		min_values << att_info.min
 	}
+	println('we are here: ${max_values} ${min_values}')
+
 	result.attributes = atts
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
-	// println([result.overall_min, result.overall_max])
+	println([result.overall_min, result.overall_max])
+	println('result in analyze_dataset: ${result}')
 	if opts.show_flag {
 		show_analyze(result)
 	}
