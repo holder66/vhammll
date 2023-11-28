@@ -450,42 +450,40 @@ struct Styles {
 	style string
 }
 
-const (
-	m_u = Styles{
-		fg: 'magenta'
-		style: 'underline'
-	}
-	lg = Styles{
-		fg: 'light_gray'
-	}
-	m_ = Styles{
-		fg: 'magenta'
-	}
-	g_b = Styles{
-		fg: 'green'
-		style: 'bold'
-	}
-	b_u = Styles{
-		fg: 'blue'
-		style: 'underline'
-	}
-	dg = Styles{
-		fg: 'dark_gray'
-	}
-	c_u = Styles{
-		fg: 'cyan'
-		style: 'underline'
-	}
-	r_ = Styles{
-		fg: 'red'
-	}
-	b_ = Styles{
-		fg: 'blue'
-	}
-	g_ = Styles{
-		fg: 'green'
-	}
-)
+const m_u = Styles{
+	fg: 'magenta'
+	style: 'underline'
+}
+const lg = Styles{
+	fg: 'light_gray'
+}
+const m_ = Styles{
+	fg: 'magenta'
+}
+const g_b = Styles{
+	fg: 'green'
+	style: 'bold'
+}
+const b_u = Styles{
+	fg: 'blue'
+	style: 'underline'
+}
+const dg = Styles{
+	fg: 'dark_gray'
+}
+const c_u = Styles{
+	fg: 'cyan'
+	style: 'underline'
+}
+const r_ = Styles{
+	fg: 'red'
+}
+const b_ = Styles{
+	fg: 'blue'
+}
+const g_ = Styles{
+	fg: 'green'
+}
 
 // chlk adds font colour and style information to a string
 fn chlk(s string, style_code Styles) string {

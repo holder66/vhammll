@@ -2,8 +2,7 @@
 
 module vhammll
 
-const (
-	vhammll_help = "
+const vhammll_help = "
 
     Description:
     vhamml.v is a command line interface app to make use of the functionality
@@ -106,7 +105,7 @@ const (
         
   "
 
-	display_help = '
+const display_help = '
 Description:
 "display" regenerates the console display produced by other commands, from 
 the file saved by those commands when run with the -o or --output flag followed
@@ -124,7 +123,7 @@ Options:
 -ms:           save multiple classifier parameters to a file
 '
 
-	examples_help = '
+const examples_help = '
 Description:
 "examples" displays information about running the various commands, shows
 a typical command interface line illustrating the example, prompts the user
@@ -138,7 +137,7 @@ Options:
 To stop before completing the demo, hit ctrl-C
 '
 
-	analyze_help = '
+const analyze_help = '
 Description:
 "analyze" displays on the console, tables containing information about a 
 datafile\'s type, the attributes, and the class attribute. The tables are:
@@ -156,7 +155,7 @@ Options:
 -h --help: displays this message.
   '
 
-	append_help = '
+const append_help = '
 Description:
 "append" extends a classifier by adding one or more labeled cases.
 Instances to be added should be in a file specified at the end of the command 
@@ -177,7 +176,7 @@ Options:
 -e --expanded: print out the extended classifier struct on the console.
   '
 
-	rank_help = '
+const rank_help = '
 Description:
   "rank" rank orders a dataset\'s attributes in terms of ability 
 to distinguish between classes; it takes into account class prevalences.
@@ -192,7 +191,7 @@ Options:
       continuous attributes.
     '
 
-	make_help = '
+const make_help = '
 Description:
 "make" creates a classifier from the datafile given as the last argument.
 Returns a classifier struct.
@@ -211,7 +210,7 @@ Options:
   -x --exclude: exclude missing values from rank value calculations.
     '
 
-	query_help = '
+const query_help = '
 Description:
 "query" takes a classifier created by make(), and interactively asks the user
 to input (at the console) values for each attribute included in the classifier.
@@ -233,7 +232,7 @@ applicable.
   -wr, when ranking attributes, weight contributions by class prevalences.
     '
 
-	orange_help = "
+const orange_help = "
 Description:
 How to format files as per Orange.
 
@@ -276,7 +275,7 @@ the third line contains optional flags:
   -dc followed by a value: indicates how a don't care is represented.
     "
 
-	verify_help = '
+const verify_help = '
 Description:
 "verify" takes two datasets; it creates a classifier from the dataset file
 given by the last item in the command line, and uses that classifier to
@@ -303,7 +302,7 @@ both the classification and the verification datafile.
 -wr, when ranking attributes, weight contributions by class prevalences.
     '
 
-	validate_help = '
+const validate_help = '
 Description:
 "validate" classifies the instances in a validation dataset (specified by 
 -t, --test) using a classifier generated from the dataset specified by the 
@@ -337,7 +336,7 @@ Options:
   -wr: when ranking attributes, weight contributions by class prevalences.
   '
 
-	cross_help = '
+const cross_help = '
 Description:
 "cross": When verifying the accuracy of a ML tool, it is common practice
 to train the tool on a subset of the instances in a datafile, and then 
@@ -380,7 +379,7 @@ Options:
 
 '
 
-	explore_help = '
+const explore_help = '
 Description:
 "explore" runs a series of cross-validations (or of verifies, if a
 second file is given) over a range of parameter 
@@ -416,4 +415,3 @@ Options:
   -wr: when ranking attributes, weight contributions by class prevalences;
   -x --exclude: exclude missing values from rank value calculations;
 '
-)
