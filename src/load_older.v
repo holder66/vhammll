@@ -71,7 +71,7 @@ fn get_specified_attribute_types_older(ds Dataset) []string {
 			specified = 'D'
 		} else if attr_type == '' && attr_flag == '' {
 			// specified = ''
-			specified = infer_type_from_data(ds.data[i])
+			specified = infer_type_from_data(ds.data[i], ds.DefaultValues)
 		} else {
 			panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')
 		}

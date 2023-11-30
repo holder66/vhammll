@@ -124,7 +124,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 			}
 		} else { // ie for discrete attributes
 			attr_string_values = ds.useful_discrete_attributes[ra.attribute_index]
-			translation_table = make_translation_table(attr_string_values)
+			translation_table = make_translation_table(attr_string_values, opts.missings)
 			// use the translation table to generate an array of translated values
 			binned_values = attr_string_values.map(translation_table[it])
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
@@ -183,7 +183,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 // make_translation_table returns a map with the integer for each element in
 // an array of strings; 0 for missing values. This makes discrete attributes
 // resemble binned continuous attributes for subsequent processing
-fn make_translation_table(array []string) map[string]int {
+fn make_translation_table(array []string, missings []string) map[string]int {
 	mut val := map[string]int{}
 	mut i := 1
 	for word in array {

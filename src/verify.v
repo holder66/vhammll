@@ -95,7 +95,7 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 			instances_to_be_classified << generate_test_instances_array(classifier_array.last(),
 				test_ds)
 		}
-		println('classifier_array: ${classifier_array}')
+		// println('classifier_array: ${classifier_array}')
 		// println(mult_opts)
 		// println('instances_to_be_classified: $instances_to_be_classified')
 		instances_to_be_classified = transpose(instances_to_be_classified)

@@ -4,7 +4,7 @@ module vhammll
 pub fn (mut ds Dataset) purge_instances_for_missing_class_values() Dataset {
 	mut instances_to_purge := []int{}
 	for i, class_val in ds.class_values {
-		if class_val in missings {
+		if class_val in ds.missings {
 			instances_to_purge << i
 		}
 	}

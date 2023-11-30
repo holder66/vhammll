@@ -45,7 +45,7 @@ fn infer_attribute_types_arff(ds Dataset) []string {
 	mut attr_type := ''
 	// mut attr_flag := ''
 	mut inferred := ''
-	should_be_discrete := integer_range_for_discrete.map(it.str())
+	should_be_discrete := ds.integer_range_for_discrete.map(it.str())
 	// println('we got to this place')
 	for i in 0 .. ds.attribute_names.len {
 		attr_type = ds.raw_attribute_types[i].to_lower()

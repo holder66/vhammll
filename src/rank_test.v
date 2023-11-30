@@ -70,32 +70,36 @@ fn test_rank_attributes() {
 
 // test_get_rank_value_for_strings
 fn test_get_rank_value_for_strings() {
-	mut params := Parameters{
+	// mut params := Parameters{
+	// 	exclude_flag: true
+	// 	weight_ranking_flag: true
+	// }
+	mut opts := Options{
 		exclude_flag: true
 		weight_ranking_flag: true
 	}
 	mut ds := load_file('datasets/developer.tab')
-	assert get_rank_value_for_strings(ds.data[1], ds.class_values, ds.class_counts, params) == 60
+	assert get_rank_value_for_strings(ds.data[1], ds.class_values, ds.class_counts, opts) == 60
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 92
-	params.exclude_flag = false
+		opts) == 92
+	opts.exclude_flag = false
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 92
-	params.weight_ranking_flag = false
-	assert get_rank_value_for_strings(ds.data[1], ds.class_values, ds.class_counts, params) == 18
+		opts) == 92
+	opts.weight_ranking_flag = false
+	assert get_rank_value_for_strings(ds.data[1], ds.class_values, ds.class_counts, opts) == 18
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 26
-	params.exclude_flag = false
+		opts) == 26
+	opts.exclude_flag = false
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 26
+		opts) == 26
 	ds = load_file('datasets/anneal.tab')
-	params.exclude_flag = true
-	params.weight_ranking_flag = true
+	opts.exclude_flag = true
+	opts.weight_ranking_flag = true
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 322594
-	params.weight_ranking_flag = false
+		opts) == 322594
+	opts.weight_ranking_flag = false
 	assert get_rank_value_for_strings(ds.class_values, ds.class_values, ds.class_counts,
-		params) == 3592
+		opts) == 3592
 }
 
 // test_rank_attribute_sorting

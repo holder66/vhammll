@@ -34,18 +34,19 @@ If no prefix, treat numbers as continuous, otherwise discrete
 */
 
 fn test_infer_type_from_data() {
-	assert infer_type_from_data([]) == 'i' // ignore if no data
-	assert infer_type_from_data(['1', '2', '3']) == 'D' // all integers,
-	assert infer_type_from_data(['3', '3', '3']) == 'i'
-	assert infer_type_from_data(['', '', '', '?']) == 'i'
-	assert infer_type_from_data(['', '?', '1', '2', '3']) == 'D'
-	assert infer_type_from_data(['', '?', '1', '2', '3', '10']) == 'D'
-	assert infer_type_from_data(['', '?', '1', '2', '3', '10', '-8', '-1']) == 'C'
-	assert infer_type_from_data(['', '?', '1', '2', '3', '22']) == 'C'
-	assert infer_type_from_data(['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']) == 'D'
-	assert infer_type_from_data(['3.14', '2']) == 'C'
-	assert infer_type_from_data(['?', '', '3.14', '2']) == 'C'
-	assert infer_type_from_data(['?', '', '4800', '3.14', '2']) == 'C'
+	dv := DefaultValues{}
+	assert infer_type_from_data([], dv) == 'i' // ignore if no data
+	assert infer_type_from_data(['1', '2', '3'], dv) == 'D' // all integers,
+	assert infer_type_from_data(['3', '3', '3'], dv) == 'i'
+	assert infer_type_from_data(['', '', '', '?'], dv) == 'i'
+	assert infer_type_from_data(['', '?', '1', '2', '3'], dv) == 'D'
+	assert infer_type_from_data(['', '?', '1', '2', '3', '10'], dv) == 'D'
+	assert infer_type_from_data(['', '?', '1', '2', '3', '10', '-8', '-1'], dv) == 'C'
+	assert infer_type_from_data(['', '?', '1', '2', '3', '22'], dv) == 'C'
+	assert infer_type_from_data(['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', ''], dv) == 'D'
+	assert infer_type_from_data(['3.14', '2'], dv) == 'C'
+	assert infer_type_from_data(['?', '', '3.14', '2'], dv) == 'C'
+	assert infer_type_from_data(['?', '', '4800', '3.14', '2'], dv) == 'C'
 }
 
 fn test_load_file() {

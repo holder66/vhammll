@@ -26,17 +26,17 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_counts: ds.class_counts
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
-	mut missing_vals := ds.data.map(missing_values(it))
-	println('missing_values in analyze_dataset: ${missing_vals}')
+	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
+	// println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
 	mut atts := []Attribute{}
 	println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
-	println('raw_attribute_types: ${ds.raw_attribute_types}')
+	// println('raw_attribute_types: ${ds.raw_attribute_types}')
 	println('attribute_types: ${ds.attribute_types}')
-	println('inferred_attribute_types: ${ds.inferred_attribute_types}')
+	// println('inferred_attribute_types: ${ds.inferred_attribute_types}')
 	for i, name in ds.attribute_names {
 		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
 
@@ -60,9 +60,13 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(it != -math.max_f32).sorted())
 		}
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
+			println('ds.data.len: ${ds.data.len}')
+			// println('ds.data[i]: ${ds.data[i]}')
 			att_info.counts_map = string_element_counts(ds.data[i])
+			println('att_info: ${att_info}')
 		}
 		atts << att_info
+		// println('atts: $atts')
 		max_values << att_info.max
 		min_values << att_info.min
 	}
@@ -72,7 +76,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
 	println([result.overall_min, result.overall_max])
-	println('result in analyze_dataset: ${result}')
+	// println('result in analyze_dataset: ${result}')
 	if opts.show_flag {
 		show_analyze(result)
 	}
@@ -88,6 +92,6 @@ fn uniques_values(attribute_values []string) int {
 }
 
 // missing_values
-fn missing_values(attribute_values []string) int {
+fn missing_values(attribute_values []string, missings []string) int {
 	return attribute_values.filter(it in missings).len
 }

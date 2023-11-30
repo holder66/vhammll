@@ -3,8 +3,14 @@ module vhammll
 
 import time
 
-pub const missings = ['?', '', 'NA', ' ']
-pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+// pub const missings = ['?', '', 'NA', ' ']
+// pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+pub struct DefaultValues {
+pub mut:
+	missings                   []string = ['?', '', 'NA', ' ']
+	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
 
 pub struct Class {
 pub mut:
@@ -27,6 +33,7 @@ struct ContinuousAttribute {
 pub struct Dataset {
 	Class // DataDict
 	LoadOptions
+	DefaultValues
 pub mut:
 	struct_type                  string = '.Dataset'
 	path                         string
@@ -69,6 +76,7 @@ mut:
 
 pub struct RankingResult {
 	LoadOptions
+	DefaultValues
 pub mut:
 	struct_type                string = '.RankingResult'
 	path                       string
@@ -92,6 +100,7 @@ pub mut:
 pub struct Classifier {
 	Parameters
 	LoadOptions
+	DefaultValues
 	Class
 pub mut:
 	struct_type              string = '.Classifier'
@@ -151,6 +160,7 @@ pub mut:
 pub struct Options {
 	Parameters
 	LoadOptions
+	DefaultValues
 	DisplaySettings
 	MultipleOptions
 	MultipleClassifiersArray
@@ -252,6 +262,7 @@ pub mut:
 
 pub struct AnalyzeResult {
 	LoadOptions
+	DefaultValues
 pub mut:
 	struct_type             string = '.AnalyzeResult'
 	environment             Environment
@@ -267,6 +278,7 @@ pub mut:
 
 pub struct ClassifyResult {
 	LoadOptions
+	DefaultValues
 	Class
 pub mut:
 	struct_type                string = '.ClassifyResult'
@@ -298,6 +310,7 @@ pub mut:
 pub struct CrossVerifyResult {
 	Parameters
 	LoadOptions
+	DefaultValues
 	DisplaySettings
 	Metrics
 	BinaryMetrics
@@ -349,6 +362,7 @@ mut:
 pub struct ExploreResult {
 	Parameters
 	LoadOptions
+	DefaultValues
 	AttributeRange
 	DisplaySettings
 pub mut:
@@ -374,6 +388,7 @@ pub struct ValidateResult {
 	Class
 	Parameters
 	LoadOptions
+	DefaultValues
 pub mut:
 	struct_type                     string = '.ValidateResult'
 	datafile_path                   string

@@ -87,8 +87,8 @@ fn extract_words(line string) []string {
 }
 
 // infer_type_from_data
-fn infer_type_from_data(values []string) string {
-	no_missing_values := values.filter(it !in missings)
+fn infer_type_from_data(values []string, dv DefaultValues) string {
+	no_missing_values := values.filter(it !in dv.missings)
 	// if no data, 'i'
 	if no_missing_values == [] {
 		return 'i'
@@ -112,25 +112,28 @@ fn infer_type_from_data(values []string) string {
 	if no_missing_values.any(it.contains('.')) {
 		return 'C'
 	}
-	if no_missing_values.map(it.int()).all(it in integer_range_for_discrete) {
+	if no_missing_values.map(it.int()).all(it in dv.integer_range_for_discrete) {
 		return 'D'
 	}
 	return 'C'
 }
 
+fn replace_missing_value(w string, missings []string) f32 {
+	if w in missings {
+		return -math.max_f32
+	}
+	return f32(strconv.atof_quick(w))
+}
+
 // get_useful_continuous_attributes
-fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
+pub fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	// initialize the values of the result to -max_f32, to indicate missing values
 	// mut min_value := f32(0.)
 	// mut max_value := f32{0.}
 	mut cont_att := map[int][]f32{}
 	for i in 0 .. ds.attribute_names.len {
 		if ds.attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
-			nums := ds.data[i].map(fn (w string) f32 {
-				if w in missings { return -math.max_f32
-				 } else { return f32(strconv.atof_quick(w))
-				 }
-			})
+			nums := ds.data[i].map(replace_missing_value(it, ds.missings))
 			cont_att[i] = nums
 		}
 	}
@@ -138,7 +141,7 @@ fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 }
 
 // get_useful_discrete_attributes
-fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
+pub fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	mut disc_att := map[int][]string{}
 	for i in 0 .. ds.attribute_names.len {
 		// println('i: $i ds.attribute_types[i]: ${ds.attribute_types[i]} uniques(ds.data[i]).len: ${uniques(ds.data[i]).len}')
@@ -151,7 +154,7 @@ fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 }
 
 // set_class_struct
-fn set_class_struct(ds Dataset) Class {
+pub fn set_class_struct(ds Dataset) Class {
 	mut cl := Class{}
 	// find the attribute whose type is 'c'
 	mut i := identify_class_attribute(ds.attribute_types)
@@ -164,7 +167,7 @@ fn set_class_struct(ds Dataset) Class {
 		discrete_atts := ds.useful_discrete_attributes.keys()
 		// println('discrete_atts: $discrete_atts')
 		for {
-			println('i: ${i}')
+			// println('i: ${i}')
 			if i in discrete_atts || i < 0 {
 				break
 			} else {

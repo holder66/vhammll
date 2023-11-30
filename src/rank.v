@@ -59,7 +59,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 		weight_ranking_flag: opts.weight_ranking_flag
 	}
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
-		ds.Class.class_counts, opts.Parameters))
+		ds.Class.class_counts, opts))
 	// println(opts.weight_ranking_flag)
 	if opts.verbose_flag && opts.command == 'rank' {
 		println('perfect_rank_value: ${perfect_rank_value}')
@@ -170,7 +170,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	// loop through discrete attributes
 	for attr_index, attr_values in ds.useful_discrete_attributes {
 		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts,
-			opts.Parameters)
+			opts)
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index
 			attribute_name: ds.attribute_names[attr_index]
@@ -221,13 +221,13 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 }
 
 // get_rank_value_for_strings
-fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, params Parameters) i64 {
+fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, opts Options) i64 {
 	// println('values: $values  class_values: $class_values  class_counts: $class_counts  $exclude')
 	mut rank_val := i64(0)
 	mut count := 0
 	mut row := []int{}
 	for unique_val, _ in string_element_counts(values) {
-		if unique_val in missings && params.exclude_flag {
+		if unique_val in opts.missings && opts.exclude_flag {
 			continue
 		}
 		row = []int{}
@@ -243,7 +243,7 @@ fn get_rank_value_for_strings(values []string, class_values []string, class_coun
 			}
 			row << count
 		}
-		if params.weight_ranking_flag {
+		if opts.weight_ranking_flag {
 			rank_val += sum_along_row_weighted(row, get_map_values(class_counts))
 		} else {
 			rank_val += sum_along_row_unweighted(row)
