@@ -18,6 +18,7 @@ import math.stats
 // outputfile_path: if specified, saves the analysis results.
 // ```
 pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
+	println('ds in analyze_dataset: $ds')
 	mut result := AnalyzeResult{
 		environment: get_environment()
 		datafile_path: ds.path
@@ -27,15 +28,16 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
-	// println('missing_values in analyze_dataset: ${missing_vals}')
+	println('opts.missings in analyze_dataset: $opts.missings')
+	println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
 	mut atts := []Attribute{}
-	println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
+	// println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
 	// println('raw_attribute_types: ${ds.raw_attribute_types}')
-	println('attribute_types: ${ds.attribute_types}')
+	// println('attribute_types: ${ds.attribute_types}')
 	// println('inferred_attribute_types: ${ds.inferred_attribute_types}')
 	for i, name in ds.attribute_names {
 		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
@@ -60,17 +62,17 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(it != -math.max_f32).sorted())
 		}
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
-			println('ds.data.len: ${ds.data.len}')
+			// println('ds.data.len: ${ds.data.len}')
 			// println('ds.data[i]: ${ds.data[i]}')
 			att_info.counts_map = string_element_counts(ds.data[i])
-			println('att_info: ${att_info}')
+			// println('att_info: ${att_info}')
 		}
 		atts << att_info
 		// println('atts: $atts')
 		max_values << att_info.max
 		min_values << att_info.min
 	}
-	println('we are here: ${max_values} ${min_values}')
+	// println('we are here: ${max_values} ${min_values}')
 
 	result.attributes = atts
 	result.overall_max = array_max(max_values)

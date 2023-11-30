@@ -15,6 +15,7 @@ import regex
 // ```
 
 pub fn load_file(path string, opts LoadOptions) Dataset {
+	println('opts in load_file: $opts')
 	// println(path)
 	// println(file_type(path))
 	return match file_type(path) {
@@ -87,8 +88,8 @@ fn extract_words(line string) []string {
 }
 
 // infer_type_from_data
-fn infer_type_from_data(values []string, dv DefaultValues) string {
-	no_missing_values := values.filter(it !in dv.missings)
+fn infer_type_from_data(values []string, lo LoadOptions	) string {
+	no_missing_values := values.filter(it !in lo.missings)
 	// if no data, 'i'
 	if no_missing_values == [] {
 		return 'i'
@@ -112,7 +113,7 @@ fn infer_type_from_data(values []string, dv DefaultValues) string {
 	if no_missing_values.any(it.contains('.')) {
 		return 'C'
 	}
-	if no_missing_values.map(it.int()).all(it in dv.integer_range_for_discrete) {
+	if no_missing_values.map(it.int()).all(it in lo.integer_range_for_discrete) {
 		return 'D'
 	}
 	return 'C'
@@ -158,7 +159,7 @@ pub fn set_class_struct(ds Dataset) Class {
 	mut cl := Class{}
 	// find the attribute whose type is 'c'
 	mut i := identify_class_attribute(ds.attribute_types)
-	// println('i in set_class_struct: $i')
+	println('i in set_class_struct: $i')
 	// i == -1 if no class attribute found
 	// in this case, set the last Discrete attribute as the class
 	// attribute if it does not have a coded type

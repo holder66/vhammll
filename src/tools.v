@@ -291,9 +291,9 @@ fn lcm(arr []int) i64 {
 
 // array_min returns the minimum value in the array
 fn array_min[T](a []T) T {
-	// if a.len == 0 {
-	// 	return error('.min called on an empty array')
-	// }
+	if a.len == 0 {
+		panic('array_min called on an empty array')
+	}
 	mut val := a[0]
 	for e in a {
 		if e < val {

@@ -1,14 +1,19 @@
 // purge_missings.v
 module vhammll
+pub fn purge_instances_for_missing_class_values_not_inline(mut ds Dataset) Dataset {
+	return ds.purge_instances_for_missing_class_values()
+}
 
 pub fn (mut ds Dataset) purge_instances_for_missing_class_values() Dataset {
 	mut instances_to_purge := []int{}
+	println(ds.class_values)
+	println('missings in purge_instances_for_missing_class_values: $ds.missings')
 	for i, class_val in ds.class_values {
 		if class_val in ds.missings {
 			instances_to_purge << i
 		}
 	}
-	// println('instances_to_purge: ${instances_to_purge.len} $instances_to_purge')
+	println('instances_to_purge in purge_instances_for_missing_class_values: ${instances_to_purge.len} $instances_to_purge')
 	mut result := []string{cap: ds.class_values.len}
 	for i, e in ds.class_values {
 		if i !in instances_to_purge {

@@ -5,14 +5,16 @@ import os
 
 // load_orange_newer_file loads from an orange-newer file into a Dataset struct
 fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
+	println('opts in load_orange_newer_file: $opts')
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	attribute_words := extract_words(content[0])
 	types_attributes := attribute_words.map(extract_types(it))
 	mut ds := Dataset{
+		LoadOptions: opts
 		path: path
 		attribute_names: types_attributes.map(it[1])
 		raw_attribute_types: types_attributes.map(it[0])
-		class_missing_purge_flag: opts.class_missing_purge_flag
+		// class_missing_purge_flag: opts.class_missing_purge_flag
 		// ox_spectra: content[1..].map(extract_words(it))
 	}
 	// ds.data = transpose(ds.ox_spectra)
@@ -53,8 +55,8 @@ pub fn combine_raw_and_inferred_types(ds Dataset) []string {
 			t.contains('c') { 'c' }
 			t in ['w', 'S', 'T'] { 'i' }
 			t == '' && ds.inferred_attribute_types[i] != '' { ds.inferred_attribute_types[i] }
-			else { infer_type_from_data(ds.data[i], ds.DefaultValues) }
-			// else { panic('unrecognized attribute type "${t}" for attribute "${ds.attribute_names[i]}"') }
+			else { infer_type_from_data(ds.data[i], ds.LoadOptions) }
+			// else { panic('unrecognized attribute type "${t}" for aLttribute "${ds.attribute_names[i]}"') }
 		}
 	}
 	// println('ds.raw_attribute_types: ${ds.raw_attribute_types}')
@@ -87,7 +89,7 @@ fn infer_attribute_types_newer(ds Dataset) []string {
 			}
 			attr_type == '' {
 				// println('and now here')
-				infer_type_from_data(ds.data[i], ds.DefaultValues)
+				infer_type_from_data(ds.data[i], ds.LoadOptions)
 			}
 			else {
 				panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')
