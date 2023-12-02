@@ -77,8 +77,8 @@ fn test_make_classifier() ? {
 fn test_make_translation_table() {
 	mut array := ['Montreal', 'Ottawa', 'Markham', 'Oakville', 'Oakville', 'Laval', 'Laval', 'Laval',
 		'Laval', 'Laval', 'Laval', 'Laval', 'Laval']
-	dv := DefaultValues{}
-	assert make_translation_table(array, dv.missings) == {
+	lo := LoadOptions{}
+	assert make_translation_table(array, lo.missings) == {
 		'Montreal': 1
 		'Ottawa':   2
 		'Markham':  3
@@ -86,7 +86,7 @@ fn test_make_translation_table() {
 		'Laval':    5
 	}
 	array = ['4', '5', '3', '?', '2', '4', '2', '4', '2', '4', '4', '3', '3']
-	assert make_translation_table(array, dv.missings) == {
+	assert make_translation_table(array, lo.missings) == {
 		'4': 1
 		'5': 2
 		'3': 3

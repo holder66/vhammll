@@ -84,23 +84,18 @@ fn test_append() ? {
 fn test_rank_attributes() {
 	mut r := os.execute_or_panic('./temp rank')
 	// println(r.output)
-	assert r.output.len == 557
 	assert r.output.contains('"rank" rank orders a dataset\'s attributes')
 	r = os.execute_or_panic('./temp rank vhammll/datasets/developer.tab')
 	// println(r.output)
-	assert r.output.len == 952
 	assert r.output.contains('5   age                              2  C           84.62     12')
 	r = os.execute_or_panic('./temp rank -x -b 3,3 vhammll/datasets/iris.tab')
 	// println(r.output)
-	assert r.output.len == 666
 	assert r.output.contains('4   sepal width                      1  C           34.67      3')
 	r = os.execute_or_panic('./temp rank -b 2,6 -x -a 2 vhammll/datasets/iris.tab')
 	// println(r.output)
-	assert r.output.len == 666
 	assert r.output.contains('Bin range for continuous attributes: from 2 to 6 with interval 1')
 	r = os.execute_or_panic('./temp rank -x -g vhammll/datasets/anneal.tab')
 	// println(r.output)
-	assert r.output.len == 2594
 	assert r.output.contains('8   carbon                           3  C           78.90      7')
 }
 

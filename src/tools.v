@@ -438,7 +438,7 @@ fn majority_vote(arr []string) string {
 	return ''
 }
 
-fn close[T](a T, b T) bool {
+pub fn close[T](a T, b T) bool {
 	if typeof(a).name == 'f32' {
 		return math.tolerance(a, b, 1e-6)
 	}

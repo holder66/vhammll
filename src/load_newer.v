@@ -5,7 +5,7 @@ import os
 
 // load_orange_newer_file loads from an orange-newer file into a Dataset struct
 fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
-	println('opts in load_orange_newer_file: $opts')
+	// println('opts in load_orange_newer_file: ${opts}')
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	attribute_words := extract_words(content[0])
 	types_attributes := attribute_words.map(extract_types(it))
@@ -25,7 +25,7 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	ds.Class = set_class_struct(ds)
 	// println('ds.Class: $ds.Class')
 	if opts.class_missing_purge_flag {
-		println('gonna purge!')
+		// println('gonna purge in load_newer.v!')
 		ds.purge_instances_for_missing_class_values()
 	}
 

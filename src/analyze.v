@@ -18,7 +18,7 @@ import math.stats
 // outputfile_path: if specified, saves the analysis results.
 // ```
 pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
-	println('ds in analyze_dataset: $ds')
+	// println('ds in analyze_dataset: $ds')
 	mut result := AnalyzeResult{
 		environment: get_environment()
 		datafile_path: ds.path
@@ -28,8 +28,8 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
-	println('opts.missings in analyze_dataset: $opts.missings')
-	println('missing_values in analyze_dataset: ${missing_vals}')
+	println('opts.missings in analyze_dataset: ${opts.missings}')
+	// println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}

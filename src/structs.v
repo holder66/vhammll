@@ -6,7 +6,7 @@ import time
 // pub const missings = ['?', '', 'NA', ' ']
 // pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-pub struct DefaultVals{
+pub struct DefaultVals {
 pub mut:
 	missings                   []string = ['?', '', 'NA', ' ']
 	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -75,7 +75,6 @@ mut:
 
 pub struct RankingResult {
 	LoadOptions
-
 pub mut:
 	struct_type                string = '.RankingResult'
 	path                       string
