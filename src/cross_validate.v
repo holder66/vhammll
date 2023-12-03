@@ -30,6 +30,7 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
+	println('ds.class_counts in cross_validate.v: $ds.class_counts')
 	// to sort out what is going on, run the test file with concurrency off.
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path

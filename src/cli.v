@@ -8,7 +8,8 @@ import math
 // import runtime
 
 @[params]
-pub struct Arguments {
+pub struct CliOptions {
+	LoadOptions
 pub mut:
 	args []string
 }
@@ -81,15 +82,19 @@ pub mut:
 // -wr when ranking attributes, weight contributions by class prevalences;
 // -x --exclude, do not take into account missing values when ranking attributes;
 // ```
-pub fn cli(args Arguments) ! {
+pub fn cli(cli_options CliOptions) ! {
+	println('cli_options in cli.v: $cli_options')
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
 	mut opts := Options{}
-	if args.args == [] {
+	if cli_options.args == [] {
 		opts = get_options(os.args[1..])
 	} else {
-		opts = get_options(args.args)
+		opts = get_options(cli_options.args)
+		opts.missings = cli_options.missings
+		opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
+		// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
 	}
 	if opts.help_flag {
 		println(show_help(opts))
@@ -279,6 +284,7 @@ fn do_validate(mut opts Options) ! {
 fn cross(mut opts Options) {
 	opts.show_flag = true
 	opts.random_pick = if opts.repetitions > 1 { true } else { false }
+	println('opts.LoadOptions in cli.v: $opts.LoadOptions')
 	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), opts)
 }
 
