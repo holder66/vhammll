@@ -83,7 +83,7 @@ pub mut:
 // -x --exclude, do not take into account missing values when ranking attributes;
 // ```
 pub fn cli(cli_options CliOptions) ! {
-	println('cli_options in cli.v: $cli_options')
+	println('cli_options in cli.v: ${cli_options}')
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
@@ -284,7 +284,7 @@ fn do_validate(mut opts Options) ! {
 fn cross(mut opts Options) {
 	opts.show_flag = true
 	opts.random_pick = if opts.repetitions > 1 { true } else { false }
-	println('opts.LoadOptions in cli.v: $opts.LoadOptions')
+	println('opts.LoadOptions in cli.v: ${opts.LoadOptions}')
 	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), opts)
 }
 
