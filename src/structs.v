@@ -14,7 +14,8 @@ pub mut:
 
 pub struct Class {
 pub mut:
-	class_name                 string   // the attribute which holds the class
+	class_name                 string // the attribute which holds the class
+	class_index                int
 	classes                    []string // to ensure that the ordering remains the same
 	class_values               []string
 	missing_class_values       []int // these are the indices of the original class values array
@@ -265,6 +266,7 @@ pub mut:
 	datafile_path           string
 	datafile_type           string
 	class_name              string
+	class_index             int
 	class_counts            map[string]int
 	attributes              []Attribute
 	overall_min             f32

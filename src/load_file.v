@@ -181,6 +181,7 @@ pub fn set_class_struct(ds Dataset) Class {
 	} else {
 		cl = Class{
 			class_name: ds.attribute_names[i]
+			class_index: i
 			class_values: ds.data[i]
 			class_counts: string_element_counts(ds.data[i])
 			// class_counts: class_counts

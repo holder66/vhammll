@@ -24,6 +24,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		datafile_path: ds.path
 		datafile_type: file_type(ds.path)
 		class_name: ds.class_name
+		class_index: ds.class_index
 		class_counts: ds.class_counts
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
