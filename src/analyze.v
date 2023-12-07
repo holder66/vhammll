@@ -29,7 +29,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
-	println('opts.missings in analyze_dataset: ${opts.missings}')
+	// println('opts.missings in analyze_dataset: ${opts.missings}')
 	// println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
@@ -78,7 +78,6 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 	result.attributes = atts
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
-	println([result.overall_min, result.overall_max])
 	// println('result in analyze_dataset: ${result}')
 	if opts.show_flag {
 		show_analyze(result)
