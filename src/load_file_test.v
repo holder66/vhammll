@@ -1,7 +1,6 @@
 // load_file_test.v
 module vhammll
 
-import math
 import os
 
 fn testsuite_begin() ! {
@@ -71,7 +70,9 @@ fn test_load_file() {
 	assert ds.attribute_names == ['firstname', 'lastname', 'age', 'gender', 'height', 'weight',
 		'SEC', 'city', 'number', 'negative']
 	assert ds.attribute_types == ['i', 'D', 'C', 'c', 'C', 'C', 'D', 'D', 'C', 'C']
-	assert ds.useful_continuous_attributes[9][9] == -math.max_f32
+	// println(ds.useful_continuous_attributes)
+	assert is_nan(ds.useful_continuous_attributes[4][5])
+	assert is_nan(ds.useful_continuous_attributes[9][9])
 	assert ds.useful_discrete_attributes[6] == ['4', '5', '3', '?', '2', '4', '2', '4', '2', '4',
 		'4', '3', '3']
 }

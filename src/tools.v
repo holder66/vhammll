@@ -289,6 +289,31 @@ fn lcm(arr []int) i64 {
 // 	return res
 // }
 
+
+// the five functions below were suggested by @spytheman as a way to implement
+// NaN for both f64 and f32 types.
+fn f64_from_bits(b u64) f64 { return *unsafe { &f64(&b) } }
+fn f64_bits(b f64) u64 { return *unsafe { &u64(&b) } }
+
+fn f32_from_bits(b u32) f32 { return *unsafe { &f32(&b) } }
+fn f32_bits(b f32) u32 { return *unsafe { &u32(&b) } }
+
+pub fn nan[T]() T {
+    $if T is f64 { return  f64_from_bits(u64(0x7FF8000000000001)) }
+    $if T is f32 { return  f32_from_bits(u32(0x7FF80001)) }
+    return 0
+}
+
+pub fn is_nan[T](f T) bool {
+	$if fast_math {
+		if f64_bits(f) == u64(0x7FF8000000000001) || f32_bits(f) == u32(0x7FF80001) {
+			return true
+		}
+	}
+	return f != f
+}
+
+
 // array_min returns the minimum value in the array
 fn array_min[T](a []T) T {
 	if a.len == 0 {

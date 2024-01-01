@@ -2,7 +2,6 @@ module vhammll
 
 import os
 import strconv
-import math
 import json
 import regex
 
@@ -121,7 +120,7 @@ fn infer_type_from_data(values []string, lo LoadOptions) string {
 
 fn replace_missing_value(w string, missings []string) f32 {
 	if w in missings {
-		return -math.max_f32
+		return nan[f32]()
 	}
 	return f32(strconv.atof_quick(w))
 }
