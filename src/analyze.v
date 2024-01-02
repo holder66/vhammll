@@ -57,10 +57,10 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		}
 		// println('we are here')
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
-			att_info.max = array_max(ds.useful_continuous_attributes[i])
-			att_info.min = f32(array_min(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
-			att_info.mean = f32(stats.mean(ds.useful_continuous_attributes[i].filter(it != -math.max_f32)))
-			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(it != -math.max_f32).sorted())
+			att_info.max = array_max(ds.useful_continuous_attributes[i].filter(!is_nan(it)))
+			att_info.min = f32(array_min(ds.useful_continuous_attributes[i].filter(!is_nan(it))))
+			att_info.mean = f32(stats.mean(ds.useful_continuous_attributes[i].filter(!is_nan(it))))
+			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(!is_nan(it)).sorted())
 		}
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
 			// println('ds.data.len: ${ds.data.len}')

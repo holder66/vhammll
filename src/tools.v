@@ -141,7 +141,7 @@ fn get_string_keys(input map[string]int) []string {
 
 // discretize_attribute returns an array of integers representing bin numbers
 // bin numbers start at 1; bin 0 is for missing values (represented by
-// -math.max_f32 for f32 values; TBD for integer values)
+// nan for floats; TBD for integer values)
 /*
 plan for dealing with missing values in continuous attributes:
 first, calculate the minimum and maximum values, filtering for missing values
@@ -156,7 +156,7 @@ fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
 	mut bin := bins
 	bin_size := (max - min) / bins
 	for value in values {
-		if value == -math.max_f32 {
+		if is_nan(value) { // ie, missing value
 			bin = 0
 		} else if value == max {
 			bin = bins
@@ -174,7 +174,7 @@ fn bin_values_array[T](values []T, min T, max T, bins int) []u8 {
 	mut bin_values := []u8{}
 	mut bin := u8(0)
 	for value in values {
-		if value == -math.max_f32 {
+		if is_nan(value) { // ie, a missing value
 			bin = u8(0)
 		} else if value == max {
 			bin = u8(bins)
@@ -190,7 +190,7 @@ fn bin_values_array[T](values []T, min T, max T, bins int) []u8 {
 fn bin_single_value[T](value T, min T, max T, bins int) u8 {
 	bin_size := (max - min) / bins
 	mut bin := u8(0)
-	if value == -math.max_f32 {
+	if is_nan(value) {
 		bin = u8(0)
 	} else if value == max {
 		bin = u8(bins)
@@ -289,19 +289,32 @@ fn lcm(arr []int) i64 {
 // 	return res
 // }
 
-
 // the five functions below were suggested by @spytheman as a way to implement
 // NaN for both f64 and f32 types.
-fn f64_from_bits(b u64) f64 { return *unsafe { &f64(&b) } }
-fn f64_bits(b f64) u64 { return *unsafe { &u64(&b) } }
+fn f64_from_bits(b u64) f64 {
+	return *unsafe { &f64(&b) }
+}
 
-fn f32_from_bits(b u32) f32 { return *unsafe { &f32(&b) } }
-fn f32_bits(b f32) u32 { return *unsafe { &u32(&b) } }
+fn f64_bits(b f64) u64 {
+	return *unsafe { &u64(&b) }
+}
+
+fn f32_from_bits(b u32) f32 {
+	return *unsafe { &f32(&b) }
+}
+
+fn f32_bits(b f32) u32 {
+	return *unsafe { &u32(&b) }
+}
 
 pub fn nan[T]() T {
-    $if T is f64 { return  f64_from_bits(u64(0x7FF8000000000001)) }
-    $if T is f32 { return  f32_from_bits(u32(0x7FF80001)) }
-    return 0
+	$if T is f64 {
+		return f64_from_bits(u64(0x7FF8000000000001))
+	}
+	$if T is f32 {
+		return f32_from_bits(u32(0x7FF80001))
+	}
+	return 0
 }
 
 pub fn is_nan[T](f T) bool {
@@ -312,7 +325,6 @@ pub fn is_nan[T](f T) bool {
 	}
 	return f != f
 }
-
 
 // array_min returns the minimum value in the array
 fn array_min[T](a []T) T {

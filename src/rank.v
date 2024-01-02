@@ -1,7 +1,7 @@
 // rank
 module vhammll
 
-import math
+// import math
 
 // rank_attributes takes a Dataset and returns a list of all the
 // dataset's usable attributes, ranked in order of each attribute's
@@ -94,7 +94,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 		maximum_rank_value = 0
 		attr_index_for_maximum_rank_value = 0
 		bin_number_for_maximum_rank_value = 0
-		min = array_min(attr_values.filter(it != -math.max_f32))
+		min = array_min(attr_values.filter(!is_nan(it)))
 		max = array_max(attr_values)
 		// discretize each attribute by binning, over the bins given by lower
 		// and upper and using an interval given by interval; go from high to

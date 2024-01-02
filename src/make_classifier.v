@@ -4,7 +4,7 @@
 // actually, more fruitful might be just to use the u8 type, since it is unlikely that there would be more than 255 values for discrete attributes. And in this situation, compression is unnecessary, since we do not need bitstrings to get Hamming distances when only positive integers are involved.
 module vhammll
 
-import math
+// import math
 import time
 
 // struct Prevalence {
@@ -111,8 +111,8 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 		attr_names << ra.attribute_name
 		if ra.attribute_type == 'C' {
 			attr_values = ds.useful_continuous_attributes[ra.attribute_index]
-			min = array_min(attr_values.filter(it != -math.max_f32))
-			max = array_max(attr_values)
+			min = array_min(attr_values.filter(!is_nan(it)))
+			max = array_max(attr_values.filter(!is_nan(it)))
 			binned_values = discretize_attribute(attr_values, min, max, ra.bins)
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
 				attribute_type: ra.attribute_type

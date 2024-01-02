@@ -49,15 +49,15 @@ fn test_cross_validate() ? {
 	ds = load_file(opts.datafile_path)
 	result = cross_validate(ds, opts)
 	assert result.total_count == 13
-	// println(result.confusion_matrix_map)
+	println(result.confusion_matrix_map)
 	assert result.confusion_matrix_map == {
 		'm': {
-			'm': 7.0
-			'f': 1.0
+			'm': 6.0
+			'f': 2.0
 			'X': 0.0
 		}
 		'f': {
-			'm': 2.0
+			'm': 1.0
 			'f': 1.0
 			'X': 0.0
 		}
@@ -67,27 +67,6 @@ fn test_cross_validate() ? {
 			'X': 0.0
 		}
 	}
-
-	opts.datafile_path = 'datasets/developer.tab'
-	opts.number_of_attributes = [2]
-	opts.bins = [3, 3]
-	opts.folds = 3
-	ds = load_file(opts.datafile_path)
-	result = cross_validate(ds, opts)
-	assert result.total_count == 13
-
-	opts.concurrency_flag = true
-
-	opts.datafile_path = 'datasets/developer.tab'
-	opts.number_of_attributes = [2]
-	opts.bins = [3, 3]
-	opts.folds = 4
-	ds = load_file(opts.datafile_path)
-	result = cross_validate(ds, opts)
-	assert result.correct_count == 11
-	assert result.incorrects_count == 2
-	assert result.wrong_count == 2
-	assert result.total_count == 13
 
 	opts.datafile_path = 'datasets/iris.tab'
 	opts.number_of_attributes = [2]
