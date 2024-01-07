@@ -156,6 +156,7 @@ pub mut:
 // Options struct: can be used as the last parameter in a
 // function's parameter list, to enable
 // default values to be passed to functions.
+@[params]
 pub struct Options {
 	Parameters
 	LoadOptions

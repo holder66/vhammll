@@ -14,7 +14,17 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder2')!
 }
 
-// test_make_classifier
+fn test_max_ham_dist() {
+	mut opts := Options{}
+	mut ds := load_file('datasets/developer.tab')
+	mut cl := make_classifier(mut ds, opts)
+	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
+	opts.number_of_attributes = [5]
+	opts.bins = [3,3]
+	cl = make_classifier(mut ds, opts)
+	assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
+}
+
 fn test_make_classifier() ? {
 	mut opts := Options{
 		bins: [2, 12]

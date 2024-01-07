@@ -136,15 +136,8 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 		}
 		attr_binned_values << binned_values.map(u8(it))
 	}
-	// calculate the maximum possible hamming distance for this classifier
-	for _, attr in cl.trained_attributes {
-		// println(attr)
-		if attr.attribute_type == 'C' {
-			cl.maximum_hamming_distance += attr.bins
-		} else {
-			cl.maximum_hamming_distance += attr.translation_table.len
-		}
-	}
+	// get the maximum possible hamming distance for this classifier
+	cl.maximum_hamming_distance = max_ham_dist(cl.trained_attributes)
 	// println('maximum_hamming_distance: ${cl.maximum_hamming_distance}')
 	// println('attr_binned_values: $attr_binned_values')
 	cl.instances = transpose(attr_binned_values)
@@ -196,4 +189,20 @@ fn make_translation_table(array []string, missings []string) map[string]int {
 		}
 	}
 	return val
+}
+
+
+
+// max_ham_dist returns the maximum possible hamming distance for a classifier
+fn max_ham_dist(atts map[string]TrainedAttribute) int {
+	mut maximum_hamming_distance := 0
+	for _, attr in atts {
+		// println(attr)
+		if attr.attribute_type == 'C' {
+			maximum_hamming_distance += attr.bins
+		} else {
+			maximum_hamming_distance += attr.translation_table.len
+		}
+	}
+	return maximum_hamming_distance
 }

@@ -146,7 +146,7 @@ fn get_string_keys(input map[string]int) []string {
 plan for dealing with missing values in continuous attributes:
 first, calculate the minimum and maximum values, filtering for missing values
 create an index (for cases) for missing values
-alternatively, substitute -max_f32 for missing values
+alternatively, substitute nan[f32]() for missing values
 use the previously calculated min and max to discretize. The routine should set the bin number to 0 when it encounters -max_f32
 */
 // pub fn discretize_attribute(values []f32, min f32, max f32, bins int) []int {

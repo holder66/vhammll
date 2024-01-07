@@ -18,7 +18,7 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 	// get the lcm of the maximum hamming distances for each classifier
 	mut maximum_hamming_distance_array := []int{}
 	for cl in classifiers {
-		maximum_hamming_distance_array << max_ham_dist(cl)
+		maximum_hamming_distance_array << max_ham_dist(cl.trained_attributes)
 	}
 	total_max_ham_dist := array_sum(maximum_hamming_distance_array)
 	println('total_max_ham_dist: ${total_max_ham_dist}')
@@ -95,16 +95,4 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 	return final_cr
 }
 
-// max_ham_dist returns the maximum possible hamming distance for a classifier
-fn max_ham_dist(cl Classifier) int {
-	mut maximum_hamming_distance := 0
-	for _, attr in cl.trained_attributes {
-		// println(attr)
-		if attr.attribute_type == 'C' {
-			maximum_hamming_distance += attr.bins
-		} else {
-			maximum_hamming_distance += attr.translation_table.len
-		}
-	}
-	return maximum_hamming_distance
-}
+
