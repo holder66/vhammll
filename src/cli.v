@@ -166,7 +166,7 @@ fn get_options(args []string) Options {
 	}
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))
-		println('opts.classifier_indices: ${opts.classifier_indices}')
+		println('opts.classifier_indices in cli.v: ${opts.classifier_indices}')
 	}
 	opts.testfile_path = option(args, ['-t', '--test'])
 	opts.outputfile_path = option(args, ['-o', '--output'])
@@ -249,7 +249,7 @@ fn do_display(opts Options) {
 fn get_classifier(opts Options) !Classifier {
 	if opts.classifierfile_path == '' {
 		mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-		return make_classifier(mut ds, opts)
+		return make_classifier(ds, opts)
 	}
 	return load_classifier_file(opts.classifierfile_path)!
 }
@@ -292,7 +292,7 @@ fn cross(mut opts Options) {
 fn do_explore(mut opts Options) {
 	opts.show_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	explore(mut ds, opts)
+	explore(ds, opts)
 }
 
 // orange
@@ -317,7 +317,7 @@ fn rank(mut opts Options) {
 fn make(mut opts Options) {
 	opts.show_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	cl := make_classifier(mut ds, opts)
+	cl := make_classifier(ds, opts)
 	if opts.expanded_flag {
 		println(cl)
 	}

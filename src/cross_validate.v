@@ -45,6 +45,8 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		}
 	}
 	if opts.multiple_flag {
+		// disable concurrency, as not implemented for multiple classifiers
+		cross_opts.concurrency_flag = false
 		cross_opts.MultipleClassifiersArray = read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
 			panic('read_multiple_opts failed')
 		}
@@ -56,6 +58,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
+		if cross_opts.verbose_flag {println('cross_opts in cross_validate.v: $cross_opts')}
 	}
 	// println(cross_opts.classifier_indices)
 	// instantiate a struct for the result
@@ -64,7 +67,11 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut cross_result := CrossVerifyResult{
-		LoadOptions: ds.LoadOptions
+		Parameters: cross_opts.Parameters
+		LoadOptions: cross_opts.LoadOptions
+		DisplaySettings: cross_opts.DisplaySettings
+		MultipleOptions: cross_opts.MultipleOptions
+		MultipleClassifiersArray: cross_opts.MultipleClassifiersArray
 		datafile_path: ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
 		labeled_classes: ds.class_values
@@ -72,18 +79,13 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		classes: ds.classes
 		pos_neg_classes: get_pos_neg_classes(ds.class_counts)
 		confusion_matrix_map: confusion_matrix_map
-		repetitions: cross_opts.repetitions
 		correct_inferences: inferences_map.clone()
 		incorrect_inferences: inferences_map.clone()
 		wrong_inferences: inferences_map.clone()
 		true_positives: inferences_map.clone()
 		true_negatives: inferences_map.clone()
 		false_positives: inferences_map.clone()
-		false_negatives: inferences_map.clone()
-		Parameters: cross_opts.Parameters
-		DisplaySettings: cross_opts.DisplaySettings
-		MultipleOptions: cross_opts.MultipleOptions
-		MultipleClassifiersArray: cross_opts.MultipleClassifiersArray
+		false_negatives: inferences_map.clone()	
 	}
 
 	// if there are no useful continuous attributes, set binning to 0
@@ -110,7 +112,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 			}
 		}
 		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
-
+		println('repetition_result in cross_validate.v: $repetition_result')
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
 		cross_result.binning = repetition_result.binning
@@ -182,20 +184,21 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?Cros
 			repetition_result.classifier_instances_counts << fold_result.classifier_instances_counts
 			repetition_result.prepurge_instances_counts_array << fold_result.prepurge_instances_counts_array
 		}
-	} else {
+	} else { // ie the concurrency flag is not set
 		// for each fold
 		for current_fold in 0 .. folds {
 			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts)
+			// println('fold_result in do_repetition(): $fold_result')
 			repetition_result.inferred_classes << fold_result.inferred_classes
 			repetition_result.actual_classes << fold_result.labeled_classes
 			repetition_result.binning = fold_result.binning
 			repetition_result.classifier_instances_counts << fold_result.classifier_instances_counts
 			repetition_result.prepurge_instances_counts_array << fold_result.prepurge_instances_counts_array
 			repetition_result.maximum_hamming_distance = fold_result.maximum_hamming_distance
+			println('repetition_result in do_repetition(): $repetition_result')
 		}
 	}
 	// println('repetition_result.maximum_hamming_distance: ${repetition_result.maximum_hamming_distance}')
-	// println(arrays.sum(repetition_result.classifier_instances_counts) or {0} / f64(repetition_result.classifier_instances_counts.len))
 	return repetition_result
 }
 
@@ -283,7 +286,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		instance_indices: fold.indices
 	}
 	if !cross_opts.multiple_flag {
-		part_cl := make_classifier(mut part_ds, cross_opts)
+		part_cl := make_classifier(part_ds, cross_opts)
 		// println('part_cl.maximum_hamming_distance: ${part_cl.maximum_hamming_distance}')
 		fold_result.binning = part_cl.binning
 		fold_result.maximum_hamming_distance = part_cl.maximum_hamming_distance
@@ -314,7 +317,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			mut params := mult_opts.multiple_classifiers[i].classifier_options
 			mult_opts.Parameters = params
 			fold_result.Parameters = params
-			part_cl := make_classifier(mut part_ds, mult_opts)
+			part_cl := make_classifier(part_ds, mult_opts)
 			classifier_array << part_cl
 			byte_values_array = [][]u8{}
 			for attr in part_cl.attribute_ordering {

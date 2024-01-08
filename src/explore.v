@@ -24,7 +24,7 @@ module vhammll
 //	used.
 // outputfile_path: saves the result to a file.
 // ```
-pub fn explore(mut ds Dataset, opts Options) ExploreResult {
+pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// println(opts.classifier_indices)
 	mut ex_opts := opts
 	mut results := ExploreResult{
@@ -80,7 +80,7 @@ pub fn explore(mut ds Dataset, opts Options) ExploreResult {
 				result = cross_validate(ds, ex_opts)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
-				result = verify(make_classifier(mut ds, ex_opts), ex_opts)
+				result = verify(make_classifier(ds, ex_opts), ex_opts)
 			}
 			result.bin_values = ex_opts.bins
 			result.attributes_used = atts

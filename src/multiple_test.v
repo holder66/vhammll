@@ -97,7 +97,6 @@ fn test_multiple_verify() ? {
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
 
-// test_multiple_crossvalidate
 fn test_multiple_crossvalidate() ? {
 	mut opts := Options{
 		break_on_all_flag: true
@@ -148,7 +147,6 @@ fn test_multiple_crossvalidate() ? {
 	}
 }
 
-// test_multiple_crossvalidate_only_discrete_attributes
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	mut opts := Options{
 		datafile_path: 'datasets/breast-cancer-wisconsin-disc.tab'

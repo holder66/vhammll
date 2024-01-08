@@ -50,7 +50,7 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 	if !opts.multiple_flag {
 		mut cl := Classifier{}
 		if opts.classifierfile_path == '' {
-			cl = make_classifier(mut ds, opts)
+			cl = make_classifier(ds, opts)
 		} else {
 			cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 		}
@@ -91,7 +91,7 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 			mult_opts.Parameters = params
 			verify_result.Parameters = params
 			// println('mult_opts: $mult_opts')
-			classifier_array << make_classifier(mut ds, mult_opts)
+			classifier_array << make_classifier(ds, mult_opts)
 			instances_to_be_classified << generate_test_instances_array(classifier_array.last(),
 				test_ds)
 		}

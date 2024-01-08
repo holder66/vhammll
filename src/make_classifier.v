@@ -26,7 +26,8 @@ import time
 //     binning and based on only the attributes to be used;
 // outputfile_path: if specified, saves the classifier to this file.
 // ```
-pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
+pub fn make_classifier(dds Dataset, opts Options) Classifier {
+	mut ds := dds{}
 	if opts.balance_prevalences_flag {
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 		// println(ds.Class)
@@ -48,6 +49,7 @@ pub fn make_classifier(mut ds Dataset, opts Options) Classifier {
 			}
 			idx += 1
 		}
+
 		// println('transposed_data after: $transposed_data')
 		ds.data = transpose(transposed_data)
 		// println(ds.data)

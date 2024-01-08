@@ -14,15 +14,59 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolder_totalnn')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_totalnn')!
-}
+// fn testsuite_end() ? {
+// 	os.rmdir_all('tempfolder_totalnn')!
+// }
 
-fn test_max_ham_dist() {
-	mut opts := Options{}
-	mut ds := load_file('datasets/developer.tab')
-	mut cl := make_classifier(mut ds, opts)
-	println(cl)
+fn test_multiple_classifier_classify_totalnn() {
+	mut opts := Options{
+		break_on_all_flag: true
+		combined_radii_flag: false
+		weighting_flag: false
+		show_flag: false
+		total_nn_counts_flag: true
+		command: 'explore'
+	}
+	mut result := CrossVerifyResult{}
+
+	opts.datafile_path = 'datasets/2_class_developer.tab'
+	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
+	opts.append_settings_flag = true
+	opts.weight_ranking_flag = true
+	mut ds := load_file(opts.datafile_path)
+	mut er := explore(ds, opts)
+	opts.command = 'cross'
+	opts.verbose_flag = false
+	opts.expanded_flag = false
+	opts.number_of_attributes = [3]
+	opts.bins = [1, 3]
+	result = cross_validate(ds, opts)
+	opts.multiple_flag = true
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifier_indices = [2]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 8.0
+			'f': 1.0
+		}
+		'f': {
+			'm': 1.0
+			'f': 3.0
+		}
+	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
+	opts.classifier_indices = [2, 3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 8.0
+			'f': 1.0
+		}
+		'f': {
+			'm': 1.0
+			'f': 3.0
+		}
+	}
 }
 
 // fn test_multiple_verify() ? {
