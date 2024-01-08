@@ -27,7 +27,9 @@ import time
 // outputfile_path: if specified, saves the classifier to this file.
 // ```
 pub fn make_classifier(dds Dataset, opts Options) Classifier {
-	mut ds := dds{}
+	mut ds := dds
+	{
+	}
 	if opts.balance_prevalences_flag {
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 		// println(ds.Class)
@@ -192,8 +194,6 @@ fn make_translation_table(array []string, missings []string) map[string]int {
 	}
 	return val
 }
-
-
 
 // max_ham_dist returns the maximum possible hamming distance for a classifier
 fn max_ham_dist(atts map[string]TrainedAttribute) int {

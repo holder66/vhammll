@@ -58,7 +58,7 @@ fn test_show_append() ? {
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolder_show/classifierfile'
 	mut ds := load_file('datasets/test.tab')
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/test_validate.tab'
@@ -78,7 +78,7 @@ fn test_show_append() ? {
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolder_show/classifierfile'
 	ds = load_file('datasets/soybean-large-train.tab')
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/soybean-large-validate.tab'
@@ -104,20 +104,20 @@ fn test_show_classifier() {
 		number_of_attributes: [2]
 	}
 	mut ds := load_file('datasets/iris.tab')
-	mut cl := make_classifier(mut ds, opts)
+	mut cl := make_classifier(ds, opts)
 	ds = load_file('datasets/anneal.tab')
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 
 	// now with purging of instances with missing class values
 
 	ds = load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 
 	// repeat with developer.tab, which is newer_orange format
 	ds = load_file('datasets/developer.tab')
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	ds = load_file('datasets/class_missing_developer.tab', class_missing_purge_flag: true)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 }
 
 fn test_show_crossvalidation() ? {
@@ -175,12 +175,12 @@ fn test_show_explore_cross() ? {
 		command: 'explore'
 	}
 	mut ds := load_file(opts.datafile_path)
-	results = explore(mut ds, opts)
+	results = explore(ds, opts)
 
 	// repeat for class missing purge
 	opts.datafile_path = 'datasets/class_missing_developer.tab'
 	ds = load_file(opts.datafile_path, class_missing_purge_flag: true)
-	results = explore(mut ds, opts)
+	results = explore(ds, opts)
 }
 
 fn test_show_explore_verify() ? {
@@ -199,11 +199,11 @@ fn test_show_explore_verify() ? {
 		testfile_path: 'datasets/bcw174test'
 	}
 	mut ds := load_file(opts.datafile_path)
-	results = explore(mut ds, opts)
+	results = explore(ds, opts)
 	opts.weighting_flag = true
 	opts.expanded_flag = true
 	opts.number_of_attributes = [0]
-	results = explore(mut ds, opts)
+	results = explore(ds, opts)
 }
 
 fn test_show_rank_attributes() {
@@ -250,7 +250,7 @@ fn test_show_validate() ? {
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = validate(cl, opts)!
 }
 
@@ -272,12 +272,12 @@ fn test_show_verify() ? {
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 	// println('result one in show_test: $result')
 	opts.weighting_flag = true
 	opts.expanded_flag = true
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 
 	// println('result two in show_test: $result')

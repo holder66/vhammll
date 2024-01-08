@@ -41,7 +41,7 @@ fn test_multiple_verify() ? {
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(mut ds, opts)
+	cl := make_classifier(ds, opts)
 	result0 := verify(cl, opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
@@ -112,7 +112,7 @@ fn test_multiple_crossvalidate() ? {
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
-	mut er := explore(mut ds, opts)
+	mut er := explore(ds, opts)
 	opts.command = 'cross'
 	opts.verbose_flag = false
 	opts.expanded_flag = false
@@ -163,7 +163,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 			opts.weight_ranking_flag = wr
 			for w in [false, true] {
 				opts.weighting_flag = w
-				er := explore(mut ds, opts)
+				er := explore(ds, opts)
 			}
 		}
 	}

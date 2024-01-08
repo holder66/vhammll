@@ -10,6 +10,6 @@ fn test_query() ? {
 		verbose_flag: false
 	}
 	mut ds := load_file('datasets/developer.tab')
-	mut cl := make_classifier(mut ds, opts)
+	mut cl := make_classifier(ds, opts)
 	// println(query(cl, opts))
 }

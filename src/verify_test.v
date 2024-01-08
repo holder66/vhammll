@@ -35,7 +35,7 @@ fn test_verify() ? {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	assert verify(cl, opts).correct_count == 10
 
 	println('Done with test.tab')
@@ -49,7 +49,7 @@ fn test_verify() ? {
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 	assert result.confusion_matrix_map == {
 		'ALL': {
@@ -71,7 +71,7 @@ fn test_verify() ? {
 	opts.bins = [2, 4]
 	ds = load_file(opts.datafile_path)
 
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 	// assert result.correct_count == 171
 	// assert result.wrong_count == 3
@@ -83,7 +83,7 @@ fn test_verify() ? {
 	opts.purge_flag = false
 	cl = Classifier{}
 	result = CrossVerifyResult{}
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 
 	// cl = Classifier{}
 	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
@@ -101,7 +101,7 @@ fn test_verify() ? {
 	opts.weighting_flag = true
 	opts.weight_ranking_flag = false
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 
 	assert result.correct_count == 340
@@ -113,7 +113,7 @@ fn test_verify() ? {
 	opts.outputfile_path = 'tempfolder_verify/classifierfile'
 	cl = Classifier{}
 	result = CrossVerifyResult{}
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	// cl = Classifier{}
 	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
 	result = verify(cl, opts)
@@ -133,7 +133,7 @@ fn test_verify() ? {
 		opts.weighting_flag = false
 		opts.show_flag = false
 		ds = load_file(opts.datafile_path)
-		cl = make_classifier(mut ds, opts)
+		cl = make_classifier(ds, opts)
 		result = verify(cl, opts)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
@@ -144,7 +144,7 @@ fn test_verify() ? {
 		opts.outputfile_path = 'tempfolder_verify/classifierfile'
 		cl = Classifier{}
 		result = CrossVerifyResult{}
-		cl = make_classifier(mut ds, opts)
+		cl = make_classifier(ds, opts)
 		// cl = Classifier{}
 		// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
 		result = verify(cl, opts)
@@ -167,14 +167,14 @@ fn test_verify() ? {
 	// 	opts.concurrency_flag = true
 	// 	opts.weighting_flag = false
 	// 	ds = load_file(opts.datafile_path)
-	// 	cl = make_classifier(mut ds, opts)
+	// 	cl = make_classifier(ds, opts)
 	// 	opts.testfile_path = 'datasets/mnist_test.tab'
 	// 	result = verify(load_classifier_file('tempfolder_verify/classifierfile') ?, opts)
 	// 	assert result.correct_count == 9566
 	// 	assert result.wrong_count == 434
 
 	// 	opts.weighting_flag = true
-	// 	cl = make_classifier(mut ds, opts)
+	// 	cl = make_classifier(ds, opts)
 	// 	result = verify(cl, opts)
 	// 	assert result.correct_count == 9279
 	// 	assert result.wrong_count == 721

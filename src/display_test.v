@@ -58,7 +58,7 @@ fn test_display_classifier() ? {
 	}
 	opts.outputfile_path = 'tempfolder_display/classifierfile'
 	mut ds := load_file('datasets/developer.tab')
-	mut cl := make_classifier(mut ds, opts)
+	mut cl := make_classifier(ds, opts)
 	display_file(opts.outputfile_path, opts)
 }
 
@@ -89,7 +89,7 @@ fn test_display_validate_result() ? {
 	}
 	opts.datafile_path = 'datasets/bcw350train'
 	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(mut ds, opts)
+	cl := make_classifier(ds, opts)
 	opts.outputfile_path = 'tempfolder_display/validate_result'
 	opts.testfile_path = 'datasets/bcw174validate'
 	_ = validate(cl, opts)!
@@ -107,7 +107,7 @@ fn test_display_verify_result() ? {
 		concurrency_flag: true
 	}
 	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(mut ds, opts)
+	cl := make_classifier(ds, opts)
 	_ = verify(cl, opts)
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
@@ -149,7 +149,7 @@ fn test_display_explore_result_cross() ? {
 		outputfile_path: 'tempfolder_display/explore_result'
 	}
 	mut ds := load_file(opts.datafile_path)
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
@@ -160,7 +160,7 @@ fn test_display_explore_result_cross() ? {
 	opts.purge_flag = true
 	opts.show_flag = false
 	opts.expanded_flag = false
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
 	display_file(opts.outputfile_path, opts)
@@ -172,7 +172,7 @@ fn test_display_explore_result_cross() ? {
 	opts.show_flag = false
 	opts.expanded_flag = false
 	ds = load_file(opts.datafile_path)
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.expanded_flag = false
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
@@ -184,7 +184,7 @@ fn test_display_explore_result_cross() ? {
 	opts.purge_flag = true
 	opts.expanded_flag = false
 	ds = load_file(opts.datafile_path)
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
@@ -203,7 +203,7 @@ fn test_display_explore_result_verify() ? {
 		outputfile_path: 'tempfolder_display/explore_result'
 	}
 	mut ds := load_file(opts.datafile_path)
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -213,7 +213,7 @@ fn test_display_explore_result_verify() ? {
 	opts.purge_flag = true
 	opts.show_flag = false
 	opts.expanded_flag = false
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -227,7 +227,7 @@ fn test_display_explore_result_verify() ? {
 	opts.expanded_flag = false
 	opts.number_of_attributes = [0]
 	ds = load_file(opts.datafile_path)
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true
@@ -237,7 +237,7 @@ fn test_display_explore_result_verify() ? {
 	opts.purge_flag = true
 	opts.show_flag = false
 	opts.expanded_flag = false
-	_ = explore(mut ds, opts)
+	_ = explore(ds, opts)
 	opts.show_flag = true
 	display_file(opts.outputfile_path, opts)
 	opts.expanded_flag = true

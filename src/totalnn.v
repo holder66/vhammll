@@ -94,5 +94,3 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 	}
 	return final_cr
 }
-
-

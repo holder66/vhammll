@@ -58,7 +58,9 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
-		if cross_opts.verbose_flag {println('cross_opts in cross_validate.v: $cross_opts')}
+		if cross_opts.verbose_flag {
+			println('cross_opts in cross_validate.v: ${cross_opts}')
+		}
 	}
 	// println(cross_opts.classifier_indices)
 	// instantiate a struct for the result
@@ -85,7 +87,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		true_positives: inferences_map.clone()
 		true_negatives: inferences_map.clone()
 		false_positives: inferences_map.clone()
-		false_negatives: inferences_map.clone()	
+		false_negatives: inferences_map.clone()
 	}
 
 	// if there are no useful continuous attributes, set binning to 0
@@ -112,7 +114,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 			}
 		}
 		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
-		println('repetition_result in cross_validate.v: $repetition_result')
+		println('repetition_result in cross_validate.v: ${repetition_result}')
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
 		cross_result.binning = repetition_result.binning
@@ -195,7 +197,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?Cros
 			repetition_result.classifier_instances_counts << fold_result.classifier_instances_counts
 			repetition_result.prepurge_instances_counts_array << fold_result.prepurge_instances_counts_array
 			repetition_result.maximum_hamming_distance = fold_result.maximum_hamming_distance
-			println('repetition_result in do_repetition(): $repetition_result')
+			println('repetition_result in do_repetition(): ${repetition_result}')
 		}
 	}
 	// println('repetition_result.maximum_hamming_distance: ${repetition_result.maximum_hamming_distance}')

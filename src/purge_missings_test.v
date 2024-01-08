@@ -23,17 +23,17 @@ fn test_purge_instances_for_missing_class_values() {
 		weighting_flag: false
 	}
 	mut ds := load_file('datasets/class_missing_iris.tab')
-	mut cl := make_classifier(mut ds, opts)
+	mut cl := make_classifier(ds, opts)
 	assert cl.instances.len == 150
 	mut pmcds := ds.purge_instances_for_missing_class_values()
-	mut pmcl := make_classifier(mut pmcds, opts)
+	mut pmcl := make_classifier(pmcds, opts)
 	assert pmcl.instances.len == 142
 
 	// now for an orange_newer file
 	ds = load_file('datasets/class_missing_developer.tab')
-	cl = make_classifier(mut ds, opts)
+	cl = make_classifier(ds, opts)
 	assert cl.instances.len == 15
 	pmcds = ds.purge_instances_for_missing_class_values()
-	pmcl = make_classifier(mut pmcds, opts)
+	pmcl = make_classifier(pmcds, opts)
 	assert pmcl.instances.len == 13
 }
