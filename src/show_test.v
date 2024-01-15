@@ -131,24 +131,24 @@ fn test_show_crossvalidation() ? {
 	println('\n\ndeveloper.tab')
 	cvr = cross_validate(load_file('datasets/developer.tab'), opts)
 	println('\ndeveloper.tab with expanded results')
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	cvr = cross_validate(load_file('datasets/developer.tab'), opts)
 
 	println('\n\nbreast-cancer-wisconsin-disc.tab')
-	opts.expanded_flag = false
+	disp.expanded_flag = false
 	opts.number_of_attributes = [4]
 	cvr = cross_validate(load_file('datasets/breast-cancer-wisconsin-disc.tab'), opts)
 	println('\nbreast-cancer-wisconsin-disc.tab with expanded results')
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	cvr = cross_validate(load_file('datasets/breast-cancer-wisconsin-disc.tab'), opts)
 
 	println('\n\niris.tab')
-	opts.expanded_flag = false
+	disp.expanded_flag = false
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]
 	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
 	println('\niris.tab with expanded results')
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
 	// now with purging for missing classes
 	cvr = cross_validate(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
@@ -201,7 +201,7 @@ fn test_show_explore_verify() ? {
 	mut ds := load_file(opts.datafile_path)
 	results = explore(ds, opts)
 	opts.weighting_flag = true
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	opts.number_of_attributes = [0]
 	results = explore(ds, opts)
 }
@@ -276,7 +276,7 @@ fn test_show_verify() ? {
 	result = verify(cl, opts)
 	// println('result one in show_test: $result')
 	opts.weighting_flag = true
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	cl = make_classifier(ds, opts)
 	result = verify(cl, opts)
 

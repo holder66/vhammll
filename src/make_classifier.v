@@ -26,7 +26,7 @@ import time
 //     binning and based on only the attributes to be used;
 // outputfile_path: if specified, saves the classifier to this file.
 // ```
-pub fn make_classifier(dds Dataset, opts Options) Classifier {
+pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifier {
 	mut ds := dds
 	{
 	}
@@ -167,7 +167,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	}
 	cl.history << event
 
-	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
+	if (disp.show_flag || disp.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}
 	if opts.outputfile_path != '' {

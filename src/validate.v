@@ -20,7 +20,7 @@ import os
 // The file to be validated is specified by `opts.testfile_path`.
 // Optionally, saves the instances and their predicted classes in a file.
 // This file can be used to append these instances to the classifier.
-pub fn validate(cl Classifier, opts Options) !ValidateResult {
+pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResult {
 	// load the testfile as a Dataset struct
 	// println(opts)
 	mut test_ds := load_file(opts.testfile_path)
@@ -62,7 +62,7 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	test_instances := transpose(test_attr_binned_values)
 	// for each instance in the test data, perform a classification and compile the results
 	validate_result = classify_to_validate(cl, test_instances, mut validate_result, opts)
-	if opts.command == 'validate' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command == 'validate' && (disp.show_flag || disp.expanded_flag) {
 		show_validate(validate_result)
 	}
 	if opts.outputfile_path != '' {

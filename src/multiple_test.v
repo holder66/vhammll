@@ -114,8 +114,8 @@ fn test_multiple_crossvalidate() ? {
 	mut ds := load_file(opts.datafile_path)
 	mut er := explore(ds, opts)
 	opts.command = 'cross'
-	opts.verbose_flag = false
-	opts.expanded_flag = false
+	disp.verbose_flag = false
+	disp.expanded_flag = false
 	opts.number_of_attributes = [3]
 	opts.bins = [1, 3]
 	result = cross_validate(ds, opts)
@@ -173,7 +173,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	opts.classifier_indices = [3, 4, 6, 14]
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.multiple_flag = true
-	opts.expanded_flag = true
+	disp.expanded_flag = true
 	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
 	for ci in [[3, 11, 4, 5, 6, 14]] {
 		opts.classifier_indices = ci
@@ -187,8 +187,8 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	}
 	opts.command = 'cross'
 	ds = load_file(opts.datafile_path)
-	opts.verbose_flag = false
-	opts.expanded_flag = false
+	disp.verbose_flag = false
+	disp.expanded_flag = false
 	opts.number_of_attributes = [7]
 	mut result := cross_validate(ds, opts)
 	opts.multiple_flag = true
@@ -377,7 +377,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 // 	opts.number_of_attributes = [50]
 // 	opts.bins = [2, 2]
 // 	opts.weighting_flag = false
-// 	opts.show_flag = false
+// 	disp.show_flag = false
 // 	ds = load_file(opts.datafile_path)
 // 	cl = make_classifier(mut ds, opts)
 // 	result = verify(cl, opts)?

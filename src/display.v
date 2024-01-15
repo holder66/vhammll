@@ -14,7 +14,7 @@ import json
 // 	a confusion matrix for cross-validation or verification operations;
 // graph_flag: generates plots for display in the default web browser.
 // ```
-pub fn display_file(path string, opts Options) {
+pub fn display_file(path string, opts Options, disp DisplaySettings) {
 	// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
@@ -25,9 +25,9 @@ pub fn display_file(path string, opts Options) {
 			// 	DisplaySettings: settings
 			// }
 			mut saved_er := json.decode(ExploreResult, s) or { panic('Failed to parse json') }
-			show_explore_header(saved_er, opts.DisplaySettings)
+			show_explore_header(saved_er, disp)
 			for mut result in saved_er.array_of_results {
-				show_explore_line(result, opts.DisplaySettings)
+				show_explore_line(result, disp)
 			}
 			show_explore_trailer(saved_er, opts)
 			if opts.append_settings_flag {
@@ -44,7 +44,7 @@ pub fn display_file(path string, opts Options) {
 		s.contains('"struct_type":".RankingResult"') {
 			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
-			if opts.graph_flag {
+			if disp.graph_flag {
 				plot_rank(saved_rr)
 			}
 		}

@@ -17,7 +17,7 @@ import math.stats
 //
 // outputfile_path: if specified, saves the analysis results.
 // ```
-pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
+pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeResult {
 	// println('ds in analyze_dataset: $ds')
 	mut result := AnalyzeResult{
 		environment: get_environment()
@@ -79,7 +79,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
 	// println('result in analyze_dataset: ${result}')
-	if opts.show_flag {
+	if disp.show_flag {
 		show_analyze(result)
 	}
 	if opts.outputfile_path != '' {

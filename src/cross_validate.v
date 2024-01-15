@@ -29,7 +29,7 @@ import rand
 // 	a confusion matrix.
 // outputfile_path: saves the result as a json file.
 // ```
-pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
+pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('ds.class_counts in cross_validate.v: ${ds.class_counts}')
 	// to sort out what is going on, run the test file with concurrency off.
 	mut cross_opts := opts
@@ -58,7 +58,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
-		if cross_opts.verbose_flag {
+		if disp.verbose_flag {
 			println('cross_opts in cross_validate.v: ${cross_opts}')
 		}
 	}
@@ -71,7 +71,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	mut cross_result := CrossVerifyResult{
 		Parameters: cross_opts.Parameters
 		LoadOptions: cross_opts.LoadOptions
-		DisplaySettings: cross_opts.DisplaySettings
+		DisplaySettings: disp
 		MultipleOptions: cross_opts.MultipleOptions
 		MultipleClassifiersArray: cross_opts.MultipleClassifiersArray
 		datafile_path: ds.path
@@ -128,7 +128,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	if cross_result.pos_neg_classes.len == 2 {
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
-	if opts.command == 'cross' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command == 'cross' && (disp.show_flag || disp.expanded_flag) {
 		show_crossvalidation(cross_result, opts)
 	}
 	if opts.outputfile_path != '' {
@@ -141,7 +141,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 }
 
 // append_cross_settings_to_file
-fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
+fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	// println(result)
 	append_json_file(ClassifierSettings{
 		classifier_options: result.Parameters
@@ -150,7 +150,7 @@ fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
 }
 
 // do_repetition
-fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?CrossVerifyResult {
+fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp DisplaySettings) ?CrossVerifyResult {
 	mut fold_result := CrossVerifyResult{}
 	// instantiate a struct for the result
 	mut repetition_result := CrossVerifyResult{}
@@ -277,7 +277,7 @@ fn div_map(n int, mut m map[string]int) map[string]int {
 }
 
 // do_one_fold
-fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_opts Options) CrossVerifyResult {
+fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('cross_opts in do_one_fold: ${cross_opts}')
 	mut byte_values_array := [][]u8{}
 	// partition the dataset into a partial dataset and a fold
@@ -351,7 +351,7 @@ fn process_fold_data(part_attr TrainedAttribute, fold_data []string) []u8 {
 }
 
 // option_worker
-fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, pick_list []int, folds int, ds Dataset, opts Options) {
+fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, pick_list []int, folds int, ds Dataset, opts Options, disp DisplaySettings) {
 	for {
 		mut current_fold := <-work_channel
 		if current_fold < 0 {
@@ -363,7 +363,7 @@ fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, p
 
 // multiple_classify_in_cross classifies each instance in an array, and
 // returns the results of the classification.
-fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][][]u8, mut result CrossVerifyResult, opts Options) CrossVerifyResult {
+fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('opts in multiple_classify_in_cross: ${opts}')
 	// println('labeled_classes in multiple_classify_in_cross: ${result.labeled_classes}')
 	// for each instance in the test data, perform a classification
@@ -383,7 +383,7 @@ fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][]
 
 // classify_in_cross classifies each instance in an array, and
 // returns the results of the classification.
-fn classify_in_cross(cl Classifier, test_instances [][]u8, mut result CrossVerifyResult, opts Options) CrossVerifyResult {
+fn classify_in_cross(cl Classifier, test_instances [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// for each instance in the test data, perform a classification
 	for i, test_instance in test_instances {
 		result.inferred_classes << classify_instance(i, cl, test_instance, opts).inferred_class

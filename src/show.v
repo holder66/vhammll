@@ -155,7 +155,7 @@ pub fn show_validate(result ValidateResult) {
 }
 
 // show_verify
-pub fn show_verify(result CrossVerifyResult, opts Options) {
+pub fn show_verify(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	println(m_u('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
 		'from "${result.datafile_path}"'))
@@ -172,7 +172,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		purged_percent := 100 * f64(purged_count) / total_count
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
-	show_cross_or_verify_result(result, opts.DisplaySettings)
+	show_cross_or_verify_result(result, disp)
 }
 
 // show_multiple_classifiers_options
@@ -208,7 +208,7 @@ fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifi
 }
 
 // show_crossvalidation
-pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
+pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	// println('result in show_crossvalidation: $result')
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
 		if result.multiple_classify_options_file_path != '' { ' using multiple classifiers' } else { '' }))
@@ -227,14 +227,14 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
 	}
-	show_cross_or_verify_result(result, opts.DisplaySettings)
+	show_cross_or_verify_result(result, disp)
 }
 
 // show_cross_or_verify_result
-fn show_cross_or_verify_result(result CrossVerifyResult, display_settings DisplaySettings) {
+fn show_cross_or_verify_result(result CrossVerifyResult, disp DisplaySettings) {
 	println(g_b('Results:'))
 	// mut metrics := get_metrics(result)
-	if !display_settings.expanded_flag {
+	if !disp.expanded_flag {
 		percent := (f32(result.correct_count) * 100 / result.labeled_classes.len)
 		println('correct inferences: ${result.correct_count} out of ${result.labeled_classes.len} (accuracy: raw:${percent:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)')
 	} else {

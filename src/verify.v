@@ -17,7 +17,7 @@ import runtime
 // 		a confusion matrix.
 // outputfile_path: saves the result as a json file
 // ```
-pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
+pub fn verify(org_cl Classifier, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -32,7 +32,7 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 	mut verify_result := CrossVerifyResult{
 		LoadOptions: opts.LoadOptions
 		Parameters: opts.Parameters
-		DisplaySettings: opts.DisplaySettings
+		DisplaySettings: disp
 		MultipleOptions: opts.MultipleOptions
 		MultipleClassifiersArray: opts.MultipleClassifiersArray
 		datafile_path: opts.datafile_path
@@ -116,7 +116,7 @@ pub fn verify(org_cl Classifier, opts Options) CrossVerifyResult {
 	if opts.command == 'verify' && (verify_result.show_flag || verify_result.expanded_flag) {
 		show_verify(verify_result, opts)
 	}
-	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('verify_result in verify(): ${verify_result}')
 	// }
 	if opts.outputfile_path != '' {
@@ -180,11 +180,11 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_instances [][][]u8, mut resu
 	}
 	result.classifier_instances_counts << m_cl[0].history[0].instances_count
 	result.prepurge_instances_counts_array << m_cl[0].history[0].prepurge_instances_count
-	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
 	result = summarize_results(1, mut result)
-	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
 	// }
 	// println('result at end of multiple_classify_to_verify: $result')
@@ -222,11 +222,11 @@ fn classify_to_verify(cl Classifier, test_instances [][]u8, mut result CrossVeri
 	}
 	result.classifier_instances_counts << cl.history[0].instances_count
 	result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
-	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
 	result = summarize_results(1, mut result)
-	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
 	// }
 	return result

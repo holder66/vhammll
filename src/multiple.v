@@ -9,7 +9,7 @@ import arrays
 // each classifier, and corresponding to the settings for that classifier.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options) ClassifyResult {
+fn multiple_classifier_classify(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	if opts.total_nn_counts_flag {
 		return multiple_classifier_classify_totalnn(index, classifiers, instances_to_be_classified,
 			labeled_classes, opts)
@@ -227,7 +227,7 @@ fn multiple_classifier_classify(index int, classifiers []Classifier, instances_t
 
 	// final_cr.inferred_class_array = inferred_class_array
 	// final_cr.nearest_neighbors_array = nearest_neighbors_array
-	if opts.verbose_flag {
+	if disp.verbose_flag {
 		show_detailed_result(index, final_cr.inferred_class, labeled_classes, mcr)
 	}
 	return final_cr

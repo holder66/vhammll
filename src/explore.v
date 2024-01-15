@@ -24,7 +24,7 @@ module vhammll
 //	used.
 // outputfile_path: saves the result to a file.
 // ```
-pub fn explore(ds Dataset, opts Options) ExploreResult {
+pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 	// println(opts.classifier_indices)
 	mut ex_opts := opts
 	mut results := ExploreResult{
@@ -32,7 +32,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		path: opts.datafile_path
 		testfile_path: opts.testfile_path
 		Parameters: opts.Parameters
-		DisplaySettings: opts.DisplaySettings
+		DisplaySettings: disp
 		AttributeRange: get_attribute_range(opts.number_of_attributes,
 			ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len)
 		pos_neg_classes: get_pos_neg_classes(ds.class_counts)
@@ -42,7 +42,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		pos_neg_classes: results.pos_neg_classes
 	}
 	mut attribute_max := ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len
-	if ex_opts.verbose_flag && opts.command == 'explore' {
+	if disp.verbose_flag && opts.command == 'explore' {
 		println('ex_opts in explore: ${ex_opts}')
 		println('number of usable attributes: ${attribute_max}')
 	}
@@ -54,11 +54,11 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 
 	binning := results.binning
 
-	if opts.verbose_flag && opts.command == 'explore' {
+	if disp.verbose_flag && opts.command == 'explore' {
 		// println('attributing: ${results.AttributeRange}')
 		println('binning: ${results.binning}')
 	}
-	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command == 'explore' && (disp.show_flag || disp.expanded_flag) {
 		// show_explore_header(pos_neg_classes, binning, opts)
 		show_explore_header(results, results.DisplaySettings)
 	}
@@ -96,11 +96,11 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	if opts.outputfile_path != '' {
 		save_json_file(results, opts.outputfile_path)
 	}
-	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command == 'explore' && (disp.show_flag || disp.expanded_flag) {
 		show_explore_trailer(results, opts)
 	}
 	// println(ds.class_counts.len)
-	if opts.graph_flag {
+	if disp.graph_flag {
 		// println('Just prior to plot_explore')
 		plot_explore(results, opts)
 		// println('Just after plot_explore')

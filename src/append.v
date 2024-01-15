@@ -10,11 +10,11 @@ import time
 // show_flag: display results on the console;
 // outputfile_path: saves the extended classifier to a file.
 // ```
-pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts Options) Classifier {
+pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts Options, disp DisplaySettings) Classifier {
 	// append needs to append the array of byte values for each new instance
 	// to cl.instances, and append the class value for each new instance
 	// cl.class_values, update the cl.class_counts map, and calculate a new lcm
-	if opts.verbose_flag {
+	if disp.verbose_flag {
 		println('${cl}\n${instances_to_append}')
 	}
 	mut ext_cl := cl
@@ -31,7 +31,7 @@ pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts 
 	ext_cl.class_counts = string_element_counts(ext_cl.class_values)
 	// calculate lcm_class_counts which is needed when the weighting_flag is set
 	ext_cl.lcm_class_counts = i64(lcm(get_map_values(ext_cl.class_counts)))
-	if opts.show_flag || opts.expanded_flag {
+	if disp.show_flag || disp.expanded_flag {
 		show_classifier(ext_cl)
 	}
 	if opts.outputfile_path != '' {

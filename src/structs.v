@@ -160,7 +160,7 @@ pub mut:
 pub struct Options {
 	Parameters
 	LoadOptions
-	DisplaySettings
+	// DisplaySettings
 	MultipleOptions
 	MultipleClassifiersArray
 pub mut:
