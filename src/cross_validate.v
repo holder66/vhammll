@@ -114,7 +114,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 			}
 		}
 		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
-		println('repetition_result in cross_validate.v: ${repetition_result}')
+		// println('repetition_result in cross_validate.v: ${repetition_result}')
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
 		cross_result.binning = repetition_result.binning
@@ -197,7 +197,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?Cros
 			repetition_result.classifier_instances_counts << fold_result.classifier_instances_counts
 			repetition_result.prepurge_instances_counts_array << fold_result.prepurge_instances_counts_array
 			repetition_result.maximum_hamming_distance = fold_result.maximum_hamming_distance
-			println('repetition_result in do_repetition(): ${repetition_result}')
+			// println('repetition_result in do_repetition(): ${repetition_result}')
 		}
 	}
 	// println('repetition_result.maximum_hamming_distance: ${repetition_result.maximum_hamming_distance}')

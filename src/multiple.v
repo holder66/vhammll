@@ -26,7 +26,7 @@ fn multiple_classifier_classify(index int, classifiers []Classifier, instances_t
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
 	}
 
-	println('instances to be classified: ${instances_to_be_classified}')
+	// println('instances to be classified: ${instances_to_be_classified}')
 
 	// println(opts)
 	// println(mcr.MultipleOptions)

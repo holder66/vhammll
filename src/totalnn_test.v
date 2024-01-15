@@ -14,140 +14,139 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolder_totalnn')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolder_totalnn')!
-// }
-
-fn test_multiple_classifier_classify_totalnn() {
-	mut opts := Options{
-		break_on_all_flag: true
-		combined_radii_flag: false
-		weighting_flag: false
-		show_flag: false
-		total_nn_counts_flag: true
-		command: 'explore'
-	}
-	mut result := CrossVerifyResult{}
-
-	opts.datafile_path = 'datasets/2_class_developer.tab'
-	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
-	opts.append_settings_flag = true
-	opts.weight_ranking_flag = true
-	mut ds := load_file(opts.datafile_path)
-	mut er := explore(ds, opts)
-	opts.command = 'cross'
-	opts.verbose_flag = false
-	opts.expanded_flag = false
-	opts.number_of_attributes = [3]
-	opts.bins = [1, 3]
-	result = cross_validate(ds, opts)
-	opts.multiple_flag = true
-	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	opts.classifier_indices = [2]
-	assert cross_validate(ds, opts).confusion_matrix_map == {
-		'm': {
-			'm': 8.0
-			'f': 1.0
-		}
-		'f': {
-			'm': 1.0
-			'f': 3.0
-		}
-	}
-	opts.classifier_indices = [3]
-	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
-	opts.classifier_indices = [2, 3]
-	assert cross_validate(ds, opts).confusion_matrix_map == {
-		'm': {
-			'm': 8.0
-			'f': 1.0
-		}
-		'f': {
-			'm': 1.0
-			'f': 3.0
-		}
-	}
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolder_totalnn')!
 }
 
-// fn test_multiple_verify() ? {
+// fn test_multiple_classifier_classify_totalnn() {
 // 	mut opts := Options{
-// 		verbose_flag: false
-// 		show_flag: false
-// 		expanded_flag: false
-// 		concurrency_flag: false
 // 		break_on_all_flag: true
+// 		combined_radii_flag: false
+// 		weighting_flag: false
+// 		show_flag: false
 // 		total_nn_counts_flag: true
-// 		command: 'verify'
+// 		command: 'explore'
 // 	}
 // 	mut result := CrossVerifyResult{}
-// 	opts.expanded_flag = true
-// 	opts.datafile_path = 'datasets/leukemia38train.tab'
-// 	opts.testfile_path = 'datasets/leukemia34test.tab'
-// 	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
-// 	opts.append_settings_flag = true
-// 	opts.number_of_attributes = [1]
-// 	opts.bins = [5, 5]
-// 	opts.purge_flag = true
-// 	opts.weight_ranking_flag = true
-// 	// check that the non-multiple verify works OK, and that the
-// 	// settings file is getting appended
-// 	mut ds := load_file(opts.datafile_path)
-// 	mut cl := make_classifier(mut ds, opts)
-// 	result0 := verify(cl, opts)
-// 	assert result0.confusion_matrix_map == {
-// 		'ALL': {
-// 			'ALL': 17.0
-// 			'AML': 3.0
-// 		}
-// 		'AML': {
-// 			'ALL': 0.0
-// 			'AML': 14.0
-// 		}
-// 	}
-// 	opts.bins = [2, 2]
-// 	opts.purge_flag = false
-// 	result1 := verify(cl, opts)
-// 	assert result1.confusion_matrix_map == {
-// 		'ALL': {
-// 			'ALL': 19.0
-// 			'AML': 1.0
-// 		}
-// 		'AML': {
-// 			'ALL': 9.0
-// 			'AML': 5.0
-// 		}
-// 	}
-// 	// verify that the settings file was correctly saved, and
-// 	// is the right length
-// 	assert os.file_size(opts.settingsfile_path) >= 929
 
-// 	// test verify with multiple_classify_options_file_path
+// 	opts.datafile_path = 'datasets/2_class_developer.tab'
+// 	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
+// 	opts.append_settings_flag = true
+// 	opts.weight_ranking_flag = true
+// 	mut ds := load_file(opts.datafile_path)
+// 	mut er := explore(ds, opts)
+// 	opts.command = 'cross'
+// 	opts.verbose_flag = false
+// 	opts.expanded_flag = false
+// 	opts.number_of_attributes = [3]
+// 	opts.bins = [1, 3]
+// 	result = cross_validate(ds, opts)
 // 	opts.multiple_flag = true
 // 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	result = verify(cl, opts)
-// 	// with both classifiers
-// 	// assert result.confusion_matrix_map == {
-// 	// 	'ALL': {
-// 	// 		'ALL': 17.0
-// 	// 		'AML': 3.0
+// 	opts.classifier_indices = [2]
+// 	// assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// 	'm': {
+// 	// 		'm': 8.0
+// 	// 		'f': 1.0
 // 	// 	}
-// 	// 	'AML': {
-// 	// 		'ALL': 6.0
-// 	// 		'AML': 8.0
+// 	// 	'f': {
+// 	// 		'm': 1.0
+// 	// 		'f': 3.0
 // 	// 	}
 // 	// }
-// 	opts.classifier_indices = [0]
-// 	result = verify(cl, opts)
-// 	// // with classifier 0
-// 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-
-// 	// opts.classifier_indices = [1]
-// 	// result = verify(opts)
-// 	// // with classifier 1
-// 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
+// 	opts.classifier_indices = [3]
+// 	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
+// 	opts.classifier_indices = [2, 3]
+// 	// assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// 	'm': {
+// 	// 		'm': 8.0
+// 	// 		'f': 1.0
+// 	// 	}
+// 	// 	'f': {
+// 	// 		'm': 1.0
+// 	// 		'f': 3.0
+// 	// 	}
+// 	// }
 // }
 
-// test_multiple_crossvalidate
+fn test_multiple_verify() ? {
+	mut opts := Options{
+		// verbose_flag: false
+		// show_flag: false
+		// expanded_flag: false
+		concurrency_flag: false
+		break_on_all_flag: true
+		total_nn_counts_flag: true
+		command: 'verify'
+	}
+	mut result := CrossVerifyResult{}
+	// opts.expanded_flag = true
+	opts.datafile_path = 'datasets/leukemia38train.tab'
+	opts.testfile_path = 'datasets/leukemia34test.tab'
+	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
+	opts.append_settings_flag = true
+	opts.number_of_attributes = [1]
+	opts.bins = [5, 5]
+	opts.purge_flag = true
+	opts.weight_ranking_flag = true
+	// check that the non-multiple verify works OK, and that the
+	// settings file is getting appended
+	mut ds := load_file(opts.datafile_path)
+	mut cl := make_classifier(ds, opts)
+	result0 := verify(cl, opts, expanded_flag: true)
+	// assert result0.confusion_matrix_map == {
+	// 	'ALL': {
+	// 		'ALL': 17.0
+	// 		'AML': 3.0
+	// 	}
+	// 	'AML': {
+	// 		'ALL': 0.0
+	// 		'AML': 14.0
+	// 	}
+	// }
+	opts.bins = [2, 2]
+	opts.purge_flag = false
+	result1 := verify(cl, opts)
+	// assert result1.confusion_matrix_map == {
+	// 	'ALL': {
+	// 		'ALL': 19.0
+	// 		'AML': 1.0
+	// 	}
+	// 	'AML': {
+	// 		'ALL': 9.0
+	// 		'AML': 5.0
+	// 	}
+	// }
+	// // verify that the settings file was correctly saved, and
+	// // is the right length
+	// assert os.file_size(opts.settingsfile_path) >= 929
+
+	// test verify with multiple_classify_options_file_path
+	// opts.multiple_flag = true
+	// opts.multiple_classify_options_file_path = opts.settingsfile_path
+	// result = verify(cl, opts)
+	// with both classifiers
+	// assert result.confusion_matrix_map == {
+	// 	'ALL': {
+	// 		'ALL': 17.0
+	// 		'AML': 3.0
+	// 	}
+	// 	'AML': {
+	// 		'ALL': 6.0
+	// 		'AML': 8.0
+	// 	}
+	// }
+	// opts.classifier_indices = [0]
+	// result = verify(cl, opts)
+	// // with classifier 0
+	// assert result.confusion_matrix_map == result0.confusion_matrix_map
+
+	// opts.classifier_indices = [1]
+	// result = verify(opts)
+	// // with classifier 1
+	// assert result.confusion_matrix_map == result1.confusion_matrix_map
+}
+
 // fn test_multiple_crossvalidate() ? {
 // 	mut opts := Options{
 // 		break_on_all_flag: true
