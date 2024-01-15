@@ -43,9 +43,9 @@ fn test_display_multiple_options() ? {
 	append_json_file(settings2, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 832
 	mut opts := Options{
-		expanded_flag: true
+		// expanded_flag: true
 	}
-	display_file('tempfolder_display/bcw.opts', expanded_flag: true)
+	display_file('tempfolder_display/bcw.opts', opts, expanded_flag: true)
 }
 
 fn test_display_classifier() ? {
@@ -54,7 +54,7 @@ fn test_display_classifier() ? {
 		command: 'make'
 		bins: [3, 10]
 		number_of_attributes: [8]
-		graph_flag: true
+		// graph_flag: true
 	}
 	opts.outputfile_path = 'tempfolder_display/classifierfile'
 	mut ds := load_file('datasets/developer.tab')
@@ -109,11 +109,11 @@ fn test_display_verify_result() ? {
 	mut ds := load_file(opts.datafile_path)
 	cl := make_classifier(ds, opts)
 	_ = verify(cl, opts)
-	disp.expanded_flag = false
+	// disp.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 }
 
 fn test_display_cross_result() ? {
@@ -135,8 +135,8 @@ fn test_display_cross_result() ? {
 	opts.repetitions = 10
 	opts.random_pick = true
 	_ = cross_validate(ds, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 }
 
 fn test_display_explore_result_cross() ? {
@@ -150,46 +150,46 @@ fn test_display_explore_result_cross() ? {
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
 	// repeat with expanded flag set
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	disp.show_flag = false
-	disp.expanded_flag = false
+	// disp.show_flag = false
+	// disp.expanded_flag = false
 	_ = explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 
 	// repeat for a binary class dataset
 	opts.number_of_attributes = [0]
 	opts.datafile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
-	disp.show_flag = false
-	disp.expanded_flag = false
+	// disp.show_flag = false
+	// disp.expanded_flag = false
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	disp.expanded_flag = false
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
-	disp.graph_flag = true
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.expanded_flag = false
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.graph_flag = true
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true, graph_flag: true)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	disp.expanded_flag = false
+	// disp.expanded_flag = false
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	disp.show_flag = true
-	disp.expanded_flag = false
-	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = true
+	// disp.expanded_flag = false
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 }
 
 fn test_display_explore_result_verify() ? {
@@ -204,42 +204,42 @@ fn test_display_explore_result_verify() ? {
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	disp.show_flag = false
-	disp.expanded_flag = false
-	_ = explore(ds, opts)
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = false
+	// disp.expanded_flag = false
+	_ = explore(ds, opts, show_flag: true)
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 
 	// repeat for a binary class dataset
 	opts.datafile_path = 'datasets/bcw350train'
 	opts.testfile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
-	disp.show_flag = false
-	disp.expanded_flag = false
+	// disp.show_flag = false
+	// disp.expanded_flag = false
 	opts.number_of_attributes = [0]
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	disp.show_flag = false
-	disp.expanded_flag = false
+	// disp.show_flag = false
+	// disp.expanded_flag = false
 	_ = explore(ds, opts)
-	disp.show_flag = true
-	display_file(opts.outputfile_path, opts)
-	disp.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	// disp.show_flag = true
+	display_file(opts.outputfile_path, opts, show_flag: true)
+	// disp.expanded_flag = true
+	display_file(opts.outputfile_path, opts, expanded_flag: true)
 }

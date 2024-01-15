@@ -7,9 +7,9 @@ fn test_cross_validate() ? {
 	mut opts := Options{
 		command: 'cross'
 		exclude_flag: false
-		verbose_flag: false
-		show_flag: false
-		expanded_flag: false
+		// verbose_flag: false
+		// show_flag: false
+		// expanded_flag: false
 		concurrency_flag: true
 	}
 	mut result := CrossVerifyResult{}

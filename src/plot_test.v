@@ -22,7 +22,7 @@ fn test_rank_attributes_plot() {
 	mut result := RankingResult{}
 	mut opts := Options{
 		datafile_path: 'datasets/developer.tab'
-		graph_flag: true
+		// graph_flag: true
 		command: 'rank'
 	}
 	result = rank_attributes(load_file(opts.datafile_path), opts)
@@ -42,9 +42,7 @@ fn test_rank_attributes_plot() {
 // 		command: 'explore'
 // 		// number_of_attributes: [2, 7]
 // 		bins: [3, 7]
-// 		show_flag: true
-// 		// expanded_flag: true
-// 		graph_flag: true
+
 // 		weighting_flag: true
 // 		exclude_flag: true
 // 		concurrency_flag: true

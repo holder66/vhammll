@@ -3,7 +3,7 @@ module vhammll
 
 fn test_analyze_dataset() ? {
 	mut opts := Options{
-		show_flag: false
+		// show_flag: false
 	}
 	// orange_newer file
 	mut ds := load_file('datasets/developer.tab')
@@ -36,7 +36,7 @@ fn test_analyze_dataset() ? {
 
 fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 	mut opts := Options{
-		show_flag: false
+		// show_flag: false
 		datafile_path: 'datasets/class_missing_developer.tab'
 	}
 	mut ds := Dataset{}

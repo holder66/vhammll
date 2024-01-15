@@ -34,8 +34,8 @@ fn testsuite_end() ? {
 fn test_kaggle() ! {
 	mut opts := Options{
 		kagglefile_path: 'tempfolder3/kagglefile'
-		verbose_flag: false
-		show_flag: false
+		// verbose_flag: false
+		// show_flag: false
 		concurrency_flag: true
 	}
 	mut result := ValidateResult{}
@@ -99,8 +99,8 @@ fn test_kaggle() ! {
 // test_validate
 fn test_validate() ? {
 	mut opts := Options{
-		verbose_flag: false
-		show_flag: false
+		// verbose_flag: false
+		// show_flag: false
 		concurrency_flag: true
 	}
 

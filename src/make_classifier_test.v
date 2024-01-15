@@ -29,10 +29,10 @@ fn test_make_classifier() ? {
 	mut opts := Options{
 		bins: [2, 12]
 		exclude_flag: false
-		verbose_flag: false
+		// verbose_flag: false
 		command: 'make'
 		number_of_attributes: [6]
-		show_flag: false
+		// show_flag: false
 		weighting_flag: true
 		weight_ranking_flag: true
 	}
@@ -117,10 +117,10 @@ fn test_save_classifier() ? {
 	mut opts := Options{
 		bins: [2, 12]
 		exclude_flag: false
-		verbose_flag: false
+		// verbose_flag: false
 		command: 'make'
 		number_of_attributes: [6]
-		show_flag: false
+		// show_flag: false
 		weighting_flag: true
 		weight_ranking_flag: true
 		outputfile_path: 'tempfolder2/classifierfile'

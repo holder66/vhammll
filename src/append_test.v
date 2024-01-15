@@ -17,9 +17,9 @@ fn testsuite_end() ! {
 // test_append
 fn test_append() ! {
 	mut opts := Options{
-		verbose_flag: false
+		// verbose_flag: false
 		command: 'append'
-		show_flag: false
+		// show_flag: false
 		concurrency_flag: false
 		weighting_flag: true
 	}

@@ -159,8 +159,7 @@ pub mut:
 @[params]
 pub struct Options {
 	Parameters
-	LoadOptions
-	// DisplaySettings
+	LoadOptions // DisplaySettings
 	MultipleOptions
 	MultipleClassifiersArray
 pub mut:
