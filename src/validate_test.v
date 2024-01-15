@@ -14,12 +14,9 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder3')!
 }
 
-// test_validate_save_result
 // fn test_validate_save_result() ? {
 // 	mut opts := Options{
-// 		verbose_flag: false
 // 		command: 'validate'
-// 		show_flag: false
 // 		concurrency_flag: true
 // 		outputfile_path: 'tempfolder3/instancesfile'
 // 	}
@@ -34,8 +31,6 @@ fn testsuite_end() ? {
 fn test_kaggle() ! {
 	mut opts := Options{
 		kagglefile_path: 'tempfolder3/kagglefile'
-		// verbose_flag: false
-		// show_flag: false
 		concurrency_flag: true
 	}
 	mut result := ValidateResult{}
@@ -99,8 +94,6 @@ fn test_kaggle() ! {
 // test_validate
 fn test_validate() ? {
 	mut opts := Options{
-		// verbose_flag: false
-		// show_flag: false
 		concurrency_flag: true
 	}
 

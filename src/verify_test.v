@@ -17,8 +17,6 @@ fn testsuite_end() ! {
 // test_verify
 fn test_verify() ? {
 	mut opts := Options{
-		// verbose_flag: false
-		// show_flag: false
 		concurrency_flag: true
 	}
 
@@ -131,7 +129,6 @@ fn test_verify() ? {
 		opts.bins = [2, 2]
 		opts.weight_ranking_flag = true
 		opts.weighting_flag = false
-		// disp.show_flag = false
 		ds = load_file(opts.datafile_path)
 		cl = make_classifier(ds, opts)
 		result = verify(cl, opts)

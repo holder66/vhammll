@@ -15,7 +15,6 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder5')!
 }
 
-// test_append
 fn test_append() ? {
 	mut opts := Options{}
 	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'

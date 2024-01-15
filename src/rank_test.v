@@ -1,7 +1,6 @@
 // rank_test.v
 module vhammll
 
-// test_sum_along_row_unweighted
 fn test_sum_along_row_unweighted() {
 	assert sum_along_row_unweighted([]int{}) == 0
 	assert sum_along_row_unweighted([0]) == 0
@@ -10,7 +9,6 @@ fn test_sum_along_row_unweighted() {
 	assert sum_along_row_unweighted([0, 0, 8]) == 16
 }
 
-// test_sum_along_row_uweighted
 fn test_sum_along_row_weighted() {
 	cca := [4, 8, 3]
 	assert sum_along_row_weighted([0], cca) == 0
@@ -19,7 +17,6 @@ fn test_sum_along_row_weighted() {
 	assert sum_along_row_weighted([0, 0, 8], cca) == 96
 }
 
-// test_rank_attributes
 fn test_rank_attributes() {
 	mut opts := Options{
 		bins: [3, 3]
@@ -68,7 +65,6 @@ fn test_rank_attributes() {
 	assert rank_value <= 38.49
 }
 
-// test_get_rank_value_for_strings
 fn test_get_rank_value_for_strings() {
 	// mut params := Parameters{
 	// 	exclude_flag: true
@@ -102,7 +98,6 @@ fn test_get_rank_value_for_strings() {
 		opts) == 3592
 }
 
-// test_rank_attribute_sorting
 fn test_rank_attribute_sorting() {
 	mut opts := Options{
 		weight_ranking_flag: true

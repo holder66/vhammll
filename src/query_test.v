@@ -7,7 +7,6 @@ fn test_query() ? {
 		number_of_attributes: [2]
 		bins: [2, 2]
 		exclude_flag: false
-		// verbose_flag: false
 	}
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(ds, opts)

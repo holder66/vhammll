@@ -5,10 +5,8 @@ fn test_explore_cross() ? {
 	mut result := ExploreResult{}
 	mut metrics := Metrics{}
 	mut opts := Options{
-		// verbose_flag: false
 		number_of_attributes: [1, 4]
 		bins: [2, 7]
-		// show_flag: false
 		concurrency_flag: true
 		uniform_bins: true
 		datafile_path: 'datasets/iris.tab'
@@ -59,7 +57,6 @@ fn test_explore_cross() ? {
 
 fn test_explore_verify() ? {
 	mut opts := Options{
-		// verbose_flag: true
 		command: 'explore'
 		concurrency_flag: true
 		weighting_flag: true

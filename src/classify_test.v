@@ -1,15 +1,12 @@
 // classify_test.v
 module vhammll
 
-// test_classify_instance
 fn test_classify_instance() {
 	mut opts := Options{
 		bins: [2, 12]
 		exclude_flag: false
-		// verbose_flag: false
 		command: 'classify'
 		number_of_attributes: [6]
-		// show_flag: false
 		weighting_flag: false
 	}
 	mut ds := load_file('datasets/developer.tab')
@@ -30,7 +27,6 @@ fn test_classify_instance() {
 	]
 }
 
-// test_get_hamming_distance
 fn test_get_hamming_distance() {
 	assert get_hamming_distance(0, 0) == 0
 	assert get_hamming_distance(0, 1) == 1

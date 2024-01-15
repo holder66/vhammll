@@ -14,12 +14,9 @@ fn testsuite_end() ! {
 	os.rmdir_all('tempfolder')!
 }
 
-// test_append
 fn test_append() ! {
 	mut opts := Options{
-		// verbose_flag: false
 		command: 'append'
-		// show_flag: false
 		concurrency_flag: false
 		weighting_flag: true
 	}
