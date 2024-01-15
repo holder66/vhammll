@@ -93,7 +93,7 @@ fn test_multiple_verify() ? {
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
 	mut cl := make_classifier(ds, opts)
-	result0 := verify(cl, opts, expanded_flag: true)
+	result0 := verify(cl, opts)
 	// assert result0.confusion_matrix_map == {
 	// 	'ALL': {
 	// 		'ALL': 17.0
