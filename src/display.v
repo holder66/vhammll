@@ -74,7 +74,7 @@ pub fn display_file(path string, opts Options, disp DisplaySettings) {
 			multiple_options := MultipleOptions{
 				classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
 			}
-			show_multiple_classifiers_options(multiple_options, multiple_classifiers_array)
+			show_multiple_classifiers_options(opts, multiple_options, multiple_classifiers_array)
 		}
 		else {
 			println('File type not recognized!')

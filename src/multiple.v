@@ -12,7 +12,7 @@ import arrays
 fn multiple_classifier_classify(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	if opts.total_nn_counts_flag {
 		return multiple_classifier_classify_totalnn(index, classifiers, instances_to_be_classified,
-			labeled_classes, opts)
+			labeled_classes, opts, disp)
 	}
 	mut final_cr := ClassifyResult{
 		index: index

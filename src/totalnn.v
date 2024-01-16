@@ -8,7 +8,7 @@ module vhammll
 // multiple classifiers prior to making the inference
 
 // multiple_classifier_classify_totalnn
-fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options) ClassifyResult {
+fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		index: index
 		multiple_flag: true
@@ -21,9 +21,13 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 		maximum_hamming_distance_array << max_ham_dist(cl.trained_attributes)
 	}
 	total_max_ham_dist := array_sum(maximum_hamming_distance_array)
-	println('total_max_ham_dist: ${total_max_ham_dist}')
 	lcm_max_ham_dist := lcm(maximum_hamming_distance_array)
+	if disp.verbose_flag {
+	println('total_max_ham_dist: ${total_max_ham_dist}')
+
+
 	println('lcm_max_ham_dist: ${lcm_max_ham_dist}')
+}
 	// // println(opts.MultipleOptions)
 	mut total_nns_by_class := []f64{len: 2}
 	mut weighted_totals := []f64{len: 2}
@@ -60,9 +64,10 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 		}
 
 		// total nearest neigbors by class for all classifiers
+		if disp.verbose_flag {
 		print('nearest_neighbors_by_class: ')
 		println(nearest_neighbors_by_class)
-
+}
 		// the nearest neighbor counts need to be weighted by
 		// the maximum hamming distance for each classifier
 		if classifiers.len > 1 {
@@ -71,9 +76,10 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
 		}
 	}
+	if disp.verbose_flag {
 	print('nearest_neighbors_by_class_array: ')
 	println(nearest_neighbors_by_class_array)
-
+}
 	for nn in nearest_neighbors_by_class_array {
 		for j, count in nn {
 			total_nns_by_class[j] += count
@@ -81,13 +87,16 @@ fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, ins
 	}
 	// println('total_nns_by_class: ${total_nns_by_class}')
 	// weight by class prevalences
+	if disp.verbose_flag { 
 	println('lcm: ${lcm_val}')
+}
 	for j, nn in total_nns_by_class {
 		weighted_totals[j] = f64(nn) * lcm_val / classifiers[0].class_counts[classifiers[0].class_values[j]]
 	}
 	// for cl in classifiers { println(cl.class_counts)}
+	if disp.verbose_flag {
 	println('weighted_totals: ${weighted_totals}')
-
+}
 	if single_array_maximum(weighted_totals) {
 		final_cr.inferred_class = classifiers[0].classes[idx_max(weighted_totals)]
 		return final_cr

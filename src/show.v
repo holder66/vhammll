@@ -161,7 +161,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options, disp DisplaySettings)
 		'from "${result.datafile_path}"'))
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		show_multiple_classifiers_options(result.MultipleOptions, result.MultipleClassifiersArray)
+		show_multiple_classifiers_options(opts, result.MultipleOptions, result.MultipleClassifiersArray)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
@@ -175,14 +175,26 @@ pub fn show_verify(result CrossVerifyResult, opts Options, disp DisplaySettings)
 	show_cross_or_verify_result(result, disp)
 }
 
+const headers = {
+	0: 'Classifier:'
+	1: 'Number of attributes:'
+	2: 'Binning:'
+	3: 'Exclude missing values:'
+	4: 'Ranking using weighting:'
+	5: 'Weighting of NN counts:'
+	6: 'Balance prevalences:'
+	7: 'Purge duplicate cases:'
+	8: 'True counts:'
+	9: 'False counts:'
+	10: 'Raw accuracy:'
+	11: 'Balanced accuracy:'
+	12: 'Maximum Hamming Distance:'
+}
 // show_multiple_classifiers_options
-fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
-	mut row_labels := ['Classifier:', 'Number of attributes:', 'Binning:', 'Ranking using weighting:',
-		'Weighting:', 'Balance prevalences:', 'Purging:', 'True counts:', 'False counts:',
-		'Raw accuracy:', 'Balanced accuracy:', 'Maximum Hamming Distance:']
-	println('break_on_all_flag: ${m_o.break_on_all_flag}     combined_radii_flag: ${m_o.combined_radii_flag}')
+fn show_multiple_classifiers_options(opts Options, m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
+	println('break_on_all_flag: ${m_o.break_on_all_flag}     combined_radii_flag: ${m_o.combined_radii_flag}      class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
-	mut row_data := []string{len: row_labels.len, init: ''}
+	mut row_data := []string{len: headers.len, init: ''}
 	for i, par in m_c_a.multiple_classifiers {
 		if i in m_o.classifier_indices {
 			a := par.classifier_options
@@ -191,19 +203,20 @@ fn show_multiple_classifiers_options(m_o MultipleOptions, m_c_a MultipleClassifi
 			row_data[1] += '${a.number_of_attributes[0]:-13}'
 			binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
 			row_data[2] += '${binning:-13}'
-			row_data[3] += '${a.weight_ranking_flag:-13}'
-			row_data[4] += '${a.weighting_flag:-13}'
-			row_data[5] += '${a.balance_prevalences_flag:-13}'
-			row_data[6] += '${a.purge_flag:-13}'
-			row_data[7] += '${b.t_p:-6} ${b.t_n:-6}'
-			row_data[8] += '${b.f_n:-6} ${b.f_p:-6}'
-			row_data[9] += '${b.raw_acc:-6.2f}%      '
-			row_data[10] += '${b.bal_acc:-6.2f}%      '
-			row_data[11] += '${a.maximum_hamming_distance:-13}'
+			row_data[3] += '${a.exclude_flag:-13}'
+			row_data[4] += '${a.weight_ranking_flag:-13}'
+			row_data[5] += '${a.weighting_flag:-13}'
+			row_data[6] += '${a.balance_prevalences_flag:-13}'
+			row_data[7] += '${a.purge_flag:-13}'
+			row_data[8] += '${b.t_p:-6} ${b.t_n:-6}'
+			row_data[9] += '${b.f_n:-6} ${b.f_p:-6}'
+			row_data[10] += '${b.raw_acc:-6.2f}%      '
+			row_data[11] += '${b.bal_acc:-6.2f}%      '
+			row_data[12] += '${a.maximum_hamming_distance:-13}'
 		}
 	}
 	for i, row in row_data {
-		println('${row_labels[i]:25}   ${row}')
+		println('${headers[i]:25}   ${row}')
 	}
 }
 
@@ -217,7 +230,7 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 		 }
 	 })
 	if result.multiple_classify_options_file_path != '' {
-		show_multiple_classifiers_options(result.MultipleOptions, result.MultipleClassifiersArray)
+		show_multiple_classifiers_options(opts, result.MultipleOptions, result.MultipleClassifiersArray)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}

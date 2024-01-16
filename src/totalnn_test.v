@@ -77,7 +77,6 @@ fn test_multiple_verify() ? {
 		command: 'verify'
 	}
 	mut result := CrossVerifyResult{}
-	// disp.expanded_flag = true
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
 	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
@@ -90,58 +89,62 @@ fn test_multiple_verify() ? {
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
 	mut cl := make_classifier(ds, opts)
-	result0 := verify(cl, opts)
-	// assert result0.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 17.0
-	// 		'AML': 3.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 0.0
-	// 		'AML': 14.0
-	// 	}
-	// }
+	result0 := verify(cl, opts, expanded_flag: true)
+	assert result0.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 17.0
+			'AML': 3.0
+		}
+		'AML': {
+			'ALL': 0.0
+			'AML': 14.0
+		}
+	}
 	opts.bins = [2, 2]
 	opts.purge_flag = false
-	result1 := verify(cl, opts)
-	// assert result1.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 19.0
-	// 		'AML': 1.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 9.0
-	// 		'AML': 5.0
-	// 	}
-	// }
-	// // verify that the settings file was correctly saved, and
-	// // is the right length
-	// assert os.file_size(opts.settingsfile_path) >= 929
+	result1 := verify(cl, opts, expanded_flag: true)
+	assert result1.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 19.0
+			'AML': 1.0
+		}
+		'AML': {
+			'ALL': 9.0
+			'AML': 5.0
+		}
+	}
+	// verify that the settings file was correctly saved, and
+	// is the right length
+	assert os.file_size(opts.settingsfile_path) == 1042
 
 	// test verify with multiple_classify_options_file_path
-	// opts.multiple_flag = true
-	// opts.multiple_classify_options_file_path = opts.settingsfile_path
-	// result = verify(cl, opts)
-	// with both classifiers
-	// assert result.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 17.0
-	// 		'AML': 3.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 6.0
-	// 		'AML': 8.0
-	// 	}
-	// }
-	// opts.classifier_indices = [0]
-	// result = verify(cl, opts)
-	// // with classifier 0
+	opts.multiple_flag = true
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifier_indices = [0]
+	result = verify(cl, opts, expanded_flag: true)
+	// with classifier 0
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
 
-	// opts.classifier_indices = [1]
-	// result = verify(opts)
-	// // with classifier 1
+	opts.classifier_indices = [1]
+	result = verify(cl, opts, expanded_flag: true)
+	// with classifier 1
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
+	// with both classifiers
+	opts.classifier_indices = []
+	result = verify(cl, opts, verbose_flag: false, expanded_flag: true)
+
+
+	assert result.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 17.0
+			'AML': 3.0
+		}
+		'AML': {
+			'ALL': 6.0
+			'AML': 8.0
+		}
+	}
+	
 }
 
 // fn test_multiple_crossvalidate() ? {
