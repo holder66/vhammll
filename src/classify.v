@@ -16,7 +16,7 @@ module vhammll
 // weighting_flag: when true, nearest neighbor counts are weighted
 // by class prevalences.
 // ```
-fn classify_instance(index int, cl Classifier, instance_to_be_classified []u8, opts Options, disp DisplaySettings) ClassifyResult {
+fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options, disp DisplaySettings) ClassifyResult {
 	mut result := ClassifyResult{}
 	// to classify, get Hamming distances between the entered instance and
 	// all the instances in the classifier; return the class for the instance
@@ -56,7 +56,7 @@ fn classify_instance(index int, cl Classifier, instance_to_be_classified []u8, o
 			continue
 		}
 		result.inferred_class = cl.classes[idx_max(radius_row)]
-		result.index = index
+		// result.index = index
 		result.nearest_neighbors_by_class = radius_row
 		result.classes = cl.classes
 		result.weighting_flag = cl.weighting_flag
