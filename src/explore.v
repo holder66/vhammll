@@ -80,7 +80,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 				result = cross_validate(ds, ex_opts)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
-				result = verify(make_classifier(ds, ex_opts), ex_opts)
+				result = verify(ex_opts)
 			}
 			result.bin_values = ex_opts.bins
 			result.attributes_used = atts

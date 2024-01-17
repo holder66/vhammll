@@ -103,9 +103,9 @@ fn test_display_verify_result() ? {
 		number_of_attributes: [5]
 		concurrency_flag: true
 	}
-	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(ds, opts)
-	_ = verify(cl, opts)
+	// mut ds := load_file(opts.datafile_path)
+	// cl := make_classifier(ds, opts)
+	_ = verify(opts)
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
 	display_file(opts.outputfile_path, opts, expanded_flag: true)

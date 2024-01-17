@@ -11,7 +11,7 @@ fn test_classify_case() {
 	}
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(ds, opts)
-	assert classify_case(cl, cl.instances[0], opts).inferred_class == 'm'
+	assert classify_case(cl, cl.instances[0], opts, verbose_flag: true).inferred_class == 'm'
 	assert classify_case(cl, cl.instances[0], opts).nearest_neighbors_by_class == [
 		1,
 		0,

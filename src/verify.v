@@ -17,7 +17,7 @@ import runtime
 // 		a confusion matrix.
 // outputfile_path: saves the result as a json file
 // ```
-pub fn verify(org_cl Classifier, opts Options, disp DisplaySettings) CrossVerifyResult {
+pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -57,10 +57,10 @@ pub fn verify(org_cl Classifier, opts Options, disp DisplaySettings) CrossVerify
 		// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 		// massage each instance in the test dataset according to the
 		// attribute parameters in the classifier
-		test_instances := generate_test_instances_array(cl, test_ds)
+		case := generate_case_array(cl, test_ds)
 		// println(opts)
 		// for the instances in the test data, perform classifications
-		verify_result = classify_to_verify(cl, test_instances, mut verify_result, opts)
+		verify_result = classify_to_verify(cl, case, mut verify_result, opts)
 	} else { // ie, asking for multiple classifiers
 		mut classifier_array := []Classifier{}
 		mut instances_to_be_classified := [][][]u8{}
@@ -92,7 +92,7 @@ pub fn verify(org_cl Classifier, opts Options, disp DisplaySettings) CrossVerify
 			verify_result.Parameters = params
 			// println('mult_opts: $mult_opts')
 			classifier_array << make_classifier(ds, mult_opts)
-			instances_to_be_classified << generate_test_instances_array(classifier_array.last(),
+			instances_to_be_classified << generate_case_array(classifier_array.last(),
 				test_ds)
 		}
 		// println('classifier_array: ${classifier_array}')
@@ -130,8 +130,8 @@ pub fn verify(org_cl Classifier, opts Options, disp DisplaySettings) CrossVerify
 	return verify_result
 }
 
-// generate_test_instances_array
-fn generate_test_instances_array(cl Classifier, test_ds Dataset) [][]u8 {
+// generate_case_array
+fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
 	// for each usable attribute in cl, massage the equivalent test_ds attribute
 	// println(cl)
 	mut test_binned_values := []int{}
@@ -157,9 +157,9 @@ fn generate_test_instances_array(cl Classifier, test_ds Dataset) [][]u8 {
 }
 
 // option_worker_verify
-fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, test_instances [][]u8, labeled_classes []string, opts Options) {
+fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, case [][]u8, labeled_classes []string, opts Options) {
 	mut index := <-work_channel
-	mut classify_result := classify_case(cl, test_instances[index], opts)
+	mut classify_result := classify_case(cl, case[index], opts)
 	classify_result.labeled_class = labeled_classes[index]
 	result_channel <- classify_result
 	// dump(result_channel)
@@ -167,11 +167,11 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 }
 
 // multiple_classify_to_verify
-fn multiple_classify_to_verify(m_cl []Classifier, m_instances [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
+fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('result in multiple_classify_to_verify: $result')
 	mut m_classify_result := ClassifyResult{}
-	for i, test_instance in m_instances {
-		m_classify_result = multiple_classifier_classify(m_cl, test_instance, [''],
+	for i, case in m_cases {
+		m_classify_result = multiple_classifier_classify(m_cl, case, [''],
 			opts, disp)
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		result.inferred_classes << m_classify_result.inferred_class
@@ -191,20 +191,20 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_instances [][][]u8, mut resu
 	return result
 }
 
-// classify_to_verify classifies each instance in an array, and
+// classify_to_verify classifies each case in an array, and
 // returns the results of the classification.
-fn classify_to_verify(cl Classifier, test_instances [][]u8, mut result CrossVerifyResult, opts Options) CrossVerifyResult {
+fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options) CrossVerifyResult {
 	// for each instance in the test data, perform a classification
 	mut classify_result := ClassifyResult{}
 	if opts.concurrency_flag {
 		mut work_channel := chan int{cap: runtime.nr_jobs()}
-		mut result_channel := chan ClassifyResult{cap: test_instances.len}
-		for i, _ in test_instances {
+		mut result_channel := chan ClassifyResult{cap: case.len}
+		for i, _ in case {
 			work_channel <- i
-			spawn option_worker_verify(work_channel, result_channel, cl, test_instances,
+			spawn option_worker_verify(work_channel, result_channel, cl, case,
 				result.labeled_classes, opts)
 		}
-		for _ in test_instances {
+		for _ in case {
 			classify_result = <-result_channel
 			// println(classify_result)
 			result.inferred_classes << classify_result.inferred_class
@@ -212,7 +212,7 @@ fn classify_to_verify(cl Classifier, test_instances [][]u8, mut result CrossVeri
 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		}
 	} else {
-		for i, test_instance in test_instances {
+		for i, test_instance in case {
 			classify_result = classify_case(cl, test_instance, opts)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			result.inferred_classes << classify_result.inferred_class

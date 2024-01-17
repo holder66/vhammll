@@ -266,9 +266,9 @@ fn do_query(mut opts Options, disp DisplaySettings) ! {
 
 // verify
 fn do_verify(mut opts Options, disp DisplaySettings) ! {
-	cl := get_classifier(opts)!
+	// cl := get_classifier(opts)!
 	// disp.show_flag = true
-	verify(cl, opts, show_flag: true)
+	verify(opts, show_flag: true)
 }
 
 // validate

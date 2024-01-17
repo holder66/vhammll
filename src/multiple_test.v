@@ -38,8 +38,8 @@ fn test_multiple_verify() ? {
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(ds, opts)
-	result0 := verify(cl, opts)
+	// cl := make_classifier(ds, opts)
+	result0 := verify(opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -51,7 +51,7 @@ fn test_multiple_verify() ? {
 		}
 	}
 	opts.bins = [2, 2]
-	result1 := verify(cl, opts)
+	result1 := verify(opts)
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 20.0
@@ -69,7 +69,7 @@ fn test_multiple_verify() ? {
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	result = verify(cl, opts)
+	result = verify(opts)
 	// with both classifiers
 	show_expanded_result(result)
 	assert result.confusion_matrix_map == {
@@ -84,12 +84,12 @@ fn test_multiple_verify() ? {
 	}
 
 	opts.classifier_indices = [0]
-	result = verify(cl, opts)
+	result = verify(opts)
 	// with classifier 0
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 
 	opts.classifier_indices = [1]
-	result = verify(cl, opts)
+	result = verify(opts)
 	// with classifier 1
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }

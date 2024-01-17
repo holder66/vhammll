@@ -6,11 +6,11 @@ module vhammll
 // to simplify the documentation, we will change "instance to be classified"
 // to "case", and leave "instance" as referring to the classifier data.
 
-// classify_instance takes a trained classifier and an instance to be
-// classified; it returns the inferred class for the instance and the
+// classify_instance takes a trained classifier and a case to be
+// classified; it returns the inferred class for the case and the
 // counts of nearest neighbors to all the classes.
 // The classification algorithm calculates Hamming distances between
-// the instance to be classified and all the instances in the trained
+// the case to be classified and all the instances in the trained
 // classifier; for the minimum hamming distance, the class with the
 // most neighbors at that distance is the inferred class. In case of
 // ties, the algorithm moves on to the next minimum hamming distance.
@@ -74,10 +74,10 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 	// 	println('ClassifyResult in classify.v: ${result}')
 	// }
 	if disp.verbose_flag {
-		println('classifier  sphere index  radius  nearest neighbors  ratio  inferred class')
+		println('sphere index  radius  nearest neighbors  ratio  inferred class')
 		// for i, icr in mcr.results_by_classifier {
 		// 	a := icr.results_by_radius.last()
-		println('${result.index:10}  ${result.sphere_index:12}  ${result.hamming_distance:6}  ${result.nearest_neighbors_by_class:-17} ${get_ratio(result.nearest_neighbors_by_class):6.2f}  ${result.inferred_class} ')
+		println('${result.sphere_index:12}  ${result.hamming_distance:6}  ${result.nearest_neighbors_by_class:-17} ${get_ratio(result.nearest_neighbors_by_class):6.2f}  ${result.inferred_class} ')
 		// }
 		// println('${index:-7} ${class} ')
 	}

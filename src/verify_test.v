@@ -33,8 +33,8 @@ fn test_verify() ? {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(ds, opts)
-	assert verify(cl, opts).correct_count == 10
+	// cl = make_classifier(ds, opts)
+	assert verify(opts).correct_count == 10
 
 	println('Done with test.tab')
 
@@ -47,8 +47,8 @@ fn test_verify() ? {
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(ds, opts)
-	result = verify(cl, opts)
+	// cl = make_classifier(ds, opts)
+	result = verify(opts)
 	assert result.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -67,10 +67,10 @@ fn test_verify() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.bins = [2, 4]
-	ds = load_file(opts.datafile_path)
+	// ds = load_file(opts.datafile_path)
 
-	cl = make_classifier(ds, opts)
-	result = verify(cl, opts)
+	// cl = make_classifier(ds, opts)
+	result = verify(opts)
 	// assert result.correct_count == 171
 	// assert result.wrong_count == 3
 
@@ -85,7 +85,7 @@ fn test_verify() ? {
 
 	// cl = Classifier{}
 	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-	result = verify(cl, opts)
+	result = verify(opts)
 	assert result.correct_count == 171
 	assert result.wrong_count == 3
 
@@ -100,7 +100,7 @@ fn test_verify() ? {
 	opts.weight_ranking_flag = false
 	ds = load_file(opts.datafile_path)
 	cl = make_classifier(ds, opts)
-	result = verify(cl, opts)
+	result = verify(opts)
 
 	assert result.correct_count == 340
 	assert result.wrong_count == 36
@@ -114,7 +114,7 @@ fn test_verify() ? {
 	cl = make_classifier(ds, opts)
 	// cl = Classifier{}
 	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-	result = verify(cl, opts)
+	result = verify(opts)
 	assert result.correct_count == 340
 	assert result.wrong_count == 36
 
@@ -131,7 +131,7 @@ fn test_verify() ? {
 		opts.weighting_flag = false
 		ds = load_file(opts.datafile_path)
 		cl = make_classifier(ds, opts)
-		result = verify(cl, opts)
+		result = verify(opts)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
 
@@ -144,7 +144,7 @@ fn test_verify() ? {
 		cl = make_classifier(ds, opts)
 		// cl = Classifier{}
 		// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-		result = verify(cl, opts)
+		result = verify(opts)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
 

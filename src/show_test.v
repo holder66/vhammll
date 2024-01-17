@@ -253,12 +253,12 @@ fn test_show_verify() ? {
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
 	ds = load_file(opts.datafile_path)
-	cl = make_classifier(ds, opts, show_flag: true)
-	result = verify(cl, opts, show_flag: true)
+	// cl = make_classifier(ds, opts, show_flag: true)
+	result = verify(opts, show_flag: true)
 	// println('result one in show_test: $result')
 	opts.weighting_flag = true
-	cl = make_classifier(ds, opts, expanded_flag: true)
-	result = verify(cl, opts, expanded_flag: true)
+	// cl = make_classifier(ds, opts, expanded_flag: true)
+	result = verify(opts, expanded_flag: true)
 
 	// println('result two in show_test: $result')
 }
