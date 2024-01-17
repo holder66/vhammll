@@ -46,7 +46,7 @@ pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeRe
 		mut att_info := Attribute{
 			id: i
 			name: name
-			counts_map: string_element_counts(ds.data[i])
+			counts_map: element_counts(ds.data[i])
 			count: ds.data[i].len
 			uniques: uniques_values(ds.data[i])
 			missing: missing_vals[i]
@@ -65,7 +65,7 @@ pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeRe
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
 			// println('ds.data.len: ${ds.data.len}')
 			// println('ds.data[i]: ${ds.data[i]}')
-			att_info.counts_map = string_element_counts(ds.data[i])
+			att_info.counts_map = element_counts(ds.data[i])
 			// println('att_info: ${att_info}')
 		}
 		atts << att_info
@@ -90,7 +90,7 @@ pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeRe
 
 // uniques_values
 fn uniques_values(attribute_values []string) int {
-	return string_element_counts(attribute_values).len
+	return element_counts(attribute_values).len
 }
 
 // missing_values

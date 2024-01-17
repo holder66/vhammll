@@ -59,7 +59,7 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 		// println(ds.attribute_names)
 		ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
 		// println(ds.class_values)
-		ds.class_counts = string_element_counts(ds.class_values)
+		ds.class_counts = element_counts(ds.class_values)
 		// println(ds.class_counts)
 		// redo the useful_attribute maps
 		ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
@@ -149,9 +149,9 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	prepurge_instances_count := cl.instances.len
 	if opts.purge_flag {
 		cl = purge(cl)
-		cl.postpurge_class_counts = string_element_counts(cl.class_values)
+		cl.postpurge_class_counts = element_counts(cl.class_values)
 		cl.postpurge_lcm_class_counts = i64(lcm(get_map_values(cl.postpurge_class_counts)))
-		cl.class_counts = string_element_counts(cl.class_values)
+		cl.class_counts = element_counts(cl.class_values)
 		cl.lcm_class_counts = cl.postpurge_lcm_class_counts
 	}
 	// create an event

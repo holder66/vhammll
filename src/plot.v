@@ -310,7 +310,7 @@ fn plot_roc(result ExploreResult, opts Options) {
 		y_coordinates << roc_result.sensitivity
 	}
 
-	for key, _ in string_element_counts(bin_range_values) {
+	for key, _ in element_counts(bin_range_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
 			x_coordinates: filter(key, bin_range_values, x_coordinates)
@@ -333,7 +333,7 @@ fn plot_roc(result ExploreResult, opts Options) {
 	// now a series of curves, one per attributes_used value
 	mut plt_atts := plot.Plot.new()
 	traces.clear()
-	for key, _ in string_element_counts(attributes_used_values) {
+	for key, _ in element_counts(attributes_used_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
 			x_coordinates: filter(key, attributes_used_values, x_coordinates)

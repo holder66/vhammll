@@ -171,7 +171,7 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_instances [][][]u8, mut resu
 	// println('result in multiple_classify_to_verify: $result')
 	mut m_classify_result := ClassifyResult{}
 	for i, test_instance in m_instances {
-		m_classify_result = multiple_classifier_classify(i, m_cl, test_instance, [''],
+		m_classify_result = multiple_classifier_classify(m_cl, test_instance, [''],
 			opts, disp)
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		result.inferred_classes << m_classify_result.inferred_class

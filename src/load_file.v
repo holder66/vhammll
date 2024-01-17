@@ -132,7 +132,7 @@ pub fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	// mut max_value := f32{0.}
 	mut cont_att := map[int][]f32{}
 	for i in 0 .. ds.attribute_names.len {
-		if ds.attribute_types[i] == 'C' && string_element_counts(ds.data[i]).len != 1 {
+		if ds.attribute_types[i] == 'C' && element_counts(ds.data[i]).len != 1 {
 			nums := ds.data[i].map(replace_missing_value(it, ds.missings))
 			cont_att[i] = nums
 		}
@@ -182,7 +182,7 @@ pub fn set_class_struct(ds Dataset) Class {
 			class_name: ds.attribute_names[i]
 			class_index: i
 			class_values: ds.data[i]
-			class_counts: string_element_counts(ds.data[i])
+			class_counts: element_counts(ds.data[i])
 			// class_counts: class_counts
 			classes: uniques(ds.data[i])
 		}

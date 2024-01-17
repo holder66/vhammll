@@ -226,7 +226,7 @@ fn get_rank_value_for_strings(values []string, class_values []string, class_coun
 	mut rank_val := i64(0)
 	mut count := 0
 	mut row := []int{}
-	for unique_val, _ in string_element_counts(values) {
+	for unique_val, _ in element_counts(values) {
 		if unique_val in opts.missings && opts.exclude_flag {
 			continue
 		}

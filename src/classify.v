@@ -17,7 +17,10 @@ module vhammll
 // by class prevalences.
 // ```
 fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options, disp DisplaySettings) ClassifyResult {
-	mut result := ClassifyResult{}
+	mut result := ClassifyResult{
+		classes: cl.classes
+		weighting_flag: cl.weighting_flag
+	}
 	// to classify, get Hamming distances between the entered instance and
 	// all the instances in the classifier; return the class for the instance
 	// giving the lowest Hamming distance.
@@ -35,7 +38,7 @@ fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options
 	}
 	// get unique values in hamming_dist_array; these are the radii
 	// of the nearest-neighbor "spheres"
-	mut radii := integer_element_counts(hamming_dist_array).keys()
+	mut radii := element_counts(hamming_dist_array).keys()
 	radii.sort()
 	mut radius_row := []int{len: cl.class_counts.len}
 	for sphere_index, radius in radii {
@@ -58,8 +61,8 @@ fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options
 		result.inferred_class = cl.classes[idx_max(radius_row)]
 		// result.index = index
 		result.nearest_neighbors_by_class = radius_row
-		result.classes = cl.classes
-		result.weighting_flag = cl.weighting_flag
+		// result.classes = cl.classes
+		// result.weighting_flag = cl.weighting_flag
 		result.hamming_distance = radii[sphere_index]
 		result.sphere_index = sphere_index
 		break

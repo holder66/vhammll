@@ -17,7 +17,7 @@ fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Opti
 	// update the Class struct for the rest of the dataset
 	part_ds.class_name = ds.class_name // for some reason, this gets emptied
 	part_ds.class_values = get_index_items(ds.class_values, part_indices)
-	part_ds.class_counts = string_element_counts(part_ds.class_values)
+	part_ds.class_counts = element_counts(part_ds.class_values)
 	part_ds.data = transpose(get_index_items(transpose(ds.data), part_indices))
 	part_ds.useful_continuous_attributes = get_useful_continuous_attributes(part_ds)
 	part_ds.useful_discrete_attributes = get_useful_discrete_attributes(part_ds)
@@ -29,7 +29,7 @@ fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Opti
 		data: transpose(get_index_items(transpose(ds.data), fold_indices))
 		class_name: ds.class_name
 		class_values: fold_class_values
-		class_counts: string_element_counts(fold_class_values)
+		class_counts: element_counts(fold_class_values)
 	}
 	return part_ds, fold
 }

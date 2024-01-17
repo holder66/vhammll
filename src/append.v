@@ -28,7 +28,7 @@ pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts 
 	ext_cl.history << event
 	ext_cl.instances << instances_to_append.instances
 	ext_cl.class_values << instances_to_append.inferred_classes
-	ext_cl.class_counts = string_element_counts(ext_cl.class_values)
+	ext_cl.class_counts = element_counts(ext_cl.class_values)
 	// calculate lcm_class_counts which is needed when the weighting_flag is set
 	ext_cl.lcm_class_counts = i64(lcm(get_map_values(ext_cl.class_counts)))
 	if disp.show_flag || disp.expanded_flag {

@@ -53,23 +53,23 @@ pub fn transpose[T](matrix [][]T) [][]T {
 	return matrix_t
 }
 
-// string_element_counts returns a map with the counts for each element in an array of strings
-fn string_element_counts(array []string) map[string]int {
-	mut counts := map[string]int{}
-	for word in array {
-		counts[word]++
-	}
-	return counts
-}
+// element_counts returns a map with the counts for each element in an array of strings
+// fn element_counts(array []string) map[string]int {
+// 	mut counts := map[string]int{}
+// 	for word in array {
+// 		counts[word]++
+// 	}
+// 	return counts
+// }
 
-// integer_element_counts returns a map with the counts for each element in an array of integers
-fn integer_element_counts(array []int) map[int]int {
-	mut counts := map[int]int{}
-	for word in array {
-		counts[word]++
-	}
-	return counts
-}
+// element_counts returns a map with the counts for each element in an array of integers
+// fn element_counts(array []int) map[int]int {
+// 	mut counts := map[int]int{}
+// 	for word in array {
+// 		counts[word]++
+// 	}
+// 	return counts
+// }
 
 fn element_counts[T](array []T) map[T]int {
 	mut counts := map[T]int{}

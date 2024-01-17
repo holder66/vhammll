@@ -9,13 +9,13 @@ import arrays
 // each classifier, and corresponding to the settings for that classifier.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	if opts.total_nn_counts_flag {
-		return multiple_classifier_classify_totalnn(index, classifiers, instances_to_be_classified,
+		return multiple_classifier_classify_totalnn(classifiers, instances_to_be_classified,
 			labeled_classes, opts, disp)
 	}
 	mut final_cr := ClassifyResult{
-		index: index
+		// index: index
 		multiple_flag: true
 		Class: classifiers[0].Class
 	}
@@ -215,7 +215,7 @@ fn multiple_classifier_classify(index int, classifiers []Classifier, instances_t
 	if inferred_classes_by_classifier.len > 1
 		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
 		final_cr.inferred_class = resolve_conflict(mcr)
-		show_detailed_result(index, final_cr.inferred_class, labeled_classes, mcr)
+		show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
 
 		// println('instance: ${index} ${inferred_classes_by_classifier} nearest neighbors: ${mcr.results_by_classifier.map(it.results_by_radius.map(it.nearest_neighbors_by_class))}} inferred_class: ${final_cr.inferred_class}')
 
@@ -228,7 +228,7 @@ fn multiple_classifier_classify(index int, classifiers []Classifier, instances_t
 	// final_cr.inferred_class_array = inferred_class_array
 	// final_cr.nearest_neighbors_array = nearest_neighbors_array
 	if disp.verbose_flag {
-		show_detailed_result(index, final_cr.inferred_class, labeled_classes, mcr)
+		show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
 	}
 	return final_cr
 }
@@ -291,10 +291,10 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 	// }
 	// println('inside resolve_conflict()')
 	// return 'unresolved conflict'
-	// return get_map_key_for_max_value(string_element_counts(inferred_class_array_filtered))
+	// return get_map_key_for_max_value(element_counts(inferred_class_array_filtered))
 	// filter out the null classifier results
 	// inferred_class_array_filtered := inferred_class_array.filter(it != '')
-	// return get_map_key_for_max_value(string_element_counts(inferred_class_array_filtered))
+	// return get_map_key_for_max_value(element_counts(inferred_class_array_filtered))
 	// nearest_neighbors_array_filtered := nearest_neighbors_array.filter(it.len == 0)
 	// zero_nn := nearest_neighbors_array.filter(0 in it).len
 	// println(uniques(inferred_class_array).filter(it != ''))
@@ -309,7 +309,7 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 	// if the number of inferred classes is an odd number, pick
 	// the winner
 	// inferred_class_array_filtered.len % 2 != 0 {
-	// 	return get_map_key_for_max_value(string_element_counts(inferred_class_array_filtered))
+	// 	return get_map_key_for_max_value(element_counts(inferred_class_array_filtered))
 	// }
 
 	// if only one of the nearest neighbors lists has a zero, use that

@@ -24,12 +24,17 @@ fn test_transpose() {
 }
 
 fn test_element_counts() {
-	assert string_element_counts(['i']) == {
+	a := []int{}
+	assert element_counts(a) == {}
+	b := []string{}
+	assert element_counts(b) == {}
+	c := [2.1, 4.4, 0, 1]
+	assert element_counts(c) == {2.1: 1, 4.4: 1, 0.0: 1, 1.0: 1}
+	assert element_counts(['i']) == {
 		'i': 1
 	}
-	assert string_element_counts([]) == map[string]int{}
 	mut elements := ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
-	assert string_element_counts(elements) == {
+	assert element_counts(elements) == {
 		'i':  1
 		'':   3
 		'w':  1
@@ -112,7 +117,7 @@ fn test_discretize_attribute() {
 // test_get_map_values
 fn test_get_map_values() {
 	mut elements := ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
-	assert get_map_values(string_element_counts(elements)) == [1, 3, 1, 1, 1, 1, 1, 1]
+	assert get_map_values(element_counts(elements)) == [1, 3, 1, 1, 1, 1, 1, 1]
 }
 
 // test_convert_to_one_bit

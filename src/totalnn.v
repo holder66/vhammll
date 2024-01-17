@@ -8,9 +8,9 @@ module vhammll
 // multiple classifiers prior to making the inference
 
 // multiple_classifier_classify_totalnn
-fn multiple_classifier_classify_totalnn(index int, classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
-		index: index
+		// index: index
 		multiple_flag: true
 		Class: classifiers[0].Class
 	}
