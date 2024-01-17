@@ -484,12 +484,12 @@ fn test_multiple_verify() ? {
 // 	println(cl1)
 // 	for i, instance in cl1.instances {
 // 		println('$i $instance')
-// 		println(classify_instance(i, cl1, instance, opts).inferred_class)
+// 		println(classify_case(i, cl1, instance, opts).inferred_class)
 // 		println('actual class: ${cl1.class_values[i]}')
 // 	}
 
-// 	assert classify_instance(0, cl1, cl1.instances[0], opts).inferred_class == 'm'
-// 	assert classify_instance(0, cl1, cl1.instances[0], opts).nearest_neighbors_by_class == [
+// 	assert classify_case(0, cl1, cl1.instances[0], opts).inferred_class == 'm'
+// 	assert classify_case(0, cl1, cl1.instances[0], opts).nearest_neighbors_by_class == [
 // 		1,
 // 		0
 // 	]
@@ -497,8 +497,8 @@ fn test_multiple_verify() ? {
 // 	opts.bins = [1,7]
 // 	opts.number_of_attributes = [1]
 // 	mut cl2 := make_classifier(mut ds, opts)
-// 	assert classify_instance(0, cl2, cl2.instances[3], opts).inferred_class == 'f'
-// 	assert classify_instance(0, cl2, cl2.instances[3], opts).nearest_neighbors_by_class == [
+// 	assert classify_case(0, cl2, cl2.instances[3], opts).inferred_class == 'f'
+// 	assert classify_case(0, cl2, cl2.instances[3], opts).nearest_neighbors_by_class == [
 // 		0,
 // 9
 // 	]

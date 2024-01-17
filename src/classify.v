@@ -3,6 +3,9 @@ module vhammll
 
 // import math
 
+// to simplify the documentation, we will change "instance to be classified"
+// to "case", and leave "instance" as referring to the classifier data.
+
 // classify_instance takes a trained classifier and an instance to be
 // classified; it returns the inferred class for the instance and the
 // counts of nearest neighbors to all the classes.
@@ -16,7 +19,7 @@ module vhammll
 // weighting_flag: when true, nearest neighbor counts are weighted
 // by class prevalences.
 // ```
-fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options, disp DisplaySettings) ClassifyResult {
+fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) ClassifyResult {
 	mut result := ClassifyResult{
 		classes: cl.classes
 		weighting_flag: cl.weighting_flag
@@ -31,7 +34,7 @@ fn classify_instance(cl Classifier, instance_to_be_classified []u8, opts Options
 	// in each classifier instance and the instance to be classified
 	for instance in cl.instances {
 		hamming_dist = 0
-		for i, byte_value in instance_to_be_classified {
+		for i, byte_value in case {
 			hamming_dist += get_hamming_distance(byte_value, instance[i])
 		}
 		hamming_dist_array << hamming_dist

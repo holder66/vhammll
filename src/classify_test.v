@@ -1,7 +1,7 @@
 // classify_test.v
 module vhammll
 
-fn test_classify_instance() {
+fn test_classify_case() {
 	mut opts := Options{
 		bins: [2, 12]
 		exclude_flag: false
@@ -11,16 +11,16 @@ fn test_classify_instance() {
 	}
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(ds, opts)
-	assert classify_instance(cl, cl.instances[0], opts).inferred_class == 'm'
-	assert classify_instance(cl, cl.instances[0], opts).nearest_neighbors_by_class == [
+	assert classify_case(cl, cl.instances[0], opts).inferred_class == 'm'
+	assert classify_case(cl, cl.instances[0], opts).nearest_neighbors_by_class == [
 		1,
 		0,
 		0,
 	]
 	opts.weighting_flag = true
 	cl = make_classifier(ds, opts)
-	assert classify_instance(cl, cl.instances[3], opts).inferred_class == 'f'
-	assert classify_instance(cl, cl.instances[3], opts).nearest_neighbors_by_class == [
+	assert classify_case(cl, cl.instances[3], opts).inferred_class == 'f'
+	assert classify_case(cl, cl.instances[3], opts).nearest_neighbors_by_class == [
 		0,
 		8,
 		0,

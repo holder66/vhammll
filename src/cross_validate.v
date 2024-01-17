@@ -386,7 +386,7 @@ fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][]
 fn classify_in_cross(cl Classifier, test_instances [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// for each instance in the test data, perform a classification
 	for i, test_instance in test_instances {
-		result.inferred_classes << classify_instance(cl, test_instance, opts).inferred_class
+		result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 		result.actual_classes << result.labeled_classes[i]
 	}
 	return result

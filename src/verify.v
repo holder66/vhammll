@@ -159,7 +159,7 @@ fn generate_test_instances_array(cl Classifier, test_ds Dataset) [][]u8 {
 // option_worker_verify
 fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, test_instances [][]u8, labeled_classes []string, opts Options) {
 	mut index := <-work_channel
-	mut classify_result := classify_instance(cl, test_instances[index], opts)
+	mut classify_result := classify_case(cl, test_instances[index], opts)
 	classify_result.labeled_class = labeled_classes[index]
 	result_channel <- classify_result
 	// dump(result_channel)
@@ -213,8 +213,8 @@ fn classify_to_verify(cl Classifier, test_instances [][]u8, mut result CrossVeri
 		}
 	} else {
 		for i, test_instance in test_instances {
-			classify_result = classify_instance(cl, test_instance, opts)
-			// result.inferred_classes << classify_instance(cl, test_instance, opts).inferred_class
+			classify_result = classify_case(cl, test_instance, opts)
+			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			result.inferred_classes << classify_result.inferred_class
 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 			result.actual_classes << result.labeled_classes[i]
