@@ -55,7 +55,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 			cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 		}
 		// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
-		// massage each instance in the test dataset according to the
+		// massage each case in the test dataset according to the
 		// attribute parameters in the classifier
 		case := generate_case_array(cl, test_ds)
 		// println(opts)
@@ -153,6 +153,7 @@ fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
 		}
 		test_attr_binned_values << test_binned_values.map(u8(it))
 	}
+	// println('test_attr_binned_values in generate_case_array: $test_attr_binned_values')
 	return transpose(test_attr_binned_values)
 }
 

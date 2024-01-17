@@ -32,8 +32,6 @@ fn test_verify() ? {
 	opts.classifierfile_path = ''
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
-	ds = load_file(opts.datafile_path)
-	// cl = make_classifier(ds, opts)
 	assert verify(opts).correct_count == 10
 
 	println('Done with test.tab')
@@ -46,8 +44,6 @@ fn test_verify() ? {
 	opts.bins = [5, 5]
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
-	ds = load_file(opts.datafile_path)
-	// cl = make_classifier(ds, opts)
 	result = verify(opts)
 	assert result.confusion_matrix_map == {
 		'ALL': {
@@ -67,27 +63,19 @@ fn test_verify() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.bins = [2, 4]
-	// ds = load_file(opts.datafile_path)
-
-	// cl = make_classifier(ds, opts)
+	opts.purge_flag = false
 	result = verify(opts)
-	// assert result.correct_count == 171
-	// assert result.wrong_count == 3
+	assert result.correct_count == 171
+	assert result.wrong_count == 3
 
 	println('Done with bcw350train')
 
 	// now with a saved classifier
 	opts.outputfile_path = 'tempfolder_verify/classifierfile'
-	opts.purge_flag = false
-	cl = Classifier{}
-	result = CrossVerifyResult{}
-	cl = make_classifier(ds, opts)
-
-	// cl = Classifier{}
-	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-	result = verify(opts)
-	assert result.correct_count == 171
-	assert result.wrong_count == 3
+	cl = make_classifier(load_file(opts.datafile_path), opts)
+	opts.classifierfile_path = opts.outputfile_path
+	opts.outputfile_path = ''
+	assert result.BinaryMetrics == verify(opts).BinaryMetrics
 
 	println('Done with bcw350train using saved classifier')
 
@@ -98,8 +86,6 @@ fn test_verify() ? {
 	opts.bins = [2, 16]
 	opts.weighting_flag = true
 	opts.weight_ranking_flag = false
-	ds = load_file(opts.datafile_path)
-	cl = make_classifier(ds, opts)
 	result = verify(opts)
 
 	assert result.correct_count == 340
@@ -109,14 +95,10 @@ fn test_verify() ? {
 
 	// now with a saved classifier
 	opts.outputfile_path = 'tempfolder_verify/classifierfile'
-	cl = Classifier{}
-	result = CrossVerifyResult{}
-	cl = make_classifier(ds, opts)
-	// cl = Classifier{}
-	// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-	result = verify(opts)
-	assert result.correct_count == 340
-	assert result.wrong_count == 36
+	cl = make_classifier(load_file(opts.datafile_path), opts)
+	opts.classifierfile_path = opts.outputfile_path
+	opts.outputfile_path = ''
+	assert result.Metrics == verify(opts).Metrics
 
 	println('Done with soybean-large-train.tab using saved classifier')
 
@@ -129,8 +111,6 @@ fn test_verify() ? {
 		opts.bins = [2, 2]
 		opts.weight_ranking_flag = true
 		opts.weighting_flag = false
-		ds = load_file(opts.datafile_path)
-		cl = make_classifier(ds, opts)
 		result = verify(opts)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
@@ -139,15 +119,10 @@ fn test_verify() ? {
 
 		// now with a saved classifier
 		opts.outputfile_path = 'tempfolder_verify/classifierfile'
-		cl = Classifier{}
-		result = CrossVerifyResult{}
-		cl = make_classifier(ds, opts)
-		// cl = Classifier{}
-		// result = verify(load_classifier_file('tempfolder_verify/classifierfile')?, opts)?
-		result = verify(opts)
-		assert result.correct_count >= 9982
-		assert result.wrong_count <= 18
-
+	cl = make_classifier(load_file(opts.datafile_path), opts)
+	opts.classifierfile_path = opts.outputfile_path
+	opts.outputfile_path = ''
+	assert result.Metrics == verify(opts).Metrics
 		println('Done with mnist_test.tab using saved classifier')
 	}
 
