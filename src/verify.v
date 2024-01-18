@@ -60,7 +60,8 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		case := generate_case_array(cl, test_ds)
 		// println(opts)
 		// for the instances in the test data, perform classifications
-		verify_result = classify_to_verify(cl, case, mut verify_result, opts)
+		if disp.verbose_flag {println('cl.classes in verify: $cl.classes')}
+		verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
 	} else { // ie, asking for multiple classifiers
 		mut classifier_array := []Classifier{}
 		mut instances_to_be_classified := [][][]u8{}
@@ -158,7 +159,7 @@ fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
 }
 
 // option_worker_verify
-fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, case [][]u8, labeled_classes []string, opts Options) {
+fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) {
 	mut index := <-work_channel
 	mut classify_result := classify_case(cl, case[index], opts)
 	classify_result.labeled_class = labeled_classes[index]
@@ -191,9 +192,15 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 	return result
 }
 
+fn verbose_result(i int, cl Classifier, classify_result ClassifyResult) {
+	println('case: ${i:-7}    classes: ${cl.classes.join(' | ')}')
+	println('inferred class                   ratio    sphere index   radius   nearest neighbours')
+	println('${classify_result.inferred_class:-30}  ${get_ratio(classify_result.nearest_neighbors_by_class):6.2f}    ${classify_result.sphere_index:12}   ${classify_result.hamming_distance:6}   ${classify_result.nearest_neighbors_by_class:-17}  ')
+}
+
 // classify_to_verify classifies each case in an array, and
 // returns the results of the classification.
-fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options) CrossVerifyResult {
+fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// for each instance in the test data, perform a classification
 	mut classify_result := ClassifyResult{}
 	if opts.concurrency_flag {
@@ -202,22 +209,29 @@ fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, 
 		for i, _ in case {
 			work_channel <- i
 			spawn option_worker_verify(work_channel, result_channel, cl, case, result.labeled_classes,
-				opts)
+				opts, disp)
 		}
-		for _ in case {
+		for i, _ in case {
 			classify_result = <-result_channel
 			// println(classify_result)
+			if disp.verbose_flag {
+				verbose_result(i, cl, classify_result)
+			}
 			result.inferred_classes << classify_result.inferred_class
 			result.actual_classes << classify_result.labeled_class
 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		}
 	} else {
 		for i, test_instance in case {
-			classify_result = classify_case(cl, test_instance, opts)
+
+			classify_result = classify_case(cl, test_instance, opts, disp)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			result.inferred_classes << classify_result.inferred_class
 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 			result.actual_classes << result.labeled_classes[i]
+			if disp.verbose_flag {
+				verbose_result(i, cl, classify_result)
+			}
 		}
 	}
 	result.classifier_instances_counts << cl.history[0].instances_count
