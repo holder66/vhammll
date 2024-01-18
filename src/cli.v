@@ -280,10 +280,11 @@ fn do_validate(opts Options, disp DisplaySettings) ! {
 }
 
 // cross
-fn cross(mut opts Options, disp DisplaySettings) {
-	opts.random_pick = if opts.repetitions > 1 { true } else { false }
+fn cross(opts Options, disp DisplaySettings) {
+	mut new_opts := opts
+	new_opts.random_pick = if opts.repetitions > 1 { true } else { false }
 	// println('opts.LoadOptions in cli.v: ${opts.LoadOptions}')
-	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), new_opts, disp)
 }
 
 // do_explore

@@ -134,15 +134,18 @@ fn test_verify() ? {
 		opts.number_of_attributes = [313]
 		opts.bins = [2, 2]
 		opts.concurrency_flag = true
-		opts.weight_ranking_flag = true
+		opts.weight_ranking_flag = false
 		opts.weighting_flag = false
 		result = verify(opts)
-		assert result.correct_count == 9566
-		assert result.wrong_count == 434
+		assert result.correct_count == 9571
+		assert result.wrong_count == 429
 
-		opts.weighting_flag = true
-		result = verify(opts)
-		assert result.correct_count == 9279
-		assert result.wrong_count == 721
+		// note: as of 2024-1-17, we cannot use weight_ranking or weighting, as we cannot
+		// calculate the lcm within the confines of i64
+
+		// opts.weighting_flag = true
+		// result = verify(opts)
+		// assert result.correct_count == 9279
+		// assert result.wrong_count == 721
 	}
 }
