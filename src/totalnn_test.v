@@ -90,7 +90,7 @@ fn test_multiple_verify() ? {
 	mut ds := load_file(opts.datafile_path)
 	// mut cl := make_classifier(ds, opts)
 	result0 := verify(opts, expanded_flag: true)
-	println('result0 in test_multiple_verify: $result0')
+	println('result0 in test_multiple_verify: ${result0}')
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -123,7 +123,7 @@ fn test_multiple_verify() ? {
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.classifier_indices = [0]
 	result = verify(opts, expanded_flag: true)
-	println('result with classifier 0 in test_multiple_verify: $result')
+	println('result with classifier 0 in test_multiple_verify: ${result}')
 	// with classifier 0
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
 
@@ -135,7 +135,6 @@ fn test_multiple_verify() ? {
 	// opts.classifier_indices = []
 	// result = verify(cl, opts, verbose_flag: false, expanded_flag: true)
 
-
 	// assert result.confusion_matrix_map == {
 	// 	'ALL': {
 	// 		'ALL': 17.0
@@ -146,7 +145,6 @@ fn test_multiple_verify() ? {
 	// 		'AML': 8.0
 	// 	}
 	// }
-	
 }
 
 // fn test_multiple_crossvalidate() ? {

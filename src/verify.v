@@ -172,8 +172,7 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 	// println('result in multiple_classify_to_verify: $result')
 	mut m_classify_result := ClassifyResult{}
 	for i, case in m_cases {
-		m_classify_result = multiple_classifier_classify(m_cl, case, [''],
-			opts, disp)
+		m_classify_result = multiple_classifier_classify(m_cl, case, [''], opts, disp)
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		result.inferred_classes << m_classify_result.inferred_class
 		result.actual_classes << result.labeled_classes[i]
@@ -202,8 +201,8 @@ fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, 
 		mut result_channel := chan ClassifyResult{cap: case.len}
 		for i, _ in case {
 			work_channel <- i
-			spawn option_worker_verify(work_channel, result_channel, cl, case,
-				result.labeled_classes, opts)
+			spawn option_worker_verify(work_channel, result_channel, cl, case, result.labeled_classes,
+				opts)
 		}
 		for _ in case {
 			classify_result = <-result_channel

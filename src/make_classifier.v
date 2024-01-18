@@ -166,14 +166,13 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 		event.event_environment = get_environment()
 	}
 	cl.history << event
-
+	// println('cl in make_classifier: $cl')
 	if (disp.show_flag || disp.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file(cl, opts.outputfile_path)
 	}
-	// println(cl)
 	return cl
 }
 

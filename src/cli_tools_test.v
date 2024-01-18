@@ -18,11 +18,23 @@ fn test_option() {
 }
 
 fn test_get_options() ? {
-	// assert get_options(['']) == opts
-	assert get_options(['garbage', 'more garbage']).args == ['garbage', 'more garbage']
-	assert get_options(['explore', '-h']).command == 'explore'
-	assert get_options(['orange']).command == 'orange'
-	assert get_options(['--bins', '4,6']).bins == [4, 6]
+	mut opts, mut disp := get_options(['garbage', 'more garbage'])
+	assert opts.args == ['garbage', 'more garbage']
+	assert disp == DisplaySettings{
+		show_flag: false
+		expanded_flag: false
+		graph_flag: false
+		verbose_flag: false
+	}
+	opts, disp = get_options(['explore', '-h'])
+	assert opts.command == 'explore'
+	opts, disp = get_options(['--bins', '4,6'])
+	assert opts.bins == [4, 6]
+	opts, disp = get_options(['-v', '-e'])
+	assert disp.verbose_flag
+	assert disp.expanded_flag
+	assert !disp.graph_flag
+	assert !disp.show_flag
 }
 
 fn test_show_help() ? {

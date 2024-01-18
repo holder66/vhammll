@@ -29,7 +29,12 @@ fn test_element_counts() {
 	b := []string{}
 	assert element_counts(b) == {}
 	c := [2.1, 4.4, 0, 1]
-	assert element_counts(c) == {2.1: 1, 4.4: 1, 0.0: 1, 1.0: 1}
+	assert element_counts(c) == {
+		2.1: 1
+		4.4: 1
+		0.0: 1
+		1.0: 1
+	}
 	assert element_counts(['i']) == {
 		'i': 1
 	}
