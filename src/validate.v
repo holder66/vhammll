@@ -59,14 +59,14 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 		}
 		test_attr_binned_values << test_binned_values.map(u8(it))
 	}
-	test_instances := transpose(test_attr_binned_values)
+	cases := transpose(test_attr_binned_values)
 	// for each instance in the test data, perform a classification and compile the results
-	validate_result = classify_to_validate(cl, test_instances, mut validate_result, opts)
+	validate_result = classify_to_validate(cl, cases, mut validate_result, opts, disp)
 	if opts.command == 'validate' && (disp.show_flag || disp.expanded_flag) {
 		show_validate(validate_result)
 	}
 	if opts.outputfile_path != '' {
-		validate_result.instances = test_instances
+		validate_result.instances = cases
 		save_json_file(validate_result, opts.outputfile_path)
 	}
 	// println(validate_result)
@@ -91,12 +91,12 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 }
 
 // classify_to_validate
-fn classify_to_validate(cl Classifier, test_instances [][]u8, mut result ValidateResult, opts Options) ValidateResult {
+fn classify_to_validate(cl Classifier, cases [][]u8, mut result ValidateResult, opts Options, disp DisplaySettings) ValidateResult {
 	result.Class = cl.Class
 	mut classify_result := ClassifyResult{}
-	// for each instance in the test data, perform a classification
-	for test_instance in test_instances {
-		classify_result = classify_case(cl, test_instance, opts)
+	// for each case in the test data, perform a classification
+	for case in cases {
+		classify_result = classify_case(cl, case, opts, disp)
 		result.inferred_classes << classify_result.inferred_class
 		result.counts << classify_result.nearest_neighbors_by_class
 	}

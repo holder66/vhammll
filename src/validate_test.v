@@ -14,19 +14,19 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder3')!
 }
 
-// fn test_validate_save_result() ? {
-// 	mut opts := Options{
-// 		command: 'validate'
-// 		concurrency_flag: true
-// 		outputfile_path: 'tempfolder3/instancesfile'
-// 	}
+fn test_validate_save_result() ? {
+	mut opts := Options{
+		command: 'validate'
+		concurrency_flag: true
+		outputfile_path: 'tempfolder3/instancesfile'
+	}
 
-// 	mut result := ValidateResult{}
-// 	mut test_result := ValidateResult{}
-// 	mut ds := Dataset{}
-// 	mut cl := Classifier{}
-// 	mut saved_cl := Classifier{}
-// }
+	mut result := ValidateResult{}
+	mut test_result := ValidateResult{}
+	mut ds := Dataset{}
+	mut cl := Classifier{}
+	mut saved_cl := Classifier{}
+}
 
 fn test_kaggle() ! {
 	mut opts := Options{
