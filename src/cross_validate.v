@@ -8,7 +8,7 @@ import rand
 // cross_validate performs n-fold cross-validation on a dataset: it
 // partitions the instances in a dataset into a fold, trains
 // a classifier on all the dataset instances not in the fold, and
-// then uses this classifier to classify the fold instances. This
+// then uses this classifier to classify the fold cases. This
 // process is repeated for each of n folds, and the classification
 // results are summarized.
 // ```sh
@@ -30,6 +30,7 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerifyResult {
+	// println('disp in cross_validate: $disp')
 	// println('ds.class_counts in cross_validate.v: ${ds.class_counts}')
 	// to sort out what is going on, run the test file with concurrency off.
 	mut cross_opts := opts
@@ -59,7 +60,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
 		if disp.verbose_flag {
-			println('cross_opts in cross_validate.v: ${cross_opts}')
+			// println('cross_opts in cross_validate.v: ${cross_opts}')
 		}
 	}
 	// println(cross_opts.classifier_indices)
@@ -113,7 +114,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 				pick_list << i
 			}
 		}
-		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
+		repetition_result = do_repetition(pick_list, rep, ds, cross_opts, disp) or { panic(err) }
 		// println('repetition_result in cross_validate.v: ${repetition_result}')
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
@@ -156,6 +157,9 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	mut repetition_result := CrossVerifyResult{}
 	// test if leave-one-out crossvalidation is requested
 	folds := if cross_opts.folds == 0 { ds.class_values.len } else { cross_opts.folds }
+	if disp.verbose_flag {
+		println(g('repetition: $rep'))
+	}
 	// if the concurrency flag is set
 	if cross_opts.concurrency_flag {
 		// we are not implementing this for multiple classifiers
@@ -189,7 +193,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	} else { // ie the concurrency flag is not set
 		// for each fold
 		for current_fold in 0 .. folds {
-			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts)
+			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts, disp)
 			// println('fold_result in do_repetition(): $fold_result')
 			repetition_result.inferred_classes << fold_result.inferred_classes
 			repetition_result.actual_classes << fold_result.labeled_classes
@@ -301,7 +305,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			// create byte_values for the fold data
 			byte_values_array << process_fold_data(part_cl.trained_attributes[attr], fold.data[j])
 		}
-		fold_instances := transpose(byte_values_array)
+		fold_cases := transpose(byte_values_array)
 		// for each class, instantiate an entry in the class table for the result
 		// note that this needs to use the classes in the partition portion, not
 		// the fold, so that wrong inferences get recorded properly.
@@ -310,7 +314,11 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		for key, _ in ds.Class.class_counts {
 			confusion_matrix_row[key] = 0
 		}
-		fold_result = classify_in_cross(part_cl, fold_instances, mut fold_result, cross_opts)
+		if disp.verbose_flag {
+			println(y('current fold: $current_fold'))
+		}
+		fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
+		
 	} else { // ie, asking for multiple classifiers...
 		mut classifier_array := []Classifier{}
 		mut instances_to_be_classified := [][][]u8{}
@@ -381,12 +389,14 @@ fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][]
 	return result
 }
 
-// classify_in_cross classifies each instance in an array, and
+// classify_in_cross classifies each case in an array, and
 // returns the results of the classification.
-fn classify_in_cross(cl Classifier, test_instances [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
+fn classify_in_cross(cl Classifier, cases [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
 	// for each instance in the test data, perform a classification
-	for i, test_instance in test_instances {
-		result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
+	for i, case in cases {
+		classify_result := classify_case(cl, case, opts, disp)
+		if disp.verbose_flag {verbose_result(i, cl, classify_result)}
+		result.inferred_classes << classify_result.inferred_class
 		result.actual_classes << result.labeled_classes[i]
 	}
 	return result

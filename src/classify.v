@@ -24,14 +24,14 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 		classes: cl.classes
 		weighting_flag: cl.weighting_flag
 	}
-	// to classify, get Hamming distances between the entered instance and
+	// to classify, get Hamming distances between the case to be classified and
 	// all the instances in the classifier; return the class for the instance
 	// giving the lowest Hamming distance.
 	mut hamming_dist_array := []int{cap: cl.instances.len}
 	mut hamming_dist := 0
 	// classes := cl.class_counts.keys()
 	// get the hamming distance for each of the corresponding byte_values
-	// in each classifier instance and the instance to be classified
+	// in each classifier instance and the case to be classified
 	for instance in cl.instances {
 		hamming_dist = 0
 		for i, byte_value in case {
@@ -49,10 +49,10 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 		for class_index, class in cl.classes {
 			for instance, distance in hamming_dist_array {
 				if distance <= radius && class == cl.class_values[instance] {
-					radius_row[class_index] += (if !opts.weighting_flag {
+					// if the weighting flag is set AND lcm_class_counts is valid (ie nonzero)
+					radius_row[class_index] += (if !opts.weighting_flag && cl.lcm_class_counts != 0 {
 						1
 					} else {
-						// int(i64(lcm(get_map_values(cl.class_counts))) / cl.class_counts[cl.classes[class_index]])
 						int(cl.lcm_class_counts / cl.class_counts[cl.classes[class_index]])
 					})
 				}
@@ -73,14 +73,9 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 	// if disp.verbose_flag && opts.command == 'classify' {
 	// 	println('ClassifyResult in classify.v: ${result}')
 	// }
-	if disp.verbose_flag {
-		println('sphere index  radius  nearest neighbors  ratio  inferred class')
-		// for i, icr in mcr.results_by_classifier {
-		// 	a := icr.results_by_radius.last()
-		println('${result.sphere_index:12}  ${result.hamming_distance:6}  ${result.nearest_neighbors_by_class:-17} ${get_ratio(result.nearest_neighbors_by_class):6.2f}  ${result.inferred_class} ')
-		// }
-		// println('${index:-7} ${class} ')
-	}
+	// if disp.verbose_flag {
+	// 	verbose_result(99, cl, result)
+	// }
 	return result
 }
 

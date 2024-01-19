@@ -521,6 +521,9 @@ const b_ = Styles{
 const g_ = Styles{
 	fg: 'green'
 }
+const y_ = Styles{
+	fg: 'yellow'
+}
 
 // chlk adds font colour and style information to a string
 fn chlk(s string, style_code Styles) string {
@@ -568,6 +571,10 @@ fn b(s string) string {
 
 fn g(s string) string {
 	return chlk(s, vhammll.g_)
+}
+
+fn y(s string) string {
+	return chlk(s, vhammll.y_)
 }
 
 // purge_array filters an array of generic types, removing those elements

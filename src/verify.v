@@ -192,12 +192,6 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 	return result
 }
 
-fn verbose_result(i int, cl Classifier, classify_result ClassifyResult) {
-	println('case: ${i:-7}    classes: ${cl.classes.join(' | ')}')
-	println('inferred class                   ratio    sphere index   radius   nearest neighbours')
-	println('${classify_result.inferred_class:-30}  ${get_ratio(classify_result.nearest_neighbors_by_class):6.2f}    ${classify_result.sphere_index:12}   ${classify_result.hamming_distance:6}   ${classify_result.nearest_neighbors_by_class:-17}  ')
-}
-
 // classify_to_verify classifies each case in an array, and
 // returns the results of the classification.
 fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
