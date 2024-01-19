@@ -49,8 +49,9 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 		for class_index, class in cl.classes {
 			for instance, distance in hamming_dist_array {
 				if distance <= radius && class == cl.class_values[instance] {
-					// if the weighting flag is set AND lcm_class_counts is valid (ie nonzero)
-					radius_row[class_index] += (if !opts.weighting_flag && cl.lcm_class_counts != 0 {
+					// if the weighting flag is not set OR lcm_class_counts is nonvalid (ie zero)
+					// radius_row[class_index] += (if !opts.weighting_flag && cl.lcm_class_counts != 0 {
+					radius_row[class_index] += (if !opts.weighting_flag || cl.lcm_class_counts == 0 {
 						1
 					} else {
 						int(cl.lcm_class_counts / cl.class_counts[cl.classes[class_index]])
