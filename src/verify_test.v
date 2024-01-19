@@ -34,7 +34,7 @@ fn test_verify() ? {
 	opts.classifierfile_path = ''
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
-	assert verify(opts, verbose_flag: verbose).correct_count == 10
+	assert verify(opts, verbose_flag: vhammll.verbose).correct_count == 10
 
 	println('Done with test.tab')
 
@@ -46,7 +46,7 @@ fn test_verify() ? {
 	opts.bins = [5, 5]
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
-	result = verify(opts, verbose_flag: verbose)
+	result = verify(opts, verbose_flag: vhammll.verbose)
 	assert result.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -66,7 +66,7 @@ fn test_verify() ? {
 	opts.number_of_attributes = [4]
 	opts.bins = [2, 4]
 	opts.purge_flag = false
-	result = verify(opts, verbose_flag: verbose)
+	result = verify(opts, verbose_flag: vhammll.verbose)
 	assert result.correct_count == 171
 	assert result.wrong_count == 3
 
@@ -88,7 +88,7 @@ fn test_verify() ? {
 	opts.bins = [2, 16]
 	opts.weighting_flag = true
 	opts.weight_ranking_flag = false
-	result = verify(opts, verbose_flag: verbose)
+	result = verify(opts, verbose_flag: vhammll.verbose)
 
 	assert result.correct_count == 340
 	assert result.wrong_count == 36
@@ -113,7 +113,7 @@ fn test_verify() ? {
 		opts.bins = [2, 2]
 		opts.weight_ranking_flag = true
 		opts.weighting_flag = false
-		result = verify(opts, verbose_flag: verbose)
+		result = verify(opts, verbose_flag: vhammll.verbose)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
 
@@ -124,7 +124,7 @@ fn test_verify() ? {
 		cl = make_classifier(load_file(opts.datafile_path), opts)
 		opts.classifierfile_path = opts.outputfile_path
 		opts.outputfile_path = ''
-		assert result.Metrics == verify(opts, verbose_flag: verbose).Metrics
+		assert result.Metrics == verify(opts, verbose_flag: vhammll.verbose).Metrics
 		println('Done with mnist_test.tab using saved classifier')
 	}
 
@@ -138,7 +138,7 @@ fn test_verify() ? {
 		opts.concurrency_flag = true
 		opts.weight_ranking_flag = false
 		opts.weighting_flag = false
-		result = verify(opts, verbose_flag: verbose)
+		result = verify(opts, verbose_flag: vhammll.verbose)
 		assert result.correct_count == 9571
 		assert result.wrong_count == 429
 

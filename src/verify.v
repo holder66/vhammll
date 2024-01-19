@@ -60,7 +60,9 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		case := generate_case_array(cl, test_ds)
 		// println(opts)
 		// for the instances in the test data, perform classifications
-		if disp.verbose_flag {println('cl.classes in verify: $cl.classes')}
+		if disp.verbose_flag {
+			println('cl.classes in verify: ${cl.classes}')
+		}
 		verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
 	} else { // ie, asking for multiple classifiers
 		mut classifier_array := []Classifier{}
@@ -217,7 +219,6 @@ fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, 
 		}
 	} else {
 		for i, test_instance in case {
-
 			classify_result = classify_case(cl, test_instance, opts, disp)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			result.inferred_classes << classify_result.inferred_class

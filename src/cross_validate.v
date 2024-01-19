@@ -158,7 +158,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	// test if leave-one-out crossvalidation is requested
 	folds := if cross_opts.folds == 0 { ds.class_values.len } else { cross_opts.folds }
 	if disp.verbose_flag {
-		println(g('repetition: $rep'))
+		println(g('repetition: ${rep}'))
 	}
 	// if the concurrency flag is set
 	if cross_opts.concurrency_flag {
@@ -193,7 +193,8 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	} else { // ie the concurrency flag is not set
 		// for each fold
 		for current_fold in 0 .. folds {
-			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts, disp)
+			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts,
+				disp)
 			// println('fold_result in do_repetition(): $fold_result')
 			repetition_result.inferred_classes << fold_result.inferred_classes
 			repetition_result.actual_classes << fold_result.labeled_classes
@@ -315,10 +316,10 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			confusion_matrix_row[key] = 0
 		}
 		if disp.verbose_flag {
-			println(y('current fold: $current_fold'))
+			println(y('current fold: ${current_fold}'))
 		}
-		fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
-		
+		fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts,
+			disp)
 	} else { // ie, asking for multiple classifiers...
 		mut classifier_array := []Classifier{}
 		mut instances_to_be_classified := [][][]u8{}
@@ -395,7 +396,9 @@ fn classify_in_cross(cl Classifier, cases [][]u8, mut result CrossVerifyResult, 
 	// for each instance in the test data, perform a classification
 	for i, case in cases {
 		classify_result := classify_case(cl, case, opts, disp)
-		if disp.verbose_flag {verbose_result(i, cl, classify_result)}
+		if disp.verbose_flag {
+			verbose_result(i, cl, classify_result)
+		}
 		result.inferred_classes << classify_result.inferred_class
 		result.actual_classes << result.labeled_classes[i]
 	}
