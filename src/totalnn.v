@@ -4,11 +4,11 @@ module vhammll
 
 // import arrays
 
-// this version of multiple.v is to add up the nearest neighbors for the
+// this version of multi_classify.v is to add up the nearest neighbors for the
 // multiple classifiers prior to making the inference
 
 // multiple_classifier_classify_totalnn
-fn multiple_classifier_classify_totalnn(classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		// index: index
 		multiple_flag: true
@@ -46,7 +46,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, instances_to_b
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
 			mut hamming_dist := 0
-			for j, byte_value in instances_to_be_classified[i] {
+			for j, byte_value in case[i] {
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist

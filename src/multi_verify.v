@@ -4,7 +4,6 @@ module vhammll
 
 
 fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
-		println('opts.command: $opts.command')
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -34,7 +33,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
 	mut classifier_array := []Classifier{}
-	mut instances_to_be_classified := [][][]u8{}
+	mut cases := [][][]u8{}
 	// mut mult_opts := []Parameters{}
 	mut mult_opts := opts
 	mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
@@ -63,14 +62,14 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		verify_result.Parameters = params
 		// println('mult_opts: $mult_opts')
 		classifier_array << make_classifier(ds, mult_opts)
-		instances_to_be_classified << generate_case_array(classifier_array.last(), test_ds)
+		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
 	// println('classifier_array: ${classifier_array}')
 	// println(mult_opts)
-	// println('instances_to_be_classified: $instances_to_be_classified')
-	instances_to_be_classified = transpose(instances_to_be_classified)
-	// println('instances_to_be_classified: $instances_to_be_classified')
-	verify_result = multiple_classify_to_verify(classifier_array, instances_to_be_classified, mut
+	// println('cases: $cases')
+	cases = transpose(cases)
+	// println('cases: $cases')
+	verify_result = multiple_classify_to_verify(classifier_array, cases, mut
 		verify_result, mult_opts, disp)
 	verify_result.Metrics = get_metrics(verify_result)
 	// println(verify_result.Metrics)
@@ -98,7 +97,13 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 	// println('result in multiple_classify_to_verify: $result')
 	mut m_classify_result := ClassifyResult{}
 	for i, case in m_cases {
+
 		m_classify_result = multiple_classifier_classify(m_cl, case, [''], opts, disp)
+		m_classify_result = if opts.total_nn_counts_flag {
+			multiple_classifier_classify_totalnn(m_cl, case, [''], opts, disp)
+		} else {
+			multiple_classifier_classify(m_cl, case, [''], opts, disp)
+		}
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		result.inferred_classes << m_classify_result.inferred_class
 		result.actual_classes << result.labeled_classes[i]

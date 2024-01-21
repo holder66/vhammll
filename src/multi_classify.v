@@ -5,15 +5,11 @@ module vhammll
 import arrays
 
 // when multiple classifiers have been generated with different settings,
-// a given instance to be classified will take multiple values, one for
+// a given case to be classified will take multiple values, one for
 // each classifier, and corresponding to the settings for that classifier.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
-	if opts.total_nn_counts_flag {
-		return multiple_classifier_classify_totalnn(classifiers, instances_to_be_classified,
-			labeled_classes, opts, disp)
-	}
+fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		// index: index
 		multiple_flag: true
@@ -26,7 +22,7 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
 	}
 
-	// println('instances to be classified: ${instances_to_be_classified}')
+	// println('cases to be classified: ${case}')
 
 	// println(opts)
 	// println(mcr.MultipleOptions)
@@ -44,7 +40,7 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 	mcr.lcm_attributes = lcm(mcr.number_of_attributes)
 
 	// get the hamming distance for each of the corresponding byte_values
-	// in each classifier instance and the instance to be classified
+	// in each classifier instance and the case to be classified
 	// note that to compare hamming distances between classifiers using
 	// different numbers of attributes, the distances need to be weighted.
 
@@ -52,10 +48,10 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
 			mut hamming_dist := 0
-			// for j, byte_value in instances_to_be_classified[i] {
+			// for j, byte_value in case[i] {
 			// 	hamming_dist += int(get_hamming_distance(byte_value, instance[j]) * mcr.lcm_attributes / mcr.number_of_attributes[i])
 			// }
-			for j, byte_value in instances_to_be_classified[i] {
+			for j, byte_value in case[i] {
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist
