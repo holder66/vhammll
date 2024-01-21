@@ -27,7 +27,7 @@ fn test_multiple_verify() ? {
 	}
 	mut disp := DisplaySettings{
 		verbose_flag: false
-		expanded_flag: true
+		expanded_flag: false
 	}
 	mut result := CrossVerifyResult{}
 
@@ -120,5 +120,11 @@ fn test_multiple_verify() ? {
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = true
 	result = multi_verify(opts, disp)
+	assert result.confusion_matrix_map == {'ALL': {'ALL': 18.0, 'AML': 2.0}, 'AML': {'ALL': 0.0, 'AML': 14.0}}
+	// with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
+	opts.break_on_all_flag = true
+	opts.combined_radii_flag = true
+	opts.total_nn_counts_flag = true
+	result = multi_verify(opts, verbose_flag: true, expanded_flag: true)
 	assert result.confusion_matrix_map == {'ALL': {'ALL': 18.0, 'AML': 2.0}, 'AML': {'ALL': 0.0, 'AML': 14.0}}
 }
