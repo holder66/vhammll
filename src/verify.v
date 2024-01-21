@@ -47,65 +47,65 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
 	// println('verify_result in verify: ${verify_result}')
-	if !opts.multiple_flag {
-		mut cl := Classifier{}
-		if opts.classifierfile_path == '' {
-			cl = make_classifier(ds, opts)
-		} else {
-			cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
-		}
-		// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
-		// massage each case in the test dataset according to the
-		// attribute parameters in the classifier
-		case := generate_case_array(cl, test_ds)
-		// println(opts)
-		// for the instances in the test data, perform classifications
-		if disp.verbose_flag {
-			println('cl.classes in verify: ${cl.classes}')
-		}
-		verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
-	} else { // ie, asking for multiple classifiers
-		mut classifier_array := []Classifier{}
-		mut instances_to_be_classified := [][][]u8{}
-		// mut mult_opts := []Parameters{}
-		mut mult_opts := opts
-		mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
-			panic('read_multiple_opts failed')
-		}
-		// println(mult_opts)
-		verify_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
-		// mult_opts.break_on_all_flag = opts.break_on_all_flag
-		// mult_opts.combined_radii_flag = opts.combined_radii_flag
-		if mult_opts.classifier_indices == [] {
-			mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifiers.len, init: index}
-		}
-		verify_result.classifier_indices = mult_opts.classifier_indices
-		// mut ds := load_file(opts.datafile_path)
-		// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-		// 	MultipleClassifiersArray{}
-		// }
-		// println('mult_opts: $mult_opts')
-		for i in mult_opts.classifier_indices {
-			mut params := mult_opts.multiple_classifiers[i].classifier_options
-
-			// for params in saved_params.multiple_classifiers {
-			// println('params: $params')
-			// println('number of attributes: $params.number_of_attributes')
-			mult_opts.Parameters = params
-			verify_result.Parameters = params
-			// println('mult_opts: $mult_opts')
-			classifier_array << make_classifier(ds, mult_opts)
-			instances_to_be_classified << generate_case_array(classifier_array.last(),
-				test_ds)
-		}
-		// println('classifier_array: ${classifier_array}')
-		// println(mult_opts)
-		// println('instances_to_be_classified: $instances_to_be_classified')
-		instances_to_be_classified = transpose(instances_to_be_classified)
-		// println('instances_to_be_classified: $instances_to_be_classified')
-		verify_result = multiple_classify_to_verify(classifier_array, instances_to_be_classified, mut
-			verify_result, mult_opts, disp)
+	// if !opts.multiple_flag {
+	mut cl := Classifier{}
+	if opts.classifierfile_path == '' {
+		cl = make_classifier(ds, opts, disp)
+	} else {
+		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
+	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
+	// massage each case in the test dataset according to the
+	// attribute parameters in the classifier
+	case := generate_case_array(cl, test_ds)
+	// println(opts)
+	// for the instances in the test data, perform classifications
+	if disp.verbose_flag {
+		println('cl.classes in verify: ${cl.classes}')
+	}
+	verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
+	// } else { // ie, asking for multiple classifiers
+	// 	mut classifier_array := []Classifier{}
+	// 	mut instances_to_be_classified := [][][]u8{}
+	// 	// mut mult_opts := []Parameters{}
+	// 	mut mult_opts := opts
+	// 	mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+	// 		panic('read_multiple_opts failed')
+	// 	}
+	// 	// println(mult_opts)
+	// 	verify_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
+	// 	// mult_opts.break_on_all_flag = opts.break_on_all_flag
+	// 	// mult_opts.combined_radii_flag = opts.combined_radii_flag
+	// 	if mult_opts.classifier_indices == [] {
+	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifiers.len, init: index}
+	// 	}
+	// 	verify_result.classifier_indices = mult_opts.classifier_indices
+	// 	// mut ds := load_file(opts.datafile_path)
+	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
+	// 	// 	MultipleClassifiersArray{}
+	// 	// }
+	// 	// println('mult_opts: $mult_opts')
+	// 	for i in mult_opts.classifier_indices {
+	// 		mut params := mult_opts.multiple_classifiers[i].classifier_options
+
+	// 		// for params in saved_params.multiple_classifiers {
+	// 		// println('params: $params')
+	// 		// println('number of attributes: $params.number_of_attributes')
+	// 		mult_opts.Parameters = params
+	// 		verify_result.Parameters = params
+	// 		// println('mult_opts: $mult_opts')
+	// 		classifier_array << make_classifier(ds, mult_opts)
+	// 		instances_to_be_classified << generate_case_array(classifier_array.last(),
+	// 			test_ds)
+	// 	}
+	// 	// println('classifier_array: ${classifier_array}')
+	// 	// println(mult_opts)
+	// 	// println('instances_to_be_classified: $instances_to_be_classified')
+	// 	instances_to_be_classified = transpose(instances_to_be_classified)
+	// 	// println('instances_to_be_classified: $instances_to_be_classified')
+	// 	verify_result = multiple_classify_to_verify(classifier_array, instances_to_be_classified, mut
+	// 		verify_result, mult_opts, disp)
+	// }
 	// println(verify_result.Metrics)
 	verify_result.Metrics = get_metrics(verify_result)
 	// println(verify_result.Metrics)
@@ -119,15 +119,12 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
 		show_verify(verify_result, opts, disp)
 	}
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
-	// 	println('verify_result in verify(): ${verify_result}')
-	// }
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'
 		save_json_file(verify_result, opts.outputfile_path)
 	}
 	// println(opts)
-	if !opts.multiple_flag && opts.append_settings_flag {
+	if opts.append_settings_flag {
 		append_cross_settings_to_file(verify_result, opts)
 	}
 	return verify_result
@@ -168,30 +165,6 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 	result_channel <- classify_result
 	// dump(result_channel)
 	return
-}
-
-// multiple_classify_to_verify
-fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
-	// println('result in multiple_classify_to_verify: $result')
-	mut m_classify_result := ClassifyResult{}
-	for i, case in m_cases {
-		m_classify_result = multiple_classifier_classify(m_cl, case, [''], opts, disp)
-		// println('m_classify_result: $m_classify_result.inferred_class')
-		result.inferred_classes << m_classify_result.inferred_class
-		result.actual_classes << result.labeled_classes[i]
-		result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
-	}
-	result.classifier_instances_counts << m_cl[0].history[0].instances_count
-	result.prepurge_instances_counts_array << m_cl[0].history[0].prepurge_instances_count
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
-	// 	println('result in classify_to_verify(): ${result}')
-	// }
-	result = summarize_results(1, mut result)
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
-	// 	println('summarize_result: ${result}')
-	// }
-	// println('result at end of multiple_classify_to_verify: $result')
-	return result
 }
 
 // classify_to_verify classifies each case in an array, and

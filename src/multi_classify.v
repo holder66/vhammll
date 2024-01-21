@@ -214,9 +214,10 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 	inferred_classes_by_classifier := mcr.results_by_classifier.map(it.inferred_class)
 	if inferred_classes_by_classifier.len > 1
 		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
-		final_cr.inferred_class = resolve_conflict(mcr)
-		show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
-
+		final_cr.inferred_class = resolve_conflict(mcr, disp)
+		if disp.verbose_flag {
+			show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
+		}
 		// println('instance: ${index} ${inferred_classes_by_classifier} nearest neighbors: ${mcr.results_by_classifier.map(it.results_by_radius.map(it.nearest_neighbors_by_class))}} inferred_class: ${final_cr.inferred_class}')
 
 		// println(mcr)
@@ -234,7 +235,7 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 }
 
 // resolve_conflict
-fn resolve_conflict(mcr MultipleClassifierResults) string {
+fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string {
 	// println(mcr)
 	// at the smallest sphere radius, can we get a majority vote?
 	// note that there should only be one maximum value
@@ -242,7 +243,7 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 	for {
 		mut infs := arrays.flatten(mcr.results_by_classifier.map(it.results_by_radius.filter(
 			it.sphere_index == sphere_index && it.inferred_class_found).map(it.inferred_class)))
-		println(infs)
+		// println(infs)
 		// println(element_counts(infs))
 		// if element_counts(infs).len > 0 {
 		// 	// get maximum value of element_counts
@@ -255,13 +256,17 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 
 		// test for a plurality vote
 		if plurality_vote(infs) != '' {
-			println('Plurality_vote')
+			if disp.verbose_flag {
+				println('Plurality_vote')
+			}
 			return plurality_vote(infs)
 		}
 
 		// test for a majority vote
 		if majority_vote(infs) != '' {
-			println('Majority vote')
+			if disp.verbose_flag {
+				println('Majority vote')
+			}
 			return majority_vote(infs)
 		}
 		// println(mcr.results_by_classifier.map(it.results_by_radius.map(it.inferred_class_found.)))
@@ -270,7 +275,9 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 			break
 		}
 	}
-	println('Majority vote fell through')
+	if disp.verbose_flag {
+		println('Majority vote fell through')
+	}
 	// pick the result with the greatest number of nearest neighbors
 	// sums := mcr.results_by_classifier.map(it.results_by_radius.last()).map(it.nearest_neighbors_by_class).map(array_sum(it))
 	// return mcr.results_by_classifier[idx_max(sums)].inferred_class

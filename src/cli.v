@@ -266,8 +266,11 @@ fn do_query(opts Options, disp DisplaySettings) ! {
 // verify
 fn do_verify(opts Options, disp DisplaySettings) ! {
 	// cl := get_classifier(opts)!
-
-	verify(opts, disp)
+	if opts.multiple_flag {
+		multi_verify(opts, disp)
+	} else {
+		verify(opts, disp)
+	}
 }
 
 // validate
