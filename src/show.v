@@ -198,7 +198,7 @@ const headers = {
 }
 // show_multiple_classifiers_options
 fn show_multiple_classifiers_options(opts Options, m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
-	println('break_on_all_flag: ${m_o.break_on_all_flag}     combined_radii_flag: ${m_o.combined_radii_flag}      class_missing_purge_flag: ${opts.class_missing_purge_flag}')
+	println('break_on_all_flag: ${m_o.break_on_all_flag}     combined_radii_flag: ${m_o.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
 	for i, par in m_c_a.multiple_classifiers {

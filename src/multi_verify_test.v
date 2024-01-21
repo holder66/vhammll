@@ -81,6 +81,10 @@ fn test_multiple_verify() ? {
 	opts.classifier_indices = [0]
 	result = multi_verify(opts, disp)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
+	// classifier 0 with total_nn_counts_flag true
+	opts.total_nn_counts_flag = true
+	result = multi_verify(opts, verbose_flag: true, expanded_flag: true)
+	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
 	opts.classifier_indices = [1]
 	result = multi_verify(opts, disp)

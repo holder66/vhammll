@@ -97,6 +97,7 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 	// println('result in multiple_classify_to_verify: $result')
 	mut m_classify_result := ClassifyResult{}
 	for i, case in m_cases {
+		if disp.verbose_flag {println('\ncase: ${i:-7}     classes: ${m_cl[0].classes.join(' | ')}')}
 
 		m_classify_result = multiple_classifier_classify(m_cl, case, [''], opts, disp)
 		m_classify_result = if opts.total_nn_counts_flag {
