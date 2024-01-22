@@ -8,25 +8,28 @@ module vhammll
 // multiple classifiers prior to making the inference
 
 // multiple_classifier_classify_totalnn
-fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifiers []Classifier, total_nn_params TotalNnParams, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		// index: index
 		multiple_flag: true
 		Class: classifiers[0].Class
 	}
-
-	// get the lcm of the maximum hamming distances for each classifier
-	mut maximum_hamming_distance_array := []int{}
-	for cl in classifiers {
-		maximum_hamming_distance_array << max_ham_dist(cl.trained_attributes)
-	}
-	total_max_ham_dist := array_sum(maximum_hamming_distance_array)
-	lcm_max_ham_dist := lcm(maximum_hamming_distance_array)
 	if disp.verbose_flag {
-		println('total_max_ham_dist: ${total_max_ham_dist}')
+	println('case value: $case')
+	println('classifier instances: ${classifiers[0].instances}')
+}
+	// get the lcm of the maximum hamming distances for each classifier
+	// mut maximum_hamming_distance_array := []int{}
+	// for cl in classifiers {
+	// 	maximum_hamming_distance_array << max_ham_dist(cl.trained_attributes)
+	// }
+	// total_max_ham_dist := array_sum(maximum_hamming_distance_array)
+	// lcm_max_ham_dist := lcm(maximum_hamming_distance_array)
+	// if disp.verbose_flag {
+	// 	println('total_max_ham_dist: ${total_max_ham_dist}')
 
-		println('lcm_max_ham_dist: ${lcm_max_ham_dist}')
-	}
+	// 	println('lcm_max_ham_dist: ${lcm_max_ham_dist}')
+	// }
 	// // println(opts.MultipleOptions)
 	mut total_nns_by_class := []f64{len: 2}
 	mut weighted_totals := []f64{len: 2}
@@ -70,7 +73,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 		// the nearest neighbor counts need to be weighted by
 		// the maximum hamming distance for each classifier
 		if classifiers.len > 1 {
-			nearest_neighbors_by_class_array << nearest_neighbors_by_class.map(it * lcm_max_ham_dist / (total_max_ham_dist - maximum_hamming_distance_array[i]))
+			nearest_neighbors_by_class_array << nearest_neighbors_by_class.map(it * total_nn_params.lcm_max_ham_dist / (total_nn_params.total_max_ham_dist - total_nn_params.maximum_hamming_distance_array[i]))
 		} else {
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
 		}
@@ -86,9 +89,9 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	}
 	// println('total_nns_by_class: ${total_nns_by_class}')
 	// weight by class prevalences
-	if disp.verbose_flag {
-		println('lcm: ${lcm_val}')
-	}
+	// if disp.verbose_flag {
+	// 	println('lcm: ${lcm_val}')
+	// }
 	for j, nn in total_nns_by_class {
 		weighted_totals[j] = f64(nn) * lcm_val / classifiers[0].class_counts[classifiers[0].class_values[j]]
 	}
@@ -98,7 +101,10 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	}
 	if single_array_maximum(weighted_totals) {
 		final_cr.inferred_class = classifiers[0].classes[idx_max(weighted_totals)]
-		return final_cr
+		// return final_cr
+	}
+	if disp.verbose_flag {
+		println('inferred class: ${final_cr.inferred_class}')
 	}
 	return final_cr
 }

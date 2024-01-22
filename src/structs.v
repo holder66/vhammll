@@ -111,6 +111,13 @@ pub mut:
 	history                  []HistoryEvent
 }
 
+struct TotalNnParams {
+mut: 
+	maximum_hamming_distance_array []int
+	total_max_ham_dist int
+	lcm_max_ham_dist i64
+}
+
 pub struct HistoryEvent {
 pub mut:
 	event_date               time.Time
