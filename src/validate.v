@@ -1,8 +1,8 @@
 // validate.v
 /*
-Given a classifier and a validation dataset, classifies each instance
+Given a classifier and a validation dataset, classifies each case
 of the validation_set on the trained classifier; returns the predicted classes
-for each instance of the validation_set.
+for each case of the validation_set.
 If a Kaggle file path is provided, a CSV file will be created with two columns.
 The first column is a row identifier, and is taken from the first column of
 the file to be validated if that attribute is identified as metadata (ie, m#...)
@@ -15,11 +15,11 @@ module vhammll
 import os
 
 // validate classifies each instance of a validation datafile against
-// a trained Classifier; returns the predicted classes for each instance
+// a trained Classifier; returns the predicted classes for each case
 // of the validation_set.
 // The file to be validated is specified by `opts.testfile_path`.
-// Optionally, saves the instances and their predicted classes in a file.
-// This file can be used to append these instances to the classifier.
+// Optionally, saves the cases and their predicted classes in a file.
+// This file can be used to append these cases to the classifier.
 pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResult {
 	// load the testfile as a Dataset struct
 	// println(opts)
@@ -60,8 +60,15 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 		test_attr_binned_values << test_binned_values.map(u8(it))
 	}
 	cases := transpose(test_attr_binned_values)
-	// for each instance in the test data, perform a classification and compile the results
-	validate_result = classify_to_validate(cl, cases, mut validate_result, opts, disp)
+	// for each case in the test data, perform a classification and compile the results
+
+	validate_result.Class = cl.Class
+	mut classify_result := ClassifyResult{}
+	for case in cases {
+		classify_result = classify_case(cl, case, opts, disp)
+		validate_result.inferred_classes << classify_result.inferred_class
+		validate_result.counts << classify_result.nearest_neighbors_by_class
+	}
 	if opts.command == 'validate' && (disp.show_flag || disp.expanded_flag) {
 		show_validate(validate_result)
 	}
@@ -69,7 +76,6 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 		validate_result.instances = cases
 		save_json_file(validate_result, opts.outputfile_path)
 	}
-	// println(validate_result)
 	// println('opts.kagglefile_path: $opts.kagglefile_path')
 	if opts.kagglefile_path != '' {
 		// test if there is a metadata attribute as the first attribute (as row identifier)
@@ -82,23 +88,9 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 			panic('write class name problem')
 		}
 		for i, result in validate_result.inferred_classes {
-			// println(test_ds.row_identifiers[i] + ',' + result)
 			f.writeln(test_ds.row_identifiers[i] + ',' + result) or { panic('write problem') }
 		}
 		f.close()
 	}
 	return validate_result
-}
-
-// classify_to_validate
-fn classify_to_validate(cl Classifier, cases [][]u8, mut result ValidateResult, opts Options, disp DisplaySettings) ValidateResult {
-	result.Class = cl.Class
-	mut classify_result := ClassifyResult{}
-	// for each case in the test data, perform a classification
-	for case in cases {
-		classify_result = classify_case(cl, case, opts, disp)
-		result.inferred_classes << classify_result.inferred_class
-		result.counts << classify_result.nearest_neighbors_by_class
-	}
-	return result
 }
