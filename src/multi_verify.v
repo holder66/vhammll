@@ -69,36 +69,10 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('cases: $cases')
 	cases = transpose(cases)
 	// println('cases: $cases')
-	verify_result = multiple_classify_to_verify(classifier_array, cases, mut
-		verify_result, mult_opts, disp)
-	verify_result.Metrics = get_metrics(verify_result)
-	// println(verify_result.Metrics)
-	// println('cross_result.pos_neg_classes: $cross_result.pos_neg_classes')
-	if verify_result.pos_neg_classes.len == 2 {
-		verify_result.BinaryMetrics = get_binary_stats(verify_result)
-	}
-
-	// verify_result.command = 'verify'
-	// println('verify_result: $verify_result')
-
-	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
-		println('we are here in multi_verify')
-		show_verify(verify_result, opts, disp)
-	}
-	if opts.outputfile_path != '' {
-		verify_result.command = 'verify'
-		save_json_file(verify_result, opts.outputfile_path)
-	}
-	return verify_result
-}
-
-// multiple_classify_to_verify
-fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
-	// println('result in multiple_classify_to_verify: $result')
-	println('m_cl in multiple_classify_to_verify: ${m_cl}')
+	println('classifier_array in multiple_classify_to_verify: ${classifier_array}')
 	mut m_classify_result := ClassifyResult{}
 	mut maximum_hamming_distance_array := []int{}
-	for cl in m_cl {
+	for cl in classifier_array {
 		maximum_hamming_distance_array << cl.maximum_hamming_distance
 	}
 	mut total_nn_params := TotalNnParams{
@@ -111,27 +85,39 @@ fn multiple_classify_to_verify(m_cl []Classifier, m_cases [][][]u8, mut result C
 		println('total_max_ham_dist: ${total_nn_params.total_max_ham_dist}')
 		println('lcm_max_ham_dist: ${total_nn_params.lcm_max_ham_dist}')
 	}
-	for i, case in m_cases {
-		if disp.verbose_flag {println('\ncase: ${i:-7}     classes: ${m_cl[0].classes.join(' | ')}')}
+	for i, case in cases {
+		if disp.verbose_flag {println('\ncase: ${i:-7}     classes: ${classifier_array[0].classes.join(' | ')}')}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(m_cl, total_nn_params, case, [''], opts, disp)
+			multiple_classifier_classify_totalnn(classifier_array, total_nn_params, case, [''], opts, disp)
 		} else {
-			multiple_classifier_classify(m_cl, case, [''], opts, disp)
+			multiple_classifier_classify(classifier_array, case, [''], opts, disp)
 		}
 		// println('m_classify_result: $m_classify_result.inferred_class')
-		result.inferred_classes << m_classify_result.inferred_class
-		result.actual_classes << result.labeled_classes[i]
-		result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
+		verify_result.inferred_classes << m_classify_result.inferred_class
+		verify_result.actual_classes << verify_result.labeled_classes[i]
+		verify_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
 	}
-	result.classifier_instances_counts << m_cl[0].history[0].instances_count
-	result.prepurge_instances_counts_array << m_cl[0].history[0].prepurge_instances_count
+	verify_result.classifier_instances_counts << classifier_array[0].history[0].instances_count
+	verify_result.prepurge_instances_counts_array << classifier_array[0].history[0].prepurge_instances_count
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
-	result = summarize_results(1, mut result)
+	verify_result = summarize_results(1, mut verify_result)
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
 	// }
-	// println('result at end of multiple_classify_to_verify: $result')
-	return result
+	verify_result.Metrics = get_metrics(verify_result)
+	// println('cross_result.pos_neg_classes: $cross_result.pos_neg_classes')
+	if verify_result.pos_neg_classes.len == 2 {
+		verify_result.BinaryMetrics = get_binary_stats(verify_result)
+	}
+
+	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
+		show_verify(verify_result, opts, disp)
+	}
+	if opts.outputfile_path != '' {
+		verify_result.command = 'verify'
+		save_json_file(verify_result, opts.outputfile_path)
+	}
+	return verify_result
 }

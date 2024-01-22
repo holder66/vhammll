@@ -63,7 +63,48 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	if disp.verbose_flag {
 		println('cl.classes in verify: ${cl.classes}')
 	}
-	verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
+	// verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
+	// for each instance in the test data, perform a classification
+	mut classify_result := ClassifyResult{}
+	if opts.concurrency_flag {
+		mut work_channel := chan int{cap: runtime.nr_jobs()}
+		mut result_channel := chan ClassifyResult{cap: case.len}
+		for i, _ in case {
+			work_channel <- i
+			spawn option_worker_verify(work_channel, result_channel, cl, case, verify_result.labeled_classes,
+				opts, disp)
+		}
+		for i, _ in case {
+			classify_result = <-result_channel
+			// println(classify_result)
+			if disp.verbose_flag {
+				verbose_result(i, cl, classify_result)
+			}
+			verify_result.inferred_classes << classify_result.inferred_class
+			verify_result.actual_classes << classify_result.labeled_class
+			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
+		}
+	} else {
+		for i, test_instance in case {
+			classify_result = classify_case(cl, test_instance, opts, disp)
+			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
+			verify_result.inferred_classes << classify_result.inferred_class
+			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
+			verify_result.actual_classes << verify_result.labeled_classes[i]
+			if disp.verbose_flag {
+				verbose_result(i, cl, classify_result)
+			}
+		}
+	}
+	verify_result.classifier_instances_counts << cl.history[0].instances_count
+	verify_result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// 	println('result in classify_to_verify(): ${result}')
+	// }
+	verify_result = summarize_results(1, mut verify_result)
+	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// 	println('summarize_result: ${result}')
+	// }
 	// } else { // ie, asking for multiple classifiers
 	// 	mut classifier_array := []Classifier{}
 	// 	mut instances_to_be_classified := [][][]u8{}
@@ -167,49 +208,49 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 	return
 }
 
-// classify_to_verify classifies each case in an array, and
-// returns the results of the classification.
-fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
-	// for each instance in the test data, perform a classification
-	mut classify_result := ClassifyResult{}
-	if opts.concurrency_flag {
-		mut work_channel := chan int{cap: runtime.nr_jobs()}
-		mut result_channel := chan ClassifyResult{cap: case.len}
-		for i, _ in case {
-			work_channel <- i
-			spawn option_worker_verify(work_channel, result_channel, cl, case, result.labeled_classes,
-				opts, disp)
-		}
-		for i, _ in case {
-			classify_result = <-result_channel
-			// println(classify_result)
-			if disp.verbose_flag {
-				verbose_result(i, cl, classify_result)
-			}
-			result.inferred_classes << classify_result.inferred_class
-			result.actual_classes << classify_result.labeled_class
-			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
-		}
-	} else {
-		for i, test_instance in case {
-			classify_result = classify_case(cl, test_instance, opts, disp)
-			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
-			result.inferred_classes << classify_result.inferred_class
-			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
-			result.actual_classes << result.labeled_classes[i]
-			if disp.verbose_flag {
-				verbose_result(i, cl, classify_result)
-			}
-		}
-	}
-	result.classifier_instances_counts << cl.history[0].instances_count
-	result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
-	// 	println('result in classify_to_verify(): ${result}')
-	// }
-	result = summarize_results(1, mut result)
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
-	// 	println('summarize_result: ${result}')
-	// }
-	return result
-}
+// // classify_to_verify classifies each case in an array, and
+// // returns the results of the classification.
+// fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
+// 	// for each instance in the test data, perform a classification
+// 	mut classify_result := ClassifyResult{}
+// 	if opts.concurrency_flag {
+// 		mut work_channel := chan int{cap: runtime.nr_jobs()}
+// 		mut result_channel := chan ClassifyResult{cap: case.len}
+// 		for i, _ in case {
+// 			work_channel <- i
+// 			spawn option_worker_verify(work_channel, result_channel, cl, case, result.labeled_classes,
+// 				opts, disp)
+// 		}
+// 		for i, _ in case {
+// 			classify_result = <-result_channel
+// 			// println(classify_result)
+// 			if disp.verbose_flag {
+// 				verbose_result(i, cl, classify_result)
+// 			}
+// 			result.inferred_classes << classify_result.inferred_class
+// 			result.actual_classes << classify_result.labeled_class
+// 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
+// 		}
+// 	} else {
+// 		for i, test_instance in case {
+// 			classify_result = classify_case(cl, test_instance, opts, disp)
+// 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
+// 			result.inferred_classes << classify_result.inferred_class
+// 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
+// 			result.actual_classes << result.labeled_classes[i]
+// 			if disp.verbose_flag {
+// 				verbose_result(i, cl, classify_result)
+// 			}
+// 		}
+// 	}
+// 	result.classifier_instances_counts << cl.history[0].instances_count
+// 	result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
+// 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+// 	// 	println('result in classify_to_verify(): ${result}')
+// 	// }
+// 	result = summarize_results(1, mut result)
+// 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+// 	// 	println('summarize_result: ${result}')
+// 	// }
+// 	return result
+// }
