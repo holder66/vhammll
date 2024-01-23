@@ -21,6 +21,7 @@ pub mut:
 	missing_class_values       []int // these are the indices of the original class values array
 	class_counts               map[string]int
 	lcm_class_counts           i64
+	prepurge_class_values_len int
 	postpurge_class_counts     map[string]int
 	postpurge_lcm_class_counts i64
 }
@@ -112,10 +113,10 @@ pub mut:
 }
 
 struct TotalNnParams {
-mut: 
+mut:
 	maximum_hamming_distance_array []int
-	total_max_ham_dist int
-	lcm_max_ham_dist i64
+	total_max_ham_dist             int
+	lcm_max_ham_dist               i64
 }
 
 pub struct HistoryEvent {

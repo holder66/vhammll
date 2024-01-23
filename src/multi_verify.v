@@ -2,7 +2,6 @@
 
 module vhammll
 
-
 fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
@@ -14,7 +13,6 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		}
 	}
 	// instantiate a struct for the result
-	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
 		LoadOptions: opts.LoadOptions
 		Parameters: opts.Parameters
@@ -34,42 +32,24 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mut ds := load_file(opts.datafile_path)
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
-	// mut mult_opts := []Parameters{}
 	mut mult_opts := opts
 	mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
 	}
-	// println(mult_opts)
 	verify_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
-	// mult_opts.break_on_all_flag = opts.break_on_all_flag
-	// mult_opts.combined_radii_flag = opts.combined_radii_flag
 	if mult_opts.classifier_indices == [] {
 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifiers.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	// mut ds := load_file(opts.datafile_path)
-	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-	// 	MultipleClassifiersArray{}
-	// }
-	// println('mult_opts: $mult_opts')
 	for i in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifiers[i].classifier_options
-
-		// for params in saved_params.multiple_classifiers {
-		// println('params: $params')
-		// println('number of attributes: $params.number_of_attributes')
 		mult_opts.Parameters = params
 		verify_result.Parameters = params
-		// println('mult_opts: $mult_opts')
 		classifier_array << make_classifier(ds, mult_opts)
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
-	// println('classifier_array: ${classifier_array}')
-	// println(mult_opts)
-	// println('cases: $cases')
 	cases = transpose(cases)
-	// println('cases: $cases')
-	println('classifier_array in multiple_classify_to_verify: ${classifier_array}')
+	// println('classifier_array in multiple_classify_to_verify: ${classifier_array}')
 	mut m_classify_result := ClassifyResult{}
 	mut maximum_hamming_distance_array := []int{}
 	for cl in classifier_array {
@@ -86,9 +66,12 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		println('lcm_max_ham_dist: ${total_nn_params.lcm_max_ham_dist}')
 	}
 	for i, case in cases {
-		if disp.verbose_flag {println('\ncase: ${i:-7}     classes: ${classifier_array[0].classes.join(' | ')}')}
+		if disp.verbose_flag {
+			println('\ncase: ${i:-7}     classes: ${classifier_array[0].classes.join(' | ')}')
+		}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(classifier_array, total_nn_params, case, [''], opts, disp)
+			multiple_classifier_classify_totalnn(classifier_array, total_nn_params, case,
+				[''], opts, disp)
 		} else {
 			multiple_classifier_classify(classifier_array, case, [''], opts, disp)
 		}

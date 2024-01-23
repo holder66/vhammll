@@ -321,13 +321,13 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
 
 		for i, case in fold_cases {
-		classify_result := classify_case(part_cl, case, cross_opts, disp)
-		if disp.verbose_flag {
-			verbose_result(i, part_cl, classify_result)
+			classify_result := classify_case(part_cl, case, cross_opts, disp)
+			if disp.verbose_flag {
+				verbose_result(i, part_cl, classify_result)
+			}
+			fold_result.inferred_classes << classify_result.inferred_class
+			fold_result.actual_classes << fold_result.labeled_classes[i]
 		}
-		fold_result.inferred_classes << classify_result.inferred_class
-		fold_result.actual_classes << fold_result.labeled_classes[i]
-	}
 	} else { // ie, asking for multiple classifiers...
 		mut classifier_array := []Classifier{}
 		mut instances_to_be_classified := [][][]u8{}
@@ -349,15 +349,15 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		}
 		// fold_result = multiple_classify_in_cross(current_fold, classifier_array, transpose(instances_to_be_classified), mut fold_result, mult_opts)
 		for i, test_instance in transpose(instances_to_be_classified) {
-		// println('i: $i test_instance: $test_instance')
-		m_classify_result := multiple_classifier_classify(classifier_array, test_instance, fold_result.labeled_classes,
-			mult_opts)
-		fold_result.inferred_classes << m_classify_result.inferred_class
-		fold_result.actual_classes << fold_result.labeled_classes[i]
-		fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
-	}
-	fold_result.MultipleOptions = mult_opts.MultipleOptions
-	fold_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
+			// println('i: $i test_instance: $test_instance')
+			m_classify_result := multiple_classifier_classify(classifier_array, test_instance,
+				fold_result.labeled_classes, mult_opts)
+			fold_result.inferred_classes << m_classify_result.inferred_class
+			fold_result.actual_classes << fold_result.labeled_classes[i]
+			fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
+		}
+		fold_result.MultipleOptions = mult_opts.MultipleOptions
+		fold_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
 	}
 	// println('fold_result.maximum_hamming_distance: ${fold_result.maximum_hamming_distance}')
 	return fold_result

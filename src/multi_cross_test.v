@@ -16,8 +16,6 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder_multi_cross')!
 }
 
-
-
 fn test_multiple_crossvalidate() ? {
 	mut opts := Options{
 		break_on_all_flag: true
