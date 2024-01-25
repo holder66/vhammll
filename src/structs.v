@@ -106,7 +106,7 @@ pub mut:
 	datafile_path            string
 	attribute_ordering       []string
 	trained_attributes       map[string]TrainedAttribute
-	maximum_hamming_distance int
+	// maximum_hamming_distance int
 	indices                  []int
 	instances                [][]u8
 	history                  []HistoryEvent
@@ -202,6 +202,7 @@ pub mut:
 }
 
 pub struct MultipleOptions {
+	TotalNnParams
 pub mut:
 	break_on_all_flag    bool
 	combined_radii_flag  bool

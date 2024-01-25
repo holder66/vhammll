@@ -14,7 +14,7 @@ import arrays
 // the inferred class. If no single maximum, the sphere radius is incremented, and the process repeats for hamming
 // distances which fit within the sphere, until a single maximum is found. If the sphere radius reaches the maximum possible
 // hamming distance and no single maximum is found, then no class is inferred.
-fn multiple_classifier_classify_totalnn(classifiers []Classifier, total_nn_params TotalNnParams, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class: classifiers[0].Class
@@ -46,11 +46,18 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, total_nn_param
 	for radius in radii {
 		nearest_neighbors_by_class_array = [][]i64{}
 		for i, cl in classifiers {
+			// println('yes!')
 			nearest_neighbors_by_class = []i64{len: cl.class_counts.len, init: 0}
 			for class_index in 0 .. cl.classes.len {
+				// println('yes 2!')
 				for j, dist in hamming_distances_array[i] {
+					// println('yes 3!')
 					if dist <= radius && cl.class_values[j] == cl.classes[class_index] {
-						nearest_neighbors_by_class[class_index] += total_nn_params.lcm_max_ham_dist / total_nn_params.maximum_hamming_distance_array[i]
+						// println('yes 4!')
+						// println(nearest_neighbors_by_class)
+						// println(opts.maximum_hamming_distance_array)
+						nearest_neighbors_by_class[class_index] += opts.lcm_max_ham_dist / opts.maximum_hamming_distance_array[i]
+						// println('yes 5!')
 					}
 				}
 			}

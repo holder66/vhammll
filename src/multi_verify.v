@@ -55,25 +55,25 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	for cl in classifier_array {
 		maximum_hamming_distance_array << cl.maximum_hamming_distance
 	}
-	mut total_nn_params := TotalNnParams{
-		maximum_hamming_distance_array: maximum_hamming_distance_array
-		total_max_ham_dist: array_sum(maximum_hamming_distance_array)
-		lcm_max_ham_dist: lcm(maximum_hamming_distance_array)
-	}
+	
+	mult_opts.maximum_hamming_distance_array = maximum_hamming_distance_array
+	mult_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
+	mult_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
+	
 	if disp.verbose_flag && opts.total_nn_counts_flag {
-		println('maximum_hamming_distance_array: ${total_nn_params.maximum_hamming_distance_array}')
-		println('total_max_ham_dist: ${total_nn_params.total_max_ham_dist}')
-		println('lcm_max_ham_dist: ${total_nn_params.lcm_max_ham_dist}')
+		println('maximum_hamming_distance_array: ${mult_opts.maximum_hamming_distance_array}')
+		println('total_max_ham_dist: ${mult_opts.total_max_ham_dist}')
+		println('lcm_max_ham_dist: ${mult_opts.lcm_max_ham_dist}')
 	}
 	for i, case in cases {
 		if disp.verbose_flag {
-			println('\ncase: ${i:-7}     classes: ${classifier_array[0].classes.join(' | ')}')
+			println('\ncase: ${i:-7}  $case   classes: ${classifier_array[0].classes.join(' | ')}')
 		}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(classifier_array, total_nn_params, case,
-				[''], opts, disp)
+			multiple_classifier_classify_totalnn(classifier_array, case,
+				[''], mult_opts, disp)
 		} else {
-			multiple_classifier_classify(classifier_array, case, [''], opts, disp)
+			multiple_classifier_classify(classifier_array, case, [''], mult_opts, disp)
 		}
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		verify_result.inferred_classes << m_classify_result.inferred_class

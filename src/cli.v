@@ -169,7 +169,7 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	}
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))
-		println('opts.classifier_indices in cli.v: ${opts.classifier_indices}')
+		// println('opts.classifier_indices in cli.v: ${opts.classifier_indices}')
 	}
 	opts.testfile_path = option(args, ['-t', '--test'])
 	opts.outputfile_path = option(args, ['-o', '--output'])

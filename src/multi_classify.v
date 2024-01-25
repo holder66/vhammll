@@ -22,7 +22,7 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
 	}
 
-	// println('cases to be classified: ${case}')
+	// println('case to be classified: ${case}')
 
 	// println(opts)
 	// println(mcr.MultipleOptions)
@@ -38,20 +38,24 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 	}
 	mcr.maximum_number_of_attributes = array_max(mcr.number_of_attributes)
 	mcr.lcm_attributes = lcm(mcr.number_of_attributes)
-
+	// println('mcr.lcm_attributes: $mcr.lcm_attributes')
 	// get the hamming distance for each of the corresponding byte_values
 	// in each classifier instance and the case to be classified
 	// note that to compare hamming distances between classifiers using
 	// different numbers of attributes, the distances need to be weighted.
 
 	for i, cl in classifiers {
+		// println('i in loop 1: $i')
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
+			// println('loop 2 instance: $instance')
 			mut hamming_dist := 0
 			// for j, byte_value in case[i] {
 			// 	hamming_dist += int(get_hamming_distance(byte_value, instance[j]) * mcr.lcm_attributes / mcr.number_of_attributes[i])
 			// }
+			// println('case in loop 2: ${case}')
 			for j, byte_value in case[i] {
+				
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist

@@ -45,25 +45,6 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 			confusion_matrix_map[key2][key1] = 0
 		}
 	}
-	if opts.multiple_flag {
-		// disable concurrency, as not implemented for multiple classifiers
-		cross_opts.concurrency_flag = false
-		cross_opts.MultipleClassifiersArray = read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
-			panic('read_multiple_opts failed')
-		}
-		cross_opts.break_on_all_flag = opts.break_on_all_flag
-		cross_opts.combined_radii_flag = opts.combined_radii_flag
-		// cross_opts.classifier_indices = opts.classifier_indices
-		if opts.classifier_indices == [] {
-			cross_opts.classifier_indices = []int{len: cross_opts.multiple_classifiers.len, init: index}
-		} else {
-			cross_opts.classifier_indices = opts.classifier_indices
-		}
-		if disp.verbose_flag {
-			// println('cross_opts in cross_validate.v: ${cross_opts}')
-		}
-	}
-	// println(cross_opts.classifier_indices)
 	// instantiate a struct for the result
 	mut inferences_map := map[string]int{}
 	for key, _ in ds.class_counts {
@@ -90,6 +71,45 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		false_positives: inferences_map.clone()
 		false_negatives: inferences_map.clone()
 	}
+	if opts.multiple_flag {
+		// disable concurrency, as not implemented for multiple classifiers
+		cross_opts.concurrency_flag = false
+		mut classifier_array := []Classifier{}
+		cross_opts.MultipleClassifiersArray = read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
+			panic('read_multiple_opts failed')
+		}
+		cross_opts.break_on_all_flag = opts.break_on_all_flag
+		cross_opts.combined_radii_flag = opts.combined_radii_flag
+		// cross_opts.classifier_indices = opts.classifier_indices
+		if opts.classifier_indices == [] {
+			cross_opts.classifier_indices = []int{len: cross_opts.multiple_classifiers.len, init: index}
+		} else {
+			cross_opts.classifier_indices = opts.classifier_indices
+		}
+		for i in cross_opts.classifier_indices {
+			mut params := cross_opts.multiple_classifiers[i].classifier_options
+			cross_opts.Parameters = params
+			cross_result.Parameters = params
+			classifier_array << make_classifier(ds, cross_opts)
+		}
+		println('classifier_array in cross_validate: $classifier_array')
+		// mut m_classify_result := ClassifyResult{}
+		mut maximum_hamming_distance_array := []int{}
+		for cl in classifier_array {
+			maximum_hamming_distance_array << cl.maximum_hamming_distance
+		}
+		// cases = transpose(cases)
+
+		cross_opts.maximum_hamming_distance_array = maximum_hamming_distance_array
+		cross_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
+		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
+		
+		if disp.verbose_flag {
+			// println('cross_opts in cross_validate.v: ${cross_opts}')
+		}
+	}
+	// println(cross_opts.classifier_indices)
+	
 
 	// if there are no useful continuous attributes, set binning to 0
 	if ds.useful_continuous_attributes.len == 0 {
@@ -130,7 +150,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
 	if opts.command == 'cross' && (disp.show_flag || disp.expanded_flag) {
-		show_crossvalidation(cross_result, opts)
+		show_crossvalidation(cross_result, opts, disp)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file(cross_result, opts.outputfile_path)
@@ -292,6 +312,10 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		labeled_classes: fold.class_values
 		instance_indices: fold.indices
 	}
+	if disp.verbose_flag {
+		println(y('current fold: ${current_fold}'))
+	}
+	
 	if !cross_opts.multiple_flag {
 		part_cl := make_classifier(part_ds, cross_opts)
 		// println('part_cl.maximum_hamming_distance: ${part_cl.maximum_hamming_distance}')
@@ -315,9 +339,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		for key, _ in ds.Class.class_counts {
 			confusion_matrix_row[key] = 0
 		}
-		if disp.verbose_flag {
-			println(y('current fold: ${current_fold}'))
-		}
+		
 		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
 
 		for i, case in fold_cases {
@@ -329,9 +351,13 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			fold_result.actual_classes << fold_result.labeled_classes[i]
 		}
 	} else { // ie, asking for multiple classifiers...
+		// note that in this situation, a case will consist of an array of arrays of differing lengths,
+		// corresponding to the differing classifiers
 		mut classifier_array := []Classifier{}
-		mut instances_to_be_classified := [][][]u8{}
+		mut cases := [][][]u8{}
 		mut mult_opts := cross_opts
+		println('mult_opts in do_one_fold: $mult_opts')
+		// create an array of classifiers, one for each index in classifier_indices
 		for i in mult_opts.classifier_indices {
 			mut params := mult_opts.multiple_classifiers[i].classifier_options
 			mult_opts.Parameters = params
@@ -344,14 +370,28 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 				byte_values_array << process_fold_data(part_cl.trained_attributes[attr],
 					fold.data[j])
 			}
+
 			m_fold_instances := transpose(byte_values_array)
-			instances_to_be_classified << m_fold_instances
+			println('m_fold_instances in do_one_fold: $m_fold_instances')
+			cases << m_fold_instances
 		}
+		
+		println('cases in do_one_fold: $cases')
 		// fold_result = multiple_classify_in_cross(current_fold, classifier_array, transpose(instances_to_be_classified), mut fold_result, mult_opts)
-		for i, test_instance in transpose(instances_to_be_classified) {
+		for i, case in cases {
+			if disp.verbose_flag {
+				println('\ncase: ${i:-7}  $case    classes: ${classifier_array[0].classes.join(' | ')}')
+			}
 			// println('i: $i test_instance: $test_instance')
-			m_classify_result := multiple_classifier_classify(classifier_array, test_instance,
-				fold_result.labeled_classes, mult_opts)
+			// m_classify_result := multiple_classifier_classify(classifier_array, case,
+				// fold_result.labeled_classes, mult_opts, disp)
+			println('just before classify')
+			m_classify_result := if mult_opts.total_nn_counts_flag {
+				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes, mult_opts, disp)
+			} else {
+				multiple_classifier_classify(classifier_array, case,
+				fold_result.labeled_classes, mult_opts, disp)
+			}
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]
 			fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
