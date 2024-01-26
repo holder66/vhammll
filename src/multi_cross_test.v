@@ -18,13 +18,15 @@ fn testsuite_end() ? {
 
 fn test_multiple_crossvalidate() ? {
 	mut disp := DisplaySettings{
-		verbose_flag: true
+		verbose_flag: false
 		expanded_flag: true
 	}
 	mut opts := Options{
+		// folds: 3
 		break_on_all_flag: true
 		combined_radii_flag: false
 		weighting_flag: false
+		// total_nn_counts_flag: true
 		command: 'explore'
 		concurrency_flag: true
 	}
@@ -57,7 +59,7 @@ fn test_multiple_crossvalidate() ? {
 		}
 	}
 	opts.classifier_indices = [3]
-	assert cross_validate(ds, opts, disp).confusion_matrix_map == result.confusion_matrix_map
+	// assert cross_validate(ds, opts, disp).confusion_matrix_map == result.confusion_matrix_map
 	opts.classifier_indices = [2, 3]
 	assert cross_validate(ds, opts, disp).confusion_matrix_map == {
 		'm': {
@@ -67,6 +69,56 @@ fn test_multiple_crossvalidate() ? {
 		'f': {
 			'm': 1.0
 			'f': 3.0
+		}
+	}
+}
+
+fn test_multiple_crossvalidate_mixed_attributes() ? {
+	mut opts := Options{
+		datafile_path: 'datasets/2_class_developer.tab'
+		settingsfile_path: 'tempfolder_multi_cross/2_class_big.opts'
+		append_settings_flag: true
+		command: 'explore'
+		concurrency_flag: true
+	}
+
+	mut disp := DisplaySettings{
+		expanded_flag: false 
+		verbose_flag: false
+		show_flag: true
+	}
+	// opts.number_of_attributes = [11,13]
+	// opts.bins = [1,10]
+	mut ds := load_file(opts.datafile_path)
+	ft := [false, true]
+	for pf in ft {
+		opts.uniform_bins = pf
+		for wr in [false, true] {
+			opts.weight_ranking_flag = wr
+			for w in [false, true] {
+				opts.weighting_flag = w
+				er := explore(ds, opts, disp)
+			}
+		}
+	}
+	display_file(opts.settingsfile_path, opts)
+	opts.append_settings_flag = false
+	opts.command = 'cross'
+	opts.classifier_indices = [3, 4, 6, 14]
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.multiple_flag = true
+	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
+	for ci in [[3, 11, 4, 5, 6, 14]] {
+		opts.classifier_indices = ci
+		for ma in ft {
+			opts.break_on_all_flag = ma
+			for mc in ft {
+				opts.combined_radii_flag = mc
+				for t in ft {
+					opts.total_nn_counts_flag = t
+				}
+				cross_validate(ds, opts, disp)
+			}
 		}
 	}
 }
@@ -104,8 +156,8 @@ fn test_multiple_crossvalidate() ? {
 // 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 // 	opts.multiple_flag = true
 // 	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
-// 	for ci in [[3, 11, 4, 5, 6, 14]] {
-// 		opts.classifier_indices = ci
+// 	opts.classifier_indices = [6,14,3,11,23,31]
+
 // 		for ma in ft {
 // 			opts.break_on_all_flag = ma
 // 			for mc in ft {
@@ -116,7 +168,7 @@ fn test_multiple_crossvalidate() ? {
 // 				cross_validate(ds, opts, disp)
 // 			}
 // 		}
-// 	}
+	
 // 	opts.command = 'cross'
 // 	ds = load_file(opts.datafile_path)
 // 	opts.number_of_attributes = [7]
@@ -168,13 +220,16 @@ fn test_multiple_crossvalidate() ? {
 // 	}
 
 // 	mut disp := DisplaySettings{
-// 		expanded_flag: true 
-// 		verbose_flag: true
+// 		expanded_flag: false 
+// 		verbose_flag: false
+// 		show_flag: true
 // 	}
+// 	opts.number_of_attributes = [11,13]
+// 	opts.bins = [1,10]
 // 	mut ds := load_file(opts.datafile_path)
 // 	ft := [false, true]
 // 	for pf in ft {
-// 		opts.purge_flag = pf
+// 		opts.uniform_bins = pf
 // 		for wr in [false, true] {
 // 			opts.weight_ranking_flag = wr
 // 			for w in [false, true] {

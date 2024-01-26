@@ -19,6 +19,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 		multiple_flag: true
 		Class: classifiers[0].Class
 	}
+	// println('case in multiple_classifier_classify_totalnn: $case')
 	mut total_nns_by_class := []i64{len: 2}
 	// mut weighted_totals := []f64{len: 2}
 	// mut lcm_val := lcm(get_map_values(classifiers[0].class_counts))
@@ -26,10 +27,13 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	mut hamming_distances_array := [][]int{}
 	// calculate hamming distances
 	for i, cl in classifiers {
+		// println('i in multiple_classifier_classify_totalnn: $i')
 		mut hamming_distances := []int{}
+		// println('cl.instances in multiple_classifier_classify_totalnn: $cl.instances')
 		for instance in cl.instances {
 			mut hamming_dist := 0
 			for j, byte_value in case[i] {
+				// println('j in multiple_classifier_classify_totalnn: $j')
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist

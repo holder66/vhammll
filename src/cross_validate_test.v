@@ -10,7 +10,7 @@ fn test_cross_validate() ? {
 	}
 	mut disp := DisplaySettings{
 		verbose_flag: false
-		expanded_flag: true
+		expanded_flag: false
 	}
 	mut result := CrossVerifyResult{}
 
