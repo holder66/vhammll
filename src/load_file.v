@@ -183,6 +183,7 @@ pub fn set_class_struct(ds Dataset) Class {
 			class_index: i
 			class_values: ds.data[i]
 			class_counts: element_counts(ds.data[i])
+			prepurge_class_values_len: ds.data[i].len
 			// class_counts: class_counts
 			classes: uniques(ds.data[i])
 		}

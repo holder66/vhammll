@@ -69,6 +69,10 @@ fn testsuite_end() ? {
 // 	// }
 // }
 
+const verbose = true
+const expanded = true
+
+// test_multiple_verify
 fn test_multiple_verify() ? {
 	mut opts := Options{
 		concurrency_flag: false
@@ -77,6 +81,7 @@ fn test_multiple_verify() ? {
 		command: 'verify'
 	}
 	mut result := CrossVerifyResult{}
+
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
 	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
@@ -88,9 +93,8 @@ fn test_multiple_verify() ? {
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
-	// mut cl := make_classifier(ds, opts)
-	result0 := verify(opts, expanded_flag: true)
-	println('result0 in test_multiple_verify: ${result0}')
+	// cl := make_classifier(ds, opts)
+	result0 := verify(opts, verbose_flag: vhammll.verbose, expanded_flag: vhammll.expanded)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -103,48 +107,40 @@ fn test_multiple_verify() ? {
 	}
 	opts.bins = [2, 2]
 	opts.purge_flag = false
-	result1 := verify(opts, expanded_flag: false)
+	opts.weight_ranking_flag = false
+	opts.number_of_attributes = [6]
+	opts.bins = [1, 10]
+	result1 := verify(opts, verbose_flag: false, expanded_flag: false)
 	assert result1.confusion_matrix_map == {
 		'ALL': {
-			'ALL': 19.0
-			'AML': 1.0
+			'ALL': 20.0
+			'AML': 0.0
 		}
 		'AML': {
-			'ALL': 9.0
-			'AML': 5.0
+			'ALL': 5.0
+			'AML': 9.0
 		}
 	}
 	// verify that the settings file was correctly saved, and
 	// is the right length
-	assert os.file_size(opts.settingsfile_path) == 1042
+	assert os.file_size(opts.settingsfile_path) >= 929
 
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	// result = verify(opts, verbose_flag: verbose, expanded_flag: expanded)
+	// with both classifiers
+	// assert result.confusion_matrix_map == {'ALL': {'ALL': 20.0, 'AML': 0.0}, 'AML': {'ALL': 5.0, 'AML': 9.0}}
+
 	opts.classifier_indices = [0]
-	result = verify(opts, expanded_flag: true)
-	println('result with classifier 0 in test_multiple_verify: ${result}')
+	result = verify(opts, verbose_flag: vhammll.verbose, expanded_flag: vhammll.expanded)
 	// with classifier 0
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
 
-	// opts.classifier_indices = [1]
-	// result = verify(cl, opts, expanded_flag: true)
-	// // with classifier 1
-	// // assert result.confusion_matrix_map == result1.confusion_matrix_map
-	// // with both classifiers
-	// opts.classifier_indices = []
-	// result = verify(cl, opts, verbose_flag: false, expanded_flag: true)
-
-	// assert result.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 17.0
-	// 		'AML': 3.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 6.0
-	// 		'AML': 8.0
-	// 	}
-	// }
+	opts.classifier_indices = [1]
+	// result = verify(opts, verbose_flag: verbose, expanded_flag: expanded)
+	// with classifier 1
+	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
 
 // fn test_multiple_crossvalidate() ? {

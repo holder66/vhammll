@@ -5,15 +5,11 @@ module vhammll
 import arrays
 
 // when multiple classifiers have been generated with different settings,
-// a given instance to be classified will take multiple values, one for
+// a given case to be classified will take multiple values, one for
 // each classifier, and corresponding to the settings for that classifier.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classified [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
-	if opts.total_nn_counts_flag {
-		return multiple_classifier_classify_totalnn(classifiers, instances_to_be_classified,
-			labeled_classes, opts, disp)
-	}
+fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		// index: index
 		multiple_flag: true
@@ -26,7 +22,7 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
 	}
 
-	// println('instances to be classified: ${instances_to_be_classified}')
+	// println('case to be classified: ${case}')
 
 	// println(opts)
 	// println(mcr.MultipleOptions)
@@ -42,20 +38,23 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 	}
 	mcr.maximum_number_of_attributes = array_max(mcr.number_of_attributes)
 	mcr.lcm_attributes = lcm(mcr.number_of_attributes)
-
+	// println('mcr.lcm_attributes: $mcr.lcm_attributes')
 	// get the hamming distance for each of the corresponding byte_values
-	// in each classifier instance and the instance to be classified
+	// in each classifier instance and the case to be classified
 	// note that to compare hamming distances between classifiers using
 	// different numbers of attributes, the distances need to be weighted.
 
 	for i, cl in classifiers {
+		// println('i in loop 1: $i')
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
+			// println('loop 2 instance: $instance')
 			mut hamming_dist := 0
-			// for j, byte_value in instances_to_be_classified[i] {
+			// for j, byte_value in case[i] {
 			// 	hamming_dist += int(get_hamming_distance(byte_value, instance[j]) * mcr.lcm_attributes / mcr.number_of_attributes[i])
 			// }
-			for j, byte_value in instances_to_be_classified[i] {
+			// println('case in loop 2: ${case}')
+			for j, byte_value in case[i] {
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist
@@ -214,9 +213,10 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 	inferred_classes_by_classifier := mcr.results_by_classifier.map(it.inferred_class)
 	if inferred_classes_by_classifier.len > 1
 		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
-		final_cr.inferred_class = resolve_conflict(mcr)
-		show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
-
+		final_cr.inferred_class = resolve_conflict(mcr, disp)
+		if disp.verbose_flag {
+			show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
+		}
 		// println('instance: ${index} ${inferred_classes_by_classifier} nearest neighbors: ${mcr.results_by_classifier.map(it.results_by_radius.map(it.nearest_neighbors_by_class))}} inferred_class: ${final_cr.inferred_class}')
 
 		// println(mcr)
@@ -234,7 +234,7 @@ fn multiple_classifier_classify(classifiers []Classifier, instances_to_be_classi
 }
 
 // resolve_conflict
-fn resolve_conflict(mcr MultipleClassifierResults) string {
+fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string {
 	// println(mcr)
 	// at the smallest sphere radius, can we get a majority vote?
 	// note that there should only be one maximum value
@@ -242,7 +242,7 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 	for {
 		mut infs := arrays.flatten(mcr.results_by_classifier.map(it.results_by_radius.filter(
 			it.sphere_index == sphere_index && it.inferred_class_found).map(it.inferred_class)))
-		println(infs)
+		// println(infs)
 		// println(element_counts(infs))
 		// if element_counts(infs).len > 0 {
 		// 	// get maximum value of element_counts
@@ -255,13 +255,17 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 
 		// test for a plurality vote
 		if plurality_vote(infs) != '' {
-			println('Plurality_vote')
+			if disp.verbose_flag {
+				println('Plurality_vote')
+			}
 			return plurality_vote(infs)
 		}
 
 		// test for a majority vote
 		if majority_vote(infs) != '' {
-			println('Majority vote')
+			if disp.verbose_flag {
+				println('Majority vote')
+			}
 			return majority_vote(infs)
 		}
 		// println(mcr.results_by_classifier.map(it.results_by_radius.map(it.inferred_class_found.)))
@@ -270,7 +274,9 @@ fn resolve_conflict(mcr MultipleClassifierResults) string {
 			break
 		}
 	}
-	println('Majority vote fell through')
+	if disp.verbose_flag {
+		println('Majority vote fell through')
+	}
 	// pick the result with the greatest number of nearest neighbors
 	// sums := mcr.results_by_classifier.map(it.results_by_radius.last()).map(it.nearest_neighbors_by_class).map(array_sum(it))
 	// return mcr.results_by_classifier[idx_max(sums)].inferred_class

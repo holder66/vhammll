@@ -34,7 +34,7 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 		// println(ds.Class)
 		mut transposed_data := transpose(ds.data)
-		println('transposed_data before: ${transposed_data}')
+		// println('transposed_data before: ${transposed_data}')
 		mut multipliers := map[string]int{}
 		for class, count in ds.class_counts {
 			multipliers[class] = (ds.class_values.len - count) / count

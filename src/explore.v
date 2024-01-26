@@ -41,23 +41,13 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 	mut result := CrossVerifyResult{
 		pos_neg_classes: results.pos_neg_classes
 	}
-	mut attribute_max := ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len
-	if disp.verbose_flag && opts.command == 'explore' {
-		println('ex_opts in explore: ${ex_opts}')
-		println('number of usable attributes: ${attribute_max}')
-	}
+	// mut attribute_max := ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len
 	// if there are no useful continuous attributes, skip the binning
 	if ds.useful_continuous_attributes.len == 0 {
 		ex_opts.bins = [0]
 	}
 	results.binning = get_binning(ex_opts.bins)
-
 	binning := results.binning
-
-	if disp.verbose_flag && opts.command == 'explore' {
-		// println('attributing: ${results.AttributeRange}')
-		println('binning: ${results.binning}')
-	}
 	if opts.command == 'explore' && (disp.show_flag || disp.expanded_flag) {
 		// show_explore_header(pos_neg_classes, binning, opts)
 		show_explore_header(results, results.DisplaySettings)

@@ -167,7 +167,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options, disp DisplaySettings)
 		'from "${result.datafile_path}"'))
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		show_multiple_classifiers_options(opts, result.MultipleOptions, result.MultipleClassifiersArray)
+		show_multiple_classifiers_options(result, opts, disp)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
@@ -196,13 +196,17 @@ const headers = {
 	11: 'Balanced accuracy:'
 	12: 'Maximum Hamming Distance:'
 }
-// show_multiple_classifiers_options
-fn show_multiple_classifiers_options(opts Options, m_o MultipleOptions, m_c_a MultipleClassifiersArray) {
-	println('break_on_all_flag: ${m_o.break_on_all_flag}     combined_radii_flag: ${m_o.combined_radii_flag}      class_missing_purge_flag: ${opts.class_missing_purge_flag}')
+// show_multiple_classifiers_options expects the multiple classifiers to be in opts, and
+// the classifier indices in result
+fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, disp DisplaySettings) {
+	// println('result in show_multiple_classifiers_options: $result')
+	// println('opts in show_multiple_classifiers_options: $opts')
+	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
-	for i, par in m_c_a.multiple_classifiers {
-		if i in m_o.classifier_indices {
+	for i, par in opts.multiple_classifiers {
+		// println('i: $i par: $par')
+		if i in result.classifier_indices {
 			a := par.classifier_options
 			b := par.binary_metrics
 			row_data[0] += '${i:-13}'
@@ -236,7 +240,8 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 		 }
 	 })
 	if result.multiple_classify_options_file_path != '' {
-		show_multiple_classifiers_options(opts, result.MultipleOptions, result.MultipleClassifiersArray)
+		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
+		show_multiple_classifiers_options(result, opts, disp)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
