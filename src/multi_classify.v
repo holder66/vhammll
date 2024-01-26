@@ -55,7 +55,6 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 			// }
 			// println('case in loop 2: ${case}')
 			for j, byte_value in case[i] {
-				
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist

@@ -104,13 +104,12 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_opts.maximum_hamming_distance_array = maximum_hamming_distance_array
 		cross_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
 		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
-		
+
 		if disp.verbose_flag {
 			// println('cross_opts in cross_validate.v: ${cross_opts}')
 		}
 	}
 	// println(cross_opts.classifier_indices)
-	
 
 	// if there are no useful continuous attributes, set binning to 0
 	if ds.useful_continuous_attributes.len == 0 {
@@ -317,7 +316,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	if disp.verbose_flag {
 		println(y('current fold: ${current_fold}'))
 	}
-	
+
 	if !cross_opts.multiple_flag {
 		part_cl := make_classifier(part_ds, cross_opts)
 		// println('part_cl.maximum_hamming_distance: ${part_cl.maximum_hamming_distance}')
@@ -357,7 +356,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// note that in this situation, a case will consist of an array of arrays of differing lengths,
 		// corresponding to the differing classifiers.
 		// conceptually, doing one fold with multiple classifiers is like doing
-		// a multi_verify, 
+		// a multi_verify,
 		mut classifier_array := []Classifier{}
 		mut mult_fold_cases := [][][]u8{}
 		mut mult_opts := cross_opts
@@ -374,7 +373,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			for attr in part_cl.attribute_ordering {
 				j := fold.attribute_names.index(attr)
 				byte_values_array << process_fold_data(part_cl.trained_attributes[attr],
-					fold.data[j])	
+					fold.data[j])
 			}
 
 			fold_cases := transpose(byte_values_array)
@@ -394,17 +393,18 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// fold_result = multiple_classify_in_cross(current_fold, classifier_array, transpose(instances_to_be_classified), mut fold_result, mult_opts)
 		for i, case in transpose(mult_fold_cases) {
 			if disp.verbose_flag {
-				println('\ncase: ${i:-7}  $case    classes: ${classifier_array[0].classes.join(' | ')}')
+				println('\ncase: ${i:-7}  ${case}    classes: ${classifier_array[0].classes.join(' | ')}')
 			}
 			// println('i: $i test_instance: $test_instance')
 			// m_classify_result := multiple_classifier_classify(classifier_array, case,
-				// fold_result.labeled_classes, mult_opts, disp)
+			// fold_result.labeled_classes, mult_opts, disp)
 			// println('just before classify')
 			m_classify_result := if mult_opts.total_nn_counts_flag {
-				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes, mult_opts, disp)
+				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes,
+					mult_opts, disp)
 			} else {
-				multiple_classifier_classify(classifier_array, case,
-				fold_result.labeled_classes, mult_opts, disp)
+				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes,
+					mult_opts, disp)
 			}
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]
@@ -417,7 +417,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	return fold_result
 }
 
-// process_fold_data takes the data array corresponding to a specific attribute for all the 
+// process_fold_data takes the data array corresponding to a specific attribute for all the
 // cases to be classified, and for each case to be classified,
 // gets either the translation table value for that case's value if a discrete attribute,
 // or gets the bin number for the value if a continuous attribute.

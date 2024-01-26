@@ -196,7 +196,7 @@ const headers = {
 	11: 'Balanced accuracy:'
 	12: 'Maximum Hamming Distance:'
 }
-// show_multiple_classifiers_options expects the multiple classifiers to be in opts, and 
+// show_multiple_classifiers_options expects the multiple classifiers to be in opts, and
 // the classifier indices in result
 fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	// println('result in show_multiple_classifiers_options: $result')

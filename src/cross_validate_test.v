@@ -40,7 +40,6 @@ fn test_cross_validate() ? {
 	result = cross_validate(ds, opts, disp)
 	assert result.total_count == 13
 
-
 	// opts.concurrency_flag = false
 
 	opts.datafile_path = 'datasets/developer.tab'

@@ -75,13 +75,12 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			opts.MultipleClassifiersArray = multiple_classifiers_array
 
 			result := CrossVerifyResult{
-
 				classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
 			}
 			// multiple_options := MultipleOptions{
 			// 	classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
 			// }
-			println(m_u('Multiple Classifier Options file: $path'))
+			println(m_u('Multiple Classifier Options file: ${path}'))
 			show_multiple_classifiers_options(result, opts, disp)
 		}
 		else {
