@@ -96,7 +96,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	}
 
 	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
-		show_verify(verify_result, opts, disp)
+		show_verify(verify_result, mult_opts, disp)
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'

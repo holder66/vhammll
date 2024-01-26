@@ -53,7 +53,6 @@ fn test_multiple_verify() ? {
 			'AML': 14.0
 		}
 	}
-	opts.bins = [2, 2]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	opts.number_of_attributes = [6]
@@ -86,6 +85,11 @@ fn test_multiple_verify() ? {
 	result = multi_verify(opts, disp)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
+	opts.total_nn_counts_flag = false
+	opts.classifier_indices = [1]
+	result = multi_verify(opts, disp)
+	assert result.confusion_matrix_map == result1.confusion_matrix_map
+	opts.total_nn_counts_flag = true
 	opts.classifier_indices = [1]
 	result = multi_verify(opts, disp)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map

@@ -86,6 +86,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
+		cross_result.classifier_indices = cross_opts.classifier_indices
 		for i in cross_opts.classifier_indices {
 			mut params := cross_opts.multiple_classifiers[i].classifier_options
 			cross_opts.Parameters = params
@@ -150,7 +151,8 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
 	if opts.command == 'cross' && (disp.show_flag || disp.expanded_flag) {
-		show_crossvalidation(cross_result, opts, disp)
+		// cross_result.MultipleClassifiersArray = cross_opts.MultipleClassifiersArray
+		show_crossvalidation(cross_result, cross_opts, disp)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file(cross_result, opts.outputfile_path)
@@ -342,9 +344,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		for key, _ in ds.Class.class_counts {
 			confusion_matrix_row[key] = 0
 		}
-		
 		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
-
 		for i, case in fold_cases {
 			classify_result := classify_case(part_cl, case, cross_opts, disp)
 			if disp.verbose_flag {
@@ -444,38 +444,3 @@ fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, p
 		result_channel <- do_one_fold(pick_list, current_fold, folds, ds, opts)
 	}
 }
-
-// multiple_classify_in_cross classifies each instance in an array, and
-// returns the results of the classification.
-// fn multiple_classify_in_cross(fold int, m_cl []Classifier, m_test_instances [][][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
-// 	// println('opts in multiple_classify_in_cross: ${opts}')
-// 	// println('labeled_classes in multiple_classify_in_cross: ${result.labeled_classes}')
-// 	// for each instance in the test data, perform a classification
-// 	for i, test_instance in m_test_instances {
-// 		// println('i: $i test_instance: $test_instance')
-// 		m_classify_result := multiple_classifier_classify(m_cl, test_instance, result.labeled_classes,
-// 			opts)
-// 		result.inferred_classes << m_classify_result.inferred_class
-// 		result.actual_classes << result.labeled_classes[i]
-// 		result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
-// 	}
-// 	result.MultipleOptions = opts.MultipleOptions
-// 	result.MultipleClassifiersArray = opts.MultipleClassifiersArray
-// 	// println('result in multiple_classify_in_cross: ${result}')
-// 	return result
-// }
-
-// classify_in_cross classifies each case in an array, and
-// returns the results of the classification.
-// fn classify_in_cross(cl Classifier, cases [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
-// 	// for each instance in the test data, perform a classification
-// 	for i, case in cases {
-// 		classify_result := classify_case(cl, case, opts, disp)
-// 		if disp.verbose_flag {
-// 			verbose_result(i, cl, classify_result)
-// 		}
-// 		result.inferred_classes << classify_result.inferred_class
-// 		result.actual_classes << result.labeled_classes[i]
-// 	}
-// 	return result
-// }

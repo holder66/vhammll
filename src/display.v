@@ -14,7 +14,8 @@ import json
 // 	a confusion matrix for cross-validation or verification operations;
 // graph_flag: generates plots for display in the default web browser.
 // ```
-pub fn display_file(path string, opts Options, disp DisplaySettings) {
+pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
+	mut opts := in_opts
 	// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
@@ -71,11 +72,17 @@ pub fn display_file(path string, opts Options, disp DisplaySettings) {
 			multiple_classifiers_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			multiple_options := MultipleOptions{
+			opts.MultipleClassifiersArray = multiple_classifiers_array
+
+			result := CrossVerifyResult{
+
 				classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
 			}
+			// multiple_options := MultipleOptions{
+			// 	classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
+			// }
 			println(m_u('Multiple Classifier Options file: $path'))
-			show_multiple_classifiers_options(opts, multiple_options, multiple_classifiers_array)
+			show_multiple_classifiers_options(result, opts, disp)
 		}
 		else {
 			println('File type not recognized!')
