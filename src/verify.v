@@ -209,7 +209,6 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 	return
 }
 
-
 // // classify_to_verify classifies each case in an array, and
 // // returns the results of the classification.
 // fn classify_to_verify(cl Classifier, case [][]u8, mut result CrossVerifyResult, opts Options, disp DisplaySettings) CrossVerifyResult {
