@@ -344,6 +344,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			confusion_matrix_row[key] = 0
 		}
 		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
+		// println('disp in do_one_fold: $disp')
 		for i, case in fold_cases {
 			classify_result := classify_case(part_cl, case, cross_opts, disp)
 			if disp.verbose_flag {
@@ -441,6 +442,6 @@ fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, p
 		if current_fold < 0 {
 			break
 		}
-		result_channel <- do_one_fold(pick_list, current_fold, folds, ds, opts)
+		result_channel <- do_one_fold(pick_list, current_fold, folds, ds, opts, disp)
 	}
 }
