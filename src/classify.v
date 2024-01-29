@@ -43,6 +43,9 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 	// of the nearest-neighbor "spheres"
 	mut radii := element_counts(hamming_dist_array).keys()
 	radii.sort()
+	if disp.verbose_flag {
+		println('radii: ${radii}')
+	}
 	mut radius_row := []int{len: cl.class_counts.len}
 	for sphere_index, radius in radii {
 		// populate the counts by class for this radius

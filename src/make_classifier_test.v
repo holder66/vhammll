@@ -68,19 +68,24 @@ fn test_make_classifier() ? {
 	ds = load_file('datasets/leukemia34test.tab')
 	cl = make_classifier(ds, opts)
 	assert cl.maximum_hamming_distance == 5
-	assert cl.Class ==  vhammll.Class{
-    class_name: 'gene'
-    class_index: 5147
-    classes: ['ALL', 'AML']
-    class_values: ['ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML']
-    missing_class_values: []
-    class_counts: {'ALL': 20, 'AML': 14}
-    lcm_class_counts: 140
-    prepurge_class_values_len: 34
-    postpurge_class_counts: {}
-    postpurge_lcm_class_counts: 0
-}
 
+	assert cl.Class == Class{
+		class_name: 'gene'
+		class_index: 5147
+		classes: ['ALL', 'AML']
+		class_values: ['ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL',
+			'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'ALL', 'AML', 'AML', 'AML',
+			'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML', 'AML']
+		missing_class_values: []
+		class_counts: {
+			'ALL': 20
+			'AML': 14
+		}
+		lcm_class_counts: 140
+		prepurge_class_values_len: 34
+		postpurge_class_counts: {}
+		postpurge_lcm_class_counts: 0
+	}
 }
 
 fn test_make_translation_table() {
