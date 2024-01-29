@@ -28,7 +28,7 @@ fn test_oxford_crossvalidate() {
 		// concurrency_flag: true
 		datafile_path: '/Users/henryolders/Oxford-train.tab'
 		number_of_attributes: [8]
-		bins: [1,2]
+		bins: [1, 2]
 		purge_flag: false
 		weighting_flag: true
 		weight_ranking_flag: true
@@ -51,7 +51,7 @@ fn test_oxford_crossvalidate() {
 	opts.total_nn_counts_flag = true
 	// assert cross_validate(ds, opts, disp).confusion_matrix_map == result.confusion_matrix_map
 
-	opts.classifier_indices = [0,6,12]
+	opts.classifier_indices = [3, 6, 12]
 	// result = cross_validate(ds, opts, disp)
 	opts.break_on_all_flag = true
 	result = cross_validate(ds, opts, disp)

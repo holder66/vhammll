@@ -14,8 +14,8 @@ import arrays
 // for each classifier are totalled up for each class, weighted by the maximum hamming distance
 // for each classifier. If these weighted totals yield a single maximum, that maximum yields
 // the inferred class. If no single maximum, the sphere radius is incremented, and the process
-// repeats for hamming distances which fit within the sphere, until a single maximum is found. 
-// If the sphere radius reaches the maximum possible hamming distance and no single maximum 
+// repeats for hamming distances which fit within the sphere, until a single maximum is found.
+// If the sphere radius reaches the maximum possible hamming distance and no single maximum
 // is found, then no class is inferred.
 fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
@@ -56,20 +56,21 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	mut class_weights := []int{}
 	radius_loop: for radius in radii {
 		nearest_neighbors_by_class_array = [][]i64{}
+		classifier_weights.clear()
 		for i, cl in classifiers {
 			class_weights.clear()
 			classifier_weighted_increment := opts.lcm_max_ham_dist / opts.maximum_hamming_distance_array[i]
 			// classes_weighting := cl.lcm_max_ham_dist / cl.maximum_hamming_distance_array
 			classifier_weights << classifier_weighted_increment
-			
+
 			nearest_neighbors_by_class = []i64{len: cl.class_counts.len, init: 0}
 			nearest_neighbors_by_class_unweighted = []i64{len: cl.class_counts.len, init: 0}
 			for class_index in 0 .. cl.classes.len {
 				classes_weighting := int(i64(lcm(get_map_values(cl.class_counts))) / cl.class_counts[cl.classes[class_index]])
 				class_weights << classes_weighting
-			// 	if disp.verbose_flag {
-			// 	println('classifier_weighted_increment: ${classifier_weighted_increment}     classes_weighting: ${classes_weighting}')
-			// }
+				// 	if disp.verbose_flag {
+				// 	println('classifier_weighted_increment: ${classifier_weighted_increment}     classes_weighting: ${classes_weighting}')
+				// }
 				for j, dist in hamming_distances_array[i] {
 					if dist <= radius && cl.class_values[j] == cl.classes[class_index] {
 						if disp.verbose_flag {
@@ -85,29 +86,30 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 				}
 			}
 			if disp.verbose_flag {
-				println('classifier: ${i}   radius: ${radius}    class_weights: $class_weights    classifier_weights: $classifier_weights   nearest_neighbors_by_class_unweighted: $nearest_neighbors_by_class_unweighted     lcm_class_counts: ${cl.lcm_class_counts}     nearest_neighbors_by_class: ${nearest_neighbors_by_class}')
+				println('classifier: ${i}   radius: ${radius}    class_weights: ${class_weights}    classifier_weights: ${classifier_weights}   nearest_neighbors_by_class_unweighted: ${nearest_neighbors_by_class_unweighted}     lcm_class_counts: ${cl.lcm_class_counts}     nearest_neighbors_by_class: ${nearest_neighbors_by_class}')
 			}
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
 		}
 		for i, val in nearest_neighbors_by_class_array {
-				if single_array_maximum(val) {
-					single_maxima[i] = true
-				}
+			if single_array_maximum(val) {
+				single_maxima[i] = true
 			}
-		println('single_maxima: $single_maxima')
+		}
+		// println('single_maxima: $single_maxima')
 		if opts.break_on_all_flag {
 			// continue until a class has been inferred for all the classifiers
-			
+
 			if single_maxima.all(it == true) {
-				println('not reached all yet')
-				break radius_loop}
+				// println('not reached all yet')
+				break radius_loop
+			}
 		} else {
 			if single_maxima.any(it == true) {
 				break radius_loop
 			}
 		}
 	}
-		// total up the nearest neighbors by class, for all the classifierss
+	// total up the nearest neighbors by class, for all the classifierss
 	for nn in nearest_neighbors_by_class_array {
 		for j, count in nn {
 			total_nns_by_class[j] += count
@@ -122,8 +124,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 			println('final_cr.inferred_class: ${final_cr.inferred_class}')
 		}
 		return final_cr
-	}	
-	
+	}
 
 	// mut radius_row := []int{len:cl.class_counts.len}
 	// for sphere_index, radius in radii {
