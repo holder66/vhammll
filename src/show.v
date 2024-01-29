@@ -204,9 +204,12 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
-	for i, par in opts.multiple_classifiers {
-		// println('i: $i par: $par')
-		if i in result.classifier_indices {
+	for i in result.classifier_indices {
+		par := opts.multiple_classifiers[i]
+	
+	// for i, par in opts.multiple_classifiers {
+	// 	// println('i: $i par: $par')
+	// 	if i in result.classifier_indices {
 			a := par.classifier_options
 			b := par.binary_metrics
 			row_data[0] += '${i:-13}'
@@ -223,7 +226,7 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 			row_data[10] += '${b.raw_acc:-6.2f}%      '
 			row_data[11] += '${b.bal_acc:-6.2f}%      '
 			row_data[12] += '${a.maximum_hamming_distance:-13}'
-		}
+		
 	}
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
