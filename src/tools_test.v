@@ -60,7 +60,7 @@ fn test_parse_range() {
 	assert parse_range('4,5,2') == [4, 5, 2]
 	assert parse_range('0') == [0]
 	assert parse_range('5') == [5]
-	assert parse_range('0,0,1,2,2') == [0,0,1,2,2]
+	assert parse_range('0,0,1,2,2') == [0, 0, 1, 2, 2]
 }
 
 // test_array_min
