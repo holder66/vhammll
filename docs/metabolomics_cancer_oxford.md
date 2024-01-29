@@ -84,8 +84,8 @@ v -prod run explore.v
 ```
 This would take a couple of days to run, depending on the speed of your computer. Since we already know what the settings should be to achieve good results with classification, it will be faster to build the settings file with the multiple classifier settings use the "cross" command:
 ```sh
-.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 4 -b 8,8 -w -bp -p ~/metabolomics/train.tab;
-.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 1 -b 3,3 -wr -w -bp ~/metabolomics/train.tab;
-.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
-.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
+./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 4 -b 8,8 -w -bp -p ~/metabolomics/train.tab;
+./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 1 -b 3,3 -wr -w -bp ~/metabolomics/train.tab;
+./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
+./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
 ```
