@@ -31,5 +31,61 @@ We will leave aside the `test.tab` file, as it is to be used as an independent t
 For the explore, use an attribute number range from 1 to 10, and a binning range also from 1 to 10. There are several flags, and the explore should be done over every combination of those flags. 
 ```sh
 ./vhamml explore -e -a 1,10 -b 1,10 ~/metabolomics/train.tab;
-./vhamml explore -e -a 1,10 -b 1,10 -u ~/metabolomics/train.tab
+./vhamml explore -e -a 1,10 -b 1,10 -u ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -wr ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -wr -u ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -w ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -w -u ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -w -wr ~/metabolomics/train.tab;
+./vhamml explore -e -a 1,10 -b 1,10 -w -wr -u ~/metabolomics/train.tab;
+```
+and so on cycling through all the combinations of -u, -wr, -w, -p, and -bp.
+
+Or, one can automate the process. In the `vhamml` directory, start a new file, "explore.v", with content
+```v
+module main
+
+import holder66.vhammll
+import os
+
+fn main() {
+	home_dir := os.home_dir()
+	mut opts := vhammll.Options{
+		datafile_path: os.join_path(home_dir, 'metabolomics', 'train.tab')
+		settingsfile_path: os.join_path(home_dir, 'metabolomics', 'metabolomics.opts')
+		command: 'explore'
+		number_of_attributes: [1,10]
+		bins: [2,10]
+		append_settings_flag: true
+	}
+	ds := vhammll.load_file(opts.datafile_path)
+	ft := [false, true]
+	for ub in ft {
+		opts.uniform_bins = ub
+		for wr in ft {
+			opts.weight_ranking_flag = wr
+			for w in ft {
+				opts.weighting_flag = w
+				for p in ft {
+					opts.purge_flag = p
+					for bp in ft {
+						opts.balance_prevalences_flag = bp
+						_ := vhammll.explore(ds, opts, expanded_flag: true)
+					}
+				}
+			}
+		}
+	}
+}
+```
+and run it from the command line:
+```sh
+v -prod run explore.v
+```
+This would take a couple of days to run, depending on the speed of your computer. Since we already know what the settings should be to achieve good results with classification, it will be faster to build the settings file with the multiple classifier settings use the "cross" command:
+```sh
+.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 4 -b 8,8 -w -bp -p ~/metabolomics/train.tab;
+.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 1 -b 3,3 -wr -w -bp ~/metabolomics/train.tab;
+.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
+.vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
 ```

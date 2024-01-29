@@ -146,7 +146,7 @@ pub mut:
 }
 
 @[params]
-struct DisplaySettings {
+pub struct DisplaySettings {
 pub mut:
 	show_flag     bool
 	expanded_flag bool
