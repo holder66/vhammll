@@ -126,4 +126,4 @@ The process of development in its early stages is described in [this essay](http
 
 
 
-Copyright (c) 2017, 2023: Henry Olders.
+Copyright (c) 2017, 2024: Henry Olders.
