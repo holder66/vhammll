@@ -28,7 +28,7 @@ For the `test.tab` file, the corresponding class counts should be 85 "Non" and 7
 
 ## Exploring the `train.tab` data
 We will leave aside the `test.tab` file, as it is to be used as an independent test set after the classifier has been optimized.
-For the explore, use an attribute number range from 1 to 10, and a binning range also from 1 to 10. There are several flags, and the explore should be done over every combination of those flags. 
+For the explore, use an attribute number range from 1 to 10, and a binning range also from 1 to 10. There are several flags, and the explore should be done over every combination of those flags (but read ahead to avoid these time-consuming steps):
 ```sh
 ./vhamml explore -e -a 1,10 -b 1,10 ~/metabolomics/train.tab;
 ./vhamml explore -e -a 1,10 -b 1,10 -u ~/metabolomics/train.tab;
@@ -82,10 +82,73 @@ and run it from the command line:
 ```sh
 v -prod run explore.v
 ```
-This would take a couple of days to run, depending on the speed of your computer. Since we already know what the settings should be to achieve good results with classification, it will be faster to build the settings file with the multiple classifier settings use the "cross" command:
+This would take a couple of days to run, depending on the speed of your computer. Since we already know what the settings should be to achieve good results with classification, it will be faster to build the settings file using the "cross" command with parameters obtained by prior experimentation (remember to delete any pre-existing metabolomics.opts file first):
 ```sh
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 4 -b 8,8 -w -bp -p ~/metabolomics/train.tab;
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 1 -b 3,3 -wr -w -bp ~/metabolomics/train.tab;
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
+```
+Verify that the newly generated settings file contains the settings for all 4 classifiers, and in the correct order:
+```sh
+./vhamml display ~/metabolomics/metabolomics.opts
+```
+Use all four classifiers in a multiple-classifier cross-validation of train.tab:
+```sh
+./vhamml cross -e -m ~/metabolomics/metabolomics.opts ~/metabolomics/train.tab
+```
+This gives the highest balanced accuracy of 86.32%.
+To obtain the highest sensitivity, use only the first 3 classifiers. Add the combined_radii_flag, -mc, to give a higher specificity without a loss of sensitivity:
+```sh
+./vhamml cross -e -m ~/metabolomics/metabolomics.opts -m# 0,1,2 -mc ~/metabolomics/train.tab
+```
+Feel free to experiment. You may be able to improve on these settings, either by using different classifier settings, or different flags for the cross-validation.
+
+If these are the best settings we can find for optimizing classification using the training data only, let's try them when applied to the entire training set (192 cases, instead of the 191 cases for each leave-one-out cross-validation) and then to classify the 92 cases in the independent test set `test.tab`:
+
+```sh
+./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab ~/metabolomics/train.tab
+```
+This gives a good specificity of 0.847, but a poor sensitivity of onlly 0.571.
+Using the first three classifiers only, and again setting the combined_radii-flag:
+```sh
+./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab -m# 0,1,2 -mc ~/metabolomics/train.tab
+```
+We now get:
+```sh
+
+Verification of "/Users/henryolders/metabolomics/test.tab" using multiple classifiers from "/Users/henryolders/metabolomics/train.tab"
+Classifier parameters are in file "/Users/henryolders/metabolomics/metabolomics.opts"
+break_on_all_flag: false     combined_radii_flag: true      total_nn_counts_flag: false     class_missing_purge_flag: false
+Multiple Classifier Parameters:
+              Classifier:   0            1            2            
+    Number of attributes:   4            1            3            
+                 Binning:   8, 8, 1      3, 3, 1      3, 3, 1      
+  Exclude missing values:   false        false        false        
+ Ranking using weighting:   false        true         false        
+  Weighting of NN counts:   true         true         true         
+     Balance prevalences:   true         true         false        
+   Purge duplicate cases:   true         false        false        
+             True counts:   13     146   13     120   15     52    
+            False counts:   4      29    4      55    2      123   
+            Raw accuracy:   82.81 %      69.27 %      34.90 %      
+       Balanced accuracy:   79.95 %      72.52 %      58.97 %      
+Maximum Hamming Distance:   32           3            9            
+Results:
+    Class                   Instances    True Positives    Precision    Recall    F1 Score
+    Non                            85      61 ( 71.76%)        0.968     0.718       0.824
+    Can                             7       5 ( 71.43%)        0.172     0.714       0.278
+        Totals                     92      66 (accuracy: raw: 71.74% balanced: 71.60%)
+             Macro Averages:                                   0.570     0.716       0.551
+          Weighted Averages:                                   0.908     0.717       0.783
+A correct classification to "Can" is a True Positive (TP);
+A correct classification to "Non" is a True Negative (TN).
+   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced
+    5     2    61    24   0.714  0.718  0.172  0.968     0.278         71.74%    71.60%
+Confusion Matrix:
+Predicted Classes (columns)          Non        Can
+      Actual Classes (rows)
+                        Non           61         24
+                        Can            2          5
+processing time: 0 hrs 0 min  0.664 sec
 ```
