@@ -93,6 +93,26 @@ Verify that the newly generated settings file contains the settings for all 4 cl
 ```sh
 ./vhamml display ~/metabolomics/metabolomics.opts
 ```
+Which should give:
+```sh
+./vhamml display ~/metabolomics/metabolomics.opts 
+Multiple Classifier Options file: /Users/henryolders/metabolomics/metabolomics.opts
+break_on_all_flag: false     combined_radii_flag: false      total_nn_counts_flag: false     class_missing_purge_flag: false
+Multiple Classifier Parameters:
+              Classifier:   0            1            2            3            
+    Number of attributes:   4            1            3            9            
+                 Binning:   8, 8, 1      3, 3, 1      3, 3, 1      1, 4, 1      
+  Exclude missing values:   false        false        false        false        
+ Ranking using weighting:   false        true         false        false        
+  Weighting of NN counts:   true         true         true         true         
+     Balance prevalences:   true         true         false        false        
+   Purge duplicate cases:   true         false        false        false        
+             True counts:   13     146   13     120   15     52    13     152   
+            False counts:   4      29    4      55    2      123   4      23    
+            Raw accuracy:   82.81 %      69.27 %      34.90 %      85.94 %      
+       Balanced accuracy:   79.95 %      72.52 %      58.97 %      81.66 %      
+Maximum Hamming Distance:   32           3            9            34           
+```
 Use all four classifiers in a multiple-classifier cross-validation of train.tab:
 ```sh
 ./vhamml cross -e -m ~/metabolomics/metabolomics.opts ~/metabolomics/train.tab
@@ -109,7 +129,7 @@ If these are the best settings we can find for optimizing classification using t
 ```sh
 ./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab ~/metabolomics/train.tab
 ```
-This gives a good specificity of 0.847, but a poor sensitivity of onlly 0.571.
+This gives a good specificity of 0.847, but a poor sensitivity of only 0.571.
 Using the first three classifiers only, and again setting the combined_radii-flag:
 ```sh
 ./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab -m# 0,1,2 -mc ~/metabolomics/train.tab
