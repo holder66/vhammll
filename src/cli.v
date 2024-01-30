@@ -55,6 +55,8 @@ pub mut:
 //    have been found for all classifiers;
 // -mc when multiple classifiers are used, combine the possible hamming
 //    distances for each classifier into a single list;
+// -mr for multiclass datasets, perform classification using a classifier for
+//    each class, based on cases for that class set against all the other cases;
 // -mt when multiple classifiers are used, add the nearest neighbors from
 //    each classifier, weight by class prevalences, and then infer
 //    from the totals;
@@ -153,6 +155,7 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	opts.multiple_flag = flag(args, ['-m', '--multiple'])
 	opts.break_on_all_flag = flag(args, ['-ma'])
 	opts.combined_radii_flag = flag(args, ['-mc'])
+	opts.one_vs_rest_flag = flag(args, ['-mr'])
 	opts.total_nn_counts_flag = flag(args, ['-mt'])
 	opts.append_settings_flag = flag(args, ['-ms'])
 	opts.purge_flag = flag(args, ['-p', '--purge'])
