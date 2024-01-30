@@ -63,6 +63,7 @@ fn test_load_file() {
 			'X': 2
 		}
 		lcm_class_counts: 0
+		prepurge_class_values_len: 13
 		postpurge_class_counts: {}
 		postpurge_lcm_class_counts: 0
 	}
@@ -96,9 +97,11 @@ fn test_load_file_with_purging() ! {
 			'?': 1
 		}
 		lcm_class_counts: 0
+		prepurge_class_values_len: 15
 		postpurge_class_counts: {}
 		postpurge_lcm_class_counts: 0
 	}
+
 	// repeat with purging of instances where the class value is missing
 	ds = load_file(datafile, class_missing_purge_flag: true)
 	assert ds.Class == Class{
@@ -113,6 +116,7 @@ fn test_load_file_with_purging() ! {
 			'X': 2
 		}
 		lcm_class_counts: 0
+		prepurge_class_values_len: 15
 		postpurge_class_counts: {}
 		postpurge_lcm_class_counts: 0
 	}

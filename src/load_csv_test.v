@@ -18,6 +18,7 @@ fn test_load_csv_file() {
 			'Yes': 9
 		}
 		lcm_class_counts: 0
+		prepurge_class_values_len: 14
 		postpurge_class_counts: {}
 		postpurge_lcm_class_counts: 0
 	}
