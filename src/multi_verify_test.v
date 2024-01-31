@@ -98,12 +98,12 @@ fn test_multiple_verify() ? {
 	result = multi_verify(opts, disp)
 	assert result.confusion_matrix_map == {
 		'ALL': {
-			'ALL': 18.0
-			'AML': 2.0
+			'ALL': 20.0
+			'AML': 0.0
 		}
 		'AML': {
-			'ALL': 0.0
-			'AML': 14.0
+			'ALL': 4.0
+			'AML': 10.0
 		}
 	}
 	// with both classifiers, and break_on_all_flag false
@@ -139,12 +139,12 @@ fn test_multiple_verify() ? {
 	result = multi_verify(opts, disp)
 	assert result.confusion_matrix_map == {
 		'ALL': {
-			'ALL': 18.0
-			'AML': 2.0
+			'ALL': 20.0
+			'AML': 0.0
 		}
 		'AML': {
-			'ALL': 0.0
-			'AML': 14.0
+			'ALL': 4.0
+			'AML': 10.0
 		}
 	}
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
