@@ -2,6 +2,7 @@
 module vhammll
 
 // import arrays
+import math.unsigned
 
 fn test_close() {
 	assert close(1.0, 1.0)
@@ -158,6 +159,21 @@ fn test_lcm() {
 	assert lcm(arr) == 0
 	arr = [4684, 4132, 4072, 4401, 4351, 3795, 4063, 4188, 4177, 4137]
 	assert lcm(arr) == 0
+}
+
+fn test_lcm_u128() {
+	mut arr := [2, 3, 8]
+	assert lcm_u128(arr) == unsigned.Uint128{24, 0}
+	arr = [11, 22, 33, 44, 55, 66]
+	assert lcm_u128(arr) == unsigned.Uint128{660, 0}
+	arr = [5421, 5923, 6742, 5949, 5958]
+	assert lcm_u128(arr) == unsigned.Uint128{142089045253252578, 0}
+	arr = [5421, 5923, 6742, 5949, 5958, 6131, 5918]
+	assert lcm_u128(arr).str() == '2577726743948719313369562'
+	// class counts for the mnist training set (60,000 cases)
+	arr = [5421, 5923, 5842, 6742, 5949, 5958, 6131, 5918, 6265, 5851]
+	assert lcm_u128(arr).str() == '276006689320991032513398787039572030'
+	
 }
 
 // test_plurality_vote

@@ -90,14 +90,16 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
 	// println('ds: $ds')
-	ranking_result := rank_attributes(ds, rank_opts)
+	ranking_result := rank_attributes(ds, rank_opts, disp)
 	// println('ranking_result: $ranking_result')
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
+	// println('ranked_attributes in make_classifier: $ranked_attributes')
 	// cl.binning = ranking_result.binning
 	// println('binning in make_classifier: $cl.binning')
-	// println('opts.number_of_attributes: $opts.number_of_attributes')
+	// println('opts.number_of_attributes in make_classifier: ${opts.number_of_attributes[0]}')
+
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {
-		ranked_attributes = ranked_attributes[..opts.number_of_attributes[0]].clone()
+		ranked_attributes = ranked_attributes[ .. opts.number_of_attributes[0]].clone()
 	}
 	// println('ranked_attributes: $ranked_attributes')
 	// for continuous attributes, discretize and get binned values

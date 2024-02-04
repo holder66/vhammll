@@ -6,6 +6,9 @@ import math
 import os
 import json
 import mewzax.chalk
+// import math.bits 
+// import encoding.binary 
+import math.unsigned
 
 // save_json_file
 pub fn save_json_file[T](u T, path string) {
@@ -243,6 +246,30 @@ fn gcd(a i64, b i64) i64 {
 	}
 	return b1
 }
+
+fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
+	mut zero := unsigned.Uint128{}
+	if a == b  || b == zero {return zero}
+	mut a1 := a 
+	mut b1 := b 
+	for a1.mod(b1) > zero {
+		r := a1.mod(b1)
+		a1 = b1
+		b1 = r
+	}
+	return b1
+}
+
+fn lcm_u128(arr []int) unsigned.Uint128 {
+	mut res := unsigned.Uint128{1,0}
+	for a in arr {
+		au128 := unsigned.Uint128{u64(a), 0}
+		// println(au128)
+		res = res * (au128 / gcd_u128(res, au128))
+	}
+	return res
+}
+
 
 // least common multiple, using gcd; returns 0 if the lcd
 // cannot be calculated because of overflow
