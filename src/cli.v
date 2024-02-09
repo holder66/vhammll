@@ -55,6 +55,8 @@ pub mut:
 //    have been found for all classifiers;
 // -mc when multiple classifiers are used, combine the possible hamming
 //    distances for each classifier into a single list;
+// -mr for multiclass datasets, perform classification using a classifier for
+//    each class, based on cases for that class set against all the other cases;
 // -mt when multiple classifiers are used, add the nearest neighbors from
 //    each classifier, weight by class prevalences, and then infer
 //    from the totals;
@@ -153,6 +155,7 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	opts.multiple_flag = flag(args, ['-m', '--multiple'])
 	opts.break_on_all_flag = flag(args, ['-ma'])
 	opts.combined_radii_flag = flag(args, ['-mc'])
+	opts.one_vs_rest_flag = flag(args, ['-mr'])
 	opts.total_nn_counts_flag = flag(args, ['-mt'])
 	opts.append_settings_flag = flag(args, ['-ms'])
 	opts.purge_flag = flag(args, ['-p', '--purge'])
@@ -265,11 +268,10 @@ fn do_query(opts Options, disp DisplaySettings) ! {
 
 // verify
 fn do_verify(opts Options, disp DisplaySettings) ! {
-	// cl := get_classifier(opts)!
-	if opts.multiple_flag {
-		multi_verify(opts, disp)
-	} else {
-		verify(opts, disp)
+	match true {
+		opts.multiple_flag { multi_verify(opts, disp) }
+		opts.one_vs_rest_flag { one_vs_rest_verify(opts, disp) }
+		else { verify(opts, disp) }
 	}
 }
 
@@ -305,7 +307,12 @@ fn orange() {
 // Optionally (-e flag) it prints out the RankingResult struct.
 // Optionally (-o flag) it saves the RankingResult struct to a file.
 fn rank(opts Options, disp DisplaySettings) {
-	ra := rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	mut ra := RankingResult{}
+	if opts.one_vs_rest_flag {
+		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	} else {
+		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	}
 	if disp.expanded_flag {
 		println(ra)
 	}

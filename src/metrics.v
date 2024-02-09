@@ -59,6 +59,7 @@ fn get_metrics(result CrossVerifyResult) Metrics {
 // get_multiclass_stats calculates precision, recall, and F1 score for one
 // class of a multiclass result, using a one-vs-rest (OVR) strategy
 fn get_multiclass_stats(class string, result CrossVerifyResult) (f64, f64, f64) {
+	// println('class: $class    $result')
 	mut tp := 0
 	// mut tn := 0
 	mut fp := 0

@@ -96,16 +96,17 @@ fn test_multiple_verify() ? {
 	// with both classifiers
 	opts.classifier_indices = []
 	result = multi_verify(opts, disp)
-	// assert result.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 20.0
-	// 		'AML': 0.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 4.0
-	// 		'AML': 10.0
-	// 	}
-	// }
+
+	assert result.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 20.0
+			'AML': 0.0
+		}
+		'AML': {
+			'ALL': 4.0
+			'AML': 10.0
+		}
+	}
 	// with both classifiers, and break_on_all_flag false
 	opts.break_on_all_flag = false
 	result = multi_verify(opts, disp)
