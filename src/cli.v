@@ -307,7 +307,12 @@ fn orange() {
 // Optionally (-e flag) it prints out the RankingResult struct.
 // Optionally (-o flag) it saves the RankingResult struct to a file.
 fn rank(opts Options, disp DisplaySettings) {
-	ra := rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	mut ra := RankingResult{}
+	if opts.one_vs_rest_flag {
+		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	} else {
+		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+	}
 	if disp.expanded_flag {
 		println(ra)
 	}

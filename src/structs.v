@@ -112,6 +112,16 @@ pub mut:
 	history   []HistoryEvent
 }
 
+pub struct OneVsRestClassifier {
+	Parameters
+	LoadOptions
+	Class
+pub mut:
+	struct_type   string = '.OneVsRestClassifier'
+	datafile_path string
+	history       []HistoryEvent
+}
+
 struct TotalNnParams {
 mut:
 	maximum_hamming_distance_array []int
