@@ -2,7 +2,7 @@
 
 ## Compile the app
 In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
-(see the README)
+(see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
 % cd vhamml
 % v -prod .

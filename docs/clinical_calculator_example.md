@@ -6,7 +6,7 @@ Here we use the VHamMLL classifier to generate a clinical risk calculator, using
 
 First, display information about the dataset:
 In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
-(see the README)
+(see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
  v run . analyze ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```

@@ -2,11 +2,11 @@
 Using the Command Line Interface (CLI)
 
 ## Install V and set up to use the CLI
-Follow the instructions in the [README](https://github.com/holder66/vhamml/blob/master/README.md). The following assumes you've named your directory or folder "vhamml".
+Follow the instructions in the [README](https://github.com/holder66/vhammll/blob/master/README.md). The following assumes you've named your directory or folder "vhamml".
 
 ## Compile the app
 In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
-(see the [README](https://github.com/holder66/vhamml/blob/master/README.md))
+(see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
 cd vhamml
 v -prod .
