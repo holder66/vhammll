@@ -172,8 +172,7 @@ fn test_lcm_u128() {
 	assert lcm_u128(arr).str() == '2577726743948719313369562'
 	// class counts for the mnist training set (60,000 cases)
 	arr = [5421, 5923, 5842, 6742, 5949, 5958, 6131, 5918, 6265, 5851]
-	assert lcm_u128(arr).str() == '276006689320991032513398787039572030'
-	
+	assert lcm_u128(arr).str() == '276006689320991032513398787039572030'	
 }
 
 // test_plurality_vote

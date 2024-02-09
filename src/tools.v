@@ -247,6 +247,7 @@ fn gcd(a i64, b i64) i64 {
 	return b1
 }
 
+// Euclidean algorithm to calculate gcd, using Uint128
 fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 	mut zero := unsigned.Uint128{}
 	if a == b  || b == zero {return zero}
@@ -260,12 +261,20 @@ fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 	return b1
 }
 
+// least common multiple, using gcd; returns 0 if the lcd
+// cannot be calculated because of overflow. This version uses Uint128
 fn lcm_u128(arr []int) unsigned.Uint128 {
 	mut res := unsigned.Uint128{1,0}
 	for a in arr {
 		au128 := unsigned.Uint128{u64(a), 0}
 		// println(au128)
-		res = res * (au128 / gcd_u128(res, au128))
+		res = res * au128 / gcd_u128(res, au128)
+	}
+	// test for overflow
+	for a in arr {
+		if res.mod(unsigned.Uint128{u64(a), 0}) != unsigned.Uint128{} {
+			return unsigned.Uint128{}
+		}
 	}
 	return res
 }
