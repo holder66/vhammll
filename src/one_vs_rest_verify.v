@@ -4,7 +4,7 @@ module vhammll
 // import arrays
 
 // one_vs_rest_verify classifies all the cases in a verification datafile (specified
-// by `opts.testfile_path`) using an array of trained Classifiers, one per class; 
+// by `opts.testfile_path`) using an array of trained Classifiers, one per class;
 // each classifier is trained using a one class vs all the other classes. It returns metrics
 // comparing the inferred classes to the labeled (assigned) classes
 // of the verification datafile.
@@ -65,8 +65,12 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 		// since make_classifier() nees a Dataset struct, we will need to formulate
 		// a struct for each class.
 		mut one_vs_rest_ds := ds
-		one_vs_rest_ds.classes = [class, 'not_$class']
-		one_vs_rest_ds.class_values = ds.class_values.map(if it == class {it} else {'not_$class'})
+		one_vs_rest_ds.classes = [class, 'not_${class}']
+		one_vs_rest_ds.class_values = ds.class_values.map(if it == class {
+			it
+		} else {
+			'not_${class}'
+		})
 		one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
 		// one_vs_rest_ds.data = purge_array(ds.data, class_cases)
 		// println('one_vs_rest_ds in one_vs_rest_verify: $one_vs_rest_ds')
@@ -92,7 +96,9 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 		for j, case in cases {
 			// println('classify_result: ${classify_case(classifier, case, opts, disp).inferred_class}')
 			inf_class := classify_case(classifier, case, opts, disp).inferred_class
-			if !inf_class.contains('not_') { inferred_classes[j] = inf_class}
+			if !inf_class.contains('not_') {
+				inferred_classes[j] = inf_class
+			}
 		}
 	}
 	// println('inferred_classes in one_vs_rest_verify: $inferred_classes')

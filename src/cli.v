@@ -269,9 +269,9 @@ fn do_query(opts Options, disp DisplaySettings) ! {
 // verify
 fn do_verify(opts Options, disp DisplaySettings) ! {
 	match true {
-		opts.multiple_flag {multi_verify(opts, disp)}
-		opts.one_vs_rest_flag {one_vs_rest_verify(opts, disp)}
-		 else {verify(opts, disp)}
+		opts.multiple_flag { multi_verify(opts, disp) }
+		opts.one_vs_rest_flag { one_vs_rest_verify(opts, disp) }
+		else { verify(opts, disp) }
 	}
 }
 

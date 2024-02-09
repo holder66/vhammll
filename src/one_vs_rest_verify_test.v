@@ -36,7 +36,7 @@ fn test_one_vs_rest_verify() ? {
 	opts.settingsfile_path = 'tempfolder_one_vs_rest_verify/onevsrest.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [0]
-	opts.bins = [5,5]
+	opts.bins = [5, 5]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	// check that the non-multiple verify works OK, and that the
@@ -47,7 +47,7 @@ fn test_one_vs_rest_verify() ? {
 	opts.datafile_path = 'datasets/soybean-large-train.tab'
 	opts.testfile_path = 'datasets/soybean-large-test.tab'
 	opts.number_of_attributes = [25]
-	opts.bins = [1,16]
+	opts.bins = [1, 16]
 	opts.weight_ranking_flag = true
 	opts.weighting_flag = false
 	result1 := one_vs_rest_verify(opts, disp)
@@ -55,7 +55,7 @@ fn test_one_vs_rest_verify() ? {
 	opts.datafile_path = '/Users/henryolders/mnist_train.tab'
 	opts.testfile_path = 'datasets/mnist_test.tab'
 	opts.number_of_attributes = [313]
-	opts.bins = [2,2]
+	opts.bins = [2, 2]
 	opts.weight_ranking_flag = true
 	opts.weighting_flag = true
 	result2 := one_vs_rest_verify(opts, disp)

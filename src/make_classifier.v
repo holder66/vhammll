@@ -99,7 +99,7 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	// println('opts.number_of_attributes in make_classifier: ${opts.number_of_attributes[0]}')
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {
-		ranked_attributes = ranked_attributes[ .. opts.number_of_attributes[0]].clone()
+		ranked_attributes = ranked_attributes[..opts.number_of_attributes[0]].clone()
 	}
 	// println('ranked_attributes: $ranked_attributes')
 	// for continuous attributes, discretize and get binned values
