@@ -9,7 +9,7 @@ mass of data be used to predict whether a person has a tumor or is normal?
 
 To try the example on your own installation, start by compiling an optimized version.
 In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
-(see the README)
+(see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
 % cd vhamml
 % v -prod .
