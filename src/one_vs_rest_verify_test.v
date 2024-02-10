@@ -52,12 +52,12 @@ fn test_one_vs_rest_verify() ? {
 	opts.weighting_flag = false
 	result1 := one_vs_rest_verify(opts, disp)
 
-	opts.datafile_path = '/Users/henryolders/mnist_train.tab'
-	opts.testfile_path = 'datasets/mnist_test.tab'
-	opts.number_of_attributes = [313]
-	opts.bins = [2, 2]
-	opts.weight_ranking_flag = true
-	opts.weighting_flag = true
+	// opts.datafile_path = '/Users/henryolders/mnist_train.tab'
+	// opts.testfile_path = 'datasets/mnist_test.tab'
+	// opts.number_of_attributes = [313]
+	// opts.bins = [2, 2]
+	// opts.weight_ranking_flag = true
+	// opts.weighting_flag = true
 	// result2 := one_vs_rest_verify(opts, disp)
 	// assert result0.confusion_matrix_map == {
 	// 	'ALL': {
