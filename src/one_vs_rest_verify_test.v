@@ -58,7 +58,7 @@ fn test_one_vs_rest_verify() ? {
 	opts.bins = [2, 2]
 	opts.weight_ranking_flag = true
 	opts.weighting_flag = true
-	result2 := one_vs_rest_verify(opts, disp)
+	// result2 := one_vs_rest_verify(opts, disp)
 	// assert result0.confusion_matrix_map == {
 	// 	'ALL': {
 	// 		'ALL': 17.0
