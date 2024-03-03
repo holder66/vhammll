@@ -204,15 +204,15 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
-	for i in result.classifier_indices {
-		par := opts.multiple_classifiers[i]
+	for idx, ci in result.classifier_indices {
+		par := result.multiple_classifiers[idx]
 
 		// for i, par in opts.multiple_classifiers {
-		// 	// println('i: $i par: $par')
+			// println('i: $i par: $par')
 		// 	if i in result.classifier_indices {
 		a := par.classifier_options
 		b := par.binary_metrics
-		row_data[0] += '${i:-13}'
+		row_data[0] += '${ci:-13}'
 		row_data[1] += '${a.number_of_attributes[0]:-13}'
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
 		row_data[2] += '${binning:-13}'
@@ -271,7 +271,7 @@ fn show_cross_or_verify_result(result CrossVerifyResult, disp DisplaySettings) {
 
 // show_expanded_result
 fn show_expanded_result(result CrossVerifyResult) {
-	println(g('    Class                   Instances    True Positives    Precision    Recall    F1 Score'))
+	println(g('    Class                     Instances    True Positives    Precision    Recall    F1 Score'))
 	show_multiple_classes_stats(result)
 	if result.class_counts.len == 2 {
 		println('A correct classification to "${result.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${result.pos_neg_classes[1]}" is a True Negative (TN).')
@@ -411,7 +411,7 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 		} else {
 			println(b_u('Attributes    Bins' +
 				if results.purge_flag { '        Purged instances     (%)' } else { '' }))
-			println(b_u('    Class                   Instances    True Positives    Precision    Recall    F1 Score'))
+			println(b_u('    Class                     Instances    True Positives    Precision    Recall    F1 Score'))
 		}
 	}
 }
@@ -527,9 +527,9 @@ fn show_multiple_classes_stats(result CrossVerifyResult) {
 	mut show_result := []string{}
 	m := result.Metrics
 	for i, class in result.classes {
-		show_result << '    ${class:-21}       ${result.labeled_instances[class]:5}   ${result.correct_inferences[class]:5} (${f32(result.correct_inferences[class]) * 100 / result.labeled_instances[class]:6.2f}%)        ${m.precision[i]:5.3f}     ${m.recall[i]:5.3f}       ${m.f1_score[i]:5.3f}'
+		show_result << '    ${class:-27}   ${result.labeled_instances[class]:5}   ${result.correct_inferences[class]:5} (${f32(result.correct_inferences[class]) * 100 / result.labeled_instances[class]:6.2f}%)        ${m.precision[i]:5.3f}     ${m.recall[i]:5.3f}       ${m.f1_score[i]:5.3f}'
 	}
-	show_result << '        Totals                  ${result.total_count:5}   ${result.correct_count:5} (accuracy: raw:${result.raw_acc:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)'
+	show_result << '        Totals                    ${result.total_count:5}   ${result.correct_count:5} (accuracy: raw:${result.raw_acc:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)'
 	for i, avg_type in m.avg_type {
 		show_result << '${avg_type.title():18} Averages:                                   ${m.avg_precision[i]:5.3f}     ${m.avg_recall[i]:5.3f}       ${m.avg_f1_score[i]:5.3f}'
 	}

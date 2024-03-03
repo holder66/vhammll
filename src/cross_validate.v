@@ -55,7 +55,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		LoadOptions: cross_opts.LoadOptions
 		DisplaySettings: disp
 		MultipleOptions: cross_opts.MultipleOptions
-		MultipleClassifiersArray: cross_opts.MultipleClassifiersArray
+		// MultipleClassifiersArray: cross_opts.MultipleClassifiersArray
 		datafile_path: ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
 		labeled_classes: ds.class_values
@@ -87,12 +87,17 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
 		cross_result.classifier_indices = cross_opts.classifier_indices
+		// cross_result.MultipleClassifiersArray = cross_opts.MultipleClassifiersArray
 		for i in cross_opts.classifier_indices {
 			mut params := cross_opts.multiple_classifiers[i].classifier_options
 			cross_opts.Parameters = params
-			cross_result.Parameters = params
+			cross_result.MultipleClassifiersArray.multiple_classifiers << cross_opts.MultipleClassifiersArray.multiple_classifiers[i]
+			// cross_result.multiple_classifiers >> params
 			classifier_array << make_classifier(ds, cross_opts)
+
 		}
+		// println('cross_result.MultipleClassifiersArray.multiple_classifiers: $cross_result.MultipleClassifiersArray.multiple_classifiers')
+		// println('cross_result.MultipleClassifiersArray in cross_validate: $cross_result.MultipleClassifiersArray')
 		// println('classifier_array in cross_validate: $classifier_array')
 		// mut m_classify_result := ClassifyResult{}
 		mut maximum_hamming_distance_array := []int{}
@@ -157,14 +162,15 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		save_json_file(cross_result, opts.outputfile_path)
 	}
 	if !opts.multiple_flag && opts.append_settings_flag && opts.command == 'cross' {
-		append_cross_settings_to_file(cross_result, opts)
+		append_cross_settings_to_file(cross_result, opts, disp)
 	}
 	return cross_result
 }
 
 // append_cross_settings_to_file
 fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp DisplaySettings) {
-	// println(result)
+	// println('opts in append_cross_settings_to_file: $opts')
+	// println('result in append_cross_settings_to_file: $result')
 	append_json_file(ClassifierSettings{
 		classifier_options: result.Parameters
 		binary_metrics: result.BinaryMetrics

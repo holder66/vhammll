@@ -70,7 +70,7 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 		Class: ds.Class
 		Parameters: opts.Parameters
 		datafile_path: ds.path
-		LoadOptions: ds.LoadOptions
+		LoadOptions: opts.LoadOptions
 		// struct_type: '.Classifier'
 		// binning: get_binning(opts.bins)
 	}
