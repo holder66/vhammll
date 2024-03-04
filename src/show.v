@@ -464,6 +464,8 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		cvr := expr.array_of_results[s.idx]
 		s.settings = analytics_settings(cvr)
 		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
+		s.multiclass_correct_counts = get_map_values(cvr.correct_inferences)
+		s.multiclass_incorrect_counts = get_map_values(cvr.incorrect_inferences)
 	}
 	// println('m in explore_analytics2: $m')
 	return m
@@ -493,7 +495,11 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 			f64 { '${a.valeur:6.2f}%' }
 			int { '${a.valeur:7}' }
 		})
+		if a.binary_counts.all(it == 0) {
+			print(' ${a.multiclass_correct_counts} ${a.multiclass_incorrect_counts}')
+		}else {
 		print(' ${a.binary_counts}')
+	}
 		print(' using ${a.settings.attributes_used} attributes')
 		if show_bins_for_trailer(a.settings.binning) != '' {
 			print(', with binning ${show_bins_for_trailer(a.settings.binning)}')

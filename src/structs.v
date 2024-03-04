@@ -376,6 +376,7 @@ mut:
 }
 
 pub struct ExploreResult {
+	Class
 	Parameters
 	LoadOptions
 	AttributeRange
@@ -460,6 +461,8 @@ mut:
 	idx           int
 	settings      MaxSettings
 	binary_counts []int
+	multiclass_correct_counts []int
+	multiclass_incorrect_counts []int
 }
 
 struct MaxSettings {
