@@ -68,7 +68,7 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 				append_cross_settings_to_file(saved_vr, opts)
 			}
 		}
-		s.contains('"classifier_options":') {
+		s.contains('"Parameters":') {
 			multiple_classifiers_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}

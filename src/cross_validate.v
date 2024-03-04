@@ -89,7 +89,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_result.classifier_indices = cross_opts.classifier_indices
 		// cross_result.MultipleClassifiersArray = cross_opts.MultipleClassifiersArray
 		for i in cross_opts.classifier_indices {
-			mut params := cross_opts.multiple_classifiers[i].classifier_options
+			mut params := cross_opts.multiple_classifiers[i].Parameters
 			cross_opts.Parameters = params
 			cross_result.MultipleClassifiersArray.multiple_classifiers << cross_opts.MultipleClassifiersArray.multiple_classifiers[i]
 			// cross_result.multiple_classifiers >> params
@@ -171,8 +171,8 @@ fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp Di
 	// println('opts in append_cross_settings_to_file: $opts')
 	// println('result in append_cross_settings_to_file: $result')
 	append_json_file(ClassifierSettings{
-		classifier_options: result.Parameters
-		binary_metrics: result.BinaryMetrics
+		Parameters: result.Parameters
+		BinaryMetrics: result.BinaryMetrics
 	}, opts.settingsfile_path)
 }
 
@@ -370,7 +370,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// println('mult_opts in do_one_fold: $mult_opts')
 		// create an array of classifiers, one for each index in classifier_indices
 		for i in mult_opts.classifier_indices {
-			mut params := mult_opts.multiple_classifiers[i].classifier_options
+			mut params := mult_opts.multiple_classifiers[i].Parameters
 			mult_opts.Parameters = params
 			fold_result.Parameters = params
 			part_cl := make_classifier(part_ds, mult_opts)

@@ -172,7 +172,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 	// 	// }
 	// 	// println('mult_opts: $mult_opts')
 	// 	for i in mult_opts.classifier_indices {
-	// 		mut params := mult_opts.multiple_classifiers[i].classifier_options
+	// 		mut params := mult_opts.multiple_classifiers[i].Parameters
 
 	// 		// for params in saved_params.multiple_classifiers {
 	// 		// println('params: $params')

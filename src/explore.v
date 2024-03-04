@@ -113,7 +113,7 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 	// println('results in append_explore_settings_to_file: $results')
 	mut indices := opts.classifier_indices.clone()
 	if indices == [] {
-		indices = []int{len: 4, init: index}
+		indices = []int{len: 7, init: index}
 	}
 	m := explore_analytics2(results)
 	mut i := 0
@@ -121,8 +121,8 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 		if i in indices {
 			// println(results.array_of_results[a.idx])
 			append_json_file(ClassifierSettings{
-				classifier_options: results.array_of_results[a.idx].Parameters
-				binary_metrics: results.array_of_results[a.idx].BinaryMetrics
+				Parameters: results.array_of_results[a.idx].Parameters
+				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
 			}, opts.settingsfile_path)
 		}
 		i += 1

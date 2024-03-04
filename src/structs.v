@@ -207,9 +207,11 @@ pub mut:
 }
 
 pub struct ClassifierSettings {
-pub mut:
-	classifier_options Parameters
-	binary_metrics     BinaryMetrics
+	Parameters
+	BinaryMetrics
+// pub mut:
+// 	Parameters Parameters
+// 	BinaryMetrics     BinaryMetrics
 }
 
 pub struct MultipleOptions {

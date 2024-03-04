@@ -42,7 +42,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
 	for i in mult_opts.classifier_indices {
-		mut params := mult_opts.multiple_classifiers[i].classifier_options
+		mut params := mult_opts.multiple_classifiers[i].Parameters
 		mult_opts.Parameters = params
 		verify_result.Parameters = params
 		classifier_array << make_classifier(ds, mult_opts)

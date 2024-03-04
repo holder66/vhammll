@@ -210,8 +210,8 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		// for i, par in opts.multiple_classifiers {
 		// println('i: $i par: $par')
 		// 	if i in result.classifier_indices {
-		a := par.classifier_options
-		b := par.binary_metrics
+		a := par.Parameters
+		b := par.BinaryMetrics
 		row_data[0] += '${ci:-13}'
 		row_data[1] += '${a.number_of_attributes[0]:-13}'
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'

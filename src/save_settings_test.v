@@ -22,8 +22,8 @@ fn test_append() ? {
 	ds := load_file(opts.datafile_path)
 	result := cross_validate(ds, opts)
 	mut c_s := ClassifierSettings{
-		classifier_options: result.Parameters
-		binary_metrics: result.BinaryMetrics
+		Parameters: result.Parameters
+		BinaryMetrics: result.BinaryMetrics
 	}
 	append_json_file(c_s, 'tempfolder5/append_file.opts')
 	saved := read_multiple_opts('tempfolder5/append_file.opts')!
@@ -32,8 +32,8 @@ fn test_append() ? {
 	opts.weighting_flag = true
 	result2 := cross_validate(ds, opts)
 	mut c_s2 := ClassifierSettings{
-		classifier_options: result2.Parameters
-		binary_metrics: result2.BinaryMetrics
+		Parameters: result2.Parameters
+		BinaryMetrics: result2.BinaryMetrics
 	}
 	append_json_file(c_s2, 'tempfolder5/append_file.opts')
 	saved2 := read_multiple_opts('tempfolder5/append_file.opts')!

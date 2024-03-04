@@ -17,7 +17,7 @@ fn testsuite_end() ! {
 
 fn test_display_multiple_options() ? {
 	mut settings1 := ClassifierSettings{
-		classifier_options: Parameters{
+		Parameters: Parameters{
 			binning: Binning{
 				lower: 1
 				upper: 2
@@ -28,7 +28,7 @@ fn test_display_multiple_options() ? {
 		}
 	}
 	mut settings2 := ClassifierSettings{
-		classifier_options: Parameters{
+		Parameters: Parameters{
 			binning: Binning{
 				lower: 1
 				upper: 2
