@@ -94,9 +94,8 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 			cross_result.MultipleClassifiersArray.multiple_classifiers << cross_opts.MultipleClassifiersArray.multiple_classifiers[i]
 			// cross_result.multiple_classifiers >> params
 			classifier_array << make_classifier(ds, cross_opts)
-
 		}
-		println('cross_result.MultipleClassifiersArray.multiple_classifiers: $cross_result.MultipleClassifiersArray.multiple_classifiers')
+		// println('cross_result.MultipleClassifiersArray.multiple_classifiers: $cross_result.MultipleClassifiersArray.multiple_classifiers')
 		// println('cross_result.MultipleClassifiersArray in cross_validate: $cross_result.MultipleClassifiersArray')
 		// println('classifier_array in cross_validate: $classifier_array')
 		// mut m_classify_result := ClassifyResult{}

@@ -208,7 +208,7 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		par := result.multiple_classifiers[idx]
 
 		// for i, par in opts.multiple_classifiers {
-			// println('i: $i par: $par')
+		// println('i: $i par: $par')
 		// 	if i in result.classifier_indices {
 		a := par.classifier_options
 		b := par.binary_metrics
@@ -428,6 +428,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
 	}
+	// println('in explore_analytics2: $expr.array_of_results[0]')
 	m['true positives'] = Analytics{
 		idx: idx_max(expr.array_of_results.map(it.t_p))
 		valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
@@ -441,8 +442,36 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		s.settings = analytics_settings(cvr)
 		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
 	}
+	// println('m in explore_analytics2: $m')
 	return m
 }
+
+// fn explore_analytics_multiple_classes(expr ExploreResult) map[string]Analytics {
+// 	mut m := map[string]Analytics{}
+// 	m['raw accuracy'] = Analytics{
+// 		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
+// 		idx: idx_max(expr.array_of_results.map(it.raw_acc))
+// 	}
+// 	m['balanced accuracy'] = Analytics{
+// 		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
+// 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
+// 	}
+// 	println('in explore_analytics_multiple_classes: $expr.array_of_results')
+// 	m['correct inferences'] = Analytics{
+// 		idx: idx_max(expr.array_of_results.map(it.))
+// 		valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
+// 	}
+// 	m['incorrect inferences'] = Analytics{
+// 		idx: idx_max(expr.array_of_results.map(it.t_n))
+// 		valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
+// 	}
+// 	for _, mut s in m {
+// 		cvr := expr.array_of_results[s.idx]
+// 		s.settings = analytics_settings(cvr)
+// 		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
+// 	}
+// 	return m
+// }
 
 // analytics_settings
 fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
@@ -457,9 +486,9 @@ fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
 // show_explore_trailer
 fn show_explore_trailer(results ExploreResult, opts Options) {
 	if opts.args.len > 0 {
-	println('Command line arguments: ${opts.args}')
+		println('Command line arguments: ${opts.args}')
 	} else {
-		println('Flags: u: $results.uniform_bins x: $results.exclude_flag p: $results.purge_flag w: $results.weighting_flag wr: $results.weight_ranking_flag bp: $results.balance_prevalences_flag')
+		println('Flags: u: ${results.uniform_bins} x: ${results.exclude_flag} p: ${results.purge_flag} w: ${results.weighting_flag} wr: ${results.weight_ranking_flag} bp: ${results.balance_prevalences_flag}')
 	}
 	println('Maximum accuracies obtained:')
 	for label, a in explore_analytics2(results) {

@@ -521,7 +521,7 @@ pub fn close[T](a T, b T) bool {
 
 struct Styles {
 	fg    string
-	bg string
+	bg    string
 	style string
 }
 
@@ -572,7 +572,8 @@ const rgb = Styles{
 fn chlk(s string, style_code Styles) string {
 	match true {
 		style_code.style != '' && style_code.bg != '' {
-			return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg), style_code.fg)
+			return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg),
+				style_code.fg)
 		}
 		style_code.bg != '' {
 			return chalk.fg(chalk.style(s, style_code.style), style_code.fg)
