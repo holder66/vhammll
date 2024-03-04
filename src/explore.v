@@ -67,7 +67,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 				ex_opts.bins = [1, bin]
 			}
 			if ex_opts.testfile_path == '' {
-				result = cross_validate(ds, ex_opts, verbose_flag: true)
+				result = cross_validate(ds, ex_opts, disp)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
 				result = verify(ex_opts)

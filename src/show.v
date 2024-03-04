@@ -428,14 +428,37 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
 	}
-	// println('in explore_analytics2: $expr.array_of_results[0]')
-	m['true positives'] = Analytics{
-		idx: idx_max(expr.array_of_results.map(it.t_p))
-		valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
-	}
-	m['true negatives'] = Analytics{
-		idx: idx_max(expr.array_of_results.map(it.t_n))
-		valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
+	if expr.array_of_results[0].classes.len > 2 {
+		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
+		m['correct inferences total'] = Analytics{
+			idx: idx_max(expr.array_of_results.map(it.correct_count))
+			valeur: expr.array_of_results.map(it.correct_count)[idx_max(expr.array_of_results.map(it.correct_count))]
+		}
+		for class in expr.array_of_results[0].classes {
+			// m['$class'] = Analytics{
+			// 	idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
+			// }
+			// println(idx_max(expr.array_of_results.map(it.correct_inferences[class])))
+			// println(expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))])
+			m['correct for class $class'] = Analytics{
+				idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
+				valeur: expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))]
+			}
+		}
+		m['incorrect inferences'] = Analytics{
+			idx: idx_max(expr.array_of_results.map(it.incorrects_count))
+			valeur: expr.array_of_results.map(it.incorrects_count)[idx_max(expr.array_of_results.map(it.incorrects_count))]
+		}
+	} else {
+		// println('in explore_analytics2: $expr.array_of_results[0]')
+		m['true positives'] = Analytics{
+			idx: idx_max(expr.array_of_results.map(it.t_p))
+			valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
+		}
+		m['true negatives'] = Analytics{
+			idx: idx_max(expr.array_of_results.map(it.t_n))
+			valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
+		}
 	}
 	for _, mut s in m {
 		cvr := expr.array_of_results[s.idx]
@@ -445,33 +468,6 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 	// println('m in explore_analytics2: $m')
 	return m
 }
-
-// fn explore_analytics_multiple_classes(expr ExploreResult) map[string]Analytics {
-// 	mut m := map[string]Analytics{}
-// 	m['raw accuracy'] = Analytics{
-// 		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
-// 		idx: idx_max(expr.array_of_results.map(it.raw_acc))
-// 	}
-// 	m['balanced accuracy'] = Analytics{
-// 		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
-// 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
-// 	}
-// 	println('in explore_analytics_multiple_classes: $expr.array_of_results')
-// 	m['correct inferences'] = Analytics{
-// 		idx: idx_max(expr.array_of_results.map(it.))
-// 		valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
-// 	}
-// 	m['incorrect inferences'] = Analytics{
-// 		idx: idx_max(expr.array_of_results.map(it.t_n))
-// 		valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
-// 	}
-// 	for _, mut s in m {
-// 		cvr := expr.array_of_results[s.idx]
-// 		s.settings = analytics_settings(cvr)
-// 		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
-// 	}
-// 	return m
-// }
 
 // analytics_settings
 fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
