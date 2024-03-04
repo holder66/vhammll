@@ -67,7 +67,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 				ex_opts.bins = [1, bin]
 			}
 			if ex_opts.testfile_path == '' {
-				result = cross_validate(ds, ex_opts)
+				result = cross_validate(ds, ex_opts, verbose_flag: true)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
 				result = verify(ex_opts)
@@ -110,6 +110,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 
 // append_explore_settings_to_file
 fn append_explore_settings_to_file(results ExploreResult, opts Options) {
+	// println('results in append_explore_settings_to_file: $results')
 	mut indices := opts.classifier_indices.clone()
 	if indices == [] {
 		indices = []int{len: 4, init: index}

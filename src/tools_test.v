@@ -208,4 +208,5 @@ fn test_chlk1() {
 	println(g_b('This should show in bold green'))
 	println(dg('Printout in dark grey'))
 	println(m('Now for magenta!'))
+	println(rgb('Bold red text on green background'))
 }

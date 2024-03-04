@@ -521,6 +521,7 @@ pub fn close[T](a T, b T) bool {
 
 struct Styles {
 	fg    string
+	bg string
 	style string
 }
 
@@ -561,13 +562,24 @@ const g_ = Styles{
 const y_ = Styles{
 	fg: 'yellow'
 }
+const rgb = Styles{
+	fg: 'red'
+	bg: 'green'
+	style: 'bold'
+}
 
 // chlk adds font colour and style information to a string
 fn chlk(s string, style_code Styles) string {
-	if style_code.style == '' {
-		return chalk.fg(s, style_code.fg)
+	match true {
+		style_code.style != '' && style_code.bg != '' {
+			return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg), style_code.fg)
+		}
+		style_code.bg != '' {
+			return chalk.fg(chalk.style(s, style_code.style), style_code.fg)
+		}
+		else {}
 	}
-	return chalk.fg(chalk.style(s, style_code.style), style_code.fg)
+	return chalk.fg(s, style_code.fg)
 }
 
 fn m_u(s string) string {
@@ -612,6 +624,10 @@ fn g(s string) string {
 
 fn y(s string) string {
 	return chlk(s, vhammll.y_)
+}
+
+fn rgb(s string) string {
+	return chlk(s, vhammll.rgb)
 }
 
 // purge_array filters an array of generic types, removing those elements

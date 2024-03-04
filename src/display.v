@@ -72,10 +72,12 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			multiple_classifiers_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
+			// println('multiple_classifiers_array in display_file: $multiple_classifiers_array')
 			opts.MultipleClassifiersArray = multiple_classifiers_array
 
 			result := CrossVerifyResult{
 				classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
+				MultipleClassifiersArray: multiple_classifiers_array
 			}
 			// multiple_options := MultipleOptions{
 			// 	classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}

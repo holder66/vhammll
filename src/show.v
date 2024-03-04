@@ -230,6 +230,7 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
 	}
+	println('we are here in show_multiple_classifiers_options')
 }
 
 // show_crossvalidation
@@ -244,6 +245,7 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 	if result.multiple_classify_options_file_path != '' {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifiers_options(result, opts, disp)
+		println('now here in show_multiple_classifiers_options')
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
@@ -454,7 +456,11 @@ fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
 
 // show_explore_trailer
 fn show_explore_trailer(results ExploreResult, opts Options) {
+	if opts.args.len > 0 {
 	println('Command line arguments: ${opts.args}')
+	} else {
+		println('Flags: u: $results.uniform_bins x: $results.exclude_flag p: $results.purge_flag w: $results.weighting_flag wr: $results.weight_ranking_flag bp: $results.balance_prevalences_flag')
+	}
 	println('Maximum accuracies obtained:')
 	for label, a in explore_analytics2(results) {
 		print('${label:28}: ')
@@ -531,7 +537,7 @@ fn show_multiple_classes_stats(result CrossVerifyResult) {
 	}
 	show_result << '        Totals                    ${result.total_count:5}   ${result.correct_count:5} (accuracy: raw:${result.raw_acc:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)'
 	for i, avg_type in m.avg_type {
-		show_result << '${avg_type.title():18} Averages:                                   ${m.avg_precision[i]:5.3f}     ${m.avg_recall[i]:5.3f}       ${m.avg_f1_score[i]:5.3f}'
+		show_result << '${avg_type.title():20} Averages:                                   ${m.avg_precision[i]:5.3f}     ${m.avg_recall[i]:5.3f}       ${m.avg_f1_score[i]:5.3f}'
 	}
 	print_array(show_result)
 }

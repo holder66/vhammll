@@ -18,7 +18,7 @@ fn testsuite_end() ! {
 // to be verified visually.
 
 fn test_show_analyze() {
-	println('test_show_analyze should print out dataset analyses for developer.tab and for iris.tab')
+	println(rgb('test_show_analyze should print out dataset analyses for developer.tab and for iris.tab'))
 	mut opts := Options{}
 	mut ar := AnalyzeResult{}
 	mut ds := Dataset{}
@@ -41,7 +41,7 @@ fn test_show_analyze() {
 }
 
 fn test_show_append() ? {
-	println('test_show_append should print out a test.tab classifier, with 6 instances, followed by a test.tab classifier with 16 instances, and then a test.tab classifier with 26 instances and 3 history events. Then 3 classifiers based on soybean-large-train.tab.')
+	println(rgb('test_show_append should print out a test.tab classifier, with 6 instances, followed by a test.tab classifier with 16 instances, and then a test.tab classifier with 26 instances and 3 history events. Then 3 classifiers based on soybean-large-train.tab.'))
 	mut opts := Options{
 		concurrency_flag: false
 		weighting_flag: true
@@ -92,7 +92,7 @@ fn test_show_append() ? {
 }
 
 fn test_show_classifier() {
-	println('test_show_classifier prints out classifiers for iris.tab and for developer.tab')
+	println(rgb('test_show_classifier prints out classifiers for iris.tab and for developer.tab'))
 	mut opts := Options{
 		command: 'make'
 		bins: [3, 10]
@@ -116,7 +116,7 @@ fn test_show_classifier() {
 }
 
 fn test_show_crossvalidation() ? {
-	println('test_show_crossvalidation prints out cross-validation results for developer.tab, breast-cancer-wisconsin-disc.tab, and iris.tab')
+	println(rgb('test_show_crossvalidation prints out cross-validation results for developer.tab, breast-cancer-wisconsin-disc.tab, and iris.tab'))
 	mut cvr := CrossVerifyResult{}
 	mut opts := Options{
 		concurrency_flag: true
@@ -149,7 +149,7 @@ fn test_show_crossvalidation() ? {
 }
 
 fn test_show_explore_cross() ? {
-	println('\n\n test_show_explore_cross prints out explore results for cross-validation of developer.tab')
+	println(rgb('\n\n test_show_explore_cross prints out explore results for cross-validation of developer.tab'))
 	mut results := ExploreResult{}
 	mut opts := Options{
 		number_of_attributes: [2, 4]
@@ -174,7 +174,7 @@ fn test_show_explore_cross() ? {
 }
 
 fn test_show_explore_verify() ? {
-	println('\n\ntest_show_explore_verify prints out explore results for verification of bcw350train with bcw174test')
+	println(rgb('\n\ntest_show_explore_verify prints out explore results for verification of bcw350train with bcw174test'))
 	mut results := ExploreResult{}
 	mut opts := Options{
 		number_of_attributes: [2, 6]
@@ -193,7 +193,7 @@ fn test_show_explore_verify() ? {
 }
 
 fn test_show_rank_attributes() {
-	println('\n\ntest_show_rank_attributes prints out attribute rankings for developer.tab, iris.tab, and anneal.tab (without and with missing values)')
+	println(rgb('\n\ntest_show_rank_attributes prints out attribute rankings for developer.tab, iris.tab, and anneal.tab (without and with missing values)'))
 	mut opts := Options{
 		exclude_flag: true
 		command: 'rank'
@@ -218,7 +218,7 @@ fn test_show_rank_attributes() {
 }
 
 fn test_show_validate() ? {
-	println('\n\ntest_show_validate prints out results for validation of bcw350train with bcw174validate')
+	println(rgb('\n\ntest_show_validate prints out results for validation of bcw350train with bcw174validate'))
 	mut opts := Options{
 		concurrency_flag: true
 		command: 'validate'
@@ -238,7 +238,7 @@ fn test_show_validate() ? {
 }
 
 fn test_show_verify() ? {
-	println('\n\ntest_show_verify prints out results for verification of bcw350train with bcw174test, and of soybean-large-train.tab with soybean-large-test.tab')
+	println(rgb('\n\ntest_show_verify prints out results for verification of bcw350train with bcw174test, and of soybean-large-train.tab with soybean-large-test.tab'))
 	mut opts := Options{
 		concurrency_flag: true
 		command: 'verify'
@@ -264,7 +264,7 @@ fn test_show_verify() ? {
 }
 
 fn test_show_multiple_classifiers_options() ? {
-	println('\n\ntest_show_multiple_classifiers_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification')
+	println(rgb('\n\ntest_show_multiple_classifiers_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
 	mut opts := Options{
 		datafile_path: 'datasets/UCI/leukemia38train'
 		testfile_path: 'datasets/UCI/leukemia34test'

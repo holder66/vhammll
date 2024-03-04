@@ -96,7 +96,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 			classifier_array << make_classifier(ds, cross_opts)
 
 		}
-		// println('cross_result.MultipleClassifiersArray.multiple_classifiers: $cross_result.MultipleClassifiersArray.multiple_classifiers')
+		println('cross_result.MultipleClassifiersArray.multiple_classifiers: $cross_result.MultipleClassifiersArray.multiple_classifiers')
 		// println('cross_result.MultipleClassifiersArray in cross_validate: $cross_result.MultipleClassifiersArray')
 		// println('classifier_array in cross_validate: $classifier_array')
 		// mut m_classify_result := ClassifyResult{}
@@ -111,7 +111,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
 
 		if disp.verbose_flag {
-			// println('cross_opts in cross_validate.v: ${cross_opts}')
+			println('cross_opts in cross_validate.v: ${cross_opts}')
 		}
 	}
 	// println(cross_opts.classifier_indices)
@@ -185,7 +185,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	// test if leave-one-out crossvalidation is requested
 	folds := if cross_opts.folds == 0 { ds.class_values.len } else { cross_opts.folds }
 	if disp.verbose_flag {
-		println(g('repetition: ${rep}'))
+		// println(g('repetition: ${rep}'))
 	}
 	// if the concurrency flag is set
 	if cross_opts.concurrency_flag {
