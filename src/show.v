@@ -226,7 +226,6 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		row_data[6] += '${a.balance_prevalences_flag:-13}' + pad(col_width - 13)
 		row_data[7] += '${a.purge_flag:-13}' + pad(col_width - 13)
 		if c.class_counts.len > 2 {
-
 			row_data[8] += corrects + pad(col_width - corrects.len)
 			row_data[9] += incorrects + pad(col_width - incorrects.len)
 			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
