@@ -190,8 +190,8 @@ const headers = {
 	5:  'Weighting of NN counts:'
 	6:  'Balance prevalences:'
 	7:  'Purge duplicate cases:'
-	8:  'True counts:'
-	9:  'False counts:'
+	8:  'True / correct counts:'
+	9:  'False / incorrect counts:'
 	10: 'Raw accuracy:'
 	11: 'Balanced accuracy:'
 	12: 'Maximum Hamming Distance:'
@@ -213,29 +213,31 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
-		row_data[0] += '${ci:-13}'
-		row_data[1] += '${a.number_of_attributes[0]:-13}'
+		corrects := c.correct_counts.map(it.str()).join(' ')
+		incorrects := c.incorrect_counts.map(it.str()).join(' ')
+		col_width := array_max([corrects.len, incorrects.len]) + 2
+		row_data[0] += '${ci:-13}' + pad(col_width - 13)
+		row_data[1] += '${a.number_of_attributes[0]:-13}' + pad(col_width - 13)
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
-		row_data[2] += '${binning:-13}'
-		row_data[3] += '${a.exclude_flag:-13}'
-		row_data[4] += '${a.weight_ranking_flag:-13}'
-		row_data[5] += '${a.weighting_flag:-13}'
-		row_data[6] += '${a.balance_prevalences_flag:-13}'
-		row_data[7] += '${a.purge_flag:-13}'
+		row_data[2] += '${binning:-13}' + pad(col_width - 13)
+		row_data[3] += '${a.exclude_flag:-13}' + pad(col_width - 13)
+		row_data[4] += '${a.weight_ranking_flag:-13}' + pad(col_width - 13)
+		row_data[5] += '${a.weighting_flag:-13}' + pad(col_width - 13)
+		row_data[6] += '${a.balance_prevalences_flag:-13}' + pad(col_width - 13)
+		row_data[7] += '${a.purge_flag:-13}' + pad(col_width - 13)
 		if c.class_counts.len > 2 {
-			corrects := c.correct_counts.map(it.str()).join(' ')
-			incorrects := c.incorrect_counts.map(it.str()).join(' ')
-			row_data[8] += corrects + pad(13 - corrects.len)
-			row_data[9] += incorrects + pad(13 - incorrects.len)
-			row_data[10] += '${b.raw_acc:-6.2f}%      '
-			row_data[11] += '${c.balanced_accuracy:-6.2f}%      '
+
+			row_data[8] += corrects + pad(col_width - corrects.len)
+			row_data[9] += incorrects + pad(col_width - incorrects.len)
+			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[11] += '${c.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
 		} else {
-			row_data[8] += '${b.t_p:-6} ${b.t_n:-6}'
-			row_data[9] += '${b.f_n:-6} ${b.f_p:-6}'
-			row_data[10] += '${b.raw_acc:-6.2f}%      '
-			row_data[11] += '${b.bal_acc:-6.2f}%      '
+			row_data[8] += '${b.t_p:-6} ${b.t_n:-6}' + pad(col_width - 13)
+			row_data[9] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
+			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[11] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
 		}
-		row_data[12] += '${a.maximum_hamming_distance:-13}'
+		row_data[12] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
