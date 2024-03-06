@@ -173,6 +173,7 @@ fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp Di
 	append_json_file(ClassifierSettings{
 		Parameters: result.Parameters
 		BinaryMetrics: result.BinaryMetrics
+		Metrics: result.Metrics
 	}, opts.settingsfile_path)
 }
 

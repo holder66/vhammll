@@ -130,17 +130,17 @@ pub fn show_classifier(cl Classifier) {
 // show_parameters
 fn show_parameters(p Parameters, load_options LoadOptions) {
 	if p.number_of_attributes.len == 1 {
-		println('Number of attributes: ' +
+		println('${'Number of attributes: ':55}' +
 			if p.number_of_attributes[0] == 0 { 'all' } else { '${p.number_of_attributes[0]}' })
 	}
-	println('Binning range for continuous attributes: ' +
+	println('${'Binning range for continuous attributes: ':55}' +
 		if p.binning.lower == 0 { 'not applicable (no continuous attributes used)' } else { 'from ${p.binning.lower} to ${p.binning.upper} with interval ${p.binning.interval}' })
-	println('Missing values: ' + if p.exclude_flag { 'excluded' } else { 'included' })
-	println('Purging of duplicate instances: ${p.purge_flag}')
-	println('Prevalence weighting for ranking attributes: ${p.weight_ranking_flag}')
-	println('Prevalence weighting for nearest neighbor counts: ${p.weighting_flag}')
-	println('Add instances to balance class prevalences: ${p.balance_prevalences_flag}')
-	println('Purging of instances with missing class values: ${load_options.class_missing_purge_flag}')
+	println('${'Missing values: ':55}' + if p.exclude_flag { 'excluded' } else { 'included' })
+	println('${'Purging of duplicate instances: ':55}${p.purge_flag}')
+	println('${'Prevalence weighting for ranking attributes: ':55}${p.weight_ranking_flag}')
+	println('${'Prevalence weighting for nearest neighbor counts: ':55}${p.weighting_flag}')
+	println('${'Add instances to balance class prevalences: ':55}${p.balance_prevalences_flag}')
+	println('${'Purging of instances with missing class values: ':55}${load_options.class_missing_purge_flag}')
 }
 
 // show_validate
@@ -241,7 +241,7 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
 	}
-	println('we are here in show_multiple_classifiers_options')
+	// println('we are here in show_multiple_classifiers_options')
 }
 
 // show_crossvalidation
@@ -256,7 +256,7 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 	if result.multiple_classify_options_file_path != '' {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifiers_options(result, opts, disp)
-		println('now here in show_multiple_classifiers_options')
+		// println('now here in show_multiple_classifiers_options')
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
@@ -451,7 +451,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 			// }
 			// println(idx_max(expr.array_of_results.map(it.correct_inferences[class])))
 			// println(expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))])
-			m['correct for class ${class}'] = Analytics{
+			m['${class}'] = Analytics{
 				idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
 				valeur: expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))]
 			}
@@ -499,9 +499,12 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 	} else {
 		println('Flags: u: ${results.uniform_bins} x: ${results.exclude_flag} p: ${results.purge_flag} w: ${results.weighting_flag} wr: ${results.weight_ranking_flag} bp: ${results.balance_prevalences_flag}')
 	}
-	println('Maximum accuracies obtained:')
-	for label, a in explore_analytics2(results) {
-		print('${label:28}: ')
+	println(g('Maximum accuracies obtained:'))
+	analytics := explore_analytics2(results)
+	label_column_width := array_max(analytics.keys().map(it.len)) + 5
+	// println('label_column_width: $label_column_width')
+	for label, a in analytics {
+		print('${pad(label_column_width - label.len)}${label}: ')
 		print(match a.valeur {
 			f64 { '${a.valeur:6.2f}%' }
 			int { '${a.valeur:7}' }

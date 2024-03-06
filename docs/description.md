@@ -15,6 +15,7 @@ many cases in physiology, biology,  and medicine (see [hormesis.](https://en.wik
 ### What makes it special
 - one-trial learning - learns in a single pass
 - robust - accommodates missing information, damage, or noise gracefully
+- deals robustly with classification of linearly non-separable classes (ie, most biological or physiological cases)
 - easy to convert into hardware - in silicon, possibly optical, molecular, or quantum computing
 - lends itself to parallel computing
 - has an exceptionally tiny footprint in terms of memory and computing resources needed

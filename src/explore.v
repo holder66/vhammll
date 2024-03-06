@@ -81,6 +81,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 		}
 		atts += results.att_interval
 	}
+	println('maximum_hamming_distance in explore: ${results.maximum_hamming_distance}')
 	results.array_of_results = array_of_results
 	// results.analytics = get_explore_analytics(results)
 	if opts.outputfile_path != '' {
