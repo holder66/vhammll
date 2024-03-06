@@ -47,6 +47,8 @@ fn (mut m Metrics) avg_metrics() Metrics {
 fn get_metrics(result CrossVerifyResult) Metrics {
 	mut metrics := Metrics{
 		class_counts: get_map_values(result.class_counts)
+		correct_counts: get_map_values(result.correct_inferences)
+		incorrect_counts: get_map_values(result.incorrect_inferences)
 	}
 	for class in result.classes {
 		precision, recall, f1_score := get_multiclass_stats(class, result)

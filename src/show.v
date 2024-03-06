@@ -212,6 +212,7 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		// 	if i in result.classifier_indices {
 		a := par.Parameters
 		b := par.BinaryMetrics
+		c := par.Metrics
 		row_data[0] += '${ci:-13}'
 		row_data[1] += '${a.number_of_attributes[0]:-13}'
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
@@ -221,10 +222,19 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 		row_data[5] += '${a.weighting_flag:-13}'
 		row_data[6] += '${a.balance_prevalences_flag:-13}'
 		row_data[7] += '${a.purge_flag:-13}'
-		row_data[8] += '${b.t_p:-6} ${b.t_n:-6}'
-		row_data[9] += '${b.f_n:-6} ${b.f_p:-6}'
-		row_data[10] += '${b.raw_acc:-6.2f}%      '
-		row_data[11] += '${b.bal_acc:-6.2f}%      '
+		if c.class_counts.len > 2 {
+			corrects := c.correct_counts.map(it.str()).join(' ')
+			incorrects := c.incorrect_counts.map(it.str()).join(' ')
+			row_data[8] += corrects + pad(13 - corrects.len)
+			row_data[9] += incorrects + pad(13 - incorrects.len)
+			row_data[10] += '${b.raw_acc:-6.2f}%      '
+			row_data[11] += '${c.balanced_accuracy:-6.2f}%      '
+		} else {
+			row_data[8] += '${b.t_p:-6} ${b.t_n:-6}'
+			row_data[9] += '${b.f_n:-6} ${b.f_p:-6}'
+			row_data[10] += '${b.raw_acc:-6.2f}%      '
+			row_data[11] += '${b.bal_acc:-6.2f}%      '
+		}
 		row_data[12] += '${a.maximum_hamming_distance:-13}'
 	}
 	for i, row in row_data {
@@ -440,7 +450,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 			// }
 			// println(idx_max(expr.array_of_results.map(it.correct_inferences[class])))
 			// println(expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))])
-			m['correct for class $class'] = Analytics{
+			m['correct for class ${class}'] = Analytics{
 				idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
 				valeur: expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))]
 			}
@@ -497,9 +507,9 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 		})
 		if a.binary_counts.all(it == 0) {
 			print(' ${a.multiclass_correct_counts} ${a.multiclass_incorrect_counts}')
-		}else {
-		print(' ${a.binary_counts}')
-	}
+		} else {
+			print(' ${a.binary_counts}')
+		}
 		print(' using ${a.settings.attributes_used} attributes')
 		if show_bins_for_trailer(a.settings.binning) != '' {
 			print(', with binning ${show_bins_for_trailer(a.settings.binning)}')

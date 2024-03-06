@@ -209,9 +209,9 @@ pub mut:
 pub struct ClassifierSettings {
 	Parameters
 	BinaryMetrics
-// pub mut:
-// 	Parameters Parameters
-// 	BinaryMetrics     BinaryMetrics
+	Metrics // pub mut:
+	// 	Parameters Parameters
+	// 	BinaryMetrics     BinaryMetrics
 }
 
 pub struct MultipleOptions {
@@ -430,6 +430,8 @@ mut:
 	avg_type          []string
 	balanced_accuracy f64
 	class_counts      []int
+	correct_counts    []int
+	incorrect_counts  []int
 }
 
 struct BinaryMetrics {
@@ -459,11 +461,11 @@ type Val = f64 | int
 
 struct Analytics {
 mut:
-	valeur        Val
-	idx           int
-	settings      MaxSettings
-	binary_counts []int
-	multiclass_correct_counts []int
+	valeur                      Val
+	idx                         int
+	settings                    MaxSettings
+	binary_counts               []int
+	multiclass_correct_counts   []int
 	multiclass_incorrect_counts []int
 }
 

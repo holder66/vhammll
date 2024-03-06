@@ -123,6 +123,7 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 			append_json_file(ClassifierSettings{
 				Parameters: results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
+				Metrics: results.array_of_results[a.idx].Metrics
 			}, opts.settingsfile_path)
 		}
 		i += 1
