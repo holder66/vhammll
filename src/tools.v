@@ -443,6 +443,24 @@ fn idx_max[T](a []T) int {
 	return idx
 }
 
+// idxs_max returns an array of indices of the array's maximum values
+fn idxs_max[T](a []T) []int {
+	if a == [] {
+		panic('idxs_max was called on an empty array')
+	}
+	if a.len == 1 {
+		return [0]
+	}
+	mut idxs := []int{}
+	max_val := array_max(a)
+	for i, val in a {
+		if val == max_val {
+			idxs << i
+		}
+	}
+	return idxs
+}
+
 // get_binning
 fn get_binning(bins []int) Binning {
 	if bins == [0] {

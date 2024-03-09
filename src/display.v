@@ -6,7 +6,8 @@ import json
 // 
 
 // display_file displays on the console, a results file as produced by other
-// hamnn functions.
+// hamnn functions; a multiple classifier settings file; or graphs for explore,
+// ranking, or crossvalidation results.
 // ```sh
 // display_file('path_to_saved_results_file', expanded_flag: true)
 // Output options:

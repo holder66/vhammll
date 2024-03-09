@@ -4,6 +4,18 @@ module vhammll
 // import arrays
 import math.unsigned
 
+fn test_idx_max() {
+	assert idx_max([5]) == 0
+	assert idx_max([3.4, 3.4, 3.4]) == 0
+}
+
+fn test_idxs_max() {
+	assert idxs_max([5]) == [0]
+	assert idxs_max([3.4, 3.4, 3.4]) == [0, 1, 2]
+	assert idxs_max([2, 4, 3]) == [1]
+	assert idxs_max([2, 4, 3, 4]) == [1, 3]
+}
+
 fn test_close() {
 	assert close(1.0, 1.0)
 	assert close(1.000000001, 1.0) == false

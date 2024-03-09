@@ -111,6 +111,7 @@ Description:
 the file saved by those commands when run with the -o or --output flag followed
 by the path to a file. It can also generate the plots produced by certain 
 commands (rank, explore).
+Display can be used to print out a multiple classifier settings file.
 
 Usage:
 first save a results file, eg 

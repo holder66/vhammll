@@ -206,12 +206,23 @@ pub mut:
 	multiple_classifiers []ClassifierSettings
 }
 
+pub struct OptimalsResult {
+pub mut:
+	raw_accuracy_max                            f64
+	raw_accuracy_max_classifiers                []int
+	balanced_accuracy_max                       f64
+	balanced_accuracy_max_classifiers           []int
+	correct_inferences_total_max                int
+	correct_inferences_total_max_classifiers    []int
+	classes                                     []string
+	correct_inferences_by_class_max             []int
+	correct_inferences_by_class_max_classifiers [][]int
+}
+
 pub struct ClassifierSettings {
 	Parameters
 	BinaryMetrics
-	Metrics // pub mut:
-	// 	Parameters Parameters
-	// 	BinaryMetrics     BinaryMetrics
+	Metrics
 }
 
 pub struct MultipleOptions {

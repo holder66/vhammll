@@ -21,7 +21,7 @@ pub mut:
 // Usage: v run . [command] [flags] <path_to_datafile>
 // Datafiles should be either tab-delimited, or have extension .csv or .arff
 // Commands: analyze | append | cross | display | examples | explore
-// | make | orange | query | rank | validate | verify
+// | make | optimals | orange | query | rank | validate | verify
 // Flags and options:
 // -a --attributes, can be one, two, or 3 integers; a single integer will
 //    be used by make_classifier to produce a classifier with that number
@@ -112,6 +112,7 @@ pub fn cli(cli_options CliOptions) ! {
 			'examples' { examples()! }
 			'explore' { do_explore(opts, disp) }
 			'make' { make(opts, disp) }
+			'optimals' { do_optimals(opts, disp) }
 			'orange' { orange() }
 			'query' { do_query(opts, disp)! }
 			'rank' { rank(opts, disp) }
@@ -191,6 +192,7 @@ fn show_help(opts Options, disp DisplaySettings) string {
 		'analyze' { analyze_help }
 		'append' { append_help }
 		'make' { make_help }
+		'optimals' { optimals_help }
 		'orange' { orange_help }
 		'verify' { verify_help }
 		'cross' { cross_help }
@@ -296,6 +298,10 @@ fn cross(opts Options, disp DisplaySettings) {
 fn do_explore(opts Options, disp DisplaySettings) {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	explore(ds, opts, disp)
+}
+
+fn do_optimals(opts Options, disp DisplaySettings) {
+	optimals(opts.datafile_path, opts, disp)
 }
 
 // orange

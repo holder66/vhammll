@@ -203,13 +203,52 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	// println('opts in show_multiple_classifiers_options: $opts')
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
-	mut row_data := []string{len: vhammll.headers.len, init: ''}
-	for idx, ci in result.classifier_indices {
-		par := result.multiple_classifiers[idx]
+	show_multiple_classifiers_details(result.multiple_classifiers, result.classifier_indices)
+	// mut row_data := []string{len: vhammll.headers.len, init: ''}
+	// for idx, ci in result.classifier_indices {
+	// 	par := result.multiple_classifiers[idx]
 
-		// for i, par in opts.multiple_classifiers {
-		// println('i: $i par: $par')
-		// 	if i in result.classifier_indices {
+	// 	// for i, par in opts.multiple_classifiers {
+	// 	// println('i: $i par: $par')
+	// 	// 	if i in result.classifier_indices {
+	// 	a := par.Parameters
+	// 	b := par.BinaryMetrics
+	// 	c := par.Metrics
+	// 	corrects := c.correct_counts.map(it.str()).join(' ')
+	// 	incorrects := c.incorrect_counts.map(it.str()).join(' ')
+	// 	col_width := array_max([corrects.len, incorrects.len]) + 2
+	// 	row_data[0] += '${ci:-13}' + pad(col_width - 13)
+	// 	row_data[1] += '${a.number_of_attributes[0]:-13}' + pad(col_width - 13)
+	// 	binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
+	// 	row_data[2] += '${binning:-13}' + pad(col_width - 13)
+	// 	row_data[3] += '${a.exclude_flag:-13}' + pad(col_width - 13)
+	// 	row_data[4] += '${a.weight_ranking_flag:-13}' + pad(col_width - 13)
+	// 	row_data[5] += '${a.weighting_flag:-13}' + pad(col_width - 13)
+	// 	row_data[6] += '${a.balance_prevalences_flag:-13}' + pad(col_width - 13)
+	// 	row_data[7] += '${a.purge_flag:-13}' + pad(col_width - 13)
+	// 	if c.class_counts.len > 2 {
+	// 		row_data[8] += corrects + pad(col_width - corrects.len)
+	// 		row_data[9] += incorrects + pad(col_width - incorrects.len)
+	// 		row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+	// 		row_data[11] += '${c.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
+	// 	} else {
+	// 		row_data[8] += '${b.t_p:-6} ${b.t_n:-6}' + pad(col_width - 13)
+	// 		row_data[9] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
+	// 		row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+	// 		row_data[11] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
+	// 	}
+	// 	row_data[12] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
+	// }
+	// for i, row in row_data {
+	// 	println('${vhammll.headers[i]:25}   ${row}')
+	// }
+	// println('we are here in show_multiple_classifiers_options')
+}
+
+fn show_multiple_classifiers_details(classifier_settings_array []ClassifierSettings, classifier_list []int) {
+	mut row_data := []string{len: vhammll.headers.len, init: ''}
+	for idx, ci in classifier_list {
+		par := classifier_settings_array[ci]
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -241,7 +280,6 @@ fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, dis
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
 	}
-	// println('we are here in show_multiple_classifiers_options')
 }
 
 // show_crossvalidation
