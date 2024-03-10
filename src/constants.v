@@ -124,7 +124,19 @@ Options:
 -ms:           save multiple classifier parameters to a file
 '
 
-const optimals_help = ''
+const optimals_help = '
+Description:
+"optimals" determines which classifiers provide the best balanced accuracy, highest total for
+correct inferences, and highest correct inferences per class, for multiple classifiers whose
+settings are stored in a settings file specified by the last command line argument.
+
+Usage:
+Generate or append to a settings file using "explore" or "cross" with the -ms flag 
+to specify the path for the setting file, then: v run . optimals <path_to_settings_file>
+
+Options:
+-e --expanded: show expanded results on the console.
+'
 
 const examples_help = '
 Description:

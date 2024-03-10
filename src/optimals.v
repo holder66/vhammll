@@ -17,14 +17,14 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 		result.correct_inferences_by_class_max << array_max(settings.multiple_classifiers.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.multiple_classifiers.map(it.correct_counts[i]))
 	}
-	if disp.verbose_flag {
+	if disp.show_flag {
 		println('result in optimals: ${result}')
 	}
 	if disp.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
-		println(b_u('Best balanced accuracy:'))
+		println(b_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
 		show_multiple_classifiers_details(settings.multiple_classifiers, result.balanced_accuracy_max_classifiers)
-		println(b_u('Highest value for total correct inferences:'))
+		println(b_u('Highest value for total correct inferences: ') + g('$result.correct_inferences_total_max'))
 		show_multiple_classifiers_details(settings.multiple_classifiers, result.correct_inferences_total_max_classifiers)
 		println(b_u('Best correct inferences by class:'))
 		for i, class in result.classes {
