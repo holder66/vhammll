@@ -124,6 +124,8 @@ Options:
 -ms:           save multiple classifier parameters to a file
 '
 
+const optimals_help = ''
+
 const examples_help = '
 Description:
 "examples" displays information about running the various commands, shows

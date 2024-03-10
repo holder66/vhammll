@@ -208,8 +208,6 @@ pub mut:
 
 pub struct OptimalsResult {
 pub mut:
-	raw_accuracy_max                            f64
-	raw_accuracy_max_classifiers                []int
 	balanced_accuracy_max                       f64
 	balanced_accuracy_max_classifiers           []int
 	correct_inferences_total_max                int
