@@ -55,7 +55,9 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		verify_result.Parameters = params
 		// println('verify_result.Parameters in multi_verify: $verify_result.Parameters')
 		// println('mult_opts in multi_verify: $mult_opts')
-		classifier_array << make_classifier(ds, mult_opts)
+		classifier := make_classifier(ds, mult_opts)
+		classifier_array << classifier
+		verify_result.trained_attributes_array << [classifier.trained_attributes]
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
 	cases = transpose(cases)
@@ -112,5 +114,6 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		verify_result.command = 'verify'
 		save_json_file(verify_result, opts.outputfile_path)
 	}
+	println('trained_attributes_array in multi_verify: $verify_result.trained_attributes_array')
 	return verify_result
 }

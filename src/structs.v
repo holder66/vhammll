@@ -377,6 +377,7 @@ pub mut:
 	classifier_instances_counts     []int
 	repetitions                     int
 	confusion_matrix                [][]string
+	trained_attributes_array [][]map[string]TrainedAttribute
 }
 
 struct AttributeRange {
