@@ -180,7 +180,7 @@ pub struct Options {
 	Parameters
 	LoadOptions // DisplaySettings
 	MultipleOptions
-	MultipleClassifiersArray
+	MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
@@ -201,9 +201,9 @@ pub mut:
 	kagglefile_path                     string
 }
 
-pub struct MultipleClassifiersArray {
+pub struct MultipleClassifierSettingsArray {
 pub mut:
-	multiple_classifiers []ClassifierSettings
+	multiple_classifier_settings []ClassifierSettings
 }
 
 pub struct OptimalsResult {
@@ -342,7 +342,7 @@ pub struct CrossVerifyResult {
 	Metrics
 	BinaryMetrics
 	MultipleOptions
-	MultipleClassifiersArray
+	MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
 	command                             string

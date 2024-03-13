@@ -1,6 +1,6 @@
 // totalnn_test.v
 
-// test_multiple_classifiers using the totalnn algorithm
+// test_multiple_classifier_settings using the totalnn algorithm
 
 module vhammll
 
@@ -460,7 +460,7 @@ fn test_multiple_verify() ? {
 // 	assert result.wrong_count == 721
 // }
 
-// fn test_multiple_classifiers() {
+// fn test_multiple_classifier_settings() {
 // 	// for a two-class (binary classification)
 // 	mut opts := Options{
 // 		bins: [1,3]

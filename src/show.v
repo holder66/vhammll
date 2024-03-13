@@ -167,7 +167,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options, disp DisplaySettings)
 		'from "${result.datafile_path}"'))
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		show_multiple_classifiers_options(result, opts, disp)
+		show_multiple_classifier_settings_options(result, opts, disp)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
@@ -196,20 +196,22 @@ const headers = {
 	11: 'Balanced accuracy:'
 	12: 'Maximum Hamming Distance:'
 }
-// show_multiple_classifiers_options expects the multiple classifiers to be in opts, and
+// show_multiple_classifier_settings_options expects the multiple classifiers to be in opts, and
 // the classifier indices in result
-fn show_multiple_classifiers_options(result CrossVerifyResult, opts Options, disp DisplaySettings) {
-	// println('result in show_multiple_classifiers_options: $result')
-	// println('opts in show_multiple_classifiers_options: $opts')
+fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Options, disp DisplaySettings) {
+	// println('result in show_multiple_classifier_settings_options: $result')
+	// println('opts in show_multiple_classifier_settings_options: $opts')
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println('Multiple Classifier Parameters:')
-	show_multiple_classifiers_details(result.multiple_classifiers, result.classifier_indices)
+	println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
+	show_multiple_classifier_settings_details(opts.multiple_classifier_settings, result.classifier_indices)
 }
 
-fn show_multiple_classifiers_details(classifier_settings_array []ClassifierSettings, classifier_list []int) {
+fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) {
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
-	for ci in classifier_list {
-		par := classifier_settings_array[ci]
+	for i, ci in classifier_list {
+		println('i, ci in show_multiple_classifier_settings_details: $i $ci')
+		par := classifier_settings_array[i]
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -254,8 +256,8 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 	 })
 	if result.multiple_classify_options_file_path != '' {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		show_multiple_classifiers_options(result, opts, disp)
-		// println('now here in show_multiple_classifiers_options')
+		show_multiple_classifier_settings_options(result, opts, disp)
+		// println('now here in show_multiple_classifier_settings_options')
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}

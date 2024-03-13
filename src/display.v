@@ -70,21 +70,21 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			}
 		}
 		s.contains('"Parameters":') {
-			multiple_classifiers_array := read_multiple_opts(path) or {
+			multiple_classifier_settings_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			// println('multiple_classifiers_array in display_file: $multiple_classifiers_array')
-			opts.MultipleClassifiersArray = multiple_classifiers_array
+			// println('multiple_classifier_settings_array in display_file: $multiple_classifier_settings_array')
+			opts.MultipleClassifierSettingsArray = multiple_classifier_settings_array
 
 			result := CrossVerifyResult{
-				classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
-				MultipleClassifiersArray: multiple_classifiers_array
+				classifier_indices: []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
+				MultipleClassifierSettingsArray: multiple_classifier_settings_array
 			}
 			// multiple_options := MultipleOptions{
-			// 	classifier_indices: []int{len: multiple_classifiers_array.multiple_classifiers.len, init: index}
+			// 	classifier_indices: []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
 			// }
 			println(m_u('Multiple Classifier Options file: ${path}'))
-			show_multiple_classifiers_options(result, opts, disp)
+			show_multiple_classifier_settings_options(result, opts, disp)
 		}
 		else {
 			println('File type not recognized!')

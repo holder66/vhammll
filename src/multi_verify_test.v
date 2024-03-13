@@ -1,6 +1,6 @@
 // multiple_verify_test.v
 
-// test_multiple_classifiers
+// test_multiple_classifier_settings
 
 module vhammll
 

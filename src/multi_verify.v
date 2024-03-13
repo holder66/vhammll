@@ -18,7 +18,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		Parameters: opts.Parameters
 		DisplaySettings: disp
 		MultipleOptions: opts.MultipleOptions
-		MultipleClassifiersArray: opts.MultipleClassifiersArray
+		// MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
 		datafile_path: opts.datafile_path
 		testfile_path: opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
@@ -33,18 +33,28 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
 	mut mult_opts := opts
-	mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+	mut classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
+	// mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+		// panic('read_multiple_opts failed')
 	}
-	verify_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
+	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	if mult_opts.classifier_indices == [] {
-		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifiers.len, init: index}
+		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	for i in mult_opts.classifier_indices {
-		mut params := mult_opts.multiple_classifiers[i].Parameters
+	println('verify_result.classifier_indices in multi_verify: $verify_result.classifier_indices')
+	println('classifier_settings.multiple_classifier_settings.len in multi_verify: $classifier_settings.multiple_classifier_settings.len')
+	for ci in mult_opts.classifier_indices {
+		mult_opts.multiple_classifier_settings << classifier_settings.multiple_classifier_settings[ci]
+	}
+	println('we are here')
+	for i, _ in mult_opts.classifier_indices {
+		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
 		verify_result.Parameters = params
+		// println('verify_result.Parameters in multi_verify: $verify_result.Parameters')
+		// println('mult_opts in multi_verify: $mult_opts')
 		classifier_array << make_classifier(ds, mult_opts)
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}

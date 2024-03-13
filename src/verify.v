@@ -34,7 +34,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		Parameters: opts.Parameters
 		DisplaySettings: disp
 		MultipleOptions: opts.MultipleOptions
-		MultipleClassifiersArray: opts.MultipleClassifiersArray
+		MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
 		datafile_path: opts.datafile_path
 		testfile_path: opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
@@ -111,26 +111,26 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// 	mut instances_to_be_classified := [][][]u8{}
 	// 	// mut mult_opts := []Parameters{}
 	// 	mut mult_opts := opts
-	// 	mult_opts.MultipleClassifiersArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+	// 	mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 	// 		panic('read_multiple_opts failed')
 	// 	}
 	// 	// println(mult_opts)
-	// 	verify_result.MultipleClassifiersArray = mult_opts.MultipleClassifiersArray
+	// 	verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	// 	// mult_opts.break_on_all_flag = opts.break_on_all_flag
 	// 	// mult_opts.combined_radii_flag = opts.combined_radii_flag
 	// 	if mult_opts.classifier_indices == [] {
-	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifiers.len, init: index}
+	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	// 	}
 	// 	verify_result.classifier_indices = mult_opts.classifier_indices
 	// 	// mut ds := load_file(opts.datafile_path)
 	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-	// 	// 	MultipleClassifiersArray{}
+	// 	// 	MultipleClassifierSettingsArray{}
 	// 	// }
 	// 	// println('mult_opts: $mult_opts')
 	// 	for i in mult_opts.classifier_indices {
-	// 		mut params := mult_opts.multiple_classifiers[i].Parameters
+	// 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 
-	// 		// for params in saved_params.multiple_classifiers {
+	// 		// for params in saved_params.multiple_classifier_settings {
 	// 		// println('params: $params')
 	// 		// println('number of attributes: $params.number_of_attributes')
 	// 		mult_opts.Parameters = params

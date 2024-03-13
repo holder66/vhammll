@@ -263,8 +263,8 @@ fn test_show_verify() ? {
 	// println('result two in show_test: $result')
 }
 
-fn test_show_multiple_classifiers_options() ? {
-	println(rgb('\n\ntest_show_multiple_classifiers_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
+fn test_show_multiple_classifier_settings_options() ? {
+	println(rgb('\n\ntest_show_multiple_classifier_settings_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
 	mut opts := Options{
 		datafile_path: 'datasets/UCI/leukemia38train'
 		testfile_path: 'datasets/UCI/leukemia34test'
