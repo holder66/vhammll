@@ -43,6 +43,8 @@ pub mut:
 //    with low prevalence, to more closely balance prevalences;
 // -c --concurrent, permit parallel processing to use multiple cores;
 // -e --expanded, expanded results on the console;
+// -ea display information re trained attributes on the console, for
+//    classification operations;
 // -f --folds, default is leave-one-out;
 // -g --graph, displays a plot;
 // -h --help,
@@ -153,6 +155,7 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	opts.uniform_bins = flag(args, ['-u', '--uniform'])
 	disp.show_flag = flag(args, ['-s', '--show'])
 	disp.expanded_flag = flag(args, ['-e', '--expanded'])
+	disp.show_attributes_flag = flag(args, ['-ea'])
 	opts.multiple_flag = flag(args, ['-m', '--multiple'])
 	opts.break_on_all_flag = flag(args, ['-ma'])
 	opts.combined_radii_flag = flag(args, ['-mc'])

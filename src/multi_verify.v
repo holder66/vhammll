@@ -114,6 +114,6 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		verify_result.command = 'verify'
 		save_json_file(verify_result, opts.outputfile_path)
 	}
-	println('trained_attributes_array in multi_verify: $verify_result.trained_attributes_array')
+	// println('trained_attributes_array in multi_verify: $verify_result.trained_attributes_array')
 	return verify_result
 }

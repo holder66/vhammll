@@ -196,21 +196,65 @@ const headers = {
 	11: 'Balanced accuracy:'
 	12: 'Maximum Hamming Distance:'
 }
+
+const attribute_headings = {
+	0: '               Attribute:   '
+	1: '  Index  RankValue  Bins:   '
+}
 // show_multiple_classifier_settings_options expects the multiple classifiers to be in opts, and
 // the classifier indices in result
 fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	// println('result in show_multiple_classifier_settings_options: $result')
 	// println('opts in show_multiple_classifier_settings_options: $opts')
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
-	println('Multiple Classifier Parameters:')
-	println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
-	show_multiple_classifier_settings_details(opts.multiple_classifier_settings, result.classifier_indices)
+	println(g_b('Multiple Classifier Parameters:'))
+	// println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
+	col_widths := show_multiple_classifier_settings_details(opts.multiple_classifier_settings, result.classifier_indices)
+	if disp.show_attributes_flag {
+		println(g_b('Trained Attributes:'))
+		show_trained_attributes(result, col_widths)
+	}
 }
 
-fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) {
+fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
+	max_attributes := array_max(result.trained_attributes_array.map(it.len))
+	// println('max_attributes: $max_attributes')
+	mut row_data := [][]string{len: max_attributes, init: []string{len: attribute_headings.len, init: ''}}
+	// println('row_data in show_trained_attributes: $row_data')
+	mut columns := [][][]string{len: result.trained_attributes_array.len, init: [][]string{len: max_attributes, init: []string{len: 2, init: ''}}}
+	for i, mut column_content in columns {
+		atts := &result.trained_attributes_array[i]
+		// println('atts in show_trained_attributes: $atts')
+		for j, mut attr_values in column_content {
+			if j < atts.len {
+					row0 := '${atts.keys()[j]}'
+					row1 := '${atts.values()[j].index} ${atts.values()[j].rank_value:-5.2f}% ${atts.values()[j].bins}'
+					attr_values[0] = row0 + pad(col_widths[i] - row0.len)
+					attr_values[1] = row1 + pad(col_widths[i] - row1.len)
+			} else {
+			 	attr_values[0] = pad(col_widths[i])
+			 	attr_values[1] = pad(col_widths[i])
+			}
+	
+		row_data[j][0] += attr_values[0]
+		row_data[j][1] += attr_values[1]
+		}
+	}
+	// println(row_data)
+	for attr_rows in row_data {
+		println(g(vhammll.attribute_headings[0] + attr_rows[0]))
+		for row in attr_rows[1..] {
+			print(attribute_headings[1])
+			println(row)
+		}
+	}
+}
+
+fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
+	mut col_width_array := []int{}
 	for i, ci in classifier_list {
-		println('i, ci in show_multiple_classifier_settings_details: $i $ci')
+		// println('i, ci in show_multiple_classifier_settings_details: $i $ci')
 		par := classifier_settings_array[i]
 		a := par.Parameters
 		b := par.BinaryMetrics
@@ -218,6 +262,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		corrects := c.correct_counts.map(it.str()).join(' ')
 		incorrects := c.incorrect_counts.map(it.str()).join(' ')
 		col_width := array_max([corrects.len, incorrects.len]) + 2
+		col_width_array << col_width
 		row_data[0] += '${ci:-13}' + pad(col_width - 13)
 		row_data[1] += '${a.number_of_attributes[0]:-13}' + pad(col_width - 13)
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
@@ -243,6 +288,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 	for i, row in row_data {
 		println('${vhammll.headers[i]:25}   ${row}')
 	}
+	return col_width_array
 }
 
 // show_crossvalidation
