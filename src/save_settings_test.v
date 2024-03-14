@@ -24,19 +24,21 @@ fn test_append() ? {
 	mut c_s := ClassifierSettings{
 		Parameters: result.Parameters
 		BinaryMetrics: result.BinaryMetrics
+		Metrics: result.Metrics
 	}
 	append_json_file(c_s, 'tempfolder5/append_file.opts')
 	saved := read_multiple_opts('tempfolder5/append_file.opts')!
-	assert saved.multiple_classifiers[0] == c_s
+	assert saved.multiple_classifier_settings[0] == c_s
 	opts.number_of_attributes = [3]
 	opts.weighting_flag = true
 	result2 := cross_validate(ds, opts)
 	mut c_s2 := ClassifierSettings{
 		Parameters: result2.Parameters
 		BinaryMetrics: result2.BinaryMetrics
+		Metrics: result2.Metrics
 	}
 	append_json_file(c_s2, 'tempfolder5/append_file.opts')
 	saved2 := read_multiple_opts('tempfolder5/append_file.opts')!
-	assert saved2.multiple_classifiers[0] == c_s
-	assert saved2.multiple_classifiers[1] == c_s2
+	assert saved2.multiple_classifier_settings[0] == c_s
+	assert saved2.multiple_classifier_settings[1] == c_s2
 }

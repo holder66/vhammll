@@ -159,11 +159,11 @@ pub mut:
 @[params]
 pub struct DisplaySettings {
 pub mut:
-	show_flag     bool
-	expanded_flag bool
+	show_flag            bool
+	expanded_flag        bool
 	show_attributes_flag bool
-	graph_flag    bool
-	verbose_flag  bool
+	graph_flag           bool
+	verbose_flag         bool
 }
 
 @[params]
@@ -378,7 +378,7 @@ pub mut:
 	classifier_instances_counts     []int
 	repetitions                     int
 	confusion_matrix                [][]string
-	trained_attributes_array []map[string]TrainedAttribute
+	trained_attributes_array        []map[string]TrainedAttribute
 }
 
 struct AttributeRange {

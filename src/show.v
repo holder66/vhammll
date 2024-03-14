@@ -209,7 +209,8 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
 	// println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
-	col_widths := show_multiple_classifier_settings_details(opts.multiple_classifier_settings, result.classifier_indices)
+	col_widths := show_multiple_classifier_settings_details(opts.multiple_classifier_settings,
+		result.classifier_indices)
 	if disp.show_attributes_flag {
 		println(g_b('Trained Attributes:'))
 		show_trained_attributes(result, col_widths)
@@ -219,7 +220,7 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
-	mut row_data := [][]string{len: max_attributes, init: []string{len: attribute_headings.len, init: ''}}
+	mut row_data := [][]string{len: max_attributes, init: []string{len: vhammll.attribute_headings.len, init: ''}}
 	// println('row_data in show_trained_attributes: $row_data')
 	mut columns := [][][]string{len: result.trained_attributes_array.len, init: [][]string{len: max_attributes, init: []string{len: 2, init: ''}}}
 	for i, mut column_content in columns {
@@ -227,24 +228,24 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 		// println('atts in show_trained_attributes: $atts')
 		for j, mut attr_values in column_content {
 			if j < atts.len {
-					row0 := '${atts.keys()[j]}'
-					row1 := '${atts.values()[j].index} ${atts.values()[j].rank_value:-5.2f}% ${atts.values()[j].bins}'
-					attr_values[0] = row0 + pad(col_widths[i] - row0.len)
-					attr_values[1] = row1 + pad(col_widths[i] - row1.len)
+				row0 := '${atts.keys()[j]}'
+				row1 := '${atts.values()[j].index} ${atts.values()[j].rank_value:-5.2f}% ${atts.values()[j].bins}'
+				attr_values[0] = row0 + pad(col_widths[i] - row0.len)
+				attr_values[1] = row1 + pad(col_widths[i] - row1.len)
 			} else {
-			 	attr_values[0] = pad(col_widths[i])
-			 	attr_values[1] = pad(col_widths[i])
+				attr_values[0] = pad(col_widths[i])
+				attr_values[1] = pad(col_widths[i])
 			}
-	
-		row_data[j][0] += attr_values[0]
-		row_data[j][1] += attr_values[1]
+
+			row_data[j][0] += attr_values[0]
+			row_data[j][1] += attr_values[1]
 		}
 	}
 	// println(row_data)
 	for attr_rows in row_data {
 		println(g(vhammll.attribute_headings[0] + attr_rows[0]))
 		for row in attr_rows[1..] {
-			print(attribute_headings[1])
+			print(vhammll.attribute_headings[1])
 			println(row)
 		}
 	}

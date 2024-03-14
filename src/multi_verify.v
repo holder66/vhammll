@@ -35,7 +35,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mut mult_opts := opts
 	mut classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
-	// mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+		// mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		// panic('read_multiple_opts failed')
 	}
 	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
@@ -43,8 +43,8 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	println('verify_result.classifier_indices in multi_verify: $verify_result.classifier_indices')
-	println('classifier_settings.multiple_classifier_settings.len in multi_verify: $classifier_settings.multiple_classifier_settings.len')
+	println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
+	println('classifier_settings.multiple_classifier_settings.len in multi_verify: ${classifier_settings.multiple_classifier_settings.len}')
 	for ci in mult_opts.classifier_indices {
 		mult_opts.multiple_classifier_settings << classifier_settings.multiple_classifier_settings[ci]
 	}

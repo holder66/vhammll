@@ -23,13 +23,17 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 	if disp.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
 		println(b_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
-		show_multiple_classifier_settings_details(settings.multiple_classifier_settings, result.balanced_accuracy_max_classifiers)
-		println(b_u('Highest value for total correct inferences: ') + g('$result.correct_inferences_total_max'))
-		show_multiple_classifier_settings_details(settings.multiple_classifier_settings, result.correct_inferences_total_max_classifiers)
+		show_multiple_classifier_settings_details(settings.multiple_classifier_settings,
+			result.balanced_accuracy_max_classifiers)
+		println(b_u('Highest value for total correct inferences: ') +
+			g('${result.correct_inferences_total_max}'))
+		show_multiple_classifier_settings_details(settings.multiple_classifier_settings,
+			result.correct_inferences_total_max_classifiers)
 		println(b_u('Best correct inferences by class:'))
 		for i, class in result.classes {
 			println(g_b('For class: ${class}'))
-			show_multiple_classifier_settings_details(settings.multiple_classifier_settings, result.correct_inferences_by_class_max_classifiers[i])
+			show_multiple_classifier_settings_details(settings.multiple_classifier_settings,
+				result.correct_inferences_by_class_max_classifiers[i])
 		}
 	}
 	return result
