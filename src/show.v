@@ -217,6 +217,8 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 	}
 }
 
+const minimum_column_width = 13
+
 fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
@@ -262,7 +264,10 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		c := par.Metrics
 		corrects := c.correct_counts.map(it.str()).join(' ')
 		incorrects := c.incorrect_counts.map(it.str()).join(' ')
-		col_width := array_max([corrects.len, incorrects.len]) + 2
+		mut col_width := array_max([corrects.len, incorrects.len]) + 2
+		if col_width < minimum_column_width {
+			col_width = minimum_column_width
+		}
 		col_width_array << col_width
 		row_data[0] += '${ci:-13}' + pad(col_width - 13)
 		row_data[1] += '${a.number_of_attributes[0]:-13}' + pad(col_width - 13)
