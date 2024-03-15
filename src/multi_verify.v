@@ -33,6 +33,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
 	mut mult_opts := opts
+	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
 	mut classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
 		// mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
@@ -40,15 +41,16 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	}
 	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	if mult_opts.classifier_indices == [] {
-		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
+		// println('now we are here')
+		mult_opts.classifier_indices = []int{len: classifier_settings.multiple_classifier_settings.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
-	println('classifier_settings.multiple_classifier_settings.len in multi_verify: ${classifier_settings.multiple_classifier_settings.len}')
+	// println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
+	// println('classifier_settings.multiple_classifier_settings.len in multi_verify: ${classifier_settings.multiple_classifier_settings.len}')
 	for ci in mult_opts.classifier_indices {
 		mult_opts.multiple_classifier_settings << classifier_settings.multiple_classifier_settings[ci]
 	}
-	println('we are here')
+	// println('we are here')
 	for i, _ in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
