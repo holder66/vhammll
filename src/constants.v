@@ -31,6 +31,10 @@ const vhammll_help = "
                experiments over a range of parameter settings, in order to find 
                optimal values for classifier parameters;
     make:      create a classifier from a dataset;
+    optimals:  determines which classifiers provide the best balanced accuracy, 
+               highest total for correct inferences, and highest correct inferences 
+               per class, for multiple classifiers whose settings are stored 
+               in a settings file specified by the last command line argument.
     orange:    print an explanation of Orange file formats to the console;
     query:     using a classifier, create an instance using an interactive
                dialogue and then classify that instance;
@@ -56,6 +60,8 @@ const vhammll_help = "
                      with low prevalence, to more closely balance prevalences;
     -c --concurrent: enable parallel processing to use multiple cores;
     -e --expanded:   show expanded results on the console;
+    -ea:             display information re trained attributes on the console, 
+                     for classification operations;
     -f --folds:      default is leave-one-out;
     -g --graph:      generates plots that show in your default web browser;
     -h --help:        
