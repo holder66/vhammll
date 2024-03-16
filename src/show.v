@@ -402,7 +402,7 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 		display_confusion_matrix[i].prepend(class)
 	}
 	header_row.prepend('Predicted Classes (columns)')
-	display_confusion_matrix.prepend(['Actual Classes (rows)'])
+	display_confusion_matrix.prepend([r('Actual Classes (rows)')])
 	display_confusion_matrix.prepend(header_row)
 
 	// get the length of the longest class name
@@ -420,7 +420,7 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 				}
 				i == 0 { // print column headers, ie classes
 					padded_item = '${pad(l_max - item.len + 2)}' + item
-					print(r('${padded_item}'))
+					print(c('${padded_item}'))
 				}
 				i == 1 && j == 0 { // print 'actual classes' header
 					padded_item = '${pad(6)}' + item
@@ -428,7 +428,7 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 				}
 				j == 0 { // print first column (class names)
 					padded_item = '${pad(27 - item.len)}' + item + '  '
-					print(b('${padded_item}'))
+					print(c('${padded_item}'))
 				}
 				else { // print numeric values for each cell
 					padded_item = '${pad(l_max - item.len + 2)}' + item

@@ -580,6 +580,9 @@ const g_ = Styles{
 const y_ = Styles{
 	fg: 'yellow'
 }
+const c_ = Styles{
+	fg: 'cyan'
+}
 const rgb = Styles{
 	fg: 'red'
 	bg: 'green'
@@ -598,6 +601,10 @@ fn chlk(s string, style_code Styles) string {
 		else {}
 	}
 	return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg), style_code.fg)
+}
+
+fn c(s string) string {
+	return chlk(s, vhammll.c_)
 }
 
 fn m_u(s string) string {

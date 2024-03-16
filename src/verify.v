@@ -96,7 +96,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 			}
 		}
 	}
-	println('verify_result.labeled_classes in verify: ${verify_result.labeled_classes}')
+	// println('verify_result.labeled_classes in verify: ${verify_result.labeled_classes}')
 	verify_result.classifier_instances_counts << cl.history[0].instances_count
 	verify_result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
