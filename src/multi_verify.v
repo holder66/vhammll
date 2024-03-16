@@ -5,6 +5,7 @@ module vhammll
 fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
+	println('classes in multi_verify: ${test_ds.classes}')
 	mut confusion_matrix_map := map[string]map[string]f64{}
 	// for each class, instantiate an entry in the confusion matrix map
 	for key1, _ in test_ds.class_counts {
@@ -34,21 +35,20 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mut cases := [][][]u8{}
 	mut mult_opts := opts
 	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
-	mut classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+	classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
-		// mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
-		// panic('read_multiple_opts failed')
 	}
+	settings_array := classifier_settings.multiple_classifier_settings
 	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	if mult_opts.classifier_indices == [] {
 		// println('now we are here')
-		mult_opts.classifier_indices = []int{len: classifier_settings.multiple_classifier_settings.len, init: index}
+		mult_opts.classifier_indices = []int{len: settings_array.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	// println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
+	println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
 	// println('classifier_settings.multiple_classifier_settings.len in multi_verify: ${classifier_settings.multiple_classifier_settings.len}')
 	for ci in mult_opts.classifier_indices {
-		mult_opts.multiple_classifier_settings << classifier_settings.multiple_classifier_settings[ci]
+		mult_opts.multiple_classifier_settings << settings_array[ci]
 	}
 	// println('we are here')
 	for i, _ in mult_opts.classifier_indices {
@@ -63,6 +63,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
 	cases = transpose(cases)
+
 	// println('classifier_array in multiple_classify_to_verify: ${classifier_array}')
 	mut m_classify_result := ClassifyResult{}
 	mut maximum_hamming_distance_array := []int{}
@@ -87,7 +88,8 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 			multiple_classifier_classify_totalnn(classifier_array, case, [''], mult_opts,
 				disp)
 		} else {
-			multiple_classifier_classify(classifier_array, case, [''], mult_opts, disp)
+			multiple_classifier_classify(classifier_array, case, test_ds.classes, mult_opts,
+				disp)
 		}
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		verify_result.inferred_classes << m_classify_result.inferred_class

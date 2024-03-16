@@ -209,6 +209,7 @@ pub mut:
 
 pub struct OptimalsResult {
 pub mut:
+	class_counts                                []int
 	balanced_accuracy_max                       f64
 	balanced_accuracy_max_classifiers           []int
 	correct_inferences_total_max                int

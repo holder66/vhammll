@@ -253,7 +253,12 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 	}
 }
 
+// show_multiple_classifier_settings_details displays on the console the parameters for each
+// classifier used in a multiple classifier situation.
+// the first parameter contains only the parameters for the classifiers to be displayed; the
+// second parameter contains the classifier number to be shown
 fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
+	// println('classifier_settings_array[classifier_list[0]]: ${classifier_settings_array[classifier_list[0]]}')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
 	mut col_width_array := []int{}
 	for i, ci in classifier_list {
@@ -265,8 +270,8 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		corrects := c.correct_counts.map(it.str()).join(' ')
 		incorrects := c.incorrect_counts.map(it.str()).join(' ')
 		mut col_width := array_max([corrects.len, incorrects.len]) + 2
-		if col_width < minimum_column_width {
-			col_width = minimum_column_width
+		if col_width < vhammll.minimum_column_width {
+			col_width = vhammll.minimum_column_width
 		}
 		col_width_array << col_width
 		row_data[0] += '${ci:-13}' + pad(col_width - 13)

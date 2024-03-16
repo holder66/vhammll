@@ -659,3 +659,15 @@ fn purge_array[T](array []T, purge_indices []int) []T {
 	}
 	return result
 }
+
+// filter_array_by_index filters an array of generic types, keeping those
+// elements whose indices in the original array are in a list.
+fn filter_array_by_index[T](array []T, keep_indices []int) []T {
+	mut result := []T{cap: array.len}
+	for i, val in array {
+		if i in keep_indices {
+			result << val
+		}
+	}
+	return result
+}

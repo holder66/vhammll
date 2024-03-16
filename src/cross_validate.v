@@ -248,6 +248,7 @@ fn summarize_results(repeats int, mut result CrossVerifyResult) CrossVerifyResul
 		if inferred != '' {
 			result.confusion_matrix_map[actual][inferred] += 1
 		}
+		println('actual: ${actual}   inferred: ${inferred}   map: ${result.confusion_matrix_map}')
 		if actual == inferred {
 			result.correct_inferences[actual] += 1
 			result.correct_count += 1

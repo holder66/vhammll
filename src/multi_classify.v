@@ -16,7 +16,7 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 		Class: classifiers[0].Class
 	}
 	// println(opts.MultipleOptions)
-
+	// println('classes in classifiers: ${classifiers.map(it.classes)}')
 	mut mcr := MultipleClassifierResults{
 		MultipleOptions: opts.MultipleOptions
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
@@ -217,7 +217,6 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 		if disp.verbose_flag {
 			show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
 		}
-		// println('instance: ${index} ${inferred_classes_by_classifier} nearest neighbors: ${mcr.results_by_classifier.map(it.results_by_radius.map(it.nearest_neighbors_by_class))}} inferred_class: ${final_cr.inferred_class}')
 
 		// println(mcr)
 	} else {
