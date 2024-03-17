@@ -152,7 +152,7 @@ create an index (for cases) for missing values
 alternatively, substitute nan[f32]() for missing values
 use the previously calculated min and max to discretize. The routine should set the bin number to 0 when it encounters -max_f32
 */
-// pub fn discretize_attribute(values []f32, min f32, max f32, bins int) []int {
+
 fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
 	// println('$min  $max  $bins')
 	mut bin_values := []int{}
@@ -167,6 +167,22 @@ fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
 			bin = int((value - min) / bin_size) + 1
 		}
 		bin_values << bin
+	}
+	return bin_values
+}
+
+// discretize_attribute_with_range_check takes an array of generic attribute values, as
+// well as minimum and maximum values for that attribute, and the number of bins to use.
+// If the value to be binned is a nan (ie a missing value, or if it is outside of the
+// range given by min and max), the assigned bin number will be zero.
+fn discretize_attribute_with_range_check[T](values []T, min T, max T, bins int) []int {
+	mut bin_values := []int{cap: values.len}
+	for val in values {
+		match true {
+			is_nan(val) || val > max || val < min { bin_values << 0 }
+			val == max { bin_values << bins }
+			else { bin_values << int((val - min) / ((max - min) / bins)) + 1 }
+		}
 	}
 	return bin_values
 }

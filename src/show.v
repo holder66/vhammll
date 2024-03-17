@@ -258,12 +258,13 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 // the first parameter contains only the parameters for the classifiers to be displayed; the
 // second parameter contains the classifier number to be shown
 fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
-	// println('classifier_settings_array[classifier_list[0]]: ${classifier_settings_array[classifier_list[0]]}')
+	// println('classifier_settings_array: ${classifier_settings_array}')
 	mut row_data := []string{len: vhammll.headers.len, init: ''}
 	mut col_width_array := []int{}
 	for i, ci in classifier_list {
 		// println('i, ci in show_multiple_classifier_settings_details: $i $ci')
 		par := classifier_settings_array[i]
+		// println('par in show_multiple_classifier_settings_details: $par')
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -306,7 +307,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp DisplaySettings) {
 	// println('result in show_crossvalidation: $result')
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
-		if result.multiple_classify_options_file_path != '' { ' using multiple classifiers' } else { '' }))
+		if opts.multiple_flag { ' using multiple classifiers' } else { '' }))
 	println('Partitioning: ' + if result.folds == 0 { 'leave-one-out' } else { '${result.folds}-fold' + if result.repetitions > 1 { ', ${result.repetitions} repetitions' + if result.random_pick { ' with random selection of instances' } else { '' }
 		 } else { ''
 		 }

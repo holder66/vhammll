@@ -75,24 +75,36 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		// disable concurrency, as not implemented for multiple classifiers
 		cross_opts.concurrency_flag = false
 		mut classifier_array := []Classifier{}
-		cross_opts.MultipleClassifierSettingsArray = read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
+
+		// cross_opts.MultipleClassifierSettingsArray = read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
+		// 	panic('read_multiple_opts failed')
+		// }
+		// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
+		classifier_settings := read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
 			panic('read_multiple_opts failed')
 		}
+		settings_array := classifier_settings.multiple_classifier_settings
 		cross_opts.break_on_all_flag = opts.break_on_all_flag
 		cross_opts.combined_radii_flag = opts.combined_radii_flag
 		// cross_opts.classifier_indices = opts.classifier_indices
 		if opts.classifier_indices == [] {
-			cross_opts.classifier_indices = []int{len: cross_opts.multiple_classifier_settings.len, init: index}
+			// cross_opts.classifier_indices = []int{len: cross_opts.multiple_classifier_settings.len, init: index}
+			cross_opts.classifier_indices = []int{len: settings_array.len, init: index}
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
 		cross_result.classifier_indices = cross_opts.classifier_indices
 		// cross_result.MultipleClassifierSettingsArray = cross_opts.MultipleClassifierSettingsArray
-		for i in cross_opts.classifier_indices {
+		for ci in cross_opts.classifier_indices {
+			cross_opts.multiple_classifier_settings << settings_array[ci]
+		}
+		for i, _ in cross_opts.classifier_indices {
 			mut params := cross_opts.multiple_classifier_settings[i].Parameters
 			cross_opts.Parameters = params
-			cross_result.MultipleClassifierSettingsArray.multiple_classifier_settings << cross_opts.MultipleClassifierSettingsArray.multiple_classifier_settings[i]
+			cross_result.Parameters = params
+			// cross_result.MultipleClassifierSettingsArray.multiple_classifier_settings << cross_opts.MultipleClassifierSettingsArray.multiple_classifier_settings[i]
 			// cross_result.multiple_classifier_settings >> params
+
 			classifier_array << make_classifier(ds, cross_opts)
 		}
 		// println('cross_result.MultipleClassifierSettingsArray.multiple_classifier_settings: $cross_result.MultipleClassifierSettingsArray.multiple_classifier_settings')
@@ -233,6 +245,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 		}
 	}
 	// println('repetition_result.maximum_hamming_distance: ${repetition_result.maximum_hamming_distance}')
+	println('repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len: ${repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len}')
 	return repetition_result
 }
 
@@ -371,7 +384,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		mut mult_opts := cross_opts
 		// println('mult_opts in do_one_fold: $mult_opts')
 		// create an array of classifiers, one for each index in classifier_indices
-		for i in mult_opts.classifier_indices {
+		for i, _ in mult_opts.classifier_indices {
 			mut params := mult_opts.multiple_classifier_settings[i].Parameters
 			mult_opts.Parameters = params
 			fold_result.Parameters = params
@@ -421,6 +434,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		}
 		fold_result.MultipleOptions = mult_opts.MultipleOptions
 		fold_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
+		// println('fold_result.MultipleClassifierSettingsArray.len: ${fold_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len}')
 	}
 	// println('fold_result.maximum_hamming_distance: ${fold_result.maximum_hamming_distance}')
 	return fold_result

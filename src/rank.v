@@ -116,7 +116,8 @@ pub fn rank_attributes(ds Dataset, opts Options, disp DisplaySettings) RankingRe
 		for bin_number in bin_numbers {
 			rank_value = i64(0)
 
-			binned_values = discretize_attribute(attr_values, min, max, bin_number)
+			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
+				bin_number)
 			// loop through each possible value for bin in the bins bin_number + 1
 			for bin_value in 0 .. bin_number + 1 {
 				// a bin_value of 0 represents a missing value, so skip

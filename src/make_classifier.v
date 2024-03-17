@@ -119,7 +119,8 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 			attr_values = ds.useful_continuous_attributes[ra.attribute_index]
 			min = array_min(attr_values.filter(!is_nan(it)))
 			max = array_max(attr_values.filter(!is_nan(it)))
-			binned_values = discretize_attribute(attr_values, min, max, ra.bins)
+			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
+				ra.bins)
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
 				attribute_type: ra.attribute_type
 				minimum: min

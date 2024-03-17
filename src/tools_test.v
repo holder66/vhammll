@@ -133,6 +133,16 @@ fn test_discretize_attribute() {
 		3]
 }
 
+fn test_discretize_attribute_with_range_check() {
+	assert discretize_attribute_with_range_check([]int{}, 0, 5, 1) == []
+	assert discretize_attribute_with_range_check([nan[f64]()], 0.0, 5.0, 1) == [0]
+	assert discretize_attribute_with_range_check([0.0], 1.0, 5.0, 1) == [0]
+	assert discretize_attribute_with_range_check([10.0], 1.0, 5.0, 1) == [0]
+	mut values := [1, 6, 9, 10, 0, -1, 12]
+	assert discretize_attribute_with_range_check(values, 0, 10, 2) == [1, 2, 2, 2, 1, 0, 0]
+	assert discretize_attribute_with_range_check(values, -5, 15, 4) == [2, 3, 3, 4, 2, 1, 4]
+}
+
 // test_get_map_values
 fn test_get_map_values() {
 	mut elements := ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
