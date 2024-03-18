@@ -95,6 +95,7 @@ pub mut:
 	bins              int
 	rank_value        f32
 	index             int
+	folds_count int
 }
 
 pub struct Classifier {

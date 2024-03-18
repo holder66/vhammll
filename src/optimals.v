@@ -11,7 +11,7 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 	settings := settings_struct.multiple_classifier_settings
 	mut result := OptimalsResult{
 		class_counts: settings[0].class_counts
-		classes: []string{len: 5, init: '${index}'}
+		classes: []string{len: settings[0].class_counts.len, init: '${index}'}
 		balanced_accuracy_max: array_max(settings.map(it.balanced_accuracy))
 		balanced_accuracy_max_classifiers: idxs_max(settings.map(it.balanced_accuracy))
 		correct_inferences_total_max: array_max(settings.map(array_sum(it.correct_counts)))

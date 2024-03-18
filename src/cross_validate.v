@@ -245,7 +245,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 		}
 	}
 	// println('repetition_result.maximum_hamming_distance: ${repetition_result.maximum_hamming_distance}')
-	println('repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len: ${repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len}')
+	// println('repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len: ${repetition_result.MultipleClassifierSettingsArray.multiple_classifier_settings.len}')
 	return repetition_result
 }
 

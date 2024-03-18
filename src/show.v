@@ -220,6 +220,7 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 const minimum_column_width = 13
 
 fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
+	println('result.trained_attributes_array in show_trained_attributes: $result.trained_attributes_array')
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
 	mut row_data := [][]string{len: max_attributes, init: []string{len: vhammll.attribute_headings.len, init: ''}}
@@ -324,6 +325,10 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 		purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {} / f64(result.classifier_instances_counts.len)
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
+	}
+	if disp.show_attributes_flag && !opts.multiple_flag {
+		println(g_b('Trained Attributes:'))
+		show_trained_attributes(result, [13])
 	}
 	show_cross_or_verify_result(result, disp)
 }
