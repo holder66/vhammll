@@ -14,7 +14,10 @@ fn test_show_crossvalidation() ? {
 	println('\ndeveloper.tab with expanded results')
 	cvr = cross_validate(load_file('datasets/developer.tab'), opts, expanded_flag: true)
 	println('\ndeveloper.tab with show_attributes')
-	cvr = cross_validate(load_file('datasets/developer.tab'), opts, expanded_flag: true, show_attributes_flag: true)
+	cvr = cross_validate(load_file('datasets/developer.tab'), opts,
+		expanded_flag: true
+		show_attributes_flag: true
+	)
 
 	// println('\n\nbreast-cancer-wisconsin-disc.tab')
 	// opts.number_of_attributes = [4]

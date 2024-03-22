@@ -95,7 +95,7 @@ pub mut:
 	bins              int
 	rank_value        f32
 	index             int
-	folds_count int
+	folds_count       int // for cross-validations, this tracks how many folds use this attribute
 }
 
 pub struct Classifier {

@@ -339,6 +339,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 
 	if !cross_opts.multiple_flag {
 		part_cl := make_classifier(part_ds, cross_opts)
+		// println('attribute_ordering in do_one_fold: $part_cl.attribute_ordering')
 		// println('part_cl.maximum_hamming_distance: ${part_cl.maximum_hamming_distance}')
 		fold_result.binning = part_cl.binning
 		fold_result.maximum_hamming_distance = part_cl.maximum_hamming_distance
