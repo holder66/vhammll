@@ -1,0 +1,20 @@
+classify a query case using a labeled set of training cases. See the glossary for terminology.
+Parameters: A (number of attributes to be used for classification)
+	B (binning for continuous attributes)
+
+READ the training data including the values for the Class attribute
+rank each attribute by how well that attribute's values for all the training cases can separate the classes, and for what number of bins for continuous attributes.
+create a classifier using the highest-ranked A attributes
+For the query case, use only the values for the attributes included in the classifier.
+For continuous attributes, bin as per the binning parameters for that attribute given by the classifier.
+Calculate the Hamming distance between the query case and each of the training cases in the classifier.
+For the smallest Hamming distance obtained, add up the number of training cases for each class for cases with that smallest Hamming distance.
+Set the inferred class for the query case to the class with the greatest number of cases at that Hamming distance
+If there are ties, add to the count for each class, the cases with the second smallest Hamming distance to the query case.
+Repeat until there are no more ties.
+
+
+What does binning do: increases "contrast"; makes for a smaller and faster classifier; reduces risk of overfitting.
+what does ranking of attributes do: by not using the low-ranked attributes (which contribute noise rather than useful information), the classifier avoids the accuracy degradation due to the "curse of dimensionality". It also contributes to a smaller and faster classifier.
+What does the identification of ties in smallest Hamming distance accomplish: it eliminates needing to specify a value for K in a K-nearest neighbors (KNN) algorithm.
+Why Hamming distance: eliminates the difficulty most classifiers have with linearly non-separable classes (probably most biological processes)

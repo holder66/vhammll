@@ -23,7 +23,7 @@
 
 **binning:** the process of converting a continuous attribute into a discrete attribute
 
-**discrete:** (as applied to a attribute or variable): nominal or ordinal data
+**discrete:** (as applied to an attribute or variable): nominal or ordinal data
 
-**continuous:** (as applied to a attribute or variable): real-valued
+**continuous:** (as applied to an attribute or variable): real-valued
 - ordinal data with a range greater than a certain parameter may also be treated as continous data

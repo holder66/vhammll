@@ -220,7 +220,7 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 const minimum_column_width = 13
 
 fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
-	println('result.trained_attributes_array in show_trained_attributes: ${result.trained_attributes_array}')
+	// println('result.trained_attributes_array in show_trained_attributes: ${result.trained_attributes_array}')
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
 	mut row_data := [][]string{len: max_attributes, init: []string{len: vhammll.attribute_headings.len, init: ''}}
