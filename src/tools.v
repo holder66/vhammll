@@ -162,7 +162,7 @@ fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
 		if is_nan(value) { // ie, missing value
 			bin = 0
 		} else if value == max {
-			bin = bins + 1
+			bin = bins
 		} else {
 			bin = int((value - min) / bin_size) + 1
 		}
@@ -180,7 +180,7 @@ fn discretize_attribute_with_range_check[T](values []T, min T, max T, bins int) 
 	for val in values {
 		match true {
 			is_nan(val) || val > max || val < min { bin_values << 0 }
-			val == max { bin_values << bins + 1 }
+			val == max { bin_values << bins }
 			else { bin_values << int((val - min) / ((max - min) / bins)) + 1 }
 		}
 	}
