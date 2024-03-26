@@ -1,0 +1,45 @@
+FUNCTION rank (for each dataset case, its assigned class value, values for all attributes); returns rank-ordered list of attributes
+	FOR EACH attribute in the dataset
+		IF categorical
+			MAP each case's value for that attribute to an integer from 1 up to the number of unique values for that attribute
+			get a rank value for the mapped attribute
+		ELSE IF continuous
+			FOR EACH bin number over the binning range specified by the user
+				perform binning on the attribute's values (FUNCTION binning)
+				get a rank value for the attribute (FUNCTION get rank value)
+			choose the bin number which gave the highest rank value
+		ENDIF
+	order the attributes in descending order by rank value
+	RETURN ranked list of attributes with rank values and number of bins used
+
+FUNCTION get rank value (for each dataset case, its assigned class value; bin values (integers) for one attribute); returns a rank value (number)
+	SET UP a table with a column of zeros for each class, columns for each possible pair of classes, and a column for row sums; one row for each unique bin value
+	FOR EACH dataset case
+		increment the table cell for the case's class and the attribute's bin value (ie, get the count of cases)
+	FOR EACH table row
+		FOR EACH pair of class columns (ignoring ordering)
+			SUBTRACT one cell's content from the other cell's content
+			put the ABSOLUTE VALUE of the result into the cell for that pair's column
+		SUM the absolute difference values for the pairs columns and place into the row sums cell
+	SUM the values in the row sums cell across the rows; the result is the rank value
+	RETURN the rank value
+
+FUNCTION binning (list of attribute values; number of bins to use); returns a bin value corresponding to each attribute value
+	SET UP a list of bin values
+	CALCULATE the MINIMUM and the MAXIMUM values for the list of attribute values
+	CALCULATE the BIN SIZE as (MAXIMUM - MINIMUM) / number of bins to use
+	FOR EACH value in list of attribute values
+		IF value is MISSING
+			set the bin value to zero (0)
+		ELSE IF value == MAXIMUM
+			set the bin value to the number of bins to use
+		ELSE
+			CALCULATE the bin value as (value - MINIMUM) /  BIN SIZE
+			set the bin value as one PLUS the integer portion of the result
+		ENDIF
+	RETURN the list of bin values
+
+
+
+
+
