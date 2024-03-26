@@ -352,7 +352,7 @@ fn show_expanded_result(result CrossVerifyResult) {
 	show_multiple_classes_stats(result)
 	if result.class_counts.len == 2 {
 		println('A correct classification to "${result.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${result.pos_neg_classes[1]}" is a True Negative (TN).')
-		println("   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced")
+		println("   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC")
 		println('${get_binary_stats_line(result)}')
 	}
 }
@@ -484,7 +484,7 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 			println('A correct classification to "${results.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${results.pos_neg_classes[1]}" is a True Negative (TN).')
 			println(b_u('Attributes    Bins' +
 				if results.purge_flag { '        Purged instances     (%)' } else { '' } +
-				"     TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced"))
+				"     TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC"))
 		} else {
 			println(b_u('Attributes    Bins' +
 				if results.purge_flag { '        Purged instances     (%)' } else { '' }))
@@ -502,6 +502,10 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 	m['balanced accuracy'] = Analytics{
 		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
+	}
+	m['MCC (Matthews Correlation Coefficient)'] = Analytics{
+		idx: idx_max(expr.array_of_results.map(it.mcc))
+		valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
 	}
 	if expr.array_of_results[0].classes.len > 2 {
 		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
@@ -570,7 +574,8 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 	for label, a in analytics {
 		print('${pad(label_column_width - label.len)}${label}: ')
 		print(match a.valeur {
-			f64 { '${a.valeur:6.2f}%' }
+			f64 { 
+				if a.valeur < 1 && a.valeur > 0 {'${a.valeur:7.3f}'} else {'${a.valeur:6.2f}%' }}
 			int { '${a.valeur:7}' }
 		})
 		if a.binary_counts.all(it == 0) {
@@ -634,7 +639,7 @@ fn show_explore_line(result CrossVerifyResult, settings DisplaySettings) {
 
 // get_binary_stats_line
 fn get_binary_stats_line(r CrossVerifyResult) string {
-	return '${r.t_p:5} ${r.f_n:5} ${r.t_n:5} ${r.f_p:5}   ${r.sens:5.3f}  ${r.spec:5.3f}  ${r.ppv:5.3f}  ${r.npv:5.3f}     ${r.f1_score_binary:5.3f}        ${r.raw_acc:6.2f}%   ${r.balanced_accuracy:6.2f}%'
+	return '${r.t_p:5} ${r.f_n:5} ${r.t_n:5} ${r.f_p:5}   ${r.sens:5.3f}  ${r.spec:5.3f}  ${r.ppv:5.3f}  ${r.npv:5.3f}     ${r.f1_score_binary:5.3f}        ${r.raw_acc:6.2f}%   ${r.balanced_accuracy:6.2f}%   ${r.mcc:5.3f}'
 }
 
 // show_multiple_classes_stats

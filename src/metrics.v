@@ -6,6 +6,7 @@
 module vhammll
 
 import arrays
+import math
 
 // append_metric
 fn (mut m Metrics) append_metric(p f64, r f64, f1 f64) Metrics {
@@ -87,6 +88,12 @@ fn get_multiclass_stats(class string, result CrossVerifyResult) (f64, f64, f64) 
 	return precision, recall, f1_score
 }
 
+// mcc calculates the Matthews Correlation Coefficient for binary class problems
+fn mcc(tp int, tn int, fp int, ffn int) f64 {
+	if tp + fp == 0 || tp + ffn == 0 || tn + fp == 0 || tn + ffn == 0 { return 0.0}
+	return (tp * tn - fp * ffn) / math.sqrt(f64(tp + fp) * f64(tp + ffn) * f64(tn + fp) * f64(tn + ffn))
+}
+
 // get_binary_stats
 fn get_binary_stats(result CrossVerifyResult) BinaryMetrics {
 	pos_class := result.pos_neg_classes[0]
@@ -104,6 +111,7 @@ fn get_binary_stats(result CrossVerifyResult) BinaryMetrics {
 	bm.npv = bm.t_n / f64(bm.t_n + bm.f_n)
 	bm.f1_score_binary = bm.t_p / f64(bm.t_p + (0.5 * f64(bm.f_p + bm.f_n)))
 	bm.bal_acc = (bm.sens + bm.spec) / 2 * 100
+	bm.mcc = mcc(bm.t_p, bm.t_n, bm.f_p, bm.f_n)
 	return bm
 }
 

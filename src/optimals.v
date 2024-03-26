@@ -14,6 +14,8 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 		classes: []string{len: settings[0].class_counts.len, init: '${index}'}
 		balanced_accuracy_max: array_max(settings.map(it.balanced_accuracy))
 		balanced_accuracy_max_classifiers: idxs_max(settings.map(it.balanced_accuracy))
+		mcc_max: array_max(settings.map(it.mcc))
+		mcc_max_classifiers: idxs_max(settings.map(it.mcc))
 		correct_inferences_total_max: array_max(settings.map(array_sum(it.correct_counts)))
 		correct_inferences_total_max_classifiers: idxs_max(settings.map(array_sum(it.correct_counts)))
 	}
@@ -29,6 +31,7 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 		println(c_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
 		show_multiple_classifier_settings_details(filter_array_by_index(settings, result.balanced_accuracy_max_classifiers),
 			result.balanced_accuracy_max_classifiers)
+		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g('${result.mcc_max:7.3f}'))
 		println(c_u('Highest value for total correct inferences: ') +
 			g('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
 		show_multiple_classifier_settings_details(filter_array_by_index(settings, result.correct_inferences_total_max_classifiers),
