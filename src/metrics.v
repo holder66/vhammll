@@ -95,8 +95,11 @@ fn get_multiclass_stats(class string, result CrossVerifyResult) (f64, f64, f64) 
 // }
 
 fn mcc[T](tp T, tn T, fp T, ffn T) f64 {
-	if tp + fp == 0 || tp + ffn == 0 || tn + fp == 0 || tn + ffn == 0 { return 0.0}
-	return (tp * tn - fp * ffn) / math.sqrt(f64(tp + fp) * f64(tp + ffn) * f64(tn + fp) * f64(tn + ffn))
+	if tp + fp == 0 || tp + ffn == 0 || tn + fp == 0 || tn + ffn == 0 {
+		return 0.0
+	}
+	return (tp * tn - fp * ffn) / math.sqrt(f64(tp + fp) * f64(tp + ffn) * f64(tn + fp) * f64(tn +
+		ffn))
 }
 
 // get_binary_stats

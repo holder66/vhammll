@@ -213,8 +213,8 @@ pub mut:
 	class_counts                                []int
 	balanced_accuracy_max                       f64
 	balanced_accuracy_max_classifiers           []int
-	mcc_max f64
-	mcc_max_classifiers []int
+	mcc_max                                     f64
+	mcc_max_classifiers                         []int
 	correct_inferences_total_max                int
 	correct_inferences_total_max_classifiers    []int
 	classes                                     []string
@@ -462,7 +462,7 @@ mut:
 	ppv             f64
 	npv             f64
 	f1_score_binary f64
-	mcc f64 // Matthews Correlation Coefficient
+	mcc             f64 // Matthews Correlation Coefficient
 }
 
 struct BinaryCounts {

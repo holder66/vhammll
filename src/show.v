@@ -576,9 +576,12 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 	for label, a in analytics {
 		print('${pad(label_column_width - label.len)}${label}: ')
 		print(match a.valeur {
-			f64 { 
-				if a.valeur < 1 && a.valeur > 0 {'${a.valeur:7.3f}'} else {'${a.valeur:6.2f}%' }}
-			int { '${a.valeur:7}' }
+			f64 {
+				if a.valeur < 1 && a.valeur > 0 { '${a.valeur:7.3f}' } else { '${a.valeur:6.2f}%' }
+			}
+			int {
+				'${a.valeur:7}'
+			}
 		})
 		if a.binary_counts.all(it == 0) {
 			print(' ${a.multiclass_correct_counts} ${a.multiclass_incorrect_counts}')
