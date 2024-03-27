@@ -28,6 +28,11 @@ fn test_mcc() {
 	assert mcc(90, 1, 4, 5) == 0.13524203070138519
 	assert mcc(6, 3, 1, 2) == 0.47809144373375745
 	assert mcc(0, 5, 0, 95) == 0.0
+	assert mcc(15,782,9,10) == 0.6003804231419032
+	// reversing the true positive class
+	assert mcc(782,15,10,9) == 0.6003804231419032
+	// with floating point values
+	assert mcc(8.6, 783.1, 7.9, 16.4) ==  0.4089497479969868
 }
 
 

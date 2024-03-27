@@ -89,7 +89,12 @@ fn get_multiclass_stats(class string, result CrossVerifyResult) (f64, f64, f64) 
 }
 
 // mcc calculates the Matthews Correlation Coefficient for binary class problems
-fn mcc(tp int, tn int, fp int, ffn int) f64 {
+// fn mcc(tp int, tn int, fp int, ffn int) f64 {
+// 	if tp + fp == 0 || tp + ffn == 0 || tn + fp == 0 || tn + ffn == 0 { return 0.0}
+// 	return (tp * tn - fp * ffn) / math.sqrt(f64(tp + fp) * f64(tp + ffn) * f64(tn + fp) * f64(tn + ffn))
+// }
+
+fn mcc[T](tp T, tn T, fp T, ffn T) f64 {
 	if tp + fp == 0 || tp + ffn == 0 || tn + fp == 0 || tn + ffn == 0 { return 0.0}
 	return (tp * tn - fp * ffn) / math.sqrt(f64(tp + fp) * f64(tp + ffn) * f64(tn + fp) * f64(tn + ffn))
 }

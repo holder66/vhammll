@@ -194,7 +194,8 @@ const headers = {
 	9:  'False / incorrect counts:'
 	10: 'Raw accuracy:'
 	11: 'Balanced accuracy:'
-	12: 'Maximum Hamming Distance:'
+	12: 'Matthews Correlation Coef:'
+	13: 'Maximum Hamming Distance:'
 }
 
 const attribute_headings = {
@@ -295,11 +296,12 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 			row_data[9] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
 			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
 			row_data[11] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[12] += '${b.mcc:-4.3f}        ' + pad(col_width - 13)
 		}
-		row_data[12] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
+		row_data[13] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
 	for i, row in row_data {
-		println('${vhammll.headers[i]:25}   ${row}')
+		println('${vhammll.headers[i]:26}   ${row}')
 	}
 	return col_width_array
 }
