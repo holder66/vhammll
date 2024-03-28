@@ -17,6 +17,8 @@ And have a look here for a more complete [description and potential use cases](h
 
 [Glossary of terms](https://github.com/holder66/vhamml/blob/master/docs/glossary.md)
 
+For interactive descriptions of the two key algorithms used by VHamMLL, download the Numbers app spreadsheets: [Description of Ranking Algorithm](https://github.com/holder66/vhammll/blob/master/docs/description_of_attribute_ranking_algorithm.numbers) and [Description of Classification Algorithm](https://github.com/holder66/vhammll/blob/master/docs/description_of_classification_algorithm.numbers).
+
 ## Usage:
 ### To use the VHamMLL library in an existing Vlang project:
 `v install holder66.vhammll`
