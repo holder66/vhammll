@@ -1,19 +1,23 @@
+Description of Ranking algorithm:
+
 FUNCTION rank (for each dataset case, its assigned class value, values for all attributes); returns rank-ordered list of attributes
 	FOR EACH attribute in the dataset
 		IF categorical
-			MAP each case's value for that attribute to an integer from 1 up to the number of unique values for that attribute
-			get a rank value for the mapped attribute
+			MAP each case's value for that attribute to an integer from 1 up to the number of unique
+				 values for that attribute
+			OBTAIN  a rank value for the mapped attribute using FUNCTION get rank value
 		ELSE IF continuous
 			FOR EACH bin number over the binning range specified by the user
 				perform binning on the attribute's values (FUNCTION binning)
 				get a rank value for the attribute (FUNCTION get rank value)
-			choose the bin number which gave the highest rank value
+			SELECT the bin number which gave the highest rank value
 		ENDIF
-	order the attributes in descending order by rank value
+	SORT the attributes in descending order by rank value
 	RETURN ranked list of attributes with rank values and number of bins used
 
 FUNCTION get rank value (for each dataset case, its assigned class value; bin values (integers) for one attribute); returns a rank value (number)
-	SET UP a table with a column of zeros for each class, columns for each possible pair of classes, and a column for row sums; one row for each unique bin value
+	SET UP a table with a column of zeros for each class, columns for each possible pair of classes, 
+		and a column for row sums; one row for each unique bin value
 	FOR EACH dataset case
 		increment the table cell for the case's class and the attribute's bin value (ie, get the count of cases)
 	FOR EACH table row
@@ -38,8 +42,3 @@ FUNCTION binning (list of attribute values; number of bins to use); returns a bi
 			set the bin value as one PLUS the integer portion of the result
 		ENDIF
 	RETURN the list of bin values
-
-
-
-
-

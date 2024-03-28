@@ -2,16 +2,33 @@ classify a query case using a labeled set of training cases. See the glossary fo
 Parameters: A (number of attributes to be used for classification)
 	B (binning for continuous attributes)
 
-READ the training data including the values for the Class attribute
-rank each attribute by how well that attribute's values for all the training cases can separate the classes, and for what number of bins for continuous attributes.
-create a classifier using the highest-ranked A attributes
-For the query case, use only the values for the attributes included in the classifier.
-For continuous attributes, bin as per the binning parameters for that attribute given by the classifier.
-Calculate the Hamming distance between the query case and each of the training cases in the classifier.
-For the smallest Hamming distance obtained, add up the number of training cases for each class for cases with that smallest Hamming distance.
-Set the inferred class for the query case to the class with the greatest number of cases at that Hamming distance
-If there are ties, add to the count for each class, the cases with the second smallest Hamming distance to the query case.
-Repeat until there are no more ties.
+Description of Classification algorithm:
+
+FUNCTION make a classifier (training dataset; parameter values) returns a trained classifier
+	SORT the attributes by rank value using the FUNCTION rank (see above) for the binning specified by the binning parameter
+	SELECT the number of highest-ranking attributes as specified by the attributes parameter
+	RETURN the bin values for the selected attributes, along with the binning specifications, value maps for discrete attributes, and 
+		the assigned class for each case
+
+FUNCTION classify (trained classifier; case to be classified) returns the inferred class
+	SELECT the attribute values from the case to be classified according to the trained classifier’s attribute list
+	MAP those selected attribute values into bins according to the binning specifications for  continuous attributes or
+		value maps for discrete attributes
+	FOR EACH case in the trained classifier
+		FOR EACH bin value in each case
+			CALCULATE  Hamming distance for each bin value to the corresponding bin values for the case to be classified
+		SUM the Hamming distances for each case
+	SELECT the unique Hamming distances  in the list
+	SORT the unique Hamming distances, from minimum to maximum
+	FOR EACH unique sorted Hamming distance
+		FOR EACH case in the trained classifier whose Hamming distance to the case to be classified equals that Hamming distance
+			FOR EACH class
+				ACCUMULATE counts of cases by class
+		IF the list of case counts has a single MAXIMUM
+			RETURN as the inferred class, the class having the MAXIMUM counts
+		ELSE  continue the loop
+	RETURN an error message (ie if no single maximum could be found when counting over all the possible Hamming distances )
+
 
 
 What does binning do: increases "contrast"; makes for a smaller and faster classifier; reduces risk of overfitting.
