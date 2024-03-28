@@ -216,9 +216,9 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 	if disp.show_attributes_flag && result.trained_attributes_array.len > 0 {
 		println(g_b('Trained Attributes:'))
 		show_trained_attributes(result, col_widths)
-		} else {
-			println(g_b('Unable to display Trained Attributes!'))
-		}
+	} else {
+		println(g_b('Unable to display Trained Attributes!'))
+	}
 }
 
 const minimum_column_width = 13
