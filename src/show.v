@@ -212,16 +212,19 @@ fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Opti
 	// println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
 	col_widths := show_multiple_classifier_settings_details(opts.multiple_classifier_settings,
 		result.classifier_indices)
-	if disp.show_attributes_flag {
+	println('result.trained_attributes_array in show_multiple_classifier_settings_options: ${result.trained_attributes_array}')
+	if disp.show_attributes_flag && result.trained_attributes_array.len > 0 {
 		println(g_b('Trained Attributes:'))
 		show_trained_attributes(result, col_widths)
-	}
+		} else {
+			println(g_b('Unable to display Trained Attributes!'))
+		}
 }
 
 const minimum_column_width = 13
 
 fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
-	// println('result.trained_attributes_array in show_trained_attributes: ${result.trained_attributes_array}')
+	println('result.trained_attributes_array in show_trained_attributes: ${result.trained_attributes_array}')
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
 	mut row_data := [][]string{len: max_attributes, init: []string{len: vhammll.attribute_headings.len, init: ''}}
@@ -328,9 +331,11 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
 	}
-	if disp.show_attributes_flag && !opts.multiple_flag {
+	if disp.show_attributes_flag && !opts.multiple_flag && result.trained_attributes_array.len > 0 {
 		println(g_b('Trained Attributes:'))
 		show_trained_attributes(result, [13])
+	} else {
+		println(g_b('Unable to display Trained Attributes!'))
 	}
 	show_cross_or_verify_result(result, disp)
 }
