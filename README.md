@@ -9,8 +9,6 @@ You can incorporate the `VHamMLL` functions into your own code, or use the inclu
 
 You can use `VHamMLL` with your own datasets, or with a selection of publicly available datasets that are widely used for demonstrating and testing ML classifiers, in the `datasets` directory. These files are mostly in [Orange file format](https://orange3.readthedocs.io/projects/orange-data-mining-library/en/latest/reference/data.io.html); there are also datasets in [ARFF (Attribute-Relation File Format)](https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/) or in comma-separated-values (CSV) as used in [Kaggle](https://www.kaggle.com).
 
-Classification accuracy with datasets in the `datasets` directory:
-See this [table](https://henry.olders.ca/wordpress/?p=1885). Please note that these results were generated using an earlier version, with separate HamNN and VHamNN modules.
 
 What, another AI package? [Is that necessary?](https://github.com/holder66/vhamml/blob/master/docs/AI_for_rest_of_us.md)
 And have a look here for a more complete [description and potential use cases](https://github.com/holder66/vhamml/blob/master/docs/description.md). 
