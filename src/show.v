@@ -227,7 +227,7 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 	println('result.trained_attributes_array in show_trained_attributes: ${result.trained_attributes_array}')
 	max_attributes := array_max(result.trained_attributes_array.map(it.len))
 	// println('max_attributes: $max_attributes')
-	mut row_data := [][]string{len: max_attributes, init: []string{len: vhammll.attribute_headings.len, init: ''}}
+	mut row_data := [][]string{len: max_attributes, init: []string{len: attribute_headings.len, init: ''}}
 	// println('row_data in show_trained_attributes: $row_data')
 	mut columns := [][][]string{len: result.trained_attributes_array.len, init: [][]string{len: max_attributes, init: []string{len: 2, init: ''}}}
 	for i, mut column_content in columns {
@@ -250,9 +250,9 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 	}
 	// println(row_data)
 	for attr_rows in row_data {
-		println(g(vhammll.attribute_headings[0] + attr_rows[0]))
+		println(g(attribute_headings[0] + attr_rows[0]))
 		for row in attr_rows[1..] {
-			print(vhammll.attribute_headings[1])
+			print(attribute_headings[1])
 			println(row)
 		}
 	}
@@ -264,7 +264,7 @@ fn show_trained_attributes(result CrossVerifyResult, col_widths []int) {
 // second parameter contains the classifier number to be shown
 fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
 	// println('classifier_settings_array: ${classifier_settings_array}')
-	mut row_data := []string{len: vhammll.headers.len, init: ''}
+	mut row_data := []string{len: headers.len, init: ''}
 	mut col_width_array := []int{}
 	for i, ci in classifier_list {
 		// println('i, ci in show_multiple_classifier_settings_details: $i $ci')
@@ -276,8 +276,8 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		corrects := c.correct_counts.map(it.str()).join(' ')
 		incorrects := c.incorrect_counts.map(it.str()).join(' ')
 		mut col_width := array_max([corrects.len, incorrects.len]) + 2
-		if col_width < vhammll.minimum_column_width {
-			col_width = vhammll.minimum_column_width
+		if col_width < minimum_column_width {
+			col_width = minimum_column_width
 		}
 		col_width_array << col_width
 		row_data[0] += '${ci:-13}' + pad(col_width - 13)
@@ -289,7 +289,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		row_data[5] += '${a.weighting_flag:-13}' + pad(col_width - 13)
 		row_data[6] += '${a.balance_prevalences_flag:-13}' + pad(col_width - 13)
 		row_data[7] += '${a.purge_flag:-13}' + pad(col_width - 13)
-		if c.class_counts.len > 2 {
+		if c.class_counts_int.len > 2 {
 			row_data[8] += corrects + pad(col_width - corrects.len)
 			row_data[9] += incorrects + pad(col_width - incorrects.len)
 			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
@@ -304,7 +304,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 		row_data[13] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
 	for i, row in row_data {
-		println('${vhammll.headers[i]:26}   ${row}')
+		println('${headers[i]:26}   ${row}')
 	}
 	return col_width_array
 }
@@ -326,8 +326,10 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options, disp Display
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
 	if result.purge_flag {
-		total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or {} / f64(result.prepurge_instances_counts_array.len)
-		purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {} / f64(result.classifier_instances_counts.len)
+		total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or { panic(err) } / f64(result.prepurge_instances_counts_array.len)
+		purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {
+			panic(err)
+		} / f64(result.classifier_instances_counts.len)
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
 	}
@@ -504,20 +506,20 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 	mut m := map[string]Analytics{}
 	m['raw accuracy'] = Analytics{
 		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
-		idx: idx_max(expr.array_of_results.map(it.raw_acc))
+		idx:    idx_max(expr.array_of_results.map(it.raw_acc))
 	}
 	m['balanced accuracy'] = Analytics{
-		idx: idx_max(expr.array_of_results.map(it.balanced_accuracy))
+		idx:    idx_max(expr.array_of_results.map(it.balanced_accuracy))
 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
 	}
 	m['MCC (Matthews Correlation Coefficient)'] = Analytics{
-		idx: idx_max(expr.array_of_results.map(it.mcc))
+		idx:    idx_max(expr.array_of_results.map(it.mcc))
 		valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
 	}
 	if expr.array_of_results[0].classes.len > 2 {
 		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
 		m['correct inferences total'] = Analytics{
-			idx: idx_max(expr.array_of_results.map(it.correct_count))
+			idx:    idx_max(expr.array_of_results.map(it.correct_count))
 			valeur: expr.array_of_results.map(it.correct_count)[idx_max(expr.array_of_results.map(it.correct_count))]
 		}
 		for class in expr.array_of_results[0].classes {
@@ -527,22 +529,22 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 			// println(idx_max(expr.array_of_results.map(it.correct_inferences[class])))
 			// println(expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))])
 			m['${class}'] = Analytics{
-				idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
+				idx:    idx_max(expr.array_of_results.map(it.correct_inferences[class]))
 				valeur: expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))]
 			}
 		}
 		m['incorrect inferences'] = Analytics{
-			idx: idx_max(expr.array_of_results.map(it.incorrects_count))
+			idx:    idx_max(expr.array_of_results.map(it.incorrects_count))
 			valeur: expr.array_of_results.map(it.incorrects_count)[idx_max(expr.array_of_results.map(it.incorrects_count))]
 		}
 	} else {
 		// println('in explore_analytics2: $expr.array_of_results[0]')
 		m['true positives'] = Analytics{
-			idx: idx_max(expr.array_of_results.map(it.t_p))
+			idx:    idx_max(expr.array_of_results.map(it.t_p))
 			valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
 		}
 		m['true negatives'] = Analytics{
-			idx: idx_max(expr.array_of_results.map(it.t_n))
+			idx:    idx_max(expr.array_of_results.map(it.t_n))
 			valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
 		}
 	}
@@ -562,8 +564,8 @@ fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
 	_, _, purged_percent := get_purged_percent(cvr)
 	return MaxSettings{
 		attributes_used: cvr.attributes_used
-		binning: cvr.bin_values
-		purged_percent: purged_percent
+		binning:         cvr.bin_values
+		purged_percent:  purged_percent
 	}
 }
 
@@ -607,8 +609,10 @@ fn show_explore_trailer(results ExploreResult, opts Options) {
 
 // get_purged_percent
 fn get_purged_percent(result CrossVerifyResult) (f64, f64, f64) {
-	total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or {} / f64(result.prepurge_instances_counts_array.len)
-	purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {} / f64(result.classifier_instances_counts.len)
+	total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or { panic(err) } / f64(result.prepurge_instances_counts_array.len)
+	purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {
+		panic(err)
+	} / f64(result.classifier_instances_counts.len)
 	return purged_count_avg, total_count_avg, 100 * purged_count_avg / total_count_avg
 }
 

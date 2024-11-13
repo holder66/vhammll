@@ -23,7 +23,7 @@ fn wt_avg(a []f64, wts []int) f64 {
 	for i, wt in wts {
 		wp += a[i] * wt
 	}
-	return wp / arrays.sum(wts) or { 1.0 }
+	return wp / arrays.sum(wts) or { 1 }
 }
 
 // avg_metrics
@@ -35,9 +35,9 @@ fn (mut m Metrics) avg_metrics() Metrics {
 	m.avg_f1_score << arrays.sum(m.f1_score) or { 0.0 } / count
 	m.avg_type << 'macro'
 
-	m.avg_precision << wt_avg(m.precision, m.class_counts)
-	m.avg_recall << wt_avg(m.recall, m.class_counts)
-	m.avg_f1_score << wt_avg(m.f1_score, m.class_counts)
+	m.avg_precision << wt_avg(m.precision, m.class_counts_int)
+	m.avg_recall << wt_avg(m.recall, m.class_counts_int)
+	m.avg_f1_score << wt_avg(m.f1_score, m.class_counts_int)
 	m.avg_type << 'weighted'
 	// multiclass balanced accuracy is the arithmetic mean of the recalls
 	m.balanced_accuracy = m.avg_recall[0] * 100 // so as to be a percentage
@@ -47,8 +47,8 @@ fn (mut m Metrics) avg_metrics() Metrics {
 // get_metrics
 fn get_metrics(result CrossVerifyResult) Metrics {
 	mut metrics := Metrics{
-		class_counts: get_map_values(result.class_counts)
-		correct_counts: get_map_values(result.correct_inferences)
+		class_counts_int: get_map_values(result.class_counts)
+		correct_counts:   get_map_values(result.correct_inferences)
 		incorrect_counts: get_map_values(result.incorrect_inferences)
 	}
 	for class in result.classes {
@@ -107,10 +107,10 @@ fn get_binary_stats(result CrossVerifyResult) BinaryMetrics {
 	pos_class := result.pos_neg_classes[0]
 	neg_class := result.pos_neg_classes[1]
 	mut bm := BinaryMetrics{
-		t_p: result.correct_inferences[pos_class]
-		t_n: result.correct_inferences[neg_class]
-		f_n: result.incorrect_inferences[pos_class]
-		f_p: result.incorrect_inferences[neg_class]
+		t_p:     result.correct_inferences[pos_class]
+		t_n:     result.correct_inferences[neg_class]
+		f_n:     result.incorrect_inferences[pos_class]
+		f_p:     result.incorrect_inferences[neg_class]
 		raw_acc: result.correct_count * 100 / f64(result.total_count)
 	}
 	bm.sens = bm.t_p / f64(bm.t_p + bm.f_n)

@@ -10,13 +10,13 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 	settings_struct := read_multiple_opts(path) or { panic('read_multiple_opts failed') }
 	settings := settings_struct.multiple_classifier_settings
 	mut result := OptimalsResult{
-		class_counts: settings[0].class_counts
-		classes: []string{len: settings[0].class_counts.len, init: '${index}'}
-		balanced_accuracy_max: array_max(settings.map(it.balanced_accuracy))
-		balanced_accuracy_max_classifiers: idxs_max(settings.map(it.balanced_accuracy))
-		mcc_max: array_max(settings.map(it.mcc))
-		mcc_max_classifiers: idxs_max(settings.map(it.mcc))
-		correct_inferences_total_max: array_max(settings.map(array_sum(it.correct_counts)))
+		class_counts:                             settings[0].class_counts_int
+		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
+		balanced_accuracy_max:                    array_max(settings.map(it.balanced_accuracy))
+		balanced_accuracy_max_classifiers:        idxs_max(settings.map(it.balanced_accuracy))
+		mcc_max:                                  array_max(settings.map(it.mcc))
+		mcc_max_classifiers:                      idxs_max(settings.map(it.mcc))
+		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
 		correct_inferences_total_max_classifiers: idxs_max(settings.map(array_sum(it.correct_counts)))
 	}
 	for i, _ in result.classes {

@@ -16,6 +16,7 @@ mut:
 // plot_rank generates a scatterplot of the rank values
 // for continuous attributes, as a function of the number of bins.
 fn plot_rank(result RankingResult) {
+	// println('we are in plot_rank')
 	mut ranked_atts := result.array_of_ranked_attributes.clone()
 	mut traces := []RankTrace{}
 	mut plt := plot.Plot.new()
@@ -26,8 +27,8 @@ fn plot_rank(result RankingResult) {
 	}
 	for attr in ranked_atts.filter(it.attribute_type == 'C') {
 		traces << RankTrace{
-			label: '${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f}'
-			rank_values: attr.rank_value_array.map(f64(it)).reverse()
+			label:              '${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f}'
+			rank_values:        attr.rank_value_array.map(f64(it)).reverse()
 			maximum_rank_value: array_max(attr.rank_value_array)
 			// the tooltip for each point shows the attribute name
 			hover_text: ['${attr.attribute_name}'].repeat(result.binning.upper + 1)
@@ -43,8 +44,8 @@ fn plot_rank(result RankingResult) {
 		plt.scatter(
 			// plt.add_trace(
 			// trace_type: .scatter
-			x: x
-			y: y
+			x:    x
+			y:    y
 			text: value.hover_text
 			mode: 'lines+markers'
 			name: value.label
@@ -54,28 +55,28 @@ fn plot_rank(result RankingResult) {
 	rank_annotation_string := 'Missing Values ' +
 		if result.exclude_flag { 'excluded' } else { 'included' }
 	annotation1 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 5
-		text: 'Hover your cursor over a marker to view details.'
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     5
+		text:  'Hover your cursor over a marker to view details.'
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 10
-		text: rank_annotation_string
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     10
+		text:  rank_annotation_string
 		align: 'center'
 	}
 	plt.layout(
 		// plt.set_layout(
-		title: 'Rank Values for Continuous Attributes for "${result.path}"'
-		autosize: false
-		width: 800
-		xaxis: plot.Axis{
+		title:       'Rank Values for Continuous Attributes for "${result.path}"'
+		autosize:    false
+		width:       800
+		xaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Number of bins'
 			}
 		}
-		yaxis: plot.Axis{
+		yaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Rank Value'
 			}
@@ -122,11 +123,11 @@ fn plot_explore(result ExploreResult, opts Options) {
 		bin_values_strings_filtered = filter_int(b, bins_for_sorting, bin_values_strings)
 		max_percents = array_max(percents)
 		traces << ExploreTrace{
-			label: 'Bins: ${bin_values_strings_filtered[0]} ${array_max(percents):5.2f}'
-			percents: percents
-			max_percents: max_percents
+			label:           'Bins: ${bin_values_strings_filtered[0]} ${array_max(percents):5.2f}'
+			percents:        percents
+			max_percents:    max_percents
 			attributes_used: filter_int(b, bins_for_sorting, x)
-			bin_range: ['${bin_values_strings_filtered[0]}']
+			bin_range:       ['${bin_values_strings_filtered[0]}']
 			bin_for_sorting: b
 		}
 	}
@@ -154,8 +155,8 @@ fn plot_explore(result ExploreResult, opts Options) {
 	for value in traces {
 		text := value.bin_range.repeat(value.percents.len)
 		plt.scatter(
-			x: value.attributes_used
-			y: value.percents.map((math.round(it * 100)) / 100)
+			x:    value.attributes_used
+			y:    value.percents.map((math.round(it * 100)) / 100)
 			text: text
 			mode: 'lines+markers'
 			name: value.label
@@ -163,62 +164,62 @@ fn plot_explore(result ExploreResult, opts Options) {
 		)
 	}
 	annotation1 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 5
-		text: 'Hover your cursor over a marker to view details.'
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     5
+		text:  'Hover your cursor over a marker to view details.'
 		align: 'center'
-		font: plot.Font{
-			color: 'red'
-			size: 14.0
+		font:  plot.Font{
+			color:  'red'
+			size:   14.0
 			family: 'Times New Roman'
 		}
 	}
 	annotation2 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 10
-		text: explore_type_string(opts)
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     10
+		text:  explore_type_string(opts)
 		align: 'center'
-		font: plot.Font{
-			color: 'blue'
-			size: 12.0
+		font:  plot.Font{
+			color:  'blue'
+			size:   12.0
 			family: 'Times New Roman'
 		}
 	}
 	annotation3 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 15
-		text: 'UTC: ${time.utc()}'
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     15
+		text:  'UTC: ${time.utc()}'
 		align: 'center'
-		font: plot.Font{
-			color: 'blue'
-			size: 12.0
+		font:  plot.Font{
+			color:  'blue'
+			size:   12.0
 			family: 'Times New Roman'
 		}
 	}
 	annotation4 := plot.Annotation{
-		x: (array_max(x) + array_min(x)) / 2
-		y: 20
-		text: 'args: ${opts.args}'
+		x:     (array_max(x) + array_min(x)) / 2
+		y:     20
+		text:  'args: ${opts.args}'
 		align: 'center'
-		font: plot.Font{
-			color: 'black'
-			size: 12.0
+		font:  plot.Font{
+			color:  'black'
+			size:   12.0
 			family: 'Times New Roman'
 		}
 	}
 	title_string := 'Balanced Accuracy by Number of Attributes\n for "${opts.datafile_path}"'
 	plt.layout(
-		title: title_string
-		width: 900
-		xaxis: plot.Axis{
+		title:       title_string
+		width:       900
+		xaxis:       plot.Axis{
 			tickmode: 'array'
 			tickvals: x
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: 'Number of Attributes Used'
 			}
 		}
 		annotations: [annotation1, annotation2, annotation3, annotation4]
-		autosize: true
+		autosize:    true
 	)
 	plt.show() or { panic(err) }
 }
@@ -269,15 +270,15 @@ fn plot_roc(result ExploreResult, opts Options) {
 	// mut pos_class := result.array_of_results[0].pos_neg_classes[0]
 	// mut neg_class := result.array_of_results[0].pos_neg_classes[1]
 	annotation1 := plot.Annotation{
-		x: 0.5
-		y: -0.05
-		text: 'Hover your cursor over a marker to view details.'
+		x:     0.5
+		y:     -0.05
+		text:  'Hover your cursor over a marker to view details.'
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
-		x: 0.5
-		y: -0.02
-		text: explore_type_string(opts)
+		x:     0.5
+		y:     -0.02
+		text:  explore_type_string(opts)
 		align: 'left'
 	}
 
@@ -294,10 +295,10 @@ fn plot_roc(result ExploreResult, opts Options) {
 			bin_range = 'bins ${res.bin_values[0]} - ${res.bin_values[1]}'
 		}
 		roc_results << ROCResult{
-			sensitivity: res.sens
+			sensitivity:           res.sens
 			one_minus_specificity: 1.0 - res.spec
-			bin_range: bin_range
-			attributes_used: '${res.attributes_used}'
+			bin_range:             bin_range
+			attributes_used:       '${res.attributes_used}'
 		}
 	}
 	// sort on the x axis value, ie one_minus_specificity
@@ -313,9 +314,9 @@ fn plot_roc(result ExploreResult, opts Options) {
 	for key, _ in element_counts(bin_range_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
-			x_coordinates: filter(key, bin_range_values, x_coordinates)
-			y_coordinates: filter(key, bin_range_values, y_coordinates)
-			curve_variable_values: filter(key, bin_range_values, attributes_used_values)
+			x_coordinates:                filter(key, bin_range_values, x_coordinates)
+			y_coordinates:                filter(key, bin_range_values, y_coordinates)
+			curve_variable_values:        filter(key, bin_range_values, attributes_used_values)
 		}
 	}
 	if result.binning.lower != 0 {
@@ -336,9 +337,9 @@ fn plot_roc(result ExploreResult, opts Options) {
 	for key, _ in element_counts(attributes_used_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
-			x_coordinates: filter(key, attributes_used_values, x_coordinates)
-			y_coordinates: filter(key, attributes_used_values, y_coordinates)
-			curve_variable_values: filter(key, attributes_used_values, bin_range_values)
+			x_coordinates:                filter(key, attributes_used_values, x_coordinates)
+			y_coordinates:                filter(key, attributes_used_values, y_coordinates)
+			curve_variable_values:        filter(key, attributes_used_values, bin_range_values)
 		}
 	}
 
@@ -421,8 +422,8 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 		x := trace.x_coordinates.map(round_two_decimals(it))
 		y := trace.y_coordinates.map(round_two_decimals(it))
 		plt.scatter(
-			x: x
-			y: y
+			x:    x
+			y:    y
 			mode: 'lines+markers'
 			name: '${trace.curve_series_variable_values} (AUC=${trace.area_under_curve:3.2})'
 			text: trace.curve_variable_values
@@ -434,15 +435,15 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 // make_roc_plot_layout
 fn make_roc_plot_layout(mut plt plot.Plot, curve_series string, path string, annotations []plot.Annotation) {
 	plt.layout(
-		title: 'ROC Curves by ${curve_series} for "${path}"'
-		width: 800
-		height: 800
-		xaxis: plot.Axis{
+		title:       'ROC Curves by ${curve_series} for "${path}"'
+		width:       800
+		height:      800
+		xaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: '1 - specificity'
 			}
 		}
-		yaxis: plot.Axis{
+		yaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'sensitivity'
 			}

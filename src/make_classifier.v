@@ -67,10 +67,10 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	}
 
 	mut cl := Classifier{
-		Class: ds.Class
-		Parameters: opts.Parameters
+		Class:         ds.Class
+		Parameters:    opts.Parameters
 		datafile_path: ds.path
-		LoadOptions: opts.LoadOptions
+		LoadOptions:   opts.LoadOptions
 		// struct_type: '.Classifier'
 		// binning: get_binning(opts.bins)
 	}
@@ -90,7 +90,7 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
 	// println('ds: $ds')
-	ranking_result := rank_attributes(ds, rank_opts, disp)
+	ranking_result := rank_attributes(ds, rank_opts)
 	// println('ranking_result: $ranking_result')
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 	// println('ranked_attributes in make_classifier: $ranked_attributes')
@@ -123,11 +123,11 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 				ra.bins)
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
 				attribute_type: ra.attribute_type
-				minimum: min
-				maximum: max
-				bins: ra.bins
-				rank_value: ra.rank_value
-				index: ra.attribute_index
+				minimum:        min
+				maximum:        max
+				bins:           ra.bins
+				rank_value:     ra.rank_value
+				index:          ra.attribute_index
 			}
 		} else { // ie for discrete attributes
 			attr_string_values = ds.useful_discrete_attributes[ra.attribute_index]
@@ -135,10 +135,10 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 			// use the translation table to generate an array of translated values
 			binned_values = attr_string_values.map(translation_table[it])
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
-				attribute_type: ra.attribute_type
+				attribute_type:    ra.attribute_type
 				translation_table: translation_table
-				rank_value: ra.rank_value
-				index: ra.attribute_index
+				rank_value:        ra.rank_value
+				index:             ra.attribute_index
 			}
 		}
 		attr_binned_values << binned_values.map(u8(it))
@@ -159,8 +159,8 @@ pub fn make_classifier(dds Dataset, opts Options, disp DisplaySettings) Classifi
 	}
 	// create an event
 	mut event := HistoryEvent{
-		event: 'make'
-		instances_count: cl.instances.len
+		event:                    'make'
+		instances_count:          cl.instances.len
 		prepurge_instances_count: prepurge_instances_count
 	}
 	if opts.command in ['make', 'append', 'verify', 'validate', 'query'] {

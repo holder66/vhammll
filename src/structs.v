@@ -180,7 +180,8 @@ pub mut:
 @[params]
 pub struct Options {
 	Parameters
-	LoadOptions // DisplaySettings
+	LoadOptions
+	DisplaySettings
 	MultipleOptions
 	MultipleClassifierSettingsArray
 pub mut:
@@ -444,7 +445,7 @@ mut:
 	avg_f1_score      []f64
 	avg_type          []string
 	balanced_accuracy f64
-	class_counts      []int
+	class_counts_int  []int
 	correct_counts    []int
 	incorrect_counts  []int
 }

@@ -18,24 +18,24 @@ fn testsuite_end() ! {
 fn test_display_multiple_options() ? {
 	mut settings1 := ClassifierSettings{
 		Parameters: Parameters{
-			binning: Binning{
-				lower: 1
-				upper: 2
+			binning:              Binning{
+				lower:    1
+				upper:    2
 				interval: 1
 			}
 			number_of_attributes: [1]
-			weighting_flag: true
+			weighting_flag:       true
 		}
 	}
 	mut settings2 := ClassifierSettings{
 		Parameters: Parameters{
-			binning: Binning{
-				lower: 1
-				upper: 2
+			binning:              Binning{
+				lower:    1
+				upper:    2
 				interval: 1
 			}
 			number_of_attributes: [6]
-			weighting_flag: true
+			weighting_flag:       true
 		}
 	}
 	append_json_file(settings1, 'tempfolder_display/bcw.opts')
@@ -49,8 +49,8 @@ fn test_display_multiple_options() ? {
 fn test_display_classifier() ? {
 	// make a classifier and save it, then display the saved classifier file
 	mut opts := Options{
-		command: 'make'
-		bins: [3, 10]
+		command:              'make'
+		bins:                 [3, 10]
 		number_of_attributes: [8]
 	}
 	opts.outputfile_path = 'tempfolder_display/classifierfile'
@@ -62,7 +62,7 @@ fn test_display_classifier() ? {
 fn test_display_analyze_result() ? {
 	// analyze a dataset file, save the result, then display
 	mut opts := Options{
-		command: 'analyze'
+		command:         'analyze'
 		outputfile_path: 'tempfolder_display/analyze_result'
 	}
 	_ = analyze_dataset(load_file('datasets/UCI/anneal.arff'), opts)
@@ -72,7 +72,7 @@ fn test_display_analyze_result() ? {
 fn test_display_ranking_result() ? {
 	// rank a dataset file, save the result, then display
 	mut opts := Options{
-		command: 'rank'
+		command:         'rank'
 		outputfile_path: 'tempfolder_display/rank_result'
 	}
 	_ = rank_attributes(load_file('datasets/UCI/anneal.arff'), opts)
@@ -96,15 +96,17 @@ fn test_display_validate_result() ? {
 fn test_display_verify_result() ? {
 	// verify a dataset file, save the result, then display
 	mut opts := Options{
-		datafile_path: 'datasets/bcw350train'
-		testfile_path: 'datasets/bcw174test'
-		outputfile_path: 'tempfolder_display/verify_result'
-		command: 'verify'
+		datafile_path:        'datasets/bcw350train'
+		testfile_path:        'datasets/bcw174test'
+		outputfile_path:      'tempfolder_display/verify_result'
+		command:              'verify'
 		number_of_attributes: [5]
-		concurrency_flag: true
+		concurrency_flag:     true
 	}
-	// mut ds := load_file(opts.datafile_path)
-	// cl := make_classifier(ds, opts)
+	mut ds := load_file(opts.datafile_path)
+
+	cl := make_classifier(ds, opts)
+	println(verify(opts))
 	_ = verify(opts)
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
@@ -114,13 +116,13 @@ fn test_display_verify_result() ? {
 fn test_display_cross_result() ? {
 	// cross-validate a dataset file, save the result, then display
 	mut opts := Options{
-		command: 'cross'
+		command:              'cross'
 		number_of_attributes: [4]
-		bins: [12]
-		folds: 5
-		repetitions: 0
-		random_pick: false
-		concurrency_flag: true
+		bins:                 [12]
+		folds:                5
+		repetitions:          0
+		random_pick:          false
+		concurrency_flag:     true
 	}
 	ds := load_file('datasets/UCI/segment.arff')
 	opts.outputfile_path = 'tempfolder_display/cross_result'
@@ -131,16 +133,17 @@ fn test_display_cross_result() ? {
 	opts.random_pick = true
 	_ = cross_validate(ds, opts)
 	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	println('Done for test_display_cross_result')
 }
 
 fn test_display_explore_result_cross() ? {
 	mut opts := Options{
-		command: 'explore'
-		datafile_path: 'datasets/UCI/iris.arff'
-		bins: [2, 3]
+		command:              'explore'
+		datafile_path:        'datasets/UCI/iris.arff'
+		bins:                 [2, 3]
 		number_of_attributes: [2, 3]
-		concurrency_flag: true
-		outputfile_path: 'tempfolder_display/explore_result'
+		concurrency_flag:     true
+		outputfile_path:      'tempfolder_display/explore_result'
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)
@@ -173,13 +176,13 @@ fn test_display_explore_result_cross() ? {
 
 fn test_display_explore_result_verify() ? {
 	mut opts := Options{
-		command: 'explore'
-		datafile_path: 'datasets/soybean-large-train.tab'
-		testfile_path: 'datasets/soybean-large-test.tab'
-		bins: [2, 6]
+		command:              'explore'
+		datafile_path:        'datasets/soybean-large-train.tab'
+		testfile_path:        'datasets/soybean-large-test.tab'
+		bins:                 [2, 6]
 		number_of_attributes: [12, 15]
-		concurrency_flag: true
-		outputfile_path: 'tempfolder_display/explore_result'
+		concurrency_flag:     true
+		outputfile_path:      'tempfolder_display/explore_result'
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)

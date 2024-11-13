@@ -148,14 +148,14 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	}
 	opts.concurrency_flag = flag(args, ['-c', '--concurrent'])
 	opts.exclude_flag = flag(args, ['-x', '--exclude'])
-	disp.graph_flag = flag(args, ['-g', '--graph'])
-	disp.verbose_flag = flag(args, ['-v', '--verbose'])
+	opts.graph_flag = flag(args, ['-g', '--graph'])
+	opts.verbose_flag = flag(args, ['-v', '--verbose'])
 	opts.weighting_flag = flag(args, ['-w', '--weight'])
 	opts.weight_ranking_flag = flag(args, ['-wr'])
 	opts.uniform_bins = flag(args, ['-u', '--uniform'])
-	disp.show_flag = flag(args, ['-s', '--show'])
-	disp.expanded_flag = flag(args, ['-e', '--expanded'])
-	disp.show_attributes_flag = flag(args, ['-ea'])
+	opts.show_flag = flag(args, ['-s', '--show'])
+	opts.expanded_flag = flag(args, ['-e', '--expanded'])
+	opts.show_attributes_flag = flag(args, ['-ea'])
 	opts.multiple_flag = flag(args, ['-m', '--multiple'])
 	opts.break_on_all_flag = flag(args, ['-ma'])
 	opts.combined_radii_flag = flag(args, ['-mc'])
@@ -320,7 +320,7 @@ fn rank(opts Options, disp DisplaySettings) {
 	if opts.one_vs_rest_flag {
 		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
 	} else {
-		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
 	}
 	if disp.expanded_flag {
 		println(ra)

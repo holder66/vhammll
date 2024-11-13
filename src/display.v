@@ -3,7 +3,6 @@ module vhammll
 
 import os
 import json
-// 
 
 // display_file displays on the console, a results file as produced by other
 // hamnn functions; a multiple classifier settings file; or graphs for explore,
@@ -26,7 +25,7 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			// mut opts := Options{
 			// 	DisplaySettings: settings
 			// }
-			mut saved_er := json.decode(ExploreResult, s) or { panic('Failed to parse json') }
+			mut saved_er := json.decode(ExploreResult, s) or { panic(err) }
 			show_explore_header(saved_er, disp)
 			for mut result in saved_er.array_of_results {
 				show_explore_line(result, disp)
@@ -59,17 +58,20 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
-			mut saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
+			println('we are here')
+			mut saved_vr := json.decode(CrossVerifyResult, s) or {
+				panic('Failed to parse json as CrossVerifyResult')
+			}
 			show_verify(saved_vr, opts)
 		}
-		s.contains('"struct_type":".CrossVerifyResult"') {
+		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"cross"') {
 			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
 			show_crossvalidation(saved_vr, opts)
 			if opts.append_settings_flag {
 				append_cross_settings_to_file(saved_vr, opts)
 			}
 		}
-		s.contains('"Parameters":') {
+		s.contains('{"binning":{"lower":') {
 			multiple_classifier_settings_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
@@ -77,7 +79,7 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			opts.MultipleClassifierSettingsArray = multiple_classifier_settings_array
 
 			result := CrossVerifyResult{
-				classifier_indices: []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
+				classifier_indices:              []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
 				MultipleClassifierSettingsArray: multiple_classifier_settings_array
 			}
 			// multiple_options := MultipleOptions{

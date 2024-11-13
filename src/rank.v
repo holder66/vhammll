@@ -48,20 +48,20 @@ module vhammll
 //     y axis, with number of bins on the x axis.
 // `outputfile_path`, saves the result as json.
 // ```
-pub fn rank_attributes(ds Dataset, opts Options, disp DisplaySettings) RankingResult {
+pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	// println('opts in rank_attributes: $opts')
 	// to get the denominator for calculating percentages of rank values,
 	// we get the rank value for the class attribute, which should be 100%
 	mut ranking_result := RankingResult{
-		LoadOptions: ds.LoadOptions
-		path: ds.path
-		exclude_flag: opts.exclude_flag
+		LoadOptions:         ds.LoadOptions
+		path:                ds.path
+		exclude_flag:        opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag
 	}
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
 		ds.Class.class_counts, opts))
 	// println(opts.weight_ranking_flag)
-	if disp.verbose_flag && opts.command == 'rank' {
+	if opts.verbose_flag && opts.command == 'rank' {
 		println('perfect_rank_value: ${perfect_rank_value}')
 	}
 	mut ranked_atts := []RankedAttribute{}
@@ -160,12 +160,12 @@ pub fn rank_attributes(ds Dataset, opts Options, disp DisplaySettings) RankingRe
 		}
 		rank_value_array = rank_value_array.map(100.0 * f32(it) / perfect_rank_value)
 		ranked_atts << RankedAttribute{
-			attribute_index: attr_index_for_maximum_rank_value
-			attribute_name: ds.attribute_names[attr_index_for_maximum_rank_value]
-			attribute_type: ds.attribute_types[attr_index_for_maximum_rank_value]
-			rank_value: 100.0 * f32(maximum_rank_value) / perfect_rank_value
+			attribute_index:  attr_index_for_maximum_rank_value
+			attribute_name:   ds.attribute_names[attr_index_for_maximum_rank_value]
+			attribute_type:   ds.attribute_types[attr_index_for_maximum_rank_value]
+			rank_value:       100.0 * f32(maximum_rank_value) / perfect_rank_value
 			rank_value_array: rank_value_array
-			bins: bin_number_for_maximum_rank_value
+			bins:             bin_number_for_maximum_rank_value
 		}
 	}
 	// loop through discrete attributes
@@ -174,9 +174,9 @@ pub fn rank_attributes(ds Dataset, opts Options, disp DisplaySettings) RankingRe
 			opts)
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index
-			attribute_name: ds.attribute_names[attr_index]
-			attribute_type: ds.attribute_types[attr_index]
-			rank_value: 100.0 * f32(rank_value) / perfect_rank_value
+			attribute_name:  ds.attribute_names[attr_index]
+			attribute_type:  ds.attribute_types[attr_index]
+			rank_value:      100.0 * f32(rank_value) / perfect_rank_value
 		}
 	}
 	custom_sort_fn := fn (a &RankedAttribute, b &RankedAttribute) int {
@@ -208,11 +208,12 @@ pub fn rank_attributes(ds Dataset, opts Options, disp DisplaySettings) RankingRe
 	// custom sort on descending rank value, then ascending bins, then index
 	ranked_atts.sort_with_compare(custom_sort_fn)
 	ranking_result.binning = binning
-
-	if (disp.show_flag || disp.expanded_flag) && opts.command == 'rank' {
+	// println(opts)
+	if (opts.show_flag || opts.expanded_flag) && opts.command == 'rank' {
+		// println(ranking_result)
 		show_rank_attributes(ranking_result)
 	}
-	if disp.graph_flag && opts.command == 'rank' {
+	if opts.graph_flag && opts.command == 'rank' {
 		plot_rank(ranking_result)
 	}
 	if opts.outputfile_path != '' {
