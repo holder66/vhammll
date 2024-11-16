@@ -29,8 +29,8 @@ fn test_oxford_crossvalidate() {
 		weighting_flag:       true
 		weight_ranking_flag:  true
 		settingsfile_path:    '/Users/henryolders/use_vhammll/oxford2024-1-27.opts'
-		verbose_flag:         true
-		expanded_flag:        true
+		// verbose_flag:         true
+		// expanded_flag:        true
 	}
 	mut result := CrossVerifyResult{}
 	display_file(opts.settingsfile_path, opts)

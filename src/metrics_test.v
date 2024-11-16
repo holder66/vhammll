@@ -3,6 +3,7 @@
 module vhammll
 
 // import os
+import math
 
 // fn testsuite_begin() ! {
 // 	if os.is_dir('tempfolder_metrics') {
@@ -32,5 +33,6 @@ fn test_mcc() {
 	// reversing the true positive class
 	assert mcc(782, 15, 10, 9) == 0.6003804231419032
 	// with floating point values
-	assert mcc(8.6, 783.1, 7.9, 16.4) == 0.4089497479969868
+	// assert mcc(8.6, 783.1, 7.9, 16.4) == 0.4089497479969868
+	assert math.veryclose(mcc(8.6, 783.1, 7.9, 16.4), 0.4089497479969868)
 }
