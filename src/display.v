@@ -14,7 +14,7 @@ import json
 // 	a confusion matrix for cross-validation or verification operations;
 // graph_flag: generates plots for display in the default web browser.
 // ```
-pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
+pub fn display_file(path string, in_opts Options) {
 	mut opts := in_opts
 	// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
@@ -26,9 +26,9 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			// 	DisplaySettings: settings
 			// }
 			mut saved_er := json.decode(ExploreResult, s) or { panic(err) }
-			show_explore_header(saved_er, disp)
+			show_explore_header(saved_er, opts.DisplaySettings)
 			for mut result in saved_er.array_of_results {
-				show_explore_line(result, disp)
+				show_explore_line(result, opts.DisplaySettings)
 			}
 			show_explore_trailer(saved_er, opts)
 			if opts.append_settings_flag {
@@ -45,7 +45,7 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 		s.contains('"struct_type":".RankingResult"') {
 			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
-			if disp.graph_flag {
+			if opts.graph_flag {
 				plot_rank(saved_rr)
 			}
 		}
@@ -86,7 +86,7 @@ pub fn display_file(path string, in_opts Options, disp DisplaySettings) {
 			// 	classifier_indices: []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
 			// }
 			println(m_u('Multiple Classifier Options file: ${path}'))
-			show_multiple_classifier_settings_options(result, opts, disp)
+			show_multiple_classifier_settings_options(result, opts)
 		}
 		else {
 			println('File type not recognized!')

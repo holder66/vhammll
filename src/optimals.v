@@ -4,7 +4,7 @@ module vhammll
 // optimals determines which classifiers provide the best balanced accuracy, highest total for
 // correct inferences, and highest correct inferences per class, for multiple classifiers whose
 // settings are stored in a settings file.
-pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResult {
+pub fn optimals(path string, opts Options) OptimalsResult {
 	// settings_struct is a MultipleClassifierSettingsArray struct
 	// settings is an array of ClassifierSettings structs
 	settings_struct := read_multiple_opts(path) or { panic('read_multiple_opts failed') }
@@ -23,10 +23,10 @@ pub fn optimals(path string, in_opts Options, disp DisplaySettings) OptimalsResu
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.map(it.correct_counts[i]))
 	}
-	if disp.show_flag {
+	if opts.show_flag {
 		println('result in optimals: ${result}')
 	}
-	if disp.expanded_flag {
+	if opts.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
 		println(c_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
 		show_multiple_classifier_settings_details(filter_array_by_index(settings, result.balanced_accuracy_max_classifiers),

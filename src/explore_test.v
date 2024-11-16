@@ -6,10 +6,10 @@ fn test_explore_cross() ? {
 	mut metrics := Metrics{}
 	mut opts := Options{
 		number_of_attributes: [1, 4]
-		bins: [2, 7]
-		concurrency_flag: true
-		uniform_bins: true
-		datafile_path: 'datasets/iris.tab'
+		bins:                 [2, 7]
+		concurrency_flag:     true
+		uniform_bins:         true
+		datafile_path:        'datasets/iris.tab'
 	}
 	mut ds := load_file(opts.datafile_path)
 	result = explore(ds, opts)
@@ -57,11 +57,11 @@ fn test_explore_cross() ? {
 
 fn test_explore_verify() ? {
 	mut opts := Options{
-		command: 'explore'
+		command:          'explore'
 		concurrency_flag: true
-		weighting_flag: true
-		testfile_path: 'datasets/bcw174test'
-		datafile_path: 'datasets/bcw350train'
+		weighting_flag:   true
+		testfile_path:    'datasets/bcw174test'
+		datafile_path:    'datasets/bcw350train'
 	}
 	mut ds := load_file(opts.datafile_path)
 	mut result := explore(ds, opts)

@@ -92,11 +92,10 @@ pub fn cli(cli_options CliOptions) ! {
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
 	mut opts := Options{}
-	mut disp := DisplaySettings{}
 	if cli_options.args == [] {
-		opts, disp = get_options(os.args[1..])
+		opts = get_options(os.args[1..])
 	} else {
-		opts, disp = get_options(cli_options.args)
+		opts = get_options(cli_options.args)
 		opts.missings = cli_options.missings
 		opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
 		// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
@@ -104,22 +103,22 @@ pub fn cli(cli_options CliOptions) ! {
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
-		disp.show_flag = true
+		opts.show_flag = true
 		command := opts.command
 		match command {
-			'analyze' { analyze(opts, disp) }
-			'append' { do_append(opts, disp)! }
-			'cross' { cross(opts, disp) }
-			'display' { do_display(opts, disp) }
+			'analyze' { analyze(opts) }
+			'append' { do_append(opts)! }
+			'cross' { cross(opts) }
+			'display' { do_display(opts) }
 			'examples' { examples()! }
-			'explore' { do_explore(opts, disp) }
-			'make' { make(opts, disp) }
-			'optimals' { do_optimals(opts, disp) }
+			'explore' { do_explore(opts) }
+			'make' { make(opts) }
+			'optimals' { do_optimals(opts) }
 			'orange' { orange() }
-			'query' { do_query(opts, disp)! }
-			'rank' { rank(opts, disp) }
-			'validate' { do_validate(opts, disp)! }
-			'verify' { do_verify(opts, disp)! }
+			'query' { do_query(opts)! }
+			'rank' { rank(opts) }
+			'validate' { do_validate(opts)! }
+			'verify' { do_verify(opts)! }
 			else { println('unrecognized command') }
 		}
 	}
@@ -130,11 +129,11 @@ pub fn cli(cli_options CliOptions) ! {
 }
 
 // get_options fills an Options struct with values from the command line
-fn get_options(args []string) (Options, DisplaySettings) {
+fn get_options(args []string) Options {
 	mut opts := Options{
 		args: args
 	}
-	mut disp := DisplaySettings{}
+
 	if (flag(args, ['-h', '--help', 'help']) && args.len == 2) || args.len <= 1 {
 		opts.help_flag = true
 	}
@@ -184,11 +183,11 @@ fn get_options(args []string) (Options, DisplaySettings) {
 	opts.multiple_classify_options_file_path = option(args, ['-m', '--multiple'])
 	opts.settingsfile_path = option(args, ['-ms'])
 	opts.kagglefile_path = option(args, ['-ka', '--kaggle'])
-	return opts, disp
+	return opts
 }
 
 // show_help
-fn show_help(opts Options, disp DisplaySettings) string {
+fn show_help(opts Options) string {
 	return match opts.command {
 		'rank' { rank_help }
 		'query' { query_help }
@@ -233,78 +232,78 @@ fn flag(args []string, what []string) bool {
 }
 
 // analyze prints out to the console
-fn analyze(opts Options, disp DisplaySettings) {
-	analyze_dataset(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+fn analyze(opts Options) {
+	analyze_dataset(load_file(opts.datafile_path, opts.LoadOptions), opts)
 }
 
 // do_append appends instances in a file, to a classifier in a file specified
 // by flag -k, and (optionally) stores the extended classifier in a file
 // specified by -o. It displays the extended classifier on the console.
-fn do_append(opts Options, disp DisplaySettings) ! {
+fn do_append(opts Options) ! {
 	ext_cl := append_instances(load_classifier_file(opts.classifierfile_path)!, load_instances_file(opts.datafile_path)!,
-		opts, disp)
-	if disp.expanded_flag {
+		opts)
+	if opts.expanded_flag {
 		println(ext_cl)
 	}
 }
 
 // do_display displays information about the contents of a file
 // for classifiers, datasets, or results of operations
-fn do_display(opts Options, disp DisplaySettings) {
-	display_file(opts.datafile_path, opts, disp)
+fn do_display(opts Options) {
+	display_file(opts.datafile_path, opts)
 }
 
-fn get_classifier(opts Options, disp DisplaySettings) !Classifier {
+fn get_classifier(opts Options) !Classifier {
 	if opts.classifierfile_path == '' {
 		mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-		return make_classifier(ds, opts, disp)
+		return make_classifier(ds, opts)
 	}
 	return load_classifier_file(opts.classifierfile_path)!
 }
 
 // query
-fn do_query(opts Options, disp DisplaySettings) ! {
+fn do_query(opts Options) ! {
 	cl := get_classifier(opts)!
-	qr := query(cl, opts, disp)
-	if disp.expanded_flag {
+	qr := query(cl, opts)
+	if opts.expanded_flag {
 		println(qr)
 	}
 }
 
 // verify
-fn do_verify(opts Options, disp DisplaySettings) ! {
+fn do_verify(opts Options) ! {
 	match true {
-		opts.multiple_flag { multi_verify(opts, disp) }
-		opts.one_vs_rest_flag { one_vs_rest_verify(opts, disp) }
-		else { verify(opts, disp) }
+		opts.multiple_flag { multi_verify(opts) }
+		opts.one_vs_rest_flag { one_vs_rest_verify(opts) }
+		else { verify(opts) }
 	}
 }
 
 // validate
-fn do_validate(opts Options, disp DisplaySettings) ! {
+fn do_validate(opts Options) ! {
 	cl := get_classifier(opts)!
-	var := validate(cl, opts, disp)!
-	if disp.expanded_flag {
+	var := validate(cl, opts)!
+	if opts.expanded_flag {
 		println(var)
 	}
 }
 
 // cross
-fn cross(opts Options, disp DisplaySettings) {
+fn cross(opts Options) {
 	mut new_opts := opts
 	new_opts.random_pick = if opts.repetitions > 1 { true } else { false }
 	// println('opts.LoadOptions in cli.v: ${opts.LoadOptions}')
-	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), new_opts, disp)
+	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), new_opts)
 }
 
 // do_explore
-fn do_explore(opts Options, disp DisplaySettings) {
+fn do_explore(opts Options) {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	explore(ds, opts, disp)
+	explore(ds, opts)
 }
 
-fn do_optimals(opts Options, disp DisplaySettings) {
-	optimals(opts.datafile_path, opts, disp)
+fn do_optimals(opts Options) {
+	optimals(opts.datafile_path, opts)
 }
 
 // orange
@@ -315,14 +314,14 @@ fn orange() {
 // capacity to separate the classes, and displays it on the console.
 // Optionally (-e flag) it prints out the RankingResult struct.
 // Optionally (-o flag) it saves the RankingResult struct to a file.
-fn rank(opts Options, disp DisplaySettings) {
+fn rank(opts Options) {
 	mut ra := RankingResult{}
 	if opts.one_vs_rest_flag {
-		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts, disp)
+		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts)
 	} else {
 		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
 	}
-	if disp.expanded_flag {
+	if opts.expanded_flag {
 		println(ra)
 	}
 }
@@ -330,10 +329,10 @@ fn rank(opts Options, disp DisplaySettings) {
 // make generates a Classifier, and displays it on the console.
 // Optionally (-e flag) it prints out the classifier struct.
 // Optionally (-o flag) it saves the classifier file.
-fn make(opts Options, disp DisplaySettings) {
+fn make(opts Options) {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	cl := make_classifier(ds, opts, disp)
-	if disp.expanded_flag {
+	cl := make_classifier(ds, opts)
+	if opts.expanded_flag {
 		println(cl)
 	}
 }

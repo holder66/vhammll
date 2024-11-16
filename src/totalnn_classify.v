@@ -20,7 +20,7 @@ import arrays
 fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
-		Class: classifiers[0].Class
+		Class:         classifiers[0].Class
 	}
 	// println('case in multiple_classifier_classify_totalnn: $case')
 	mut total_nns_by_class := []i64{len: 2}

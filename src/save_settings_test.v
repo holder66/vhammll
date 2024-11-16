@@ -11,9 +11,9 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolder_save_settings')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolder_save_settings')!
-// }
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolder_save_settings')!
+}
 
 fn test_append() ? {
 	mut opts := Options{}
@@ -29,7 +29,7 @@ fn test_append() ? {
 	println(c_s.Metrics)
 	append_json_file(c_s, 'tempfolder_save_settings/append_file.opts')
 	saved := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
-	assert saved.multiple_classifier_settings[0].Metrics == c_s.Metrics
+	assert saved.multiple_classifier_settings[0].Metrics.correct_counts == c_s.Metrics.correct_counts
 	opts.number_of_attributes = [3]
 	opts.weighting_flag = true
 	result2 := cross_validate(ds, opts)

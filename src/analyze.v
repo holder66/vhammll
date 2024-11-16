@@ -17,15 +17,15 @@ import math.stats
 //
 // outputfile_path: if specified, saves the analysis results.
 // ```
-pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeResult {
-	// println('ds in analyze_dataset: $ds')
+pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
+	// println('ds in analyze_dataset: ${ds}')
 	mut result := AnalyzeResult{
-		environment: get_environment()
-		datafile_path: ds.path
-		datafile_type: file_type(ds.path)
-		class_name: ds.class_name
-		class_index: ds.class_index
-		class_counts: ds.class_counts
+		environment:              get_environment()
+		datafile_path:            ds.path
+		datafile_type:            file_type(ds.path)
+		class_name:               ds.class_name
+		class_index:              ds.class_index
+		class_counts:             ds.class_counts
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
@@ -44,16 +44,16 @@ pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeRe
 		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
 
 		mut att_info := Attribute{
-			id: i
-			name: name
-			counts_map: element_counts(ds.data[i])
-			count: ds.data[i].len
-			uniques: uniques_values(ds.data[i])
-			missing: missing_vals[i]
-			raw_type: ds.raw_attribute_types[i]
-			att_type: ds.attribute_types[i]
+			id:            i
+			name:          name
+			counts_map:    element_counts(ds.data[i])
+			count:         ds.data[i].len
+			uniques:       uniques_values(ds.data[i])
+			missing:       missing_vals[i]
+			raw_type:      ds.raw_attribute_types[i]
+			att_type:      ds.attribute_types[i]
 			inferred_type: ds.inferred_attribute_types[i]
-			for_training: i in indices_of_useful_attributes
+			for_training:  i in indices_of_useful_attributes
 		}
 		// println('we are here')
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
@@ -74,12 +74,11 @@ pub fn analyze_dataset(ds Dataset, opts Options, disp DisplaySettings) AnalyzeRe
 		min_values << att_info.min
 	}
 	// println('we are here: ${max_values} ${min_values}')
-
 	result.attributes = atts
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
 	// println('result in analyze_dataset: ${result}')
-	if disp.show_flag {
+	if opts.show_flag {
 		show_analyze(result)
 	}
 	if opts.outputfile_path != '' {

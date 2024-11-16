@@ -16,9 +16,9 @@ fn testsuite_end() ! {
 
 fn test_append() ! {
 	mut opts := Options{
-		command: 'append'
+		command:          'append'
 		concurrency_flag: false
-		weighting_flag: true
+		weighting_flag:   true
 	}
 
 	mut cl := Classifier{}

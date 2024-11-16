@@ -27,12 +27,12 @@ fn test_max_ham_dist() {
 
 fn test_make_classifier() ? {
 	mut opts := Options{
-		bins: [2, 12]
-		exclude_flag: false
-		command: 'make'
+		bins:                 [2, 12]
+		exclude_flag:         false
+		command:              'make'
 		number_of_attributes: [6]
-		weighting_flag: true
-		weight_ranking_flag: true
+		weighting_flag:       true
+		weight_ranking_flag:  true
 	}
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := Classifier{}
@@ -102,13 +102,13 @@ fn test_save_classifier() ? {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 	mut opts := Options{
-		bins: [2, 12]
-		exclude_flag: false
-		command: 'make'
+		bins:                 [2, 12]
+		exclude_flag:         false
+		command:              'make'
 		number_of_attributes: [6]
-		weighting_flag: true
-		weight_ranking_flag: true
-		outputfile_path: 'tempfolder2/classifierfile'
+		weighting_flag:       true
+		weight_ranking_flag:  true
+		outputfile_path:      'tempfolder2/classifierfile'
 	}
 	opts.classifierfile_path = opts.outputfile_path
 

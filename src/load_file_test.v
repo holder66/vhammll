@@ -52,19 +52,20 @@ fn test_load_file() {
 	mut ds := Dataset{}
 	ds = load_file('datasets/developer.tab')
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', 'f', 'X']
-		class_values: ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                 'gender'
+		class_index:                3
+		classes:                    ['m', 'f', 'X']
+		class_values:               ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X',
+			'm']
+		missing_class_values:       []
+		class_counts:               {
 			'm': 8
 			'f': 3
 			'X': 2
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 13
-		postpurge_class_counts: {}
+		lcm_class_counts:           0
+		prepurge_class_values_len:  13
+		postpurge_class_counts:     {}
 		postpurge_lcm_class_counts: 0
 	}
 
@@ -84,40 +85,42 @@ fn test_load_file_with_purging() ! {
 	mut datafile := 'datasets/class_missing_developer.tab'
 	ds = load_file(datafile)
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', '', 'f', 'X', '?']
-		class_values: ['m', 'm', 'm', '', 'f', 'f', 'm', 'X', '?', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                 'gender'
+		class_index:                3
+		classes:                    ['m', '', 'f', 'X', '?']
+		class_values:               ['m', 'm', 'm', '', 'f', 'f', 'm', 'X', '?', 'f', 'm', 'm',
+			'm', 'X', 'm']
+		missing_class_values:       []
+		class_counts:               {
 			'm': 8
 			'':  1
 			'f': 3
 			'X': 2
 			'?': 1
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 15
-		postpurge_class_counts: {}
+		lcm_class_counts:           0
+		prepurge_class_values_len:  15
+		postpurge_class_counts:     {}
 		postpurge_lcm_class_counts: 0
 	}
 
 	// repeat with purging of instances where the class value is missing
 	ds = load_file(datafile, class_missing_purge_flag: true)
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', 'f', 'X']
-		class_values: ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                 'gender'
+		class_index:                3
+		classes:                    ['m', 'f', 'X']
+		class_values:               ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X',
+			'm']
+		missing_class_values:       []
+		class_counts:               {
 			'm': 8
 			'f': 3
 			'X': 2
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 15
-		postpurge_class_counts: {}
+		lcm_class_counts:           0
+		prepurge_class_values_len:  15
+		postpurge_class_counts:     {}
 		postpurge_lcm_class_counts: 0
 	}
 }
@@ -128,7 +131,7 @@ fn test_load_classifier_file() ! {
 	mut tcl := Classifier{}
 	mut opts := Options{
 		outputfile_path: 'tempfolder1/classifierfile'
-		command: 'make' // the make command is necessary to create a proper file
+		command:         'make' // the make command is necessary to create a proper file
 	}
 	opts.bins = [2, 4]
 	opts.number_of_attributes = [4]

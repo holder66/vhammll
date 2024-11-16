@@ -16,9 +16,9 @@ fn testsuite_end() ? {
 
 fn test_validate_save_result() ? {
 	mut opts := Options{
-		command: 'validate'
+		command:          'validate'
 		concurrency_flag: true
-		outputfile_path: 'tempfolder3/instancesfile'
+		outputfile_path:  'tempfolder3/instancesfile'
 	}
 
 	mut result := ValidateResult{}
@@ -30,7 +30,7 @@ fn test_validate_save_result() ? {
 
 fn test_kaggle() ! {
 	mut opts := Options{
-		kagglefile_path: 'tempfolder3/kagglefile'
+		kagglefile_path:  'tempfolder3/kagglefile'
 		concurrency_flag: true
 	}
 	mut result := ValidateResult{}

@@ -24,19 +24,19 @@ module vhammll
 //	used.
 // outputfile_path: saves the result to a file.
 // ```
-pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
+pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// println(opts.classifier_indices)
 	mut ex_opts := opts
 	mut results := ExploreResult{
-		LoadOptions: ds.LoadOptions
-		path: opts.datafile_path
-		testfile_path: opts.testfile_path
-		Parameters: opts.Parameters
-		DisplaySettings: disp
-		AttributeRange: get_attribute_range(opts.number_of_attributes,
+		LoadOptions:     ds.LoadOptions
+		path:            opts.datafile_path
+		testfile_path:   opts.testfile_path
+		Parameters:      opts.Parameters
+		DisplaySettings: opts.DisplaySettings
+		AttributeRange:  get_attribute_range(opts.number_of_attributes,
 			ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len)
 		pos_neg_classes: get_pos_neg_classes(ds.class_counts)
-		args: opts.args
+		args:            opts.args
 	}
 	mut result := CrossVerifyResult{
 		pos_neg_classes: results.pos_neg_classes
@@ -48,7 +48,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 	}
 	results.binning = get_binning(ex_opts.bins)
 	binning := results.binning
-	if opts.command == 'explore' && (disp.show_flag || disp.expanded_flag) {
+	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
 		// show_explore_header(pos_neg_classes, binning, opts)
 		show_explore_header(results, results.DisplaySettings)
 	}
@@ -67,7 +67,7 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 				ex_opts.bins = [1, bin]
 			}
 			if ex_opts.testfile_path == '' {
-				result = cross_validate(ds, ex_opts, disp)
+				result = cross_validate(ds, ex_opts)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
 				result = verify(ex_opts)
@@ -81,17 +81,17 @@ pub fn explore(ds Dataset, opts Options, disp DisplaySettings) ExploreResult {
 		}
 		atts += results.att_interval
 	}
-	println('maximum_hamming_distance in explore: ${results.maximum_hamming_distance}')
+	// println('maximum_hamming_distance in explore: ${results.maximum_hamming_distance}')
 	results.array_of_results = array_of_results
 	// results.analytics = get_explore_analytics(results)
 	if opts.outputfile_path != '' {
 		save_json_file(results, opts.outputfile_path)
 	}
-	if opts.command == 'explore' && (disp.show_flag || disp.expanded_flag) {
+	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_explore_trailer(results, opts)
 	}
 	// println(ds.class_counts.len)
-	if disp.graph_flag {
+	if opts.graph_flag {
 		// println('Just prior to plot_explore')
 		plot_explore(results, opts)
 		// println('Just after plot_explore')
@@ -122,9 +122,9 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 		if i in indices {
 			// println(results.array_of_results[a.idx])
 			append_json_file(ClassifierSettings{
-				Parameters: results.array_of_results[a.idx].Parameters
+				Parameters:    results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
-				Metrics: results.array_of_results[a.idx].Metrics
+				Metrics:       results.array_of_results[a.idx].Metrics
 			}, opts.settingsfile_path)
 		}
 		i += 1
@@ -135,28 +135,28 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 fn get_attribute_range(atts []int, max int) AttributeRange {
 	if atts == [0] {
 		return AttributeRange{
-			start: 1
-			end: max
+			start:        1
+			end:          max
 			att_interval: 1
 		}
 	}
 	if atts.len == 1 {
 		return AttributeRange{
-			start: 1
-			end: atts[0]
+			start:        1
+			end:          atts[0]
 			att_interval: 1
 		}
 	}
 	if atts.len == 2 {
 		return AttributeRange{
-			start: atts[0]
-			end: atts[1]
+			start:        atts[0]
+			end:          atts[1]
 			att_interval: 1
 		}
 	}
 	return AttributeRange{
-		start: atts[0]
-		end: atts[1]
+		start:        atts[0]
+		end:          atts[1]
 		att_interval: atts[2]
 	}
 }

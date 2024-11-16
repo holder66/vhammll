@@ -18,70 +18,77 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder_totalnn')!
 }
 
-// fn test_multiple_classifier_classify_totalnn() {
-// 	mut opts := Options{
-// 		break_on_all_flag: true
-// 		combined_radii_flag: false
-// 		weighting_flag: false
-// 		show_flag: false
-// 		total_nn_counts_flag: true
-// 		command: 'explore'
-// 	}
-// 	mut result := CrossVerifyResult{}
-
-// 	opts.datafile_path = 'datasets/2_class_developer.tab'
-// 	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
-// 	opts.append_settings_flag = true
-// 	opts.weight_ranking_flag = true
-// 	mut ds := load_file(opts.datafile_path)
-// 	mut er := explore(ds, opts)
-// 	opts.command = 'cross'
-// 	disp.verbose_flag = false
-// 	disp.expanded_flag = false
-// 	opts.number_of_attributes = [3]
-// 	opts.bins = [1, 3]
-// 	result = cross_validate(ds, opts)
-// 	opts.multiple_flag = true
-// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	opts.classifier_indices = [2]
-// 	// assert cross_validate(ds, opts).confusion_matrix_map == {
-// 	// 	'm': {
-// 	// 		'm': 8.0
-// 	// 		'f': 1.0
-// 	// 	}
-// 	// 	'f': {
-// 	// 		'm': 1.0
-// 	// 		'f': 3.0
-// 	// 	}
-// 	// }
-// 	opts.classifier_indices = [3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
-// 	opts.classifier_indices = [2, 3]
-// 	// assert cross_validate(ds, opts).confusion_matrix_map == {
-// 	// 	'm': {
-// 	// 		'm': 8.0
-// 	// 		'f': 1.0
-// 	// 	}
-// 	// 	'f': {
-// 	// 		'm': 1.0
-// 	// 		'f': 3.0
-// 	// 	}
-// 	// }
-// }
-
-const verbose = true
-const expanded = true
-
-// test_multiple_verify
-fn test_multiple_verify() ? {
+fn test_multiple_classifier_crossvalidate_totalnn() {
 	mut opts := Options{
-		concurrency_flag: false
-		break_on_all_flag: true
+		break_on_all_flag:    true
+		combined_radii_flag:  false
+		weighting_flag:       false
+		show_flag:            false
 		total_nn_counts_flag: true
-		command: 'verify'
+		command:              'explore'
 	}
 	mut result := CrossVerifyResult{}
 
+	opts.datafile_path = 'datasets/2_class_developer.tab'
+	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
+	opts.append_settings_flag = true
+	opts.weight_ranking_flag = true
+	mut ds := load_file(opts.datafile_path)
+	mut er := explore(ds, opts)
+	assert os.file_size(opts.settingsfile_path) == 4682, 'Settings file too small'
+	// display_file(opts.settingsfile_path, opts)
+
+	opts.multiple_flag = true
+	opts.append_settings_flag = false
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifier_indices = [1]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 8.0
+			'f': 1.0
+		}
+		'f': {
+			'm': 1.0
+			'f': 3.0
+		}
+	}, 'for classifier #1'
+	opts.classifier_indices = [2]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 9.0
+			'f': 0.0
+		}
+		'f': {
+			'm': 2.0
+			'f': 2.0
+		}
+	}, 'for classifier #2'
+	opts.classifier_indices = [2, 3]
+	opts.command = 'cross'
+	// opts.show_flag = true
+	// opts.expanded_flag = true
+	opts.show_attributes_flag = true
+	result_mult := cross_validate(ds, opts)
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 9.0
+			'f': 0.0
+		}
+		'f': {
+			'm': 4.0
+			'f': 0.0
+		}
+	}, 'for classifiers 2 & 3'
+}
+
+fn test_multiple_classifier_verify_totalnn() ? {
+	mut opts := Options{
+		concurrency_flag:     false
+		break_on_all_flag:    true
+		total_nn_counts_flag: true
+		command:              'verify'
+	}
+	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
 	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
@@ -90,11 +97,8 @@ fn test_multiple_verify() ? {
 	opts.bins = [5, 5]
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
-	// check that the non-multiple verify works OK, and that the
-	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
-	// cl := make_classifier(ds, opts)
-	result0 := verify(opts, verbose_flag: vhammll.verbose, expanded_flag: vhammll.expanded)
+	result0 := verify(opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -104,13 +108,13 @@ fn test_multiple_verify() ? {
 			'ALL': 0.0
 			'AML': 14.0
 		}
-	}
+	}, 'verify with 1 attribute and binning [5,5]'
 	opts.bins = [2, 2]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	opts.number_of_attributes = [6]
 	opts.bins = [1, 10]
-	result1 := verify(opts, verbose_flag: false, expanded_flag: false)
+	result1 := verify(opts)
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 20.0
@@ -121,25 +125,36 @@ fn test_multiple_verify() ? {
 			'AML': 9.0
 		}
 	}
-	// verify that the settings file was correctly saved, and
+	// verify that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
-
+	// display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	// result = verify(opts, verbose_flag: verbose, expanded_flag: expanded)
+	opts.append_settings_flag = false
+	opts.show_flag = true
+	// opts.expanded_flag = true
+	opts.show_attributes_flag = true
+	result = multi_verify(opts)
 	// with both classifiers
-	// assert result.confusion_matrix_map == {'ALL': {'ALL': 20.0, 'AML': 0.0}, 'AML': {'ALL': 5.0, 'AML': 9.0}}
-
-	opts.classifier_indices = [0]
-	result = verify(opts, verbose_flag: vhammll.verbose, expanded_flag: vhammll.expanded)
-	// with classifier 0
+	assert result.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 20.0
+			'AML': 0.0
+		}
+		'AML': {
+			'ALL': 4.0
+			'AML': 10.0
+		}
+	}, 'with both classifiers'
+	// // with classifier 0 only
+	// opts.classifier_indices = [0]
+	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-
-	opts.classifier_indices = [1]
-	// result = verify(opts, verbose_flag: verbose, expanded_flag: expanded)
-	// with classifier 1
+	// // with classifier 1
+	// opts.classifier_indices = [1]
+	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
 

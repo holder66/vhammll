@@ -21,7 +21,7 @@ fn main() {
 fn testsuite_begin() ? {
 	os.chdir('..')!
 	mut f := os.create(os.abs_path('') + '/temphelp.v')!
-	f.write_string(vhammll.main_text)!
+	f.write_string(main_text)!
 	f.close()
 
 	os.execute_or_panic('v -keepc run temphelp.v')
@@ -48,7 +48,7 @@ fn test_help() {
 		result := os.execute_or_panic('./temphelp ${flag}')
 		assert result.exit_code == 0
 		// assert result.output.contains('-k --classifier:')
-		for term in vhammll.output_search_terms {
+		for term in output_search_terms {
 			assert result.output.contains(term)
 		}
 	}
@@ -62,7 +62,7 @@ fn test_command_help() {
 		for flag in flags {
 			result := os.execute_or_panic('./temphelp ${command} ${flag}')
 			assert result.exit_code == 0
-			for term in vhammll.output_search_terms {
+			for term in output_search_terms {
 				assert result.output.contains(term)
 			}
 		}

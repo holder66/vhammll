@@ -53,26 +53,26 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		'?': 1
 	}
 	assert pr.attributes[3] == Attribute{
-		id: 3
-		name: 'gender'
-		count: 15
-		counts_map: {
+		id:            3
+		name:          'gender'
+		count:         15
+		counts_map:    {
 			'm': 8
 			'':  1
 			'f': 3
 			'X': 2
 			'?': 1
 		}
-		uniques: 5
-		missing: 2
-		raw_type: 'c'
-		att_type: 'c'
+		uniques:       5
+		missing:       2
+		raw_type:      'c'
+		att_type:      'c'
 		inferred_type: ''
-		for_training: false
-		min: 0.0
-		max: 0.0
-		mean: 0.0
-		median: 0.0
+		for_training:  false
+		min:           0.0
+		max:           0.0
+		mean:          0.0
+		median:        0.0
 	}
 
 	// println(pr)
@@ -89,23 +89,23 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		'X': 2
 	}
 	assert pr.attributes[3] == Attribute{
-		id: 3
-		name: 'gender'
-		count: 13
-		counts_map: {
+		id:            3
+		name:          'gender'
+		count:         13
+		counts_map:    {
 			'm': 8
 			'f': 3
 			'X': 2
 		}
-		uniques: 3
-		missing: 0
-		raw_type: 'c'
-		att_type: 'c'
+		uniques:       3
+		missing:       0
+		raw_type:      'c'
+		att_type:      'c'
 		inferred_type: ''
-		for_training: false
-		min: 0.0
-		max: 0.0
-		mean: 0.0
-		median: 0.0
+		for_training:  false
+		min:           0.0
+		max:           0.0
+		mean:          0.0
+		median:        0.0
 	}
 }

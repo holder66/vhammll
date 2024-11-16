@@ -31,20 +31,20 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 	// instantiate a struct for the result
 	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
-		LoadOptions: opts.LoadOptions
-		Parameters: opts.Parameters
-		DisplaySettings: disp
-		MultipleOptions: opts.MultipleOptions
-		MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
-		datafile_path: opts.datafile_path
-		testfile_path: opts.testfile_path
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     disp
+		MultipleOptions:                     opts.MultipleOptions
+		MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
+		datafile_path:                       opts.datafile_path
+		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		labeled_classes: test_ds.class_values
-		actual_classes: test_ds.class_values
-		class_counts: test_ds.class_counts
-		classes: test_ds.classes
-		pos_neg_classes: get_pos_neg_classes(test_ds.class_counts)
-		confusion_matrix_map: confusion_matrix_map
+		labeled_classes:                     test_ds.class_values
+		actual_classes:                      test_ds.class_values
+		class_counts:                        test_ds.class_counts
+		classes:                             test_ds.classes
+		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
+		confusion_matrix_map:                confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
@@ -74,7 +74,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 		one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
 		// one_vs_rest_ds.data = purge_array(ds.data, class_cases)
 		// println('one_vs_rest_ds in one_vs_rest_verify: $one_vs_rest_ds')
-		mut one_vs_rest_cl := make_classifier(one_vs_rest_ds, opts, disp)
+		mut one_vs_rest_cl := make_classifier(one_vs_rest_ds, opts)
 		// println('one_vs_rest_cl in one_vs_rest_verify: $one_vs_rest_cl')
 		one_vs_rest_cl_array << one_vs_rest_cl
 	}
@@ -203,7 +203,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 	// verify_result.command = 'verify'
 	// println('verify_result: $verify_result')
 	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
-		show_verify(verify_result, opts, disp)
+		show_verify(verify_result, opts)
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'

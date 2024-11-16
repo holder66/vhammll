@@ -2,10 +2,10 @@
 
 module vhammll
 
-fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
+fn multi_verify(opts Options) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
-	println('classes in multi_verify: ${test_ds.classes}')
+	// println('classes in multi_verify: ${test_ds.classes}')
 	mut confusion_matrix_map := map[string]map[string]f64{}
 	// for each class, instantiate an entry in the confusion matrix map
 	for key1, _ in test_ds.class_counts {
@@ -15,19 +15,19 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	}
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
-		LoadOptions: opts.LoadOptions
-		Parameters: opts.Parameters
-		DisplaySettings: disp
+		LoadOptions:     opts.LoadOptions
+		Parameters:      opts.Parameters
+		DisplaySettings: opts.DisplaySettings
 		MultipleOptions: opts.MultipleOptions
 		// MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
-		datafile_path: opts.datafile_path
-		testfile_path: opts.testfile_path
+		datafile_path:                       opts.datafile_path
+		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		labeled_classes: test_ds.class_values
-		class_counts: test_ds.class_counts
-		classes: test_ds.classes
-		pos_neg_classes: get_pos_neg_classes(test_ds.class_counts)
-		confusion_matrix_map: confusion_matrix_map
+		labeled_classes:                     test_ds.class_values
+		class_counts:                        test_ds.class_counts
+		classes:                             test_ds.classes
+		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
+		confusion_matrix_map:                confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
@@ -45,7 +45,7 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		mult_opts.classifier_indices = []int{len: settings_array.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
-	println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
+	// println('verify_result.classifier_indices in multi_verify: ${verify_result.classifier_indices}')
 	// println('classifier_settings.multiple_classifier_settings.len in multi_verify: ${classifier_settings.multiple_classifier_settings.len}')
 	for ci in mult_opts.classifier_indices {
 		mult_opts.multiple_classifier_settings << settings_array[ci]
@@ -54,7 +54,9 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	for i, _ in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
+		mult_opts.multiple_flag = true
 		verify_result.Parameters = params
+		verify_result.multiple_flag = true
 		// println('verify_result.Parameters in multi_verify: $verify_result.Parameters')
 		// println('mult_opts in multi_verify: $mult_opts')
 		classifier := make_classifier(ds, mult_opts)
@@ -75,21 +77,19 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	mult_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
 	mult_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
 
-	if disp.verbose_flag && opts.total_nn_counts_flag {
+	if opts.verbose_flag && opts.total_nn_counts_flag {
 		println('maximum_hamming_distance_array: ${mult_opts.maximum_hamming_distance_array}')
 		println('total_max_ham_dist: ${mult_opts.total_max_ham_dist}')
 		println('lcm_max_ham_dist: ${mult_opts.lcm_max_ham_dist}')
 	}
 	for i, case in cases {
-		if disp.verbose_flag {
+		if opts.verbose_flag {
 			println('\ncase: ${i:-7}  ${case}   classes: ${classifier_array[0].classes.join(' | ')}')
 		}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(classifier_array, case, [''], mult_opts,
-				disp)
+			multiple_classifier_classify_totalnn(classifier_array, case, [''], mult_opts)
 		} else {
-			multiple_classifier_classify(classifier_array, case, test_ds.classes, mult_opts,
-				disp)
+			multiple_classifier_classify(classifier_array, case, test_ds.classes, mult_opts)
 		}
 		// println('m_classify_result: $m_classify_result.inferred_class')
 		verify_result.inferred_classes << m_classify_result.inferred_class
@@ -111,8 +111,8 @@ fn multi_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		verify_result.BinaryMetrics = get_binary_stats(verify_result)
 	}
 
-	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
-		show_verify(verify_result, mult_opts, disp)
+	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
+		show_verify(verify_result, mult_opts)
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'

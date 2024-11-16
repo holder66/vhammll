@@ -19,20 +19,18 @@ fn testsuite_end() ? {
 }
 
 fn test_oxford_crossvalidate() {
-	mut disp := DisplaySettings{
-		verbose_flag: true
-		expanded_flag: true
-	}
 	mut opts := Options{
 		command: 'cross'
 		// concurrency_flag: true
-		datafile_path: '/Users/henryolders/Oxford-train.tab'
+		datafile_path:        '/Users/henryolders/Oxford-train.tab'
 		number_of_attributes: [8]
-		bins: [1, 2]
-		purge_flag: false
-		weighting_flag: true
-		weight_ranking_flag: true
-		settingsfile_path: '/Users/henryolders/use_vhammll/oxford2024-1-27.opts'
+		bins:                 [1, 2]
+		purge_flag:           false
+		weighting_flag:       true
+		weight_ranking_flag:  true
+		settingsfile_path:    '/Users/henryolders/use_vhammll/oxford2024-1-27.opts'
+		verbose_flag:         true
+		expanded_flag:        true
 	}
 	mut result := CrossVerifyResult{}
 	display_file(opts.settingsfile_path, opts)
@@ -54,7 +52,7 @@ fn test_oxford_crossvalidate() {
 	opts.classifier_indices = [3, 6, 12]
 	// result = cross_validate(ds, opts, disp)
 	opts.break_on_all_flag = true
-	result = cross_validate(ds, opts, disp)
+	result = cross_validate(ds, opts)
 }
 
 // fn test_multiple_crossvalidate() ? {

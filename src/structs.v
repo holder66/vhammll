@@ -150,6 +150,7 @@ pub mut:
 	weighting_flag           bool
 	weight_ranking_flag      bool
 	one_vs_rest_flag         bool
+	multiple_flag            bool
 	folds                    int
 	repetitions              int
 	random_pick              bool
@@ -197,11 +198,11 @@ pub mut:
 	multiple_classify_options_file_path string
 	settingsfile_path                   string
 	help_flag                           bool
-	multiple_flag                       bool
-	append_settings_flag                bool
-	command                             string
-	args                                []string
-	kagglefile_path                     string
+	// multiple_flag                       bool
+	append_settings_flag bool
+	command              string
+	args                 []string
+	kagglefile_path      string
 }
 
 pub struct MultipleClassifierSettingsArray {

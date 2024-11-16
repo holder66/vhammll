@@ -14,7 +14,7 @@ fn main() {
 fn testsuite_begin() ? {
 	os.chdir('..')!
 	mut f := os.create(os.abs_path('') + '/temp.v')!
-	f.write_string(vhammll.main_text)!
+	f.write_string(main_text)!
 	f.close()
 
 	os.execute_or_panic('v -keepc run temp.v')

@@ -21,7 +21,7 @@ module vhammll
 // ```
 fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) ClassifyResult {
 	mut result := ClassifyResult{
-		classes: cl.classes
+		classes:        cl.classes
 		weighting_flag: cl.weighting_flag
 	}
 	// to classify, get Hamming distances between the case to be classified and

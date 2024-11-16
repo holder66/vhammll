@@ -42,8 +42,10 @@ fn test_display_multiple_options() ? {
 	assert os.file_size('tempfolder_display/bcw.opts') >= 416
 	append_json_file(settings2, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 832
-	mut opts := Options{}
-	display_file('tempfolder_display/bcw.opts', opts, expanded_flag: true)
+	mut opts := Options{
+		show_flag: true
+	}
+	display_file('tempfolder_display/bcw.opts', opts)
 }
 
 fn test_display_classifier() ? {
@@ -52,6 +54,7 @@ fn test_display_classifier() ? {
 		command:              'make'
 		bins:                 [3, 10]
 		number_of_attributes: [8]
+		show_flag:            true
 	}
 	opts.outputfile_path = 'tempfolder_display/classifierfile'
 	mut ds := load_file('datasets/developer.tab')
@@ -64,6 +67,7 @@ fn test_display_analyze_result() ? {
 	mut opts := Options{
 		command:         'analyze'
 		outputfile_path: 'tempfolder_display/analyze_result'
+		show_flag:       true
 	}
 	_ = analyze_dataset(load_file('datasets/UCI/anneal.arff'), opts)
 	display_file(opts.outputfile_path, opts)
@@ -74,6 +78,7 @@ fn test_display_ranking_result() ? {
 	mut opts := Options{
 		command:         'rank'
 		outputfile_path: 'tempfolder_display/rank_result'
+		show_flag:       true
 	}
 	_ = rank_attributes(load_file('datasets/UCI/anneal.arff'), opts)
 	display_file(opts.outputfile_path, opts)
@@ -82,7 +87,8 @@ fn test_display_ranking_result() ? {
 fn test_display_validate_result() ? {
 	// validate a dataset file, save the result, then display
 	mut opts := Options{
-		command: 'make'
+		command:   'make'
+		show_flag: true
 	}
 	opts.datafile_path = 'datasets/bcw350train'
 	mut ds := load_file(opts.datafile_path)
@@ -102,6 +108,7 @@ fn test_display_verify_result() ? {
 		command:              'verify'
 		number_of_attributes: [5]
 		concurrency_flag:     true
+		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
 
@@ -110,7 +117,7 @@ fn test_display_verify_result() ? {
 	_ = verify(opts)
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
 }
 
 fn test_display_cross_result() ? {
@@ -123,6 +130,7 @@ fn test_display_cross_result() ? {
 		repetitions:          0
 		random_pick:          false
 		concurrency_flag:     true
+		show_flag:            true
 	}
 	ds := load_file('datasets/UCI/segment.arff')
 	opts.outputfile_path = 'tempfolder_display/cross_result'
@@ -132,7 +140,7 @@ fn test_display_cross_result() ? {
 	opts.repetitions = 10
 	opts.random_pick = true
 	_ = cross_validate(ds, opts)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
 	println('Done for test_display_cross_result')
 }
 
@@ -144,34 +152,37 @@ fn test_display_explore_result_cross() ? {
 		number_of_attributes: [2, 3]
 		concurrency_flag:     true
 		outputfile_path:      'tempfolder_display/explore_result'
+		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
+	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat for a binary class dataset
 	opts.number_of_attributes = [0]
 	opts.datafile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
+	opts.expanded_flag = true
+	opts.graph_flag = true
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true, graph_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 }
 
 fn test_display_explore_result_verify() ? {
@@ -183,17 +194,18 @@ fn test_display_explore_result_verify() ? {
 		number_of_attributes: [12, 15]
 		concurrency_flag:     true
 		outputfile_path:      'tempfolder_display/explore_result'
+		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(ds, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	_ = explore(ds, opts)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat for a binary class dataset
 	opts.datafile_path = 'datasets/bcw350train'
@@ -202,12 +214,12 @@ fn test_display_explore_result_verify() ? {
 	opts.number_of_attributes = [0]
 	ds = load_file(opts.datafile_path)
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts, show_flag: true)
-	display_file(opts.outputfile_path, opts, expanded_flag: true)
+	display_file(opts.outputfile_path, opts)
+	display_file(opts.outputfile_path, opts)
 }

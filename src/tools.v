@@ -481,28 +481,28 @@ fn idxs_max[T](a []T) []int {
 fn get_binning(bins []int) Binning {
 	if bins == [0] {
 		return Binning{
-			lower: 0
-			upper: 0
+			lower:    0
+			upper:    0
 			interval: 1
 		}
 	}
 	if bins.len == 1 {
 		return Binning{
-			lower: 1
-			upper: bins[0]
+			lower:    1
+			upper:    bins[0]
 			interval: 1
 		}
 	}
 	if bins.len == 2 {
 		return Binning{
-			lower: bins[0]
-			upper: bins[1]
+			lower:    bins[0]
+			upper:    bins[1]
 			interval: 1
 		}
 	}
 	return Binning{
-		lower: bins[0]
-		upper: bins[1]
+		lower:    bins[0]
+		upper:    bins[1]
 		interval: bins[2]
 	}
 }
@@ -560,7 +560,7 @@ struct Styles {
 }
 
 const m_u = Styles{
-	fg: 'magenta'
+	fg:    'magenta'
 	style: 'underline'
 }
 const lg = Styles{
@@ -570,18 +570,18 @@ const m_ = Styles{
 	fg: 'magenta'
 }
 const g_b = Styles{
-	fg: 'green'
+	fg:    'green'
 	style: 'bold'
 }
 const b_u = Styles{
-	fg: 'blue'
+	fg:    'blue'
 	style: 'underline'
 }
 const dg = Styles{
 	fg: 'dark_gray'
 }
 const c_u = Styles{
-	fg: 'cyan'
+	fg:    'cyan'
 	style: 'underline'
 }
 const r_ = Styles{
@@ -600,8 +600,8 @@ const c_ = Styles{
 	fg: 'cyan'
 }
 const rgb = Styles{
-	fg: 'red'
-	bg: 'green'
+	fg:    'red'
+	bg:    'green'
 	style: 'bold'
 }
 
@@ -620,55 +620,55 @@ fn chlk(s string, style_code Styles) string {
 }
 
 fn c(s string) string {
-	return chlk(s, vhammll.c_)
+	return chlk(s, c_)
 }
 
 fn m_u(s string) string {
-	return chlk(s, vhammll.m_u)
+	return chlk(s, m_u)
 }
 
 fn lg(s string) string {
-	return chlk(s, vhammll.lg)
+	return chlk(s, lg)
 }
 
 fn m(s string) string {
-	return chlk(s, vhammll.m_)
+	return chlk(s, m_)
 }
 
 fn g_b(s string) string {
-	return chlk(s, vhammll.g_b)
+	return chlk(s, g_b)
 }
 
 fn b_u(s string) string {
-	return chlk(s, vhammll.b_u)
+	return chlk(s, b_u)
 }
 
 fn dg(s string) string {
-	return chlk(s, vhammll.dg)
+	return chlk(s, dg)
 }
 
 fn c_u(s string) string {
-	return chlk(s, vhammll.c_u)
+	return chlk(s, c_u)
 }
 
 fn r(s string) string {
-	return chlk(s, vhammll.r_)
+	return chlk(s, r_)
 }
 
 fn b(s string) string {
-	return chlk(s, vhammll.b_)
+	return chlk(s, b_)
 }
 
 fn g(s string) string {
-	return chlk(s, vhammll.g_)
+	return chlk(s, g_)
 }
 
 fn y(s string) string {
-	return chlk(s, vhammll.y_)
+	return chlk(s, y_)
 }
 
 fn rgb(s string) string {
-	return chlk(s, vhammll.rgb)
+	return chlk(s, rgb)
 }
 
 // purge_array filters an array of generic types, removing those elements

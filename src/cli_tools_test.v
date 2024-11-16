@@ -1,4 +1,4 @@
-// cli_functions_test.v
+// cli_tools_test.v
 module vhammll
 
 fn test_flag() {
@@ -18,23 +18,23 @@ fn test_option() {
 }
 
 fn test_get_options() ? {
-	mut opts, mut disp := get_options(['garbage', 'more garbage'])
+	mut opts := get_options(['garbage', 'more garbage'])
 	assert opts.args == ['garbage', 'more garbage']
-	assert disp == DisplaySettings{
-		show_flag: false
-		expanded_flag: false
-		graph_flag: false
-		verbose_flag: false
-	}
-	opts, disp = get_options(['explore', '-h'])
+
+	assert !opts.show_flag
+	assert !opts.expanded_flag
+	assert !opts.graph_flag
+	assert !opts.verbose_flag
+
+	opts = get_options(['explore', '-h'])
 	assert opts.command == 'explore'
-	opts, disp = get_options(['--bins', '4,6'])
+	opts = get_options(['--bins', '4,6'])
 	assert opts.bins == [4, 6]
-	opts, disp = get_options(['-v', '-e'])
-	assert disp.verbose_flag
-	assert disp.expanded_flag
-	assert !disp.graph_flag
-	assert !disp.show_flag
+	opts = get_options(['-v', '-e'])
+	assert opts.verbose_flag
+	assert opts.expanded_flag
+	assert !opts.graph_flag
+	assert !opts.show_flag
 }
 
 fn test_show_help() ? {

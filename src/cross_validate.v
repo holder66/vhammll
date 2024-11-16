@@ -29,7 +29,8 @@ import rand
 // 	a confusion matrix.
 // outputfile_path: saves the result as a json file.
 // ```
-pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerifyResult {
+pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
+	disp := opts.DisplaySettings
 	// println('disp in cross_validate: $disp')
 	// println('ds.class_counts in cross_validate.v: ${ds.class_counts}')
 	// to sort out what is going on, run the test file with concurrency off.
@@ -51,27 +52,28 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		inferences_map[key] = 0
 	}
 	mut cross_result := CrossVerifyResult{
-		Parameters: cross_opts.Parameters
-		LoadOptions: cross_opts.LoadOptions
-		DisplaySettings: disp
+		Parameters:      cross_opts.Parameters
+		LoadOptions:     cross_opts.LoadOptions
+		DisplaySettings: opts.DisplaySettings
 		MultipleOptions: cross_opts.MultipleOptions
 		// MultipleClassifierSettingsArray: cross_opts.MultipleClassifierSettingsArray
-		datafile_path: ds.path
+		datafile_path:                       ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
-		labeled_classes: ds.class_values
-		class_counts: ds.class_counts
-		classes: ds.classes
-		pos_neg_classes: get_pos_neg_classes(ds.class_counts)
-		confusion_matrix_map: confusion_matrix_map
-		correct_inferences: inferences_map.clone()
-		incorrect_inferences: inferences_map.clone()
-		wrong_inferences: inferences_map.clone()
-		true_positives: inferences_map.clone()
-		true_negatives: inferences_map.clone()
-		false_positives: inferences_map.clone()
-		false_negatives: inferences_map.clone()
+		labeled_classes:                     ds.class_values
+		class_counts:                        ds.class_counts
+		classes:                             ds.classes
+		pos_neg_classes:                     get_pos_neg_classes(ds.class_counts)
+		confusion_matrix_map:                confusion_matrix_map
+		correct_inferences:                  inferences_map.clone()
+		incorrect_inferences:                inferences_map.clone()
+		wrong_inferences:                    inferences_map.clone()
+		true_positives:                      inferences_map.clone()
+		true_negatives:                      inferences_map.clone()
+		false_positives:                     inferences_map.clone()
+		false_negatives:                     inferences_map.clone()
 	}
 	if opts.multiple_flag {
+		// println('yes! opts.multiple flag is set')
 		// disable concurrency, as not implemented for multiple classifiers
 		cross_opts.concurrency_flag = false
 		mut classifier_array := []Classifier{}
@@ -100,6 +102,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		}
 		for i, _ in cross_opts.classifier_indices {
 			mut params := cross_opts.multiple_classifier_settings[i].Parameters
+			params.multiple_flag = true
 			cross_opts.Parameters = params
 			cross_result.Parameters = params
 			// cross_result.MultipleClassifierSettingsArray.multiple_classifier_settings << cross_opts.MultipleClassifierSettingsArray.multiple_classifier_settings[i]
@@ -121,7 +124,7 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 		cross_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
 		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
 
-		if disp.verbose_flag {
+		if opts.verbose_flag {
 			println('cross_opts in cross_validate.v: ${cross_opts}')
 		}
 	}
@@ -165,9 +168,10 @@ pub fn cross_validate(ds Dataset, opts Options, disp DisplaySettings) CrossVerif
 	if cross_result.pos_neg_classes.len == 2 {
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
-	if opts.command == 'cross' && (disp.show_flag || disp.expanded_flag) {
+
+	if opts.command == 'cross' && (opts.show_flag || opts.expanded_flag) {
 		// cross_result.MultipleClassifierSettingsArray = cross_opts.MultipleClassifierSettingsArray
-		show_crossvalidation(cross_result, cross_opts, disp)
+		show_crossvalidation(cross_result, cross_opts)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file(cross_result, opts.outputfile_path)
@@ -183,9 +187,9 @@ fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp Di
 	// println('opts in append_cross_settings_to_file: $opts')
 	// println('result in append_cross_settings_to_file: $result')
 	append_json_file(ClassifierSettings{
-		Parameters: result.Parameters
+		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
-		Metrics: result.Metrics
+		Metrics:       result.Metrics
 	}, opts.settingsfile_path)
 }
 
@@ -330,7 +334,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	mut part_ds, fold := partition(pick_list, current_fold, folds, ds, cross_opts)
 	// println('fold in do_one_fold: $fold')
 	mut fold_result := CrossVerifyResult{
-		labeled_classes: fold.class_values
+		labeled_classes:  fold.class_values
 		instance_indices: fold.indices
 	}
 	if disp.verbose_flag {

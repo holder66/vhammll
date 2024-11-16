@@ -70,7 +70,7 @@ fn main() {
 					opts.purge_flag = p
 					for bp in ft {
 						opts.balance_prevalences_flag = bp
-						_ := vhammll.explore(ds, opts, expanded_flag: true)
+						_ := vhammll.explore(ds, opts)
 					}
 				}
 			}

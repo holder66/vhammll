@@ -23,13 +23,13 @@ fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Opti
 	part_ds.useful_discrete_attributes = get_useful_discrete_attributes(part_ds)
 
 	mut fold := Fold{
-		fold_number: current_fold
+		fold_number:     current_fold
 		attribute_names: ds.attribute_names
-		indices: fold_indices
-		data: transpose(get_index_items(transpose(ds.data), fold_indices))
-		class_name: ds.class_name
-		class_values: fold_class_values
-		class_counts: element_counts(fold_class_values)
+		indices:         fold_indices
+		data:            transpose(get_index_items(transpose(ds.data), fold_indices))
+		class_name:      ds.class_name
+		class_values:    fold_class_values
+		class_counts:    element_counts(fold_class_values)
 	}
 	return part_ds, fold
 }

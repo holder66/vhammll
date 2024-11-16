@@ -26,17 +26,17 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 	mut test_ds := load_file(opts.testfile_path)
 	// instantiate a struct for the result
 	mut validate_result := ValidateResult{
-		LoadOptions: cl.LoadOptions
-		struct_type: '.ValidateResult'
-		inferred_classes: []string{}
-		validate_file_path: opts.testfile_path
-		datafile_path: opts.datafile_path
-		exclude_flag: opts.exclude_flag
-		purge_flag: opts.purge_flag
-		weighting_flag: opts.weighting_flag
-		number_of_attributes: opts.number_of_attributes
-		binning: cl.binning
-		classifier_instances_counts: [cl.history[0].instances_count]
+		LoadOptions:                     cl.LoadOptions
+		struct_type:                     '.ValidateResult'
+		inferred_classes:                []string{}
+		validate_file_path:              opts.testfile_path
+		datafile_path:                   opts.datafile_path
+		exclude_flag:                    opts.exclude_flag
+		purge_flag:                      opts.purge_flag
+		weighting_flag:                  opts.weighting_flag
+		number_of_attributes:            opts.number_of_attributes
+		binning:                         cl.binning
+		classifier_instances_counts:     [cl.history[0].instances_count]
 		prepurge_instances_counts_array: [cl.history[0].prepurge_instances_count]
 	}
 	// for each usable attribute in cl, massage the equivalent test_ds attribute

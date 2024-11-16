@@ -17,7 +17,8 @@ import runtime
 // 		a confusion matrix.
 // outputfile_path: saves the result as a json file
 // ```
-pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
+pub fn verify(opts Options) CrossVerifyResult {
+	// println(opts.MultipleOptions)
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -30,19 +31,19 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// instantiate a struct for the result
 	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
-		LoadOptions: opts.LoadOptions
-		Parameters: opts.Parameters
-		DisplaySettings: disp
-		MultipleOptions: opts.MultipleOptions
-		MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
-		datafile_path: opts.datafile_path
-		testfile_path: opts.testfile_path
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
+		MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
+		datafile_path:                       opts.datafile_path
+		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		labeled_classes: test_ds.class_values
-		class_counts: test_ds.class_counts
-		classes: test_ds.classes
-		pos_neg_classes: get_pos_neg_classes(test_ds.class_counts)
-		confusion_matrix_map: confusion_matrix_map
+		labeled_classes:                     test_ds.class_values
+		class_counts:                        test_ds.class_counts
+		classes:                             test_ds.classes
+		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
+		confusion_matrix_map:                confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
@@ -50,7 +51,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
-		cl = make_classifier(ds, opts, disp)
+		cl = make_classifier(ds, opts)
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
@@ -60,7 +61,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	case := generate_case_array(cl, test_ds)
 	// println(opts)
 	// for the instances in the test data, perform classifications
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('cl.classes in verify: ${cl.classes}')
 	}
 	// verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
@@ -72,12 +73,12 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		for i, _ in case {
 			work_channel <- i
 			spawn option_worker_verify(work_channel, result_channel, cl, case, verify_result.labeled_classes,
-				opts, disp)
+				opts)
 		}
 		for i, _ in case {
 			classify_result = <-result_channel
 			// println(classify_result)
-			if disp.verbose_flag {
+			if opts.verbose_flag {
 				verbose_result(i, cl, classify_result)
 			}
 			verify_result.inferred_classes << classify_result.inferred_class
@@ -86,12 +87,12 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 		}
 	} else {
 		for i, test_instance in case {
-			classify_result = classify_case(cl, test_instance, opts, disp)
+			classify_result = classify_case(cl, test_instance, opts)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			verify_result.inferred_classes << classify_result.inferred_class
 			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 			verify_result.actual_classes << verify_result.labeled_classes[i]
-			if disp.verbose_flag {
+			if opts.verbose_flag {
 				verbose_result(i, cl, classify_result)
 			}
 		}
@@ -99,7 +100,7 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 	// println('verify_result.labeled_classes in verify: ${verify_result.labeled_classes}')
 	verify_result.classifier_instances_counts << cl.history[0].instances_count
 	verify_result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
-	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
 	verify_result = summarize_results(1, mut verify_result)
@@ -158,8 +159,8 @@ pub fn verify(opts Options, disp DisplaySettings) CrossVerifyResult {
 
 	// verify_result.command = 'verify'
 	// println('verify_result: $verify_result')
-	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
-		show_verify(verify_result, opts, disp)
+	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
+		show_verify(verify_result, opts)
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'
@@ -239,18 +240,18 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 // 			result.inferred_classes << classify_result.inferred_class
 // 			result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 // 			result.actual_classes << result.labeled_classes[i]
-// 			if disp.verbose_flag {
+// 			if opts.verbose_flag {
 // 				verbose_result(i, cl, classify_result)
 // 			}
 // 		}
 // 	}
 // 	result.classifier_instances_counts << cl.history[0].instances_count
 // 	result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
-// 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+// 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 // 	// 	println('result in classify_to_verify(): ${result}')
 // 	// }
 // 	result = summarize_results(1, mut result)
-// 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
+// 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 // 	// 	println('summarize_result: ${result}')
 // 	// }
 // 	return result
