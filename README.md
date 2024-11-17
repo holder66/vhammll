@@ -42,6 +42,13 @@ make
 sudo ./v symlink	# add v to your PATH
 v install holder66.vhammll
 ```
+On older macs, if the `make` process fails, you may need to also do:
+```sh
+brew install bdw-gc    # you will need to have homebrew installed
+cp /usr/local/Cellar/bdw-gc/8.2.8/lib/libgc.a  .thirdparty/tcc/lib/libgc.a  # use the version number of the just-installed bdw-gc
+```
+Then repeat the `make` in the v directory.
+
 See above re needed dependencies.
 
 In a folder or directory that you want to use for your project, you will need to create a file with module `main`, and a function `main()`.
