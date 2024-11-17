@@ -18,7 +18,7 @@ module vhammll
 // 		a confusion matrix.
 // outputfile_path: saves the result as a json file
 // ```
-pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult {
+pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -33,7 +33,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
 		Parameters:                          opts.Parameters
-		DisplaySettings:                     disp
+		DisplaySettings:                     opts.DisplaySettings
 		MultipleOptions:                     opts.MultipleOptions
 		MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
 		datafile_path:                       opts.datafile_path
@@ -95,7 +95,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 		// println('cases in one_vs_rest_verify: $cases')
 		for j, case in cases {
 			// println('classify_result: ${classify_case(classifier, case, opts, disp).inferred_class}')
-			inf_class := classify_case(classifier, case, opts, disp).inferred_class
+			inf_class := classify_case(classifier, case, opts).inferred_class
 			if !inf_class.contains('not_') {
 				inferred_classes[j] = inf_class
 			}
@@ -105,7 +105,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 	verify_result.inferred_classes = inferred_classes
 	// println(opts)
 	// for the instances in the test data, perform classifications
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('cl.classes in verify: ${cl.classes}')
 	}
 	// verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
@@ -202,7 +202,7 @@ pub fn one_vs_rest_verify(opts Options, disp DisplaySettings) CrossVerifyResult 
 
 	// verify_result.command = 'verify'
 	// println('verify_result: $verify_result')
-	if opts.command == 'verify' && (disp.show_flag || disp.expanded_flag) {
+	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
 		show_verify(verify_result, opts)
 	}
 	if opts.outputfile_path != '' {

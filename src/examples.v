@@ -36,7 +36,7 @@ fn examples() ! {
 
 	// rank
 	before = 'The rank command is for discovering which attributes are the most useful: \nv run . rank --show --graph ~/.vmodules/holder66/vhammll/datasets/anneal.tab , or '
-	cmd = 'v run . rank -s -g ~/.vmodules/holder66/vhammll/datasets/anneal.tab'
+	cmd = 'v run . rank -s ~/.vmodules/holder66/vhammll/datasets/anneal.tab'
 	after = 'Please note that the -g or --graph flag resulted in a plot being displayed in your web browser.'
 	run_example(before, after, cmd)!
 
@@ -94,28 +94,28 @@ Let's look at cross-validation first:"
 	run_example(before, after, cmd)!
 
 	before = 'The explore command allows us to run a series of cross-validations or verifications on a dataset while varying the number of attributes and the number of bins used for continuous attributes. This allows us to find which parameter values give good classification accuracy for our use case. For datasets with continuous attributes, specify the binning range (eg, from 3 through 30 bins, stepping by 3):'
-	cmd = 'v run . explore -s -g -c -w --bins 3,30,3 ~/.vmodules/holder66/vhammll/datasets/iris.tab'
+	cmd = 'v run . explore -s  -c -w --bins 3,30,3 ~/.vmodules/holder66/vhammll/datasets/iris.tab'
 	run_example(before, after, cmd)!
 
 	before = 'To use the same number of bins for each attribute, add the -u or --uniform flag:'
-	cmd = 'v run . explore -s -g -c -w -b 3,30,3 -u ~/.vmodules/holder66/vhammll/datasets/iris.tab'
+	cmd = 'v run . explore -s  -c -w -b 3,30,3 -u ~/.vmodules/holder66/vhammll/datasets/iris.tab'
 	run_example(before, after, cmd)!
 
 	before = 'A consequence of binning of continous attributes is that more instances are duplicates of other instances. In general, deleting these duplicate instances when building a classifier (by specifying the -p or --purge flag) has minimal effects on classification accuracy. In some cases, accuracy may improve! In any case, by deleting duplicate instances, the final classifier will have a tinier memory footprint and classification will take less processing time:'
-	cmd = 'v run . explore -s -g -c -w -b 3,30,3 -u -p ~/.vmodules/holder66/vhammll/datasets/iris.tab'
+	cmd = 'v run . explore -s  -c -w -b 3,30,3 -u -p ~/.vmodules/holder66/vhammll/datasets/iris.tab'
 	run_example(before, after, cmd)!
 
 	before = 'When there are only two classes, the -e flag give additional accuracy measures, and the -g flag generates Receiver Operating Characteristic plots:'
-	cmd = 'v run . explore -e -g -c -w ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+	cmd = 'v run . explore -e  -c -w ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 '
 	run_example(before, after, cmd)!
 
 	before = 'To specify how the number of attributes should be varied (eg, from 2 through 8 attributes, inclusive, stepping by 2):'
-	cmd = 'v run . explore -e -g -c -w --attributes 2,8,2 ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab'
+	cmd = 'v run . explore -e  -c -w --attributes 2,8,2 ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab'
 	run_example(before, after, cmd)!
 
 	before = 'Explore also works in verification mode; simply specify a test dataset with the -t or --test flag:'
-	cmd = 'v run . explore  -g -c -u -w -t ~/.vmodules/holder66/vhammll/datasets/vowel-test.tab ~/.vmodules/holder66/vhammll/datasets/vowel-train.tab'
+	cmd = 'v run . explore   -c -u -w -t ~/.vmodules/holder66/vhammll/datasets/vowel-test.tab ~/.vmodules/holder66/vhammll/datasets/vowel-train.tab'
 	run_example(before, after, cmd)!
 
 	before = 'Once you have settled on parameter values that will be optimal for your use case, you can generate a classifier and save it to a file, which you specify with the -o or --output option:'
@@ -148,19 +148,21 @@ Let's look at cross-validation first:"
 
 	before = 'It is possible to save the results of a query or a validate to a file specified with the -o or --output option. This saved file can be used to extend a saved classifier by appending the now labeled instances onto it. First, save a classifier:'
 	cmd = 'v run . make -a 33 -o ~/soybean.cl ~/.vmodules/holder66/vhammll/datasets/soybean-large-train.tab'
+	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Do a validation using the saved classifier:'
 	cmd = 'v run . validate -k ~/soybean.cl -o ~/soybean.val -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-validate.tab'
+	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Then append the saved validation file to the saved classifier:'
 	cmd = 'v run . append -o ~/soybean.ext.cl -k ~/soybean.cl ~/soybean.val'
+	after = ''
 	run_example(before, after, cmd)!
 
 	before = "Let's test the extended classifier with a test file:"
-	cmd = 'v run . verify -k ~/soybean.ext.cl -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-test.tab
-'
+	cmd = 'v run . verify -k ~/soybean.ext.cl -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-test.tab'
 	after = "That's it! Now try it on your own datasets!"
 	run_example(before, after, cmd)!
 }

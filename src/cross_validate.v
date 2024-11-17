@@ -30,7 +30,7 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
-	disp := opts.DisplaySettings
+	// disp := opts.DisplaySettings
 	// println('disp in cross_validate: $disp')
 	// println('ds.class_counts in cross_validate.v: ${ds.class_counts}')
 	// to sort out what is going on, run the test file with concurrency off.
@@ -153,7 +153,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 				pick_list << i
 			}
 		}
-		repetition_result = do_repetition(pick_list, rep, ds, cross_opts, disp) or { panic(err) }
+		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
 		// println('repetition_result in cross_validate.v: ${repetition_result}')
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
@@ -177,13 +177,13 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		save_json_file(cross_result, opts.outputfile_path)
 	}
 	if !opts.multiple_flag && opts.append_settings_flag && opts.command == 'cross' {
-		append_cross_settings_to_file(cross_result, opts, disp)
+		append_cross_settings_to_file(cross_result, opts)
 	}
 	return cross_result
 }
 
 // append_cross_settings_to_file
-fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp DisplaySettings) {
+fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
 	// println('opts in append_cross_settings_to_file: $opts')
 	// println('result in append_cross_settings_to_file: $result')
 	append_json_file(ClassifierSettings{
@@ -194,13 +194,13 @@ fn append_cross_settings_to_file(result CrossVerifyResult, opts Options, disp Di
 }
 
 // do_repetition
-fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp DisplaySettings) ?CrossVerifyResult {
+fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?CrossVerifyResult {
 	mut fold_result := CrossVerifyResult{}
 	// instantiate a struct for the result
 	mut repetition_result := CrossVerifyResult{}
 	// test if leave-one-out crossvalidation is requested
 	folds := if cross_opts.folds == 0 { ds.class_values.len } else { cross_opts.folds }
-	if disp.verbose_flag {
+	if cross_opts.verbose_flag {
 		// println(g('repetition: ${rep}'))
 	}
 	// if the concurrency flag is set
@@ -236,8 +236,7 @@ fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options, disp 
 	} else { // ie the concurrency flag is not set
 		// for each fold
 		for current_fold in 0 .. folds {
-			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts,
-				disp)
+			fold_result = do_one_fold(pick_list, current_fold, folds, ds, cross_opts)
 			// println('fold_result in do_repetition(): $fold_result')
 			repetition_result.inferred_classes << fold_result.inferred_classes
 			repetition_result.actual_classes << fold_result.labeled_classes
@@ -327,7 +326,7 @@ fn div_map(n int, mut m map[string]int) map[string]int {
 }
 
 // do_one_fold
-fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_opts Options, disp DisplaySettings) CrossVerifyResult {
+fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_opts Options) CrossVerifyResult {
 	// println('cross_opts in do_one_fold: ${cross_opts}')
 	mut byte_values_array := [][]u8{}
 	// partition the dataset into a partial dataset and a fold
@@ -337,7 +336,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		labeled_classes:  fold.class_values
 		instance_indices: fold.indices
 	}
-	if disp.verbose_flag {
+	if cross_opts.verbose_flag {
 		println(y('current fold: ${current_fold}'))
 	}
 
@@ -372,8 +371,8 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
 		// println('disp in do_one_fold: $disp')
 		for i, case in fold_cases {
-			classify_result := classify_case(part_cl, case, cross_opts, disp)
-			if disp.verbose_flag {
+			classify_result := classify_case(part_cl, case, cross_opts)
+			if cross_opts.verbose_flag {
 				verbose_result(i, part_cl, classify_result)
 			}
 			fold_result.inferred_classes << classify_result.inferred_class
@@ -419,7 +418,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		// }
 		// fold_result = multiple_classify_in_cross(current_fold, classifier_array, transpose(instances_to_be_classified), mut fold_result, mult_opts)
 		for i, case in transpose(mult_fold_cases) {
-			if disp.verbose_flag {
+			if cross_opts.verbose_flag {
 				println('\ncase: ${i:-7}  ${case}    classes: ${classifier_array[0].classes.join(' | ')}')
 			}
 			// println('i: $i test_instance: $test_instance')
@@ -428,10 +427,10 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			// println('just before classify')
 			m_classify_result := if mult_opts.total_nn_counts_flag {
 				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes,
-					mult_opts, disp)
+					mult_opts)
 			} else {
 				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes,
-					mult_opts, disp)
+					mult_opts)
 			}
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]
@@ -463,12 +462,12 @@ fn process_fold_data(part_attr TrainedAttribute, fold_data []string) []u8 {
 }
 
 // option_worker
-fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, pick_list []int, folds int, ds Dataset, opts Options, disp DisplaySettings) {
+fn option_worker(work_channel chan int, result_channel chan CrossVerifyResult, pick_list []int, folds int, ds Dataset, opts Options) {
 	for {
 		mut current_fold := <-work_channel
 		if current_fold < 0 {
 			break
 		}
-		result_channel <- do_one_fold(pick_list, current_fold, folds, ds, opts, disp)
+		result_channel <- do_one_fold(pick_list, current_fold, folds, ds, opts)
 	}
 }

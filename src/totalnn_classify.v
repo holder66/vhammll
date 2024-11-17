@@ -17,7 +17,7 @@ import arrays
 // repeats for hamming distances which fit within the sphere, until a single maximum is found.
 // If the sphere radius reaches the maximum possible hamming distance and no single maximum
 // is found, then no class is inferred.
-fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class:         classifiers[0].Class
@@ -48,7 +48,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	// println('hamming_distances_array: $hamming_distances_array')
 	mut radii := element_counts(arrays.flatten(hamming_distances_array)).keys()
 	radii.sort()
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('radii: ${radii}')
 	}
 	mut nearest_neighbors_by_class_array := [][]i64{}
@@ -73,7 +73,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 				// }
 				for j, dist in hamming_distances_array[i] {
 					if dist <= radius && cl.class_values[j] == cl.classes[class_index] {
-						if disp.verbose_flag {
+						if opts.verbose_flag {
 							nearest_neighbors_by_class_unweighted[class_index] += 1
 						}
 						nearest_neighbors_by_class[class_index] += (if !cl.weighting_flag
@@ -85,7 +85,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 					}
 				}
 			}
-			if disp.verbose_flag {
+			if opts.verbose_flag {
 				println('classifier: ${i}   radius: ${radius}    class_weights: ${class_weights}    classifier_weights: ${classifier_weights}   nearest_neighbors_by_class_unweighted: ${nearest_neighbors_by_class_unweighted}     lcm_class_counts: ${cl.lcm_class_counts}     nearest_neighbors_by_class: ${nearest_neighbors_by_class}')
 			}
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
@@ -115,12 +115,12 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 			total_nns_by_class[j] += count
 		}
 	}
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('total_nns_by_class: ${total_nns_by_class}')
 	}
 	if single_array_maximum(total_nns_by_class) {
 		final_cr.inferred_class = classifiers[0].classes[idx_max(total_nns_by_class)]
-		if disp.verbose_flag {
+		if opts.verbose_flag {
 			println('final_cr.inferred_class: ${final_cr.inferred_class}')
 		}
 		return final_cr

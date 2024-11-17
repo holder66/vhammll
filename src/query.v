@@ -11,7 +11,7 @@ import strconv
 // The classified instance can optionally be saved in a file.
 // The saved instance can be appended to the classifier using
 // append_instances().
-pub fn query(cl Classifier, opts Options, disp DisplaySettings) ClassifyResult {
+pub fn query(cl Classifier, opts Options) ClassifyResult {
 	mut answer := ''
 	mut classify_result := ClassifyResult{}
 	mut validate_result := ValidateResult{
@@ -55,7 +55,7 @@ pub fn query(cl Classifier, opts Options, disp DisplaySettings) ClassifyResult {
 		}
 	}
 	byte_values = get_byte_values(cl, responses)
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('byte_values: ${byte_values}')
 	}
 	// to classify, get Hamming distances between the entered instance and

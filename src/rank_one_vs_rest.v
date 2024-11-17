@@ -48,7 +48,7 @@ module vhammll
 //     y axis, with number of bins on the x axis.
 // `outputfile_path`, saves the result as json.
 // ```
-pub fn rank_one_vs_rest(ds Dataset, opts Options, disp DisplaySettings) RankingResult {
+pub fn rank_one_vs_rest(ds Dataset, opts Options) RankingResult {
 	// println('opts in rank_attributes: $opts')
 	// to get the denominator for calculating percentages of rank values,
 	// we get the rank value for the class attribute, which should be 100%
@@ -61,7 +61,7 @@ pub fn rank_one_vs_rest(ds Dataset, opts Options, disp DisplaySettings) RankingR
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
 		ds.Class.class_counts, opts))
 	// println(opts.weight_ranking_flag)
-	if disp.verbose_flag && opts.command == 'rank' {
+	if opts.verbose_flag && opts.command == 'rank' {
 		println('perfect_rank_value: ${perfect_rank_value}')
 	}
 	mut ranked_atts := []RankedAttribute{}
@@ -209,10 +209,10 @@ pub fn rank_one_vs_rest(ds Dataset, opts Options, disp DisplaySettings) RankingR
 	ranked_atts.sort_with_compare(custom_sort_fn)
 	ranking_result.binning = binning
 
-	if (disp.show_flag || disp.expanded_flag) && opts.command == 'rank' {
+	if (opts.show_flag || opts.expanded_flag) && opts.command == 'rank' {
 		show_rank_attributes(ranking_result)
 	}
-	if disp.graph_flag && opts.command == 'rank' {
+	if opts.graph_flag && opts.command == 'rank' {
 		plot_rank(ranking_result)
 	}
 	if opts.outputfile_path != '' {

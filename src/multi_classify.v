@@ -9,7 +9,7 @@ import arrays
 // each classifier, and corresponding to the settings for that classifier.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) ClassifyResult {
+fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		// index: index
 		multiple_flag: true
@@ -213,8 +213,8 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 	inferred_classes_by_classifier := mcr.results_by_classifier.map(it.inferred_class)
 	if inferred_classes_by_classifier.len > 1
 		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
-		final_cr.inferred_class = resolve_conflict(mcr, disp)
-		if disp.verbose_flag {
+		final_cr.inferred_class = resolve_conflict(mcr, opts)
+		if opts.verbose_flag {
 			show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
 		}
 
@@ -226,14 +226,14 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 
 	// final_cr.inferred_class_array = inferred_class_array
 	// final_cr.nearest_neighbors_array = nearest_neighbors_array
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		show_detailed_result(final_cr.inferred_class, labeled_classes, mcr)
 	}
 	return final_cr
 }
 
 // resolve_conflict
-fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string {
+fn resolve_conflict(mcr MultipleClassifierResults, opts Options) string {
 	// println(mcr)
 	// at the smallest sphere radius, can we get a majority vote?
 	// note that there should only be one maximum value
@@ -254,7 +254,7 @@ fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string 
 
 		// test for a plurality vote
 		if plurality_vote(infs) != '' {
-			if disp.verbose_flag {
+			if opts.verbose_flag {
 				println('Plurality_vote')
 			}
 			return plurality_vote(infs)
@@ -262,7 +262,7 @@ fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string 
 
 		// test for a majority vote
 		if majority_vote(infs) != '' {
-			if disp.verbose_flag {
+			if opts.verbose_flag {
 				println('Majority vote')
 			}
 			return majority_vote(infs)
@@ -273,7 +273,7 @@ fn resolve_conflict(mcr MultipleClassifierResults, disp DisplaySettings) string 
 			break
 		}
 	}
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('Majority vote fell through')
 	}
 	// pick the result with the greatest number of nearest neighbors

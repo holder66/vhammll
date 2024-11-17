@@ -20,7 +20,7 @@ import os
 // The file to be validated is specified by `opts.testfile_path`.
 // Optionally, saves the cases and their predicted classes in a file.
 // This file can be used to append these cases to the classifier.
-pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResult {
+pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	// load the testfile as a Dataset struct
 	// println(opts)
 	mut test_ds := load_file(opts.testfile_path)
@@ -65,11 +65,11 @@ pub fn validate(cl Classifier, opts Options, disp DisplaySettings) !ValidateResu
 	validate_result.Class = cl.Class
 	mut classify_result := ClassifyResult{}
 	for case in cases {
-		classify_result = classify_case(cl, case, opts, disp)
+		classify_result = classify_case(cl, case, opts)
 		validate_result.inferred_classes << classify_result.inferred_class
 		validate_result.counts << classify_result.nearest_neighbors_by_class
 	}
-	if opts.command == 'validate' && (disp.show_flag || disp.expanded_flag) {
+	if opts.command == 'validate' && (opts.show_flag || opts.expanded_flag) {
 		show_validate(validate_result)
 	}
 	if opts.outputfile_path != '' {

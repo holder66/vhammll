@@ -19,7 +19,7 @@ module vhammll
 // weighting_flag: when true, nearest neighbor counts are weighted
 // by class prevalences.
 // ```
-fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) ClassifyResult {
+fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
 	mut result := ClassifyResult{
 		classes:        cl.classes
 		weighting_flag: cl.weighting_flag
@@ -43,7 +43,7 @@ fn classify_case(cl Classifier, case []u8, opts Options, disp DisplaySettings) C
 	// of the nearest-neighbor "spheres"
 	mut radii := element_counts(hamming_dist_array).keys()
 	radii.sort()
-	if disp.verbose_flag {
+	if opts.verbose_flag {
 		println('radii: ${radii}')
 	}
 	mut radius_row := []int{len: cl.class_counts.len}
