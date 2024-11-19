@@ -159,17 +159,15 @@ pub fn show_validate(result ValidateResult) {
 
 // show_verify
 pub fn show_verify(result CrossVerifyResult, opts Options) {
-	// println(result)
 	println(m_u('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
 		'from "${result.datafile_path}"'))
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		show_multiple_classifier_settings_options(result, opts)
+		show_multiple_classifier_settings(result, opts)
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
-	// println(result)
 	if result.purge_flag {
 		total_count := result.prepurge_instances_counts_array[0]
 		purged_count := total_count - result.classifier_instances_counts[0]
@@ -177,7 +175,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
 	if opts.show_attributes_flag {
-		show_attributes(result)
+		// show_trained_attributes(result.trained_attributes_array[0])
 	}
 	show_cross_or_verify_result(result, opts.DisplaySettings)
 }
@@ -204,26 +202,21 @@ const attribute_headings = {
 	1: '  Index  RankValue  Bins:   '
 }
 
-// show_multiple_classifier_settings_options expects the multiple classifiers to be in opts, and
+// show_multiple_classifier_settings expects the multiple classifiers to be in opts, and
 // the classifier indices in result
-fn show_multiple_classifier_settings_options(result CrossVerifyResult, opts Options) {
-	// println('result in show_multiple_classifier_settings_options: ${result}')
-	// println('opts in show_multiple_classifier_settings_options: ${opts}')
+fn show_multiple_classifier_settings(result CrossVerifyResult, opts Options) {
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
-	// println('opts.multiple_classifier_settings in show_multiple_classifier_settings_options: $opts.multiple_classifier_settings')
-	// col_widths := show_multiple_classifier_settings_details(opts.multiple_classifier_settings,
-	// result.classifier_indices)
-	// println('result.trained_attributes_array in show_multiple_classifier_settings_options: ${result.trained_attributes_array}')
+	// show_multiple_classifier_settings_details(result.)
 	if opts.show_attributes_flag {
-		if result.trained_attributes_array.len > 0 {
-			show_attributes(result)
-		} else {
+		if result.multiple_classifier_settings.len > 0 {
 			if opts.command == 'cross' {
 				println(g_b('As trained attributes change from one fold to the next, they are not displayed for cross-validation operations.'))
 			} else {
-				println(g_b('Unable to display Trained Attributes!'))
+				show_attributes_for_verify(result)
 			}
+		} else {
+			println(g_b('Unable to display Trained Attributes!'))
 		}
 	}
 }
@@ -236,7 +229,6 @@ const minimum_column_width = 13
 // second parameter contains the classifier number to be shown.
 // Returns an integer array with column widths.
 fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
-	// println('classifier_settings_array: ${classifier_settings_array}')
 	if classifier_settings_array.len == 0 {
 		println('Error Exit: classifier_settings_array in show_multiple_classifier_settings_details is empty')
 		exit(1)
@@ -244,9 +236,7 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 	mut row_data := []string{len: headers.len, init: ''}
 	mut col_width_array := []int{}
 	for i, ci in classifier_list {
-		// println('i, ci in show_multiple_classifier_settings_details: ${i} ${ci}')
 		par := classifier_settings_array[i]
-		// println('par in show_multiple_classifier_settings_details: ${par}')
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -297,8 +287,7 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 	 })
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
-		// println('opts in show_crossvalidation: ${opts}')
-		show_multiple_classifier_settings_options(result, opts)
+		show_multiple_classifier_settings(result, opts)
 		// println('now here in show_multiple_classifier_settings_options')
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)

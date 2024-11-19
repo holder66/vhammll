@@ -55,6 +55,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
+
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
 	// attribute parameters in the classifier

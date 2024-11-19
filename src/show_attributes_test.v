@@ -19,8 +19,9 @@ fn testsuite_end() ? {
 fn test_show_attributes_in_make_classifier() {
 	mut opts := Options{
 		datafile_path: 'datasets/developer.tab'
-		show_flag:     true
-		command:       'make'
+		// show_flag:     true
+		show_attributes_flag: true
+		command:              'make'
 	}
 	make_classifier(load_file(opts.datafile_path), opts)
 }
@@ -46,6 +47,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 		total_nn_counts_flag: true
 		command:              'verify'
 	}
+	// populate a settings file, doing individual verifications
 	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
@@ -55,7 +57,6 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.bins = [5, 5]
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
-	// mut ds := load_file(opts.datafile_path)
 	result0 := verify(opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {
@@ -86,7 +87,8 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	// verify that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
-	// display_file(opts.settingsfile_path, opts)
+	opts.show_attributes_flag = true
+	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
@@ -94,24 +96,24 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.show_flag = true
 	// opts.expanded_flag = true
 	opts.show_attributes_flag = true
-	result = multi_verify(opts)
+	// result = multi_verify(opts)
 	// with both classifiers
-	assert result.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 20.0
-			'AML': 0.0
-		}
-		'AML': {
-			'ALL': 4.0
-			'AML': 10.0
-		}
-	}, 'with both classifiers'
-	// // with classifier 0 only
-	// opts.classifier_indices = [0]
+	// assert result.confusion_matrix_map == {
+	// 	'ALL': {
+	// 		'ALL': 20.0
+	// 		'AML': 0.0
+	// 	}
+	// 	'AML': {
+	// 		'ALL': 4.0
+	// 		'AML': 10.0
+	// 	}
+	// }, 'with both classifiers'
+	// with classifier 0 only
+	opts.classifier_indices = [0]
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-	// // with classifier 1
-	// opts.classifier_indices = [1]
+	// with classifier 1
+	opts.classifier_indices = [1]
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 }

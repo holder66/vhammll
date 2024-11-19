@@ -30,27 +30,27 @@ fn test_oxford_crossvalidate() {
 		weight_ranking_flag:  true
 		settingsfile_path:    '/Users/henryolders/use_vhammll/oxford2024-1-27.opts'
 		// verbose_flag:         true
-		// expanded_flag:        true
+		expanded_flag: true
 	}
 	mut result := CrossVerifyResult{}
 	display_file(opts.settingsfile_path, opts)
 	ds := load_file(opts.datafile_path)
-	// result = cross_validate(ds, opts, disp)
+	result = cross_validate(ds, opts)
 
 	// try with the same settings but multiple classifiers
 
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.classifier_indices = [1]
-	// assert cross_validate(ds, opts, disp).confusion_matrix_map == result.confusion_matrix_map
+	// assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
 
 	// with totalnn flag set
 
 	opts.total_nn_counts_flag = true
-	// assert cross_validate(ds, opts, disp).confusion_matrix_map == result.confusion_matrix_map
+	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
 
 	opts.classifier_indices = [3, 6, 12]
-	// result = cross_validate(ds, opts, disp)
+	result = cross_validate(ds, opts)
 	opts.break_on_all_flag = true
 	result = cross_validate(ds, opts)
 }

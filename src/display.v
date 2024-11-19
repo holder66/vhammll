@@ -16,15 +16,10 @@ import json
 // ```
 pub fn display_file(path string, in_opts Options) {
 	mut opts := in_opts
-	// println('opts in display_file: $opts')
 	// determine what kind of file, then call the appropriate functions in show and plot
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
-	// println('s in display_file: $s')
 	match true {
 		s.contains('"struct_type":".ExploreResult"') {
-			// mut opts := Options{
-			// 	DisplaySettings: settings
-			// }
 			mut saved_er := json.decode(ExploreResult, s) or { panic(err) }
 			show_explore_header(saved_er, opts.DisplaySettings)
 			for mut result in saved_er.array_of_results {
@@ -71,22 +66,21 @@ pub fn display_file(path string, in_opts Options) {
 				append_cross_settings_to_file(saved_vr, opts)
 			}
 		}
+		// test for a multiple classifier settings file
 		s.contains('{"binning":{"lower":') {
 			multiple_classifier_settings_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			// println('multiple_classifier_settings_array in display_file: $multiple_classifier_settings_array')
-			opts.MultipleClassifierSettingsArray = multiple_classifier_settings_array
-
-			result := CrossVerifyResult{
-				classifier_indices:              []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
-				MultipleClassifierSettingsArray: multiple_classifier_settings_array
-			}
-			// multiple_options := MultipleOptions{
-			// 	classifier_indices: []int{len: multiple_classifier_settings_array.multiple_classifier_settings.len, init: index}
-			// }
+			dump(multiple_classifier_settings_array)
 			println(m_u('Multiple Classifier Options file: ${path}'))
-			show_multiple_classifier_settings_options(result, opts)
+			settings := multiple_classifier_settings_array.multiple_classifier_settings
+			// create an array for fictitious classifier indices
+			classifier_indices := []int{len: settings.len, init: index}
+			show_multiple_classifier_settings_details(settings, classifier_indices)
+			if opts.show_attributes_flag {
+				// we need to generate a classifier for each of the settings!
+				// mut classifiers := make_multi_classifiers(load_file(opts.)
+			}
 		}
 		else {
 			println('File type not recognized!')

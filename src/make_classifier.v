@@ -173,6 +173,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}
+	// if opts.show_attributes_flag {show_classifier_attributes(cl)}
 	if opts.outputfile_path != '' {
 		save_json_file(cl, opts.outputfile_path)
 	}
