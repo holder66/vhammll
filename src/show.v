@@ -175,7 +175,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
 	if opts.show_attributes_flag {
-		// show_trained_attributes(result.trained_attributes_array[0])
+		show_trained_attributes(result.trained_attributes_array[0])
 	}
 	show_cross_or_verify_result(result, opts.DisplaySettings)
 }
@@ -278,7 +278,6 @@ fn show_multiple_classifier_settings_details(classifier_settings_array []Classif
 
 // show_crossvalidation
 pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
-	// println('result in show_crossvalidation: $result')
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
 		if opts.multiple_flag { ' using multiple classifiers' } else { '' }))
 	println('Partitioning: ' + if result.folds == 0 { 'leave-one-out' } else { '${result.folds}-fold' + if result.repetitions > 1 { ', ${result.repetitions} repetitions' + if result.random_pick { ' with random selection of instances' } else { '' }
@@ -288,7 +287,6 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifier_settings(result, opts)
-		// println('now here in show_multiple_classifier_settings_options')
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}

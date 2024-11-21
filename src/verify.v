@@ -15,10 +15,10 @@ import runtime
 // show_flag: display results on the console;
 // expanded_flag: display additional information on the console, including
 // 		a confusion matrix.
+// show_attributes_flag: list the trained attributes for the classifier used
 // outputfile_path: saves the result as a json file
 // ```
 pub fn verify(opts Options) CrossVerifyResult {
-	// println(opts.MultipleOptions)
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]map[string]f64{}
@@ -29,7 +29,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 		}
 	}
 	// instantiate a struct for the result
-	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
 		Parameters:                          opts.Parameters
@@ -47,20 +46,17 @@ pub fn verify(opts Options) CrossVerifyResult {
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
-	// println('verify_result in verify: ${verify_result}')
-
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
 		cl = make_classifier(ds, opts)
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
-
+	verify_result.trained_attributes_array << cl.trained_attributes
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
 	// attribute parameters in the classifier
 	case := generate_case_array(cl, test_ds)
-	// println(opts)
 	// for the instances in the test data, perform classifications
 	if opts.verbose_flag {
 		println('cl.classes in verify: ${cl.classes}')
@@ -98,7 +94,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 			}
 		}
 	}
-	// println('verify_result.labeled_classes in verify: ${verify_result.labeled_classes}')
 	verify_result.classifier_instances_counts << cl.history[0].instances_count
 	verify_result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
@@ -152,14 +147,11 @@ pub fn verify(opts Options) CrossVerifyResult {
 	// }
 	// println(verify_result.Metrics)
 	verify_result.Metrics = get_metrics(verify_result)
-	// println(verify_result.Metrics)
-	// println('cross_result.pos_neg_classes: $cross_result.pos_neg_classes')
 	if verify_result.pos_neg_classes.len == 2 {
 		verify_result.BinaryMetrics = get_binary_stats(verify_result)
 	}
 
 	// verify_result.command = 'verify'
-	// println('verify_result: $verify_result')
 	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
 		show_verify(verify_result, opts)
 	}

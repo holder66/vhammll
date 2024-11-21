@@ -227,9 +227,10 @@ pub mut:
 pub struct ClassifierSettings {
 	Parameters
 	BinaryMetrics
-	Metrics // LoadOptions
-	// pub mut:
-	// datafile_path string
+	Metrics
+	LoadOptions
+pub mut:
+	datafile_path string
 }
 
 pub struct MultipleOptions {

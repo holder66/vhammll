@@ -53,7 +53,6 @@ pub fn display_file(path string, in_opts Options) {
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
-			println('we are here')
 			mut saved_vr := json.decode(CrossVerifyResult, s) or {
 				panic('Failed to parse json as CrossVerifyResult')
 			}
@@ -62,24 +61,32 @@ pub fn display_file(path string, in_opts Options) {
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"cross"') {
 			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
 			show_crossvalidation(saved_vr, opts)
-			if opts.append_settings_flag {
-				append_cross_settings_to_file(saved_vr, opts)
-			}
+			// if opts.append_settings_flag {
+			// 	append_cross_settings_to_file(saved_vr, opts)
+			// }
 		}
 		// test for a multiple classifier settings file
 		s.contains('{"binning":{"lower":') {
 			multiple_classifier_settings_array := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			dump(multiple_classifier_settings_array)
-			println(m_u('Multiple Classifier Options file: ${path}'))
 			settings := multiple_classifier_settings_array.multiple_classifier_settings
-			// create an array for fictitious classifier indices
-			classifier_indices := []int{len: settings.len, init: index}
-			show_multiple_classifier_settings_details(settings, classifier_indices)
-			if opts.show_attributes_flag {
-				// we need to generate a classifier for each of the settings!
-				// mut classifiers := make_multi_classifiers(load_file(opts.)
+			// dump(multiple_classifier_settings_array)
+			if settings.len > 1 {
+				println(m_u('Multiple Classifier Options file: ${path}'))
+
+				// create an array for fictitious classifier indices
+				classifier_indices := []int{len: settings.len, init: index}
+				show_multiple_classifier_settings_details(settings, classifier_indices)
+				if opts.show_attributes_flag {
+					// we need to generate a classifier for each of the settings!
+					mut classifiers := make_multi_classifiers(load_file(settings[0].datafile_path),
+						settings, classifier_indices)
+					for idx in [0, 1] {
+						println(g_b('Trained attributes for classifier ${idx} on dataset ${settings[0].datafile_path}'))
+						show_classifier_attributes(classifiers[idx])
+					}
+				}
 			}
 		}
 		else {

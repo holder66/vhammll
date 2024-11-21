@@ -39,6 +39,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		panic('read_multiple_opts failed')
 	}
 	settings_array := classifier_settings.multiple_classifier_settings
+	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifier_indices)
+
 	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	if mult_opts.classifier_indices == [] {
 		// println('now we are here')
