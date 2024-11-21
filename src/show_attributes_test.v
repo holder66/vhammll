@@ -94,26 +94,26 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.append_settings_flag = false
 	opts.show_flag = true
-	// opts.expanded_flag = true
+	opts.expanded_flag = true
 	opts.show_attributes_flag = true
-	// result = multi_verify(opts)
+	result = multi_verify(opts)
 	// with both classifiers
-	// assert result.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 20.0
-	// 		'AML': 0.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 4.0
-	// 		'AML': 10.0
-	// 	}
-	// }, 'with both classifiers'
+	assert result.confusion_matrix_map == {
+		'ALL': {
+			'ALL': 20.0
+			'AML': 0.0
+		}
+		'AML': {
+			'ALL': 4.0
+			'AML': 10.0
+		}
+	}, 'with both classifiers'
 	// with classifier 0 only
 	opts.classifier_indices = [0]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
+	result = multi_verify(opts)
+	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
 	opts.classifier_indices = [1]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result1.confusion_matrix_map
+	result = multi_verify(opts)
+	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }

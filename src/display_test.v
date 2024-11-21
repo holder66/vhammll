@@ -222,9 +222,10 @@ fn test_display_explore_result_cross() ? {
 	opts.expanded_flag = false
 	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
-opts.expanded_flag = true
+	opts.expanded_flag = true
 	explore(ds, opts)
-	display_file(opts.outputfile_path, opts)}
+	display_file(opts.outputfile_path, opts)
+}
 
 fn test_display_explore_result_verify() ? {
 	mut opts := Options{
@@ -244,7 +245,7 @@ fn test_display_explore_result_verify() ? {
 	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 
-		// repeat with purge flag set
+	// repeat with purge flag set
 	opts.purge_flag = true
 	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)

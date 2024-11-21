@@ -421,11 +421,6 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 	}
 }
 
-
-
-
-
-
 // get_binary_stats_line
 fn get_binary_stats_line(r CrossVerifyResult) string {
 	return '${r.t_p:5} ${r.f_n:5} ${r.t_n:5} ${r.f_p:5}   ${r.sens:5.3f}  ${r.spec:5.3f}  ${r.ppv:5.3f}  ${r.npv:5.3f}     ${r.f1_score_binary:5.3f}        ${r.raw_acc:6.2f}%   ${r.balanced_accuracy:6.2f}%   ${r.mcc:5.3f}'

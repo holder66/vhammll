@@ -15,7 +15,6 @@ import arrays
 // import strings
 // import math
 
-
 // show_expanded_explore_result
 fn show_expanded_explore_result(result CrossVerifyResult, opts Options) {
 	if result.pos_neg_classes[0] != '' {
