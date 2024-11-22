@@ -47,6 +47,7 @@ fn test_oxford_crossvalidate() {
 	// with totalnn flag set
 
 	opts.total_nn_counts_flag = true
+	opts.show_attributes_flag = true
 	assert cross_validate(ds, opts).confusion_matrix_map == result.confusion_matrix_map
 
 	opts.classifier_indices = [3, 6, 12]

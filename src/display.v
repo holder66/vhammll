@@ -71,10 +71,8 @@ pub fn display_file(path string, in_opts Options) {
 				panic('read_multiple_opts failed')
 			}
 			settings := multiple_classifier_settings_array.multiple_classifier_settings
-			// dump(multiple_classifier_settings_array)
 			if settings.len > 1 {
 				println(m_u('Multiple Classifier Options file: ${path}'))
-
 				// create an array for fictitious classifier indices
 				classifier_indices := []int{len: settings.len, init: index}
 				show_multiple_classifier_settings_details(settings, classifier_indices)
@@ -82,7 +80,7 @@ pub fn display_file(path string, in_opts Options) {
 					// we need to generate a classifier for each of the settings!
 					mut classifiers := make_multi_classifiers(load_file(settings[0].datafile_path),
 						settings, classifier_indices)
-					for idx in [0, 1] {
+					for idx in classifier_indices {
 						println(g_b('Trained attributes for classifier ${idx} on dataset ${settings[0].datafile_path}'))
 						show_classifier_attributes(classifiers[idx])
 					}

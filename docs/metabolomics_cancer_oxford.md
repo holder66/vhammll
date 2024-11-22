@@ -89,38 +89,72 @@ This would take a couple of days to run, depending on the speed of your computer
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
 ```
-Verify that the newly generated settings file contains the settings for all 4 classifiers, and in the correct order:
+Verify that the newly generated settings file contains the settings for all 4 classifiers, and in the correct order (the -ea flag is to display the trained
+attributes for each classifier):
 ```sh
-./vhamml display ~/metabolomics/metabolomics.opts
+./vhamml display -ea ~/metabolomics/metabolomics.opts
 ```
 Which should give:
 ```sh
-./vhamml display ~/metabolomics/metabolomics.opts 
 Multiple Classifier Options file: /Users/henryolders/metabolomics/metabolomics.opts
-break_on_all_flag: false     combined_radii_flag: false      total_nn_counts_flag: false     class_missing_purge_flag: false
-Multiple Classifier Parameters:
-              Classifier:   0            1            2            3            
-    Number of attributes:   4            1            3            9            
-                 Binning:   8, 8, 1      3, 3, 1      3, 3, 1      1, 4, 1      
-  Exclude missing values:   false        false        false        false        
- Ranking using weighting:   false        true         false        false        
-  Weighting of NN counts:   true         true         true         true         
-     Balance prevalences:   true         true         false        false        
-   Purge duplicate cases:   true         false        false        false        
-             True counts:   13     146   13     120   15     52    13     152   
-            False counts:   4      29    4      55    2      123   4      23    
-            Raw accuracy:   82.81 %      69.27 %      34.90 %      85.94 %      
-       Balanced accuracy:   79.95 %      72.52 %      58.97 %      81.66 %      
-Maximum Hamming Distance:   32           3            9            34           
+               Classifier:   0            1            2            3            
+     Number of attributes:   4            1            3            9            
+                  Binning:   8, 8, 1      3, 3, 1      3, 3, 1      1, 4, 1      
+   Exclude missing values:   false        false        false        false        
+  Ranking using weighting:   false        true         false        false        
+   Weighting of NN counts:   true         true         true         true         
+      Balance prevalences:   true         true         false        false        
+    Purge duplicate cases:   true         false        false        false        
+    True / correct counts:   13     146   13     120   15     52    13     152   
+ False / incorrect counts:   4      29    4      55    2      123   4      23    
+             Raw accuracy:   82.81 %      69.27 %      34.90 %      85.94 %      
+        Balanced accuracy:   79.95 %      72.52 %      58.97 %      81.66 %      
+Matthews Correlation Coef:   0.412        0.268        0.113        0.461        
+ Maximum Hamming Distance:   32           3            9            34           
+Trained attributes for classifier 0 on dataset /Users/henryolders/metabolomics/train.tab
+Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins
+  355  V353                        C          60.58           768053.81 2574747.75     8
+  720  V718                        C          59.42            28240.63  259493.11     8
+  361  V359                        C          58.26          1024783.94 3172615.75     8
+  360  V358                        C          57.10           704953.38 3185761.25     8
+Trained attributes for classifier 1 on dataset /Users/henryolders/metabolomics/train.tab
+Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins
+  166  V164                        C          52.07           731680.56 1664189.75     3
+Trained attributes for classifier 2 on dataset /Users/henryolders/metabolomics/train.tab
+Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins
+  648  V646                        C          83.33            50983.67  499521.50     3
+  773  V771                        C          83.33             2486.28  413975.19     3
+    3  V1                          C          82.29           -26149.29   58297.68     3
+Trained attributes for classifier 3 on dataset /Users/henryolders/metabolomics/train.tab
+Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins
+  341  V339                        C          85.42          1767316.75 4797437.00     4
+  332  V330                        C          84.38           983358.94 2721019.00     4
+  354  V352                        C          84.38           722747.31 3308507.00     4
+  603  V601                        C          84.38           -27177.89   43638.25     4
+  648  V646                        C          83.33            50983.67  499521.50     3
+  773  V771                        C          83.33             2486.28  413975.19     3
+  331  V329                        C          83.33          1032925.38 3304490.50     4
+  340  V338                        C          83.33          1751390.00 5038233.00     4
+  355  V353                        C          83.33           768053.81 2574747.75     4
 ```
 Use all four classifiers in a multiple-classifier cross-validation of train.tab:
 ```sh
 ./vhamml cross -e -m ~/metabolomics/metabolomics.opts ~/metabolomics/train.tab
 ```
-This gives the highest balanced accuracy of 86.32%.
+This gives the highest balanced accuracy of 86.32%.:
+```sh
+TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
+14     3   158    17   0.824  0.903  0.452  0.981     0.583         89.58%    86.32%   0.561
+```  
+
 To obtain the highest sensitivity, use only the first 3 classifiers. Add the combined_radii_flag, -mc, to give a higher specificity without a loss of sensitivity:
 ```sh
 ./vhamml cross -e -m ~/metabolomics/metabolomics.opts -m# 0,1,2 -mc ~/metabolomics/train.tab
+```
+which gives:
+```sh
+TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
+15     2   132    43   0.882  0.754  0.259  0.985     0.400         76.56%    81.83%   0.394
 ```
 Feel free to experiment. You may be able to improve on these settings, either by using different classifier settings, or different flags for the cross-validation.
 
@@ -136,39 +170,25 @@ Using the first three classifiers only, and again setting the combined_radii-fla
 ```
 We now get:
 ```sh
-
 Verification of "/Users/henryolders/metabolomics/test.tab" using multiple classifiers from "/Users/henryolders/metabolomics/train.tab"
 Classifier parameters are in file "/Users/henryolders/metabolomics/metabolomics.opts"
 break_on_all_flag: false     combined_radii_flag: true      total_nn_counts_flag: false     class_missing_purge_flag: false
 Multiple Classifier Parameters:
-              Classifier:   0            1            2            
-    Number of attributes:   4            1            3            
-                 Binning:   8, 8, 1      3, 3, 1      3, 3, 1      
-  Exclude missing values:   false        false        false        
- Ranking using weighting:   false        true         false        
-  Weighting of NN counts:   true         true         true         
-     Balance prevalences:   true         true         false        
-   Purge duplicate cases:   true         false        false        
-             True counts:   13     146   13     120   15     52    
-            False counts:   4      29    4      55    2      123   
-            Raw accuracy:   82.81 %      69.27 %      34.90 %      
-       Balanced accuracy:   79.95 %      72.52 %      58.97 %      
-Maximum Hamming Distance:   32           3            9            
 Results:
-    Class                   Instances    True Positives    Precision    Recall    F1 Score
-    Non                            85      61 ( 71.76%)        0.968     0.718       0.824
-    Can                             7       5 ( 71.43%)        0.172     0.714       0.278
-        Totals                     92      66 (accuracy: raw: 71.74% balanced: 71.60%)
-             Macro Averages:                                   0.570     0.716       0.551
-          Weighted Averages:                                   0.908     0.717       0.783
+    Class                     Instances    True Positives    Precision    Recall    F1 Score
+    Non                              85      61 ( 71.76%)        0.968     0.718       0.824
+    Can                               7       5 ( 71.43%)        0.172     0.714       0.278
+        Totals                       92      66 (accuracy: raw: 71.74% balanced: 71.60%)
+               Macro Averages:                                   0.570     0.716       0.551
+            Weighted Averages:                                   0.908     0.717       0.783
 A correct classification to "Can" is a True Positive (TP);
 A correct classification to "Non" is a True Negative (TN).
-   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced
-    5     2    61    24   0.714  0.718  0.172  0.968     0.278         71.74%    71.60%
+   TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
+    5     2    61    24   0.714  0.718  0.172  0.968     0.278         71.74%    71.60%   0.246
 Confusion Matrix:
 Predicted Classes (columns)          Non        Can
       Actual Classes (rows)
                         Non           61         24
                         Can            2          5
-processing time: 0 hrs 0 min  0.664 sec
+processing time: 0 hrs 0 min  0.809 sec
 ```

@@ -173,12 +173,11 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		// cross_result.MultipleClassifierSettingsArray = cross_opts.MultipleClassifierSettingsArray
 		show_crossvalidation(cross_result, cross_opts)
 	}
-	// dump(opts)
 	if opts.outputfile_path != '' {
 		cross_result.command = 'cross'
 		save_json_file(cross_result, opts.outputfile_path)
 	}
-	if opts.multiple_flag && opts.append_settings_flag && opts.command == 'cross' {
+	if opts.append_settings_flag && opts.command == 'cross' {
 		append_cross_settings_to_file(cross_result, opts)
 	}
 	return cross_result
