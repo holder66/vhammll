@@ -71,7 +71,7 @@ pub fn display_file(path string, in_opts Options) {
 				panic('read_multiple_opts failed')
 			}
 			settings := multiple_classifier_settings_array.multiple_classifier_settings
-			if settings.len > 1 {
+			if settings.len > 0 {
 				println(m_u('Multiple Classifier Options file: ${path}'))
 				// create an array for fictitious classifier indices
 				classifier_indices := []int{len: settings.len, init: index}

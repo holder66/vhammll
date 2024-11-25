@@ -30,10 +30,6 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
-	// disp := opts.DisplaySettings
-	// println('disp in cross_validate: $disp')
-	// println('ds.class_counts in cross_validate.v: ${ds.class_counts}')
-	// to sort out what is going on, run the test file with concurrency off.
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path
 	mut total_instances := ds.Class.class_values.len
@@ -73,7 +69,6 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		false_negatives:                     inferences_map.clone()
 	}
 	if opts.multiple_flag {
-		// println('yes! opts.multiple flag is set')
 		// disable concurrency, as not implemented for multiple classifiers
 		cross_opts.concurrency_flag = false
 		mut classifier_array := []Classifier{}
