@@ -1,6 +1,8 @@
 // explore.v
 module vhammll
 
+import os
+
 // explore runs a series of cross-validations or verifications,
 // over a range of attributes and a range of binning values.
 // ```sh
@@ -125,7 +127,7 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 				Parameters:    results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
 				Metrics:       results.array_of_results[a.idx].Metrics
-				datafile_path: opts.datafile_path
+				datafile_path: os.abs_path(opts.datafile_path)
 			}, opts.settingsfile_path)
 		}
 		i += 1
