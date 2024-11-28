@@ -82,7 +82,7 @@ pub fn display_file(path string, in_opts Options) {
 						settings, classifier_indices)
 					for idx in classifier_indices {
 						println(g_b('Trained attributes for classifier ${idx} on dataset ${settings[0].datafile_path}'))
-						show_classifier_attributes(classifiers[idx])
+						show_trained_attributes(classifiers[idx].trained_attributes)
 					}
 				}
 			}

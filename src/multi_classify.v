@@ -15,22 +15,14 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 		multiple_flag: true
 		Class:         classifiers[0].Class
 	}
-	// println(opts.MultipleOptions)
-	// println('classes in classifiers: ${classifiers.map(it.classes)}')
 	mut mcr := MultipleClassifierResults{
 		MultipleOptions:       opts.MultipleOptions
 		results_by_classifier: []IndividualClassifierResults{len: classifiers.len}
 	}
 
-	// println('case to be classified: ${case}')
-
-	// println(opts)
-	// println(mcr.MultipleOptions)
-
 	// to classify, get Hamming distances between the entered instance and
 	// all the instances in all the classifiers; return the class for the
 	// instance giving the lowest Hamming distance.
-
 	mut hamming_dist_arrays := [][]int{}
 	// find the max number of attributes used
 	for cl in classifiers {
@@ -38,14 +30,11 @@ fn multiple_classifier_classify(classifiers []Classifier, case [][]u8, labeled_c
 	}
 	mcr.maximum_number_of_attributes = array_max(mcr.number_of_attributes)
 	mcr.lcm_attributes = lcm(mcr.number_of_attributes)
-	// println('mcr.lcm_attributes: $mcr.lcm_attributes')
 	// get the hamming distance for each of the corresponding byte_values
 	// in each classifier instance and the case to be classified
 	// note that to compare hamming distances between classifiers using
 	// different numbers of attributes, the distances need to be weighted.
-
 	for i, cl in classifiers {
-		// println('i in loop 1: $i')
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
 			// println('loop 2 instance: $instance')

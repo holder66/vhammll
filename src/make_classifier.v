@@ -169,15 +169,12 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		event.event_environment = get_environment()
 	}
 	cl.history << event
-	// println('cl in make_classifier: $cl')
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}
-	// if opts.show_attributes_flag {show_classifier_attributes(cl)}
 	if opts.outputfile_path != '' {
 		save_json_file(cl, opts.outputfile_path)
 	}
-	// println('cl.trained_attributes in make_classifier: $cl.trained_attributes')
 	return cl
 }
 

@@ -111,7 +111,8 @@ pub fn show_rank_attributes(result RankingResult) {
 pub fn show_classifier(cl Classifier) {
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
 	show_parameters(cl.Parameters, cl.LoadOptions)
-	show_trained_attributes(cl.trained_attributes)
+	println(g_b('Trained attributes sorted by rank value:'))
+	// show_trained_attributes(cl.trained_attributes)
 	println(g_b('\nClassifier History:'))
 	println(b_u('Date & Time (UTC)    Event   From file                   Original Instances' +
 		if cl.purge_flag { '  After purging' } else { '' }))
@@ -175,7 +176,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		println('Instances purged: ${purged_count} out of ${total_count} (${purged_percent:6.2f}%)')
 	}
 	if opts.show_attributes_flag {
-		show_trained_attributes(result.trained_attributes_array[0])
+		show_attributes_for_verify(result)
 	}
 	show_cross_or_verify_result(result, opts.DisplaySettings)
 }
@@ -207,13 +208,13 @@ const attribute_headings = {
 fn show_multiple_classifier_settings(result CrossVerifyResult, opts Options) {
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
-	// show_multiple_classifier_settings_details(result.)
+	show_multiple_classifier_settings_details(result.multiple_classifier_settings, result.classifier_indices)
 	if opts.show_attributes_flag {
 		if result.multiple_classifier_settings.len > 0 {
 			if opts.command == 'cross' {
 				println(g_b('As trained attributes change from one fold to the next, they are not displayed for cross-validation operations.'))
 			} else {
-				show_attributes_for_verify(result)
+				// show_trained_attributes_for_multiple_classifier_settings(result.multiple_classifier_settings, result.classifier_indices)
 			}
 		} else {
 			println(g_b('Unable to display Trained Attributes!'))
@@ -228,15 +229,15 @@ const minimum_column_width = 13
 // the first parameter contains only the parameters for the classifiers to be displayed; the
 // second parameter contains the classifier number to be shown.
 // Returns an integer array with column widths.
-fn show_multiple_classifier_settings_details(classifier_settings_array []ClassifierSettings, classifier_list []int) []int {
-	if classifier_settings_array.len == 0 {
+fn show_multiple_classifier_settings_details(multiple_classifier_settings []ClassifierSettings, classifier_list []int) []int {
+	if multiple_classifier_settings.len == 0 {
 		println('Error Exit: classifier_settings_array in show_multiple_classifier_settings_details is empty')
 		exit(1)
 	}
 	mut row_data := []string{len: headers.len, init: ''}
 	mut col_width_array := []int{}
 	for i, ci in classifier_list {
-		par := classifier_settings_array[i]
+		par := multiple_classifier_settings[i]
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -298,7 +299,7 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 		purged_percent := 100 * purged_count_avg / total_count_avg
 		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
 	}
-	// if opts.show_attributes_flag && !opts.multiple_flag && result.trained_attributes_array.len > 0 {
+	// if opts.show_attributes_flag && !opts.multiple_flag && result.trained_attribute_maps_array.len > 0 {
 	// 	println(g_b('Trained Attributes:'))
 	// 	show_trained_attributes(result, [13])
 	// } else {

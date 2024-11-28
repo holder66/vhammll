@@ -19,7 +19,7 @@ fn testsuite_end() ? {
 fn test_show_attributes_in_make_classifier() {
 	mut opts := Options{
 		datafile_path: 'datasets/developer.tab'
-		// show_flag:     true
+		show_flag:     true
 		show_attributes_flag: true
 		command:              'make'
 	}
@@ -37,8 +37,6 @@ fn test_show_attributes_in_verify() {
 	}
 	verify(opts)
 }
-
-fn test_show_attributes_in_multiple_classifier_verify() {}
 
 fn test_multiple_classifier_verify_totalnn() ? {
 	mut opts := Options{

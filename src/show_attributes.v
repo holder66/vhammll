@@ -13,40 +13,40 @@ module vhammll
 // import arrays
 // import strings
 
-fn show_classifier_attributes(cl Classifier) {
-	// dump(cl.trained_attributes)	
+fn show_classifier_attributes(cl Classifier) {	
 	show_trained_attributes(cl.trained_attributes)
 }
 
 fn show_attributes_for_verify(result CrossVerifyResult) {
-	// println('result.multiple_classifier_settings in show_trained_attributes: ${result.multiple_classifier_settings}')
-	// max_attributes := array_max(result.trained_attributes_array.map(it.len))
-	// total_attributes := arrays.sum(result.trained_attributes_array.map(it.len)) or {
-	// 	eprintln('Error: no trained attributes!')
-	// 	exit(1)
-	// }
-	// println('max_attributes: ${max_attributes}')
-	println('classifier_indices in show_attributes: ${result.classifier_indices}')
-	mut rows := []string{}
-
-	// mut row_data := [][]string{len: max_attributes, init: []string{len: attribute_headings.len, init: ''}}
-	// println('row_data in show_trained_attributes: ${row_data}')
-	// mut columns := [][][]string{len: result.trained_attributes_array.len, init: [][]string{len: max_attributes, init: []string{len: 2, init: ''}}}
-	println(g_b('Trained attributes, by classifier index, sorted by attribute ranking:'))
-	println('Classifier    Attribute Name         Index  Rank Value')
-	// for i, atts in result.multiple_classifier_settings {
-	// 		row := '${result.classifier_indices[i]:10}    ${atts.att_no:-21}  ${att_vals.index:5}      ${att_vals.rank_value:6.2f}'
-	// 		rows << row
-	// 	}
-
-	print_array(rows)
+	if result.multiple_flag {
+		show_trained_attributes_for_multiple_classifiers(result)
+	} else {
+		show_trained_attributes_for_one_classifier(result)
+	}
 }
 
-// show_trained_attributes outputs to the console information about the trained attributes
-pub fn show_trained_attributes(atts map[string]TrainedAttribute) {
-	println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
-	for attr, val in atts {
+fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
+	println(g_b('Trained attributes for classifier on dataset ${result.datafile_path}'))
+}
+
+fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
+println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
+	for attr, val in atts_map {
 		println('${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' +
 			if val.attribute_type == 'C' { '          ${val.minimum:10.2f} ${val.maximum:10.2f} ${val.bins:5}' } else { '      ${val.translation_table.len:4}' })
 	}
 }
+
+fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
+	for idx in result.classifier_indices {
+		println(g_b('Trained attributes for classifier ${idx} on dataset ${result.datafile_path}'))
+		show_trained_attributes(result.trained_attribute_maps_array[idx])
+	}
+}
+
+// fn show_trained_attributes_for_multiple_classifier_settings(classifier_settings []ClassifierSettings, classifier_indices []int) {
+// 	for idx in classifier_indices {
+// 		println(g_b('Trained attributes for classifier ${idx} on dataset ${classifier_settings[0].datafile_path}'))
+// 		// show_trained_attributes(classifier_settings[idx].trained_attributes)
+// 	}
+// }
