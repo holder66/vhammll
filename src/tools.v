@@ -670,6 +670,10 @@ fn r_b(s string) string {
 	return chlk(s, r_b)
 }
 
+fn rgb(s string) string {
+	return chlk(s, rgb)
+}
+
 fn b(s string) string {
 	return chlk(s, b_)
 }
