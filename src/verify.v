@@ -34,10 +34,11 @@ pub fn verify(opts Options) CrossVerifyResult {
 		Parameters:                          opts.Parameters
 		DisplaySettings:                     opts.DisplaySettings
 		MultipleOptions:                     opts.MultipleOptions
-		MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
+		// MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
+		multiple_classifier_settings: opts.multiple_classifier_settings
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes

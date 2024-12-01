@@ -25,11 +25,11 @@ fn test_append() ? {
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
 		Metrics:       result.Metrics
+		datafile_path: opts.datafile_path
 	}
-	println(c_s.Metrics)
 	append_json_file(c_s, 'tempfolder_save_settings/append_file.opts')
 	saved := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
-	assert saved.multiple_classifier_settings[0].Metrics.correct_counts == c_s.Metrics.correct_counts
+	assert saved[0].correct_counts == c_s.correct_counts
 	opts.number_of_attributes = [3]
 	opts.weighting_flag = true
 	result2 := cross_validate(ds, opts)
@@ -37,9 +37,11 @@ fn test_append() ? {
 		Parameters:    result2.Parameters
 		BinaryMetrics: result2.BinaryMetrics
 		Metrics:       result2.Metrics
+		datafile_path: opts.datafile_path
 	}
 	append_json_file(c_s2, 'tempfolder_save_settings/append_file.opts')
 	saved2 := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
-	// assert saved2.multiple_classifier_settings[0] == c_s
-	// assert saved2.multiple_classifier_settings[1] == c_s2
+	assert saved2[0].correct_counts == c_s.correct_counts
+	assert saved2[1].correct_counts == c_s2.correct_counts
+	assert saved2[0].datafile_path == opts.datafile_path
 }

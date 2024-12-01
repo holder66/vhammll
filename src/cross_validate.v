@@ -74,20 +74,20 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		cross_opts.concurrency_flag = false
 		mut classifier_array := []Classifier{}
 		// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
-		classifier_settings := read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
+		multiple_classifier_settings := read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
 			panic('read_multiple_opts failed')
 		}
-		settings_array := classifier_settings.multiple_classifier_settings
+		// settings_array := classifier_settings.multiple_classifier_settings
 		cross_opts.break_on_all_flag = opts.break_on_all_flag
 		cross_opts.combined_radii_flag = opts.combined_radii_flag
 		if opts.classifier_indices == [] {
-			cross_opts.classifier_indices = []int{len: settings_array.len, init: index}
+			cross_opts.classifier_indices = []int{len: multiple_classifier_settings.len, init: index}
 		} else {
 			cross_opts.classifier_indices = opts.classifier_indices
 		}
 		cross_result.classifier_indices = cross_opts.classifier_indices
 		for ci in cross_opts.classifier_indices {
-			cross_opts.multiple_classifier_settings << settings_array[ci]
+			cross_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
 		}
 		cross_result.multiple_classifier_settings = cross_opts.multiple_classifier_settings
 		for i, _ in cross_opts.classifier_indices {
@@ -394,7 +394,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
 		}
 		fold_result.MultipleOptions = mult_opts.MultipleOptions
-		fold_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
+		// fold_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	}
 	return fold_result
 }

@@ -22,6 +22,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
+		multiple_classifier_settings: read_multiple_opts(opts.multiple_classify_options_file_path) or {
+		panic('read_multiple_opts failed')}
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
@@ -34,20 +36,19 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	mut cases := [][][]u8{}
 	mut mult_opts := opts
 	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
-	classifier_settings := read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
-		panic('read_multiple_opts failed')
-	}
-	settings_array := classifier_settings.multiple_classifier_settings
+	
+
+	// settings_array := classifier_settings.multiple_classifier_settings
 	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifier_indices)
 
-	verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
+	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	// verify_result.multiple_classifier_settings = settings_array
 	if mult_opts.classifier_indices == [] {
-		mult_opts.classifier_indices = []int{len: settings_array.len, init: index}
+		mult_opts.classifier_indices = []int{len: verify_result.multiple_classifier_settings.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
 	for ci in mult_opts.classifier_indices {
-		mult_opts.multiple_classifier_settings << settings_array[ci]
+		mult_opts.multiple_classifier_settings << verify_result.multiple_classifier_settings[ci]
 	}
 	for i, _ in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters

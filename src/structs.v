@@ -184,7 +184,7 @@ pub struct Options {
 	LoadOptions
 	DisplaySettings
 	MultipleOptions
-	MultipleClassifierSettingsArray
+	// MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
@@ -196,6 +196,7 @@ pub mut:
 	classifierfile_path                 string
 	instancesfile_path                  string
 	multiple_classify_options_file_path string
+	multiple_classifier_settings []ClassifierSettings
 	settingsfile_path                   string
 	help_flag                           bool
 	// multiple_flag                       bool
@@ -205,7 +206,7 @@ pub mut:
 	kagglefile_path      string
 }
 
-pub struct MultipleClassifierSettingsArray {
+pub struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
 }
@@ -352,13 +353,14 @@ pub struct CrossVerifyResult {
 	Metrics
 	BinaryMetrics
 	MultipleOptions
-	MultipleClassifierSettingsArray
+	// MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
 	command                             string
 	datafile_path                       string
 	testfile_path                       string
 	multiple_classify_options_file_path string
+	multiple_classifier_settings []ClassifierSettings
 	labeled_classes                     []string
 	actual_classes                      []string
 	inferred_classes                    []string

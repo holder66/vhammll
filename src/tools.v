@@ -27,11 +27,14 @@ fn append_json_file[T](u T, path string) {
 }
 
 // read_multiple_opts
-fn read_multiple_opts(path string) !MultipleClassifierSettingsArray {
+fn read_multiple_opts(path string) ![]ClassifierSettings {
 	mut s := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
-	return MultipleClassifierSettingsArray{
+	// dump(s)
+	r := MultipleClassifierSettingsFileStruct{
 		multiple_classifier_settings: s.map(json.decode(ClassifierSettings, it)!)
 	}
+	// dump(r)
+	return r.multiple_classifier_settings
 }
 
 // idx_true returns the index of the first true element in boolean array a.
