@@ -11,7 +11,7 @@
 
 module vhammll
 
-import arrays
+// import arrays
 import strings
 // import math
 
@@ -112,7 +112,7 @@ pub fn show_classifier(cl Classifier) {
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
 	show_parameters(cl.Parameters, cl.LoadOptions)
 	println(g_b('Trained attributes sorted by rank value:'))
-	// show_trained_attributes(cl.trained_attributes)
+	show_trained_attributes(cl.trained_attributes)
 	println(g_b('\nClassifier History:'))
 	println(b_u('Date & Time (UTC)    Event   From file                   Original Instances' +
 		if cl.purge_flag { '  After purging' } else { '' }))
@@ -231,7 +231,7 @@ const minimum_column_width = 13
 // Returns an integer array with column widths.
 fn show_multiple_classifier_settings_details(multiple_classifier_settings []ClassifierSettings, classifier_list []int) []int {
 	if multiple_classifier_settings.len == 0 {
-		println('Error Exit: classifier_settings_array in show_multiple_classifier_settings_details is empty')
+		println('Error Exit: multiple_classifier_settings in show_multiple_classifier_settings_details is empty')
 		exit(1)
 	}
 	mut row_data := []string{len: headers.len, init: ''}
@@ -291,14 +291,12 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 	} else {
 		show_parameters(result.Parameters, result.LoadOptions)
 	}
-	if result.purge_flag {
-		total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or { panic(err) } / f64(result.prepurge_instances_counts_array.len)
-		purged_count_avg := total_count_avg - arrays.sum(result.classifier_instances_counts) or {
-			panic(err)
-		} / f64(result.classifier_instances_counts.len)
-		purged_percent := 100 * purged_count_avg / total_count_avg
-		println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
-	}
+	// if result.purge_flag {
+	// 	total_count_avg := array_sum(result.prepurge_instances_counts_array) / f64(result.prepurge_instances_counts_array.len)
+	// 	purged_count_avg := total_count_avg - array_sum(result.classifier_instances_counts) / f64(result.classifier_instances_counts.len)
+	// 	purged_percent := 100 * purged_count_avg / total_count_avg
+	// 	println('Average instances purged: ${purged_count_avg:10.1f} out of ${total_count_avg} (${purged_percent:6.2f}%)')
+	// }
 	// if opts.show_attributes_flag && !opts.multiple_flag && result.trained_attribute_maps_array.len > 0 {
 	// 	println(g_b('Trained Attributes:'))
 	// 	show_trained_attributes(result, [13])

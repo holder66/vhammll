@@ -18,8 +18,8 @@ fn testsuite_end() ? {
 
 fn test_show_attributes_in_make_classifier() {
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
-		show_flag:     true
+		datafile_path:        'datasets/developer.tab'
+		show_flag:            true
 		show_attributes_flag: true
 		command:              'make'
 	}
@@ -39,6 +39,7 @@ fn test_show_attributes_in_verify() {
 }
 
 fn test_multiple_classifier_verify_totalnn() ? {
+	println(r_b('Do two verfications to populate a settings file:'))
 	mut opts := Options{
 		concurrency_flag:     false
 		break_on_all_flag:    true
@@ -82,11 +83,14 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 9.0
 		}
 	}
+	println(r_b('Next, verify that the settings file was saved:'))
 	// verify that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
+
+	println(r_b('Do a multi-classifier verification with both saved classifiers:'))
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
@@ -106,10 +110,12 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 10.0
 		}
 	}, 'with both classifiers'
+	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
 	// with classifier 0 only
 	opts.classifier_indices = [0]
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
+	println(r_b('Do a multi-classifier verification with saved classifier #1 only:'))
 	// with classifier 1
 	opts.classifier_indices = [1]
 	result = multi_verify(opts)

@@ -40,8 +40,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	settings_array := classifier_settings.multiple_classifier_settings
 	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifier_indices)
 
-	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
-	verify_result.multiple_classifier_settings = settings_array
+	verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
+	// verify_result.multiple_classifier_settings = settings_array
 	if mult_opts.classifier_indices == [] {
 		mult_opts.classifier_indices = []int{len: settings_array.len, init: index}
 	}

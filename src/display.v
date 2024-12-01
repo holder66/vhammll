@@ -67,10 +67,10 @@ pub fn display_file(path string, in_opts Options) {
 		}
 		// test for a multiple classifier settings file
 		s.contains('{"binning":{"lower":') {
-			multiple_classifier_settings_array := read_multiple_opts(path) or {
+			multiple_classifier_settings_list := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			settings := multiple_classifier_settings_array.multiple_classifier_settings
+			settings := multiple_classifier_settings_list.multiple_classifier_settings
 			if settings.len > 0 {
 				println(m_u('Multiple Classifier Options file: ${path}'))
 				// create an array for fictitious classifier indices
