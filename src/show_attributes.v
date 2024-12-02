@@ -27,7 +27,7 @@ fn show_attributes_for_verify(result CrossVerifyResult) {
 
 fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
 	println(g_b('Trained attributes for classifier on dataset ${result.datafile_path}'))
-	show_trained_attributes(result.trained_attribute_maps_array[0])
+	show_trained_attributes(result.trained_attribute_maps_map[0])
 }
 
 fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
@@ -39,10 +39,10 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
 }
 
 fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
-	dump(result.trained_attribute_maps_array)
+	dump(result.trained_attribute_maps_map)
 	for idx in result.classifier_indices {
 		println(g_b('Trained attributes for classifier ${idx} on dataset ${result.datafile_path}'))
-		show_trained_attributes(result.trained_attribute_maps_array[idx])
+		show_trained_attributes(result.trained_attribute_maps_map[idx])
 	}
 }
 

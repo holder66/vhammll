@@ -18,7 +18,6 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		Parameters:      opts.Parameters
 		DisplaySettings: opts.DisplaySettings
 		MultipleOptions: opts.MultipleOptions
-		// MultipleClassifierSettingsArray: opts.MultipleClassifierSettingsArray
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
@@ -50,7 +49,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	for ci in mult_opts.classifier_indices {
 		mult_opts.multiple_classifier_settings << verify_result.multiple_classifier_settings[ci]
 	}
-	for i, _ in mult_opts.classifier_indices {
+	for i, idx in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
 		mult_opts.multiple_flag = true
@@ -58,7 +57,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		verify_result.multiple_flag = true
 		classifier := make_classifier(ds, mult_opts)
 		classifier_array << classifier
-		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
+		// verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
+		verify_result.trained_attribute_maps_map[idx] = classifier.trained_attributes.clone()
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
 	cases = transpose(cases)

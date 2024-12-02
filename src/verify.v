@@ -34,7 +34,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 		Parameters:                          opts.Parameters
 		DisplaySettings:                     opts.DisplaySettings
 		MultipleOptions:                     opts.MultipleOptions
-		// MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
@@ -53,7 +52,8 @@ pub fn verify(opts Options) CrossVerifyResult {
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
-	verify_result.trained_attribute_maps_array << cl.trained_attributes
+	dump(cl)
+	// verify_result.trained_attribute_maps_map[0] = cl.trained_attributes.clone()
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
 	// attribute parameters in the classifier
