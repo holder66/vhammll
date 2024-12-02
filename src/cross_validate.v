@@ -161,12 +161,15 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 
 // append_cross_settings_to_file
 fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
-	append_json_file(ClassifierSettings{
+	previously_stored_settings := os.read_lines(opts.settingsfile_path.trim_space()) or { panic('failed to open ${opts.settingsfile_path}') }
+	settings_to_append := ClassifierSettings{
+		classifier_index: previously_stored_settings.len + 1
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
 		Metrics:       result.Metrics
 		datafile_path: os.abs_path(result.datafile_path)
-	}, opts.settingsfile_path)
+	}
+	append_json_file(settings_to_append, opts.settingsfile_path)
 }
 
 // do_repetition

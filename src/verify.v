@@ -53,7 +53,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
 	dump(cl)
-	// verify_result.trained_attribute_maps_map[0] = cl.trained_attributes.clone()
+	// verify_result.trained_attribute_maps_array[0] = cl.trained_attributes.clone()
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
 	// attribute parameters in the classifier

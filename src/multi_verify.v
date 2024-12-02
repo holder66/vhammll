@@ -58,7 +58,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		classifier := make_classifier(ds, mult_opts)
 		classifier_array << classifier
 		// verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
-		verify_result.trained_attribute_maps_map[idx] = classifier.trained_attributes.clone()
+		verify_result.trained_attribute_maps_array[idx] = classifier.trained_attributes.clone()
 		cases << generate_case_array(classifier_array.last(), test_ds)
 	}
 	cases = transpose(cases)

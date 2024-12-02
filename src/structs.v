@@ -209,6 +209,7 @@ pub mut:
 pub struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
+	datafile_path string
 }
 
 pub struct OptimalsResult {
@@ -231,6 +232,7 @@ pub struct ClassifierSettings {
 	Metrics
 	LoadOptions
 pub mut:
+	classifier_index int
 	datafile_path string
 }
 
@@ -390,7 +392,7 @@ pub mut:
 	repetitions                     int
 	confusion_matrix                [][]string
 	// trained_attribute_maps_array    []map[string]TrainedAttribute
-	trained_attribute_maps_map	map[int]map[string]TrainedAttribute
+	trained_attribute_maps_array	[]map[string]TrainedAttribute
 }
 
 struct AttributeRange {
