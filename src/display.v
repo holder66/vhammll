@@ -25,12 +25,13 @@ pub fn display_file(path string, in_opts Options) {
 			for mut result in saved_er.array_of_results {
 				show_explore_line(result, opts.DisplaySettings)
 			}
-			show_explore_trailer(saved_er, opts)
+			analytics := explore_analytics2(saved_er)
+			show_explore_trailer(saved_er, analytics, opts)
 			if opts.append_settings_flag {
 				// save the settings for the explore results with the
 				// highest balanced accuracy, true positives, and true
 				// negatives
-				append_explore_settings_to_file(saved_er, opts)
+				append_explore_settings_to_file(saved_er, analytics, opts)
 			}
 		}
 		s.contains('"struct_type":".Classifier"') {
@@ -62,7 +63,7 @@ pub fn display_file(path string, in_opts Options) {
 			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
 			show_crossvalidation(saved_vr, opts)
 			// if opts.append_settings_flag {
-			// 	append_cross_settings_to_file(saved_vr, opts)
+			// 	append_cross_verify_settings_to_file(saved_vr, opts)
 			// }
 		}
 		// test for a multiple classifier settings file
@@ -75,7 +76,8 @@ pub fn display_file(path string, in_opts Options) {
 				println(m_u('Multiple Classifier Options file: ${path}'))
 				// create an array for fictitious classifier indices
 				classifier_indices := []int{len: multiple_classifier_settings.len, init: index}
-				show_multiple_classifier_settings_details(multiple_classifier_settings, classifier_indices)
+				show_multiple_classifier_settings_details(multiple_classifier_settings,
+					classifier_indices)
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
 					mut classifiers := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),

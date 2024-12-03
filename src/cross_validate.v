@@ -4,7 +4,6 @@ module vhammll
 import strconv
 import runtime
 import rand
-import os
 
 // cross_validate performs n-fold cross-validation on a dataset: it
 // partitions the instances in a dataset into a fold, trains
@@ -154,22 +153,9 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		save_json_file(cross_result, opts.outputfile_path)
 	}
 	if opts.append_settings_flag && opts.command == 'cross' {
-		append_cross_settings_to_file(cross_result, opts)
+		append_cross_verify_settings_to_file(cross_result, opts)
 	}
 	return cross_result
-}
-
-// append_cross_settings_to_file
-fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
-	previously_stored_settings := os.read_lines(opts.settingsfile_path.trim_space()) or { panic('failed to open ${opts.settingsfile_path}') }
-	settings_to_append := ClassifierSettings{
-		classifier_index: previously_stored_settings.len + 1
-		Parameters:    result.Parameters
-		BinaryMetrics: result.BinaryMetrics
-		Metrics:       result.Metrics
-		datafile_path: os.abs_path(result.datafile_path)
-	}
-	append_json_file(settings_to_append, opts.settingsfile_path)
 }
 
 // do_repetition

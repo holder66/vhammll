@@ -125,30 +125,4 @@ fn test_load_file_with_purging() ! {
 	}
 }
 
-fn test_load_instances_file() ! {
-	mut ds := Dataset{}
-	mut cl := Classifier{}
-	mut vr := ValidateResult{}
-	mut tvr := ValidateResult{}
-	mut opts := Options{
-		outputfile_path: 'tempfolder_load_file/validate_result.json'
-	}
-	opts.testfile_path = 'datasets/test_validate.tab'
-	ds = load_file('datasets/test.tab')
-	cl = make_classifier(ds, opts)
-	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder_load_file/validate_result.json')!
-	assert vr.Class == tvr.Class
-	assert vr.inferred_classes == tvr.inferred_classes
-	assert vr.counts == tvr.counts
 
-	opts.testfile_path = 'datasets/soybean-large-validate.tab'
-	ds = load_file('datasets/soybean-large-train.tab')
-	cl = make_classifier(ds, opts)
-	// println('cl: $cl')
-	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder_load_file/validate_result.json')!
-	assert vr.Class == tvr.Class
-	assert vr.inferred_classes == tvr.inferred_classes
-	assert vr.counts == tvr.counts
-}

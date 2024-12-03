@@ -22,3 +22,7 @@ bin/
 # vweb and database
 *.db
 *.js
+/tempfolder_display
+/tempfolder_multi_cross
+/tempfolder_multiple_verify
+/tempfolder_totalnn

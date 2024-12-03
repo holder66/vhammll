@@ -31,15 +31,15 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// instantiate a struct for the result
 	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
+		LoadOptions:     opts.LoadOptions
+		Parameters:      opts.Parameters
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
 		// MultipleClassifierSettings:     opts.MultipleClassifierSettings
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings: opts.multiple_classifier_settings
+		multiple_classifier_settings:        opts.multiple_classifier_settings
 		labeled_classes:                     test_ds.class_values
 		actual_classes:                      test_ds.class_values
 		class_counts:                        test_ds.class_counts
@@ -212,7 +212,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	}
 	// println(opts)
 	if opts.append_settings_flag {
-		append_cross_settings_to_file(verify_result, opts)
+		append_cross_verify_settings_to_file(verify_result, opts)
 	}
 	return verify_result
 }

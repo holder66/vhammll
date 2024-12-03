@@ -37,7 +37,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings: opts.multiple_classifier_settings
+		multiple_classifier_settings:        opts.multiple_classifier_settings
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
@@ -52,7 +52,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
-	dump(cl)
 	// verify_result.trained_attribute_maps_array[0] = cl.trained_attributes.clone()
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
@@ -162,7 +161,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	}
 	// println(opts)
 	if opts.append_settings_flag {
-		append_cross_settings_to_file(verify_result, opts)
+		append_cross_verify_settings_to_file(verify_result, opts)
 	}
 	return verify_result
 }

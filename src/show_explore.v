@@ -62,16 +62,14 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 }
 
 // show_explore_trailer
-fn show_explore_trailer(results ExploreResult, opts Options) {
+fn show_explore_trailer(results ExploreResult, analytics map[string]Analytics, opts Options) {
 	if opts.args.len > 0 {
 		println('Command line arguments: ${opts.args}')
 	} else {
 		println('Flags: u: ${results.uniform_bins} x: ${results.exclude_flag} p: ${results.purge_flag} w: ${results.weighting_flag} wr: ${results.weight_ranking_flag} bp: ${results.balance_prevalences_flag}')
 	}
 	println(g('Maximum accuracies obtained:'))
-	analytics := explore_analytics2(results)
 	label_column_width := array_max(analytics.keys().map(it.len)) + 5
-	// println('label_column_width: $label_column_width')
 	for label, a in analytics {
 		print('${pad(label_column_width - label.len)}${label}: ')
 		print(match a.valeur {
@@ -143,69 +141,3 @@ fn show_explore_line(result CrossVerifyResult, settings DisplaySettings) {
 	}
 }
 
-fn explore_analytics2(expr ExploreResult) map[string]Analytics {
-	mut m := map[string]Analytics{}
-	m['raw accuracy'] = Analytics{
-		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
-		idx:    idx_max(expr.array_of_results.map(it.raw_acc))
-	}
-	m['balanced accuracy'] = Analytics{
-		idx:    idx_max(expr.array_of_results.map(it.balanced_accuracy))
-		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
-	}
-	m['MCC (Matthews Correlation Coefficient)'] = Analytics{
-		idx:    idx_max(expr.array_of_results.map(it.mcc))
-		valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
-	}
-	if expr.array_of_results[0].classes.len > 2 {
-		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
-		m['correct inferences total'] = Analytics{
-			idx:    idx_max(expr.array_of_results.map(it.correct_count))
-			valeur: expr.array_of_results.map(it.correct_count)[idx_max(expr.array_of_results.map(it.correct_count))]
-		}
-		for class in expr.array_of_results[0].classes {
-			// m['$class'] = Analytics{
-			// 	idx: idx_max(expr.array_of_results.map(it.correct_inferences[class]))
-			// }
-			// println(idx_max(expr.array_of_results.map(it.correct_inferences[class])))
-			// println(expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))])
-			m['${class}'] = Analytics{
-				idx:    idx_max(expr.array_of_results.map(it.correct_inferences[class]))
-				valeur: expr.array_of_results.map(it.correct_inferences[class])[idx_max(expr.array_of_results.map(it.correct_inferences[class]))]
-			}
-		}
-		m['incorrect inferences'] = Analytics{
-			idx:    idx_max(expr.array_of_results.map(it.incorrects_count))
-			valeur: expr.array_of_results.map(it.incorrects_count)[idx_max(expr.array_of_results.map(it.incorrects_count))]
-		}
-	} else {
-		// println('in explore_analytics2: $expr.array_of_results[0]')
-		m['true positives'] = Analytics{
-			idx:    idx_max(expr.array_of_results.map(it.t_p))
-			valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
-		}
-		m['true negatives'] = Analytics{
-			idx:    idx_max(expr.array_of_results.map(it.t_n))
-			valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
-		}
-	}
-	for _, mut s in m {
-		cvr := expr.array_of_results[s.idx]
-		s.settings = analytics_settings(cvr)
-		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
-		s.multiclass_correct_counts = get_map_values(cvr.correct_inferences)
-		s.multiclass_incorrect_counts = get_map_values(cvr.incorrect_inferences)
-	}
-	// println('m in explore_analytics2: $m')
-	return m
-}
-
-// analytics_settings
-fn analytics_settings(cvr CrossVerifyResult) MaxSettings {
-	_, _, purged_percent := get_purged_percent(cvr)
-	return MaxSettings{
-		attributes_used: cvr.attributes_used
-		binning:         cvr.bin_values
-		purged_percent:  purged_percent
-	}
-}

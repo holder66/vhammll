@@ -14,15 +14,16 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	}
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:     opts.LoadOptions
-		Parameters:      opts.Parameters
-		DisplaySettings: opts.DisplaySettings
-		MultipleOptions: opts.MultipleOptions
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings: read_multiple_opts(opts.multiple_classify_options_file_path) or {
-		panic('read_multiple_opts failed')}
+		multiple_classifier_settings:        read_multiple_opts(opts.multiple_classify_options_file_path) or {
+			panic('read_multiple_opts failed')
+		}
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
@@ -35,7 +36,6 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	mut cases := [][][]u8{}
 	mut mult_opts := opts
 	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
-	
 
 	// settings_array := classifier_settings.multiple_classifier_settings
 	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifier_indices)

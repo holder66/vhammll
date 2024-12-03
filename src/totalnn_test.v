@@ -35,7 +35,7 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
 	mut er := explore(ds, opts)
-	assert os.file_size(opts.settingsfile_path) == 5702, 'Settings file too small'
+	assert os.file_size(opts.settingsfile_path) == 5807, 'Settings file too small'
 	// display_file(opts.settingsfile_path, opts)
 
 	opts.multiple_flag = true

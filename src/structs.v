@@ -183,8 +183,7 @@ pub struct Options {
 	Parameters
 	LoadOptions
 	DisplaySettings
-	MultipleOptions
-	// MultipleClassifierSettingsArray
+	MultipleOptions // MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
@@ -196,7 +195,7 @@ pub mut:
 	classifierfile_path                 string
 	instancesfile_path                  string
 	multiple_classify_options_file_path string
-	multiple_classifier_settings []ClassifierSettings
+	multiple_classifier_settings        []ClassifierSettings
 	settingsfile_path                   string
 	help_flag                           bool
 	// multiple_flag                       bool
@@ -209,7 +208,7 @@ pub mut:
 pub struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
-	datafile_path string
+	datafile_path                string
 }
 
 pub struct OptimalsResult {
@@ -233,7 +232,7 @@ pub struct ClassifierSettings {
 	LoadOptions
 pub mut:
 	classifier_index int
-	datafile_path string
+	datafile_path    string
 }
 
 pub struct MultipleOptions {
@@ -354,15 +353,14 @@ pub struct CrossVerifyResult {
 	DisplaySettings
 	Metrics
 	BinaryMetrics
-	MultipleOptions
-	// MultipleClassifierSettingsArray
+	MultipleOptions // MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
 	command                             string
 	datafile_path                       string
 	testfile_path                       string
 	multiple_classify_options_file_path string
-	multiple_classifier_settings []ClassifierSettings
+	multiple_classifier_settings        []ClassifierSettings
 	labeled_classes                     []string
 	actual_classes                      []string
 	inferred_classes                    []string
@@ -392,7 +390,7 @@ pub mut:
 	repetitions                     int
 	confusion_matrix                [][]string
 	// trained_attribute_maps_array    []map[string]TrainedAttribute
-	trained_attribute_maps_array	[]map[string]TrainedAttribute
+	trained_attribute_maps_array []map[string]TrainedAttribute
 }
 
 struct AttributeRange {
@@ -414,8 +412,9 @@ pub mut:
 	testfile_path    string
 	pos_neg_classes  []string
 	array_of_results []CrossVerifyResult
-	accuracy_types   []string = ['raw accuracy', 'balanced accuracy']
-	analytics        []MaxSettings
+	// accuracy_types   []string = ['raw accuracy', 'balanced accuracy', ' MCC (Matthews Correlation Coefficient)']
+	// analytics        []MaxSettings
+	// analytics map[string]Analytics
 	args             []string
 }
 

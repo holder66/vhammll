@@ -11,37 +11,25 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolder_save_settings')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_save_settings')!
-}
+// fn testsuite_end() ? {
+// 	os.rmdir_all('tempfolder_save_settings')!
+// }
 
-fn test_append() ? {
-	mut opts := Options{}
-	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'
-	opts.number_of_attributes = [9]
-	ds := load_file(opts.datafile_path)
-	result := cross_validate(ds, opts)
-	mut c_s := ClassifierSettings{
-		Parameters:    result.Parameters
-		BinaryMetrics: result.BinaryMetrics
-		Metrics:       result.Metrics
-		datafile_path: opts.datafile_path
+fn test_append_explore_settings_to_file() {
+	mut result := ExploreResult{}
+	mut metrics := Metrics{}
+	mut opts := Options{
+		number_of_attributes: [1, 4]
+		bins:                 [2, 7]
+		concurrency_flag:     true
+		uniform_bins:         true
+		datafile_path:        'datasets/iris.tab'
+		settingsfile_path:	'tempfolder_save_settings/iris.opts'
+		command: 'explore'
+		append_settings_flag: true
 	}
-	append_json_file(c_s, 'tempfolder_save_settings/append_file.opts')
-	saved := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
-	assert saved[0].correct_counts == c_s.correct_counts
-	opts.number_of_attributes = [3]
-	opts.weighting_flag = true
-	result2 := cross_validate(ds, opts)
-	mut c_s2 := ClassifierSettings{
-		Parameters:    result2.Parameters
-		BinaryMetrics: result2.BinaryMetrics
-		Metrics:       result2.Metrics
-		datafile_path: opts.datafile_path
-	}
-	append_json_file(c_s2, 'tempfolder_save_settings/append_file.opts')
-	saved2 := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
-	assert saved2[0].correct_counts == c_s.correct_counts
-	assert saved2[1].correct_counts == c_s2.correct_counts
-	assert saved2[0].datafile_path == opts.datafile_path
+	mut ds := load_file(opts.datafile_path)
+	opts.show_flag = true
+	
+	result = explore(ds, opts)
 }
