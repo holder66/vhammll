@@ -111,7 +111,6 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	return results
 }
 
-
 // get_attribute_range
 fn get_attribute_range(atts []int, max int) AttributeRange {
 	if atts == [0] {

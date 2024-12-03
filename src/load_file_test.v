@@ -124,5 +124,3 @@ fn test_load_file_with_purging() ! {
 		postpurge_lcm_class_counts: 0
 	}
 }
-
-

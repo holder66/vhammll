@@ -24,12 +24,12 @@ fn test_append_explore_settings_to_file() {
 		concurrency_flag:     true
 		uniform_bins:         true
 		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:	'tempfolder_save_settings/iris.opts'
-		command: 'explore'
+		settingsfile_path:    'tempfolder_save_settings/iris.opts'
+		command:              'explore'
 		append_settings_flag: true
 	}
 	mut ds := load_file(opts.datafile_path)
 	opts.show_flag = true
-	
+
 	result = explore(ds, opts)
 }

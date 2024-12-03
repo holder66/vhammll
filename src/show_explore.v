@@ -140,4 +140,3 @@ fn show_explore_line(result CrossVerifyResult, settings DisplaySettings) {
 		}
 	}
 }
-

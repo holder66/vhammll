@@ -7,21 +7,22 @@ import os
 // append_cross_verify_settings_to_file
 fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) {
 	mut settings_to_append := ClassifierSettings{
-		Parameters:       result.Parameters
-		BinaryMetrics:    result.BinaryMetrics
-		Metrics:          result.Metrics
-		datafile_path:    os.abs_path(result.datafile_path)
+		Parameters:    result.Parameters
+		BinaryMetrics: result.BinaryMetrics
+		Metrics:       result.Metrics
+		datafile_path: os.abs_path(result.datafile_path)
 	}
 	path := opts.settingsfile_path.trim_space()
 	// check if there is already a settings file
 	if os.is_file(path) {
-	previously_stored_settings := os.read_lines(opts.settingsfile_path.trim_space()) or {
-		panic('failed to open ${opts.settingsfile_path} in append_cross_verify_settings_to_file')}
+		previously_stored_settings := os.read_lines(opts.settingsfile_path.trim_space()) or {
+			panic('failed to open ${opts.settingsfile_path} in append_cross_verify_settings_to_file')
+		}
 		settings_to_append.classifier_index = previously_stored_settings.len + 1
 	} else {
 		settings_to_append.classifier_index = 0
 	}
-	
+
 	append_json_file(settings_to_append, opts.settingsfile_path)
 }
 

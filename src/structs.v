@@ -415,7 +415,7 @@ pub mut:
 	// accuracy_types   []string = ['raw accuracy', 'balanced accuracy', ' MCC (Matthews Correlation Coefficient)']
 	// analytics        []MaxSettings
 	// analytics map[string]Analytics
-	args             []string
+	args []string
 }
 
 pub struct PlotResult {

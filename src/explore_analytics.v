@@ -12,7 +12,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		idx:    idx_max(expr.array_of_results.map(it.balanced_accuracy))
 		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
 	}
-	
+
 	if expr.array_of_results[0].classes.len > 2 {
 		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
 		m['correct inferences total'] = Analytics{
@@ -36,9 +36,9 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		}
 	} else {
 		m['MCC (Matthews Correlation Coefficient)'] = Analytics{
-		idx:    idx_max(expr.array_of_results.map(it.mcc))
-		valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
-	}
+			idx:    idx_max(expr.array_of_results.map(it.mcc))
+			valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
+		}
 		// println('in explore_analytics2: $expr.array_of_results[0]')
 		m['true positives'] = Analytics{
 			idx:    idx_max(expr.array_of_results.map(it.t_p))
@@ -56,7 +56,6 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		s.multiclass_correct_counts = get_map_values(cvr.correct_inferences)
 		s.multiclass_incorrect_counts = get_map_values(cvr.incorrect_inferences)
 	}
-	dump(m)
 	return m
 }
 
