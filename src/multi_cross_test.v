@@ -19,7 +19,7 @@ fn testsuite_end() ? {
 fn test_multiple_crossvalidate() ? {
 	mut opts := Options{
 		// folds: 3
-		break_on_all_flag:   true
+		break_on_all_flag:   false
 		combined_radii_flag: false
 		weighting_flag:      false
 		// total_nn_counts_flag: true
@@ -34,9 +34,10 @@ fn test_multiple_crossvalidate() ? {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
 	mut er := explore(ds, opts)
+	display_file(opts.settingsfile_path)
 	// do an ordinary crossvalidation
 	opts.command = 'cross'
-	opts.number_of_attributes = [3]
+	opts.number_of_attributes = [1]
 	opts.bins = [1, 3]
 	result = cross_validate(ds, opts)
 	// now do a multiple classifier crossvalidation
