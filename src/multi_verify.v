@@ -6,7 +6,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	// println('classes in multi_verify: ${test_ds.classes}')
-	mut confusion_matrix_map := map[string]map[string]f64{}
+	mut confusion_matrix_map := map[string]StringFloatMap{}
 	// for each class, instantiate an entry in the confusion matrix map
 	for key1, _ in test_ds.class_counts {
 		for key2, _ in test_ds.class_counts {

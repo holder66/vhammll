@@ -341,6 +341,8 @@ pub mut:
 	confusion_matrix_row map[string]int
 }
 
+pub type StringFloatMap = map[string]f64
+
 // Returned by cross_validate() and verify()
 pub struct CrossVerifyResult {
 	Parameters
@@ -372,7 +374,7 @@ pub mut:
 	true_negatives                      map[string]int
 	false_negatives                     map[string]int
 	// outer key: actual class; inner key: predicted class
-	confusion_matrix_map            map[string]map[string]f64
+	confusion_matrix_map            map[string]StringFloatMap
 	pos_neg_classes                 []string
 	correct_count                   int
 	incorrects_count                int

@@ -40,7 +40,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 
 	repeats := if opts.repetitions == 0 { 1 } else { opts.repetitions }
 	// for each class, instantiate an entry in the confusion matrix map
-	mut confusion_matrix_map := map[string]map[string]f64{}
+	mut confusion_matrix_map := map[string]StringFloatMap{}
 	for key1, _ in ds.class_counts {
 		for key2, _ in ds.class_counts {
 			confusion_matrix_map[key2][key1] = 0

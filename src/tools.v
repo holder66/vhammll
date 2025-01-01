@@ -5,7 +5,7 @@ module vhammll
 import math
 import os
 import x.json2
-import mewzax.chalk
+import chalk
 // import math.bits
 // import encoding.binary
 import math.unsigned
