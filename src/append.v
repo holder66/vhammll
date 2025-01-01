@@ -35,7 +35,7 @@ pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts 
 		show_classifier(ext_cl)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(ext_cl, opts.outputfile_path)
+		save_json_file[Classifier](ext_cl, opts.outputfile_path)
 	}
 	return ext_cl
 }

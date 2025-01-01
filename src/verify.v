@@ -164,7 +164,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'
-		save_json_file(verify_result, opts.outputfile_path)
+		save_json_file[CrossVerifyResult](verify_result, opts.outputfile_path)
 	}
 	// println(opts)
 	if opts.append_settings_flag {

@@ -174,7 +174,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		show_crossvalidation(cross_result, cross_opts)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(cross_result, opts.outputfile_path)
+		save_json_file[CrossVerifyResult](cross_result, opts.outputfile_path)
 	}
 	if !opts.multiple_flag && opts.append_settings_flag && opts.command == 'cross' {
 		append_cross_settings_to_file(cross_result, opts)
@@ -186,7 +186,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
 	// println('opts in append_cross_settings_to_file: $opts')
 	// println('result in append_cross_settings_to_file: $result')
-	append_json_file(ClassifierSettings{
+	append_json_file[ClassifierSettings](ClassifierSettings{
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
 		Metrics:       result.Metrics

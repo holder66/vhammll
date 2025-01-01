@@ -27,7 +27,7 @@ fn test_append() ? {
 		Metrics:       result.Metrics
 	}
 	println(c_s.Metrics)
-	append_json_file(c_s, 'tempfolder_save_settings/append_file.opts')
+	append_json_file[ClassifierSettings](c_s, 'tempfolder_save_settings/append_file.opts')
 	saved := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
 	assert saved.multiple_classifier_settings[0].Metrics.correct_counts == c_s.Metrics.correct_counts
 	opts.number_of_attributes = [3]
@@ -38,7 +38,7 @@ fn test_append() ? {
 		BinaryMetrics: result2.BinaryMetrics
 		Metrics:       result2.Metrics
 	}
-	append_json_file(c_s2, 'tempfolder_save_settings/append_file.opts')
+	append_json_file[ClassifierSettings](c_s2, 'tempfolder_save_settings/append_file.opts')
 	saved2 := read_multiple_opts('tempfolder_save_settings/append_file.opts')!
 	// assert saved2.multiple_classifier_settings[0] == c_s
 	// assert saved2.multiple_classifier_settings[1] == c_s2

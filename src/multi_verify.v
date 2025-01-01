@@ -116,7 +116,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	}
 	if opts.outputfile_path != '' {
 		verify_result.command = 'verify'
-		save_json_file(verify_result, opts.outputfile_path)
+		save_json_file[CrossVerifyResult](verify_result, opts.outputfile_path)
 	}
 	// println('trained_attributes_array in multi_verify: $verify_result.trained_attributes_array')
 	return verify_result

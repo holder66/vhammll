@@ -71,7 +71,7 @@ pub fn query(cl Classifier, opts Options) ClassifyResult {
 		validate_result.instances = [byte_values]
 		validate_result.inferred_classes = [classify_result.inferred_class]
 		validate_result.counts = [classify_result.nearest_neighbors_by_class]
-		save_json_file(validate_result, opts.outputfile_path)
+		save_json_file[ValidateResult](validate_result, opts.outputfile_path)
 	}
 	return classify_result
 }

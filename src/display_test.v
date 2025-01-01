@@ -38,9 +38,9 @@ fn test_display_multiple_options() ? {
 			weighting_flag:       true
 		}
 	}
-	append_json_file(settings1, 'tempfolder_display/bcw.opts')
+	append_json_file[ClassifierSettings](settings1, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 416
-	append_json_file(settings2, 'tempfolder_display/bcw.opts')
+	append_json_file[ClassifierSettings](settings2, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 832
 	mut opts := Options{
 		show_flag: true

@@ -85,7 +85,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	results.array_of_results = array_of_results
 	// results.analytics = get_explore_analytics(results)
 	if opts.outputfile_path != '' {
-		save_json_file(results, opts.outputfile_path)
+		save_json_file[ExploreResult](results, opts.outputfile_path)
 	}
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_explore_trailer(results, opts)
@@ -121,7 +121,7 @@ fn append_explore_settings_to_file(results ExploreResult, opts Options) {
 	for _, a in m {
 		if i in indices {
 			// println(results.array_of_results[a.idx])
-			append_json_file(ClassifierSettings{
+			append_json_file[ClassifierSettings](ClassifierSettings{
 				Parameters:    results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
 				Metrics:       results.array_of_results[a.idx].Metrics

@@ -74,7 +74,7 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	}
 	if opts.outputfile_path != '' {
 		validate_result.instances = cases
-		save_json_file(validate_result, opts.outputfile_path)
+		save_json_file[ValidateResult](validate_result, opts.outputfile_path)
 	}
 	// println('opts.kagglefile_path: $opts.kagglefile_path')
 	if opts.kagglefile_path != '' {
