@@ -1,4 +1,4 @@
-# Classification of Cancer using Metabolomics
+# Classification of Cancer Cases into Metastatic or Non-metastatic using Metabolomics
 Using the Command Line Interface (CLI)
 
 ## Install V and set up to use the CLI

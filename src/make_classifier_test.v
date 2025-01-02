@@ -4,14 +4,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder2') {
-		os.rmdir_all('tempfolder2')!
+	if os.is_dir('tempfolder_make_classifier') {
+		os.rmdir_all('tempfolder_make_classifier')!
 	}
-	os.mkdir_all('tempfolder2')!
+	os.mkdir_all('tempfolder_make_classifier')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder2')!
+	os.rmdir_all('tempfolder_make_classifier')!
 }
 
 fn test_max_ham_dist() {
@@ -108,7 +108,7 @@ fn test_save_classifier() ? {
 		number_of_attributes: [6]
 		weighting_flag:       true
 		weight_ranking_flag:  true
-		outputfile_path:      'tempfolder2/classifierfile'
+		outputfile_path:      'tempfolder_make_classifier/classifierfile'
 	}
 	opts.classifierfile_path = opts.outputfile_path
 
