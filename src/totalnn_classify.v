@@ -32,20 +32,17 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 	mut hamming_distances_array := [][]int{}
 	// calculate hamming distances
 	for i, cl in classifiers {
-		// println('i in multiple_classifier_classify_totalnn: $i')
 		mut hamming_distances := []int{}
 		// println('cl.instances in multiple_classifier_classify_totalnn: $cl.instances')
 		for instance in cl.instances {
 			mut hamming_dist := 0
 			for j, byte_value in case[i] {
-				// println('j in multiple_classifier_classify_totalnn: $j')
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist
 		}
 		hamming_distances_array << hamming_distances
 	}
-	// println('hamming_distances_array: $hamming_distances_array')
 	mut radii := element_counts(arrays.flatten(hamming_distances_array)).keys()
 	radii.sort()
 	if opts.verbose_flag {

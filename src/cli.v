@@ -292,7 +292,6 @@ fn do_validate(opts Options) ! {
 fn cross(opts Options) {
 	mut new_opts := opts
 	new_opts.random_pick = if opts.repetitions > 1 { true } else { false }
-	// println('opts.LoadOptions in cli.v: ${opts.LoadOptions}')
 	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), new_opts)
 }
 
@@ -303,7 +302,7 @@ fn do_explore(opts Options) {
 }
 
 fn do_optimals(opts Options) {
-	optimals(opts.datafile_path, opts)
+	// optimals(opts.datafile_path, opts)
 }
 
 // orange
@@ -335,9 +334,4 @@ fn make(opts Options) {
 	if opts.expanded_flag {
 		println(cl)
 	}
-}
-
-// last returns the last element of a string array
-fn last(array []string) string {
-	return array[array.len - 1]
 }

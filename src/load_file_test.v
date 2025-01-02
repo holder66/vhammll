@@ -4,14 +4,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ! {
-	if os.is_dir('tempfolder1') {
-		os.rmdir_all('tempfolder1')!
+	if os.is_dir('tempfolder_load_file') {
+		os.rmdir_all('tempfolder_load_file')!
 	}
-	os.mkdir_all('tempfolder1')!
+	os.mkdir_all('tempfolder_load_file')!
 }
 
 fn testsuite_end() ! {
-	os.rmdir_all('tempfolder1')!
+	os.rmdir_all('tempfolder_load_file')!
 }
 
 fn test_file_type() {
@@ -123,65 +123,4 @@ fn test_load_file_with_purging() ! {
 		postpurge_class_counts:     {}
 		postpurge_lcm_class_counts: 0
 	}
-}
-
-fn test_load_classifier_file() ! {
-	mut ds := Dataset{}
-	mut cl := Classifier{}
-	mut tcl := Classifier{}
-	mut opts := Options{
-		outputfile_path: 'tempfolder1/classifierfile'
-		command:         'make' // the make command is necessary to create a proper file
-	}
-	opts.bins = [2, 4]
-	opts.number_of_attributes = [4]
-	ds = load_file('datasets/developer.tab')
-	cl = make_classifier(ds, opts)
-	tcl = load_classifier_file('tempfolder1/classifierfile')!
-	assert cl.Parameters == tcl.Parameters
-	assert cl.Class == tcl.Class
-	assert cl.attribute_ordering == tcl.attribute_ordering
-	assert cl.trained_attributes == tcl.trained_attributes
-	assert cl.history[0].event == tcl.history[0].event
-	// assert cl.history[0].event_date == tcl.history[0].event_date
-
-	opts.bins = [3, 6]
-	opts.number_of_attributes = [2]
-	ds = load_file('datasets/iris.tab')
-	cl = make_classifier(ds, opts)
-	tcl = load_classifier_file('tempfolder1/classifierfile')!
-	assert cl.Parameters == tcl.Parameters
-	assert cl.Class == tcl.Class
-	assert cl.attribute_ordering == tcl.attribute_ordering
-	assert cl.trained_attributes == tcl.trained_attributes
-	assert cl.history[0].event == tcl.history[0].event
-	// assert cl.history[0].event_date == tcl.history[0].event_date
-}
-
-fn test_load_instances_file() ! {
-	mut ds := Dataset{}
-	mut cl := Classifier{}
-	mut vr := ValidateResult{}
-	mut tvr := ValidateResult{}
-	mut opts := Options{
-		outputfile_path: 'tempfolder1/validate_result.json'
-	}
-	opts.testfile_path = 'datasets/test_validate.tab'
-	ds = load_file('datasets/test.tab')
-	cl = make_classifier(ds, opts)
-	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder1/validate_result.json')!
-	assert vr.Class == tvr.Class
-	assert vr.inferred_classes == tvr.inferred_classes
-	assert vr.counts == tvr.counts
-
-	opts.testfile_path = 'datasets/soybean-large-validate.tab'
-	ds = load_file('datasets/soybean-large-train.tab')
-	cl = make_classifier(ds, opts)
-	// println('cl: $cl')
-	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder1/validate_result.json')!
-	assert vr.Class == tvr.Class
-	assert vr.inferred_classes == tvr.inferred_classes
-	assert vr.counts == tvr.counts
 }

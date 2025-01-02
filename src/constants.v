@@ -319,6 +319,18 @@ both the classification and the verification datafile.
 -e --expanded, expanded results on the console;
 -k --classifier, followed by the path to a file for a saved Classifier;
     can be used instead of the training dataset;
+-m --multiple:    classify using more than one trained classifier, followed
+     by the path to a json file with parameters to generate
+     each classifier;
+-ma: when multiple classifiers are used, stop classifying when 
+     matches have been found for all classifiers;
+-mc: when multiple classifiers are used, combine the possible 
+     hamming distances for each classifier into a single list;
+-mt: when multiple classifiers are used, add the nearest
+     neighbors from each classifier, weight by class
+     prevalences, and then infer from the totals;
+-m#: followed by a list of which classifiers to apply in a 
+     multiple classification run (zero-indexed);
 -w --weight, weight the number of nearest neighbor counts
     by class prevalences when classifying;
 -wr, when ranking attributes, weight contributions by class prevalences.
@@ -391,6 +403,18 @@ Options:
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);
+  -m --multiple:    classify using more than one trained classifier, followed
+       by the path to a json file with parameters to generate
+       each classifier;
+  -ma: when multiple classifiers are used, stop classifying when 
+       matches have been found for all classifiers;
+  -mc: when multiple classifiers are used, combine the possible 
+       hamming distances for each classifier into a single list;
+  -mt: when multiple classifiers are used, add the nearest
+       neighbors from each classifier, weight by class
+       prevalences, and then infer from the totals;
+  -m#: followed by a list of which classifiers to apply in a 
+       multiple classification run (zero-indexed);
   -p --purge: remove instances which are duplicates after binning;
   -r --reps: number of repetitions; if > 1, a random selection of 
       instances to be included in each fold will be applied;

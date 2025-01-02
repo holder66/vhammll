@@ -31,14 +31,15 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// instantiate a struct for the result
 	// println('opts.Parameters in verify: $opts.Parameters')
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		MultipleClassifierSettingsArray:     opts.MultipleClassifierSettingsArray
+		LoadOptions:     opts.LoadOptions
+		Parameters:      opts.Parameters
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
+		// MultipleClassifierSettings:     opts.MultipleClassifierSettings
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
+		multiple_classifier_settings:        opts.multiple_classifier_settings
 		labeled_classes:                     test_ds.class_values
 		actual_classes:                      test_ds.class_values
 		class_counts:                        test_ds.class_counts
@@ -155,11 +156,11 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// 	mut instances_to_be_classified := [][][]u8{}
 	// 	// mut mult_opts := []Parameters{}
 	// 	mut mult_opts := opts
-	// 	mult_opts.MultipleClassifierSettingsArray = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
+	// 	mult_opts.MultipleClassifierSettings = read_multiple_opts(mult_opts.multiple_classify_options_file_path) or {
 	// 		panic('read_multiple_opts failed')
 	// 	}
 	// 	// println(mult_opts)
-	// 	verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
+	// 	verify_result.MultipleClassifierSettings = mult_opts.MultipleClassifierSettings
 	// 	// mult_opts.break_on_all_flag = opts.break_on_all_flag
 	// 	// mult_opts.combined_radii_flag = opts.combined_radii_flag
 	// 	if mult_opts.classifier_indices == [] {
@@ -168,7 +169,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// 	verify_result.classifier_indices = mult_opts.classifier_indices
 	// 	// mut ds := load_file(opts.datafile_path)
 	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-	// 	// 	MultipleClassifierSettingsArray{}
+	// 	// 	MultipleClassifierSettings{}
 	// 	// }
 	// 	// println('mult_opts: $mult_opts')
 	// 	for i in mult_opts.classifier_indices {
@@ -211,7 +212,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	}
 	// println(opts)
 	if opts.append_settings_flag {
-		append_cross_settings_to_file(verify_result, opts)
+		append_cross_verify_settings_to_file(verify_result, opts)
 	}
 	return verify_result
 }

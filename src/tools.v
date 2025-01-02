@@ -3,36 +3,12 @@ module vhammll
 
 // import arrays
 import math
-import os
+// import os
 import x.json2
 import chalk
 // import math.bits
 // import encoding.binary
 import math.unsigned
-
-// save_json_file
-pub fn save_json_file[T](u T, path string) {
-	s := json2.encode[T](u)
-	mut f := os.open_file(path, 'w') or { panic(err.msg()) }
-	f.write_string(s) or { panic(err.msg()) }
-	f.close()
-}
-
-// append_json_file
-fn append_json_file[T](u T, path string) {
-	// println(path)
-	mut f := os.open_append(path) or { panic(err.msg()) }
-	f.write_string(json2.encode[T](u) + '\n') or { panic(err.msg()) }
-	f.close()
-}
-
-// read_multiple_opts
-fn read_multiple_opts(path string) !MultipleClassifierSettingsArray {
-	mut s := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
-	return MultipleClassifierSettingsArray{
-		multiple_classifier_settings: s.map(json2.decode[ClassifierSettings](it)!)
-	}
-}
 
 // idx_true returns the index of the first true element in boolean array a.
 // Returns -1 if no true element found.
@@ -379,6 +355,14 @@ pub fn is_nan[T](f T) bool {
 	return f != f
 }
 
+// last returns the last element of a string array
+fn last[T](array []T) T {
+	if array.len == 0 {
+		panic('the array function last() was called on an empty array')
+	}
+	return array[array.len - 1]
+}
+
 // array_min returns the minimum value in the array
 fn array_min[T](a []T) T {
 	if a.len == 0 {
@@ -395,9 +379,9 @@ fn array_min[T](a []T) T {
 
 // array_max returns the maximum value in the array
 fn array_max[T](a []T) T {
-	// if a.len == 0 {
-	// 	return error('.max called on an empty array')
-	// }
+	if a.len == 0 {
+		panic('.max called on an empty array')
+	}
 	mut val := a[0]
 	for e in a {
 		if e > val {
@@ -409,9 +393,9 @@ fn array_max[T](a []T) T {
 
 // array_sum returns the sum of an array's numeric values
 fn array_sum[T](list []T) T {
-	// if list.len == 0 {
-	// 	return error('Cannot sum up array of nothing.')
-	// } else {
+	if list.len == 0 {
+		panic('array_sum called on an empty array')
+	}
 	mut head := list[0]
 
 	for i, e in list {
@@ -421,7 +405,6 @@ fn array_sum[T](list []T) T {
 			head += e
 		}
 	}
-
 	return head
 }
 
@@ -587,6 +570,10 @@ const c_u = Styles{
 const r_ = Styles{
 	fg: 'red'
 }
+const r_b = Styles{
+	fg:    'red'
+	style: 'bold'
+}
 const b_ = Styles{
 	fg: 'blue'
 }
@@ -655,6 +642,14 @@ fn r(s string) string {
 	return chlk(s, r_)
 }
 
+fn r_b(s string) string {
+	return chlk(s, r_b)
+}
+
+fn rgb(s string) string {
+	return chlk(s, rgb)
+}
+
 fn b(s string) string {
 	return chlk(s, b_)
 }
@@ -665,10 +660,6 @@ fn g(s string) string {
 
 fn y(s string) string {
 	return chlk(s, y_)
-}
-
-fn rgb(s string) string {
-	return chlk(s, rgb)
 }
 
 // purge_array filters an array of generic types, removing those elements
