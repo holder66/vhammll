@@ -2,7 +2,7 @@ module vhammll
 
 import os
 import strconv
-import x.json2
+// import x.json2
 import regex
 
 // load_file returns a struct containing the datafile's contents,
