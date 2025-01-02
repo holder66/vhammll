@@ -12,7 +12,7 @@ You can use `VHamMLL` with your own datasets, or with a selection of publicly av
 This table reports [balanced accuracy results](https://github.com/holder66/vhammll/blob/master/docs/classification_results_with_public_datasets.numbers.pdf) for classification of a variety of publicly available datasets.
 
 What, another AI package? [Is that necessary?](https://github.com/holder66/vhamml/blob/master/docs/AI_for_rest_of_us.md)
-And have a look here for a more complete [description and potential use cases](https://github.com/holder66/vhamml/blob/master/docs/description.md). 
+And have a look here for a more complete [description and potential use cases](https://github.com/holder66/vhamml/blob/master/docs/description.md).
 
 [Glossary of terms](https://github.com/holder66/vhamml/blob/master/docs/glossary.md)
 
@@ -24,8 +24,7 @@ For interactive descriptions of the two key algorithms used by VHamMLL, download
 
 You may also need to install its dependencies, if not automatically installed:
 ```sh
-v install vsl
-v install Mewzax.chalk
+v install
 ```
 
 In your v code, add:

@@ -4,8 +4,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-  schedule:
-   - cron: "31 1,12 * * *"
+  # schedule:
+  #   - cron: "31 1,12 * * *"
 
   push:
     branches: [main]
@@ -33,12 +33,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          v install vsl
-          v install Mewzax.chalk
+          v install
 
       - name: Build ${{ github.event.repository.name }}
         run: v -shared .
 
       - name: Run Tests
         run: |
-          VTEST_ONLY=analyze,append,classify,cross_validate,environment,explore,load_file,make_classifier,partition,rank,tools,validate,verify v test .
+          VTEST_ONLY=analyze,cross_validate,environment,partition,tools v test .

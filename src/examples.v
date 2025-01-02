@@ -3,7 +3,7 @@ module vhammll
 
 import os
 import readline { read_line }
-import mewzax.chalk
+import chalk
 
 // run_example
 fn run_example(before string, after string, cmd string) ! {
@@ -51,7 +51,7 @@ v run . rank --show --bins 3,6 ~/.vmodules/holder66/vhammll/datasets/iris.tab , 
 	run_example(before, after, cmd)!
 
 	// cross
-	before = "The classifier provides two mechanisms to test classification: 
+	before = "The classifier provides two mechanisms to test classification:
 cross-validation or verification (which requires a separate test dataset).
 Let's look at cross-validation first:"
 	cmd = 'v run . cross ~/.vmodules/holder66/vhammll/datasets/iris.tab'

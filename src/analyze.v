@@ -82,7 +82,7 @@ pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
 		show_analyze(result)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(result, opts.outputfile_path)
+		save_json_file[AnalyzeResult](result, opts.outputfile_path)
 	}
 	return result
 }

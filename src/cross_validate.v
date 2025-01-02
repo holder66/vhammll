@@ -40,7 +40,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 
 	repeats := if opts.repetitions == 0 { 1 } else { opts.repetitions }
 	// for each class, instantiate an entry in the confusion matrix map
-	mut confusion_matrix_map := map[string]map[string]f64{}
+	mut confusion_matrix_map := map[string]StringFloatMap{}
 	for key1, _ in ds.class_counts {
 		for key2, _ in ds.class_counts {
 			confusion_matrix_map[key2][key1] = 0
@@ -174,7 +174,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		show_crossvalidation(cross_result, cross_opts)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(cross_result, opts.outputfile_path)
+		save_json_file[CrossVerifyResult](cross_result, opts.outputfile_path)
 	}
 	if !opts.multiple_flag && opts.append_settings_flag && opts.command == 'cross' {
 		append_cross_settings_to_file(cross_result, opts)
@@ -186,7 +186,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 fn append_cross_settings_to_file(result CrossVerifyResult, opts Options) {
 	// println('opts in append_cross_settings_to_file: $opts')
 	// println('result in append_cross_settings_to_file: $result')
-	append_json_file(ClassifierSettings{
+	append_json_file[ClassifierSettings](ClassifierSettings{
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
 		Metrics:       result.Metrics

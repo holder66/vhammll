@@ -2,7 +2,7 @@ module vhammll
 
 import os
 import strconv
-import json
+import x.json2
 import regex
 
 // load_file returns a struct containing the datafile's contents,
@@ -56,7 +56,7 @@ pub fn file_type(path string) string {
 // ```
 pub fn load_classifier_file(path string) !Classifier {
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
-	cl := json.decode(Classifier, s) or { panic('Failed to parse json') }
+	cl := json2.decode[Classifier](s) or { panic('Failed to parse json') }
 	return cl
 }
 
@@ -73,7 +73,7 @@ pub fn load_instances_file(path string) !ValidateResult {
 	// mut s := ''
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	// println(s)
-	instances := json.decode(ValidateResult, s) or { panic('Failed to parse json') }
+	instances := json2.decode[ValidateResult](s) or { panic('Failed to parse json') }
 	return instances
 }
 

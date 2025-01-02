@@ -4,15 +4,15 @@ module vhammll
 // import arrays
 import math
 import os
-import json
-import mewzax.chalk
-// import math.bits 
-// import encoding.binary 
+import x.json2
+import chalk
+// import math.bits
+// import encoding.binary
 import math.unsigned
 
 // save_json_file
 pub fn save_json_file[T](u T, path string) {
-	s := json.encode(u)
+	s := json2.encode[T](u)
 	mut f := os.open_file(path, 'w') or { panic(err.msg()) }
 	f.write_string(s) or { panic(err.msg()) }
 	f.close()
@@ -22,7 +22,7 @@ pub fn save_json_file[T](u T, path string) {
 fn append_json_file[T](u T, path string) {
 	// println(path)
 	mut f := os.open_append(path) or { panic(err.msg()) }
-	f.write_string(json.encode(u) + '\n') or { panic(err.msg()) }
+	f.write_string(json2.encode[T](u) + '\n') or { panic(err.msg()) }
 	f.close()
 }
 
@@ -30,7 +30,7 @@ fn append_json_file[T](u T, path string) {
 fn read_multiple_opts(path string) !MultipleClassifierSettingsArray {
 	mut s := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	return MultipleClassifierSettingsArray{
-		multiple_classifier_settings: s.map(json.decode(ClassifierSettings, it)!)
+		multiple_classifier_settings: s.map(json2.decode[ClassifierSettings](it)!)
 	}
 }
 

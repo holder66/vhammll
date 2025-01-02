@@ -174,7 +174,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		show_classifier(cl)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(cl, opts.outputfile_path)
+		save_json_file[Classifier](cl, opts.outputfile_path)
 	}
 	// println('cl.trained_attributes in make_classifier: $cl.trained_attributes')
 	return cl

@@ -216,7 +216,7 @@ pub fn rank_one_vs_rest(ds Dataset, opts Options) RankingResult {
 		plot_rank(ranking_result)
 	}
 	if opts.outputfile_path != '' {
-		save_json_file(ranking_result, opts.outputfile_path)
+		save_json_file[RankingResult](ranking_result, opts.outputfile_path)
 	}
 	return ranking_result
 }
