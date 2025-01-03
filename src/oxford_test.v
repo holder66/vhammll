@@ -103,7 +103,7 @@ fn test_oxford_settings_file() {
 		expanded_flag:        true
 		show_attributes_flag: true
 	}
-	display_file(os.join_path(home_dir, 'metabolomics', 'metabolomics.opts'), opts)
+	// display_file(os.join_path(home_dir, 'metabolomics', 'metabolomics.opts'), opts)
 }
 
 fn test_oxford_multi_crossvalidate() {

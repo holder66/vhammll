@@ -50,7 +50,9 @@ pub fn display_file(path string, in_opts Options) {
 			show_analyze(saved_ar)
 		}
 		s.contains('"struct_type":".ValidateResult"') {
+			dump(s)
 			saved_valr := json2.decode[ValidateResult](s) or { panic('Failed to parse json') }
+			dump(saved_valr)
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
