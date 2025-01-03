@@ -94,8 +94,8 @@ pub fn verify(opts Options) CrossVerifyResult {
 			}
 		}
 	}
-	verify_result.classifier_instances_counts << cl.history[0].instances_count
-	verify_result.prepurge_instances_counts_array << cl.history[0].prepurge_instances_count
+	verify_result.classifier_instances_counts << cl.history_events[0].instances_count
+	verify_result.prepurge_instances_counts_array << cl.history_events[0].prepurge_instances_count
 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }

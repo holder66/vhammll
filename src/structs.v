@@ -99,6 +99,7 @@ pub mut:
 }
 
 pub struct Classifier {
+	History
 	Parameters
 	LoadOptions
 	Class
@@ -110,17 +111,23 @@ pub mut:
 	// maximum_hamming_distance int
 	indices   []int
 	instances [][]u8
-	history   []HistoryEvent
+	// history   []HistoryEvent
+}
+
+pub struct History {
+pub mut:
+	history_events []HistoryEvent
 }
 
 pub struct OneVsRestClassifier {
 	Parameters
 	LoadOptions
 	Class
+	History
 pub mut:
 	struct_type   string = '.OneVsRestClassifier'
 	datafile_path string
-	history       []HistoryEvent
+	// history       []HistoryEvent
 }
 
 struct TotalNnParams {
@@ -274,7 +281,7 @@ mut:
 pub struct Environment {
 pub mut:
 	hamnn_version  string
-	cached_cpuinfo map[string]string
+	// cached_cpuinfo map[string]string
 	os_kind        string
 	os_details     string
 	arch_details   []string

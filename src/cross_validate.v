@@ -301,7 +301,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		fold_result.maximum_hamming_distance = part_cl.maximum_hamming_distance
 
 		fold_result.classifier_instances_counts << part_cl.instances.len
-		fold_result.prepurge_instances_counts_array << part_cl.history[0].prepurge_instances_count
+		fold_result.prepurge_instances_counts_array << part_cl.history_events[0].prepurge_instances_count
 		for attr in part_cl.attribute_ordering {
 			// get the index of the corresponding attribute in the fold
 			j := fold.attribute_names.index(attr)

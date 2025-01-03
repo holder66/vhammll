@@ -168,7 +168,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		event.event_date = time.utc()
 		event.event_environment = get_environment()
 	}
-	cl.history << event
+	cl.history_events << event
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}

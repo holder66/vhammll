@@ -32,8 +32,10 @@ fn test_load_classifier_file() ! {
 	assert cl.Class == tcl.Class
 	assert cl.attribute_ordering == tcl.attribute_ordering
 	assert cl.trained_attributes == tcl.trained_attributes
-	// assert cl.history[0].event == tcl.history[0].event
-	// assert cl.history[0].event_date == tcl.history[0].event_date
+	dump(cl.History)
+	dump(tcl.History)
+	assert cl.history_events[0].event == tcl.history_events[0].event
+	assert cl.history_events[0].event_date == tcl.history_events[0].event_date
 
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]
@@ -44,8 +46,8 @@ fn test_load_classifier_file() ! {
 	assert cl.Class == tcl.Class
 	assert cl.attribute_ordering == tcl.attribute_ordering
 	assert cl.trained_attributes == tcl.trained_attributes
-	// assert cl.history[0].event == tcl.history[0].event
-	// assert cl.history[0].event_date == tcl.history[0].event_date
+	assert cl.history_events[0].event == tcl.history_events[0].event
+	assert cl.history_events[0].event_date == tcl.history_events[0].event_date
 }
 
 fn test_load_instances_file() ! {
@@ -65,7 +67,7 @@ fn test_load_instances_file() ! {
 	dump(tvr)
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
-	// assert vr.counts == tvr.counts
+	assert vr.counts == tvr.counts
 
 	opts.testfile_path = 'datasets/soybean-large-validate.tab'
 	ds = load_file('datasets/soybean-large-train.tab')
@@ -74,7 +76,7 @@ fn test_load_instances_file() ! {
 	tvr = load_instances_file('tempfolder_json/validate_result.json')!
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
-	// assert vr.counts == tvr.counts
+	assert vr.counts == tvr.counts
 }
 
 fn test_append() ? {

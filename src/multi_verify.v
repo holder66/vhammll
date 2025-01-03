@@ -90,8 +90,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		verify_result.actual_classes << verify_result.labeled_classes[i]
 		verify_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
 	}
-	verify_result.classifier_instances_counts << classifier_array[0].history[0].instances_count
-	verify_result.prepurge_instances_counts_array << classifier_array[0].history[0].prepurge_instances_count
+	verify_result.classifier_instances_counts << classifier_array[0].history_events[0].instances_count
+	verify_result.prepurge_instances_counts_array << classifier_array[0].history_events[0].prepurge_instances_count
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }

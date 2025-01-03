@@ -118,7 +118,7 @@ pub fn show_classifier(cl Classifier) {
 		if cl.purge_flag { '  After purging' } else { '' }))
 	// println(b_u('Date & Time (UTC)    Event   From file                   Original Instances  After purging',
 	// 'underline'), 'blue'))
-	for events in cl.history {
+	for events in cl.history_events {
 		println(
 			'${events.event_date:-19}  ${events.event:-6}  ${events.file_path:-35} ${events.prepurge_instances_count:10}' +
 			if cl.purge_flag { ' ${events.instances_count:14}' } else { '' })
