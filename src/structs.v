@@ -138,11 +138,12 @@ mut:
 }
 
 pub struct HistoryEvent {
+	Environment
 pub mut:
 	event_date               time.Time
 	instances_count          int
 	prepurge_instances_count int
-	event_environment        Environment
+	// event_environment        Environment
 	event                    string
 	file_path                string
 }
