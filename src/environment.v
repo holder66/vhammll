@@ -107,7 +107,7 @@ fn (mut a Environment) collect_info() {
 	}
 	a.os_kind = os_kind
 	a.os_details = os_details
-	a.arch_details = arch_details
+	// a.arch_details = arch_details
 	vexe := os.getenv('VEXE')
 	a.vexe_mtime = time.unix(os.file_last_mod_unix(vexe)).str()
 	a.v_full_version = version.full_v_version(true)
