@@ -17,6 +17,9 @@ fn testsuite_end() ! {
 
 fn test_display_multiple_options() ? {
 	datafile_path := 'datasets/bcw350train'
+	mut opts := Options{
+		show_flag: true
+	}
 	mut settings1 := ClassifierSettings{
 		Parameters:    Parameters{
 			binning:              Binning{
@@ -43,13 +46,10 @@ fn test_display_multiple_options() ? {
 	}
 	append_json_file[ClassifierSettings](settings1, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 416
+	display_file('tempfolder_display/bcw.opts', opts)
 	append_json_file[ClassifierSettings](settings2, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 832
-	mut opts := Options{
-		show_flag: true
-	}
 	display_file('tempfolder_display/bcw.opts', opts)
-
 	// repeat with displaying trained attributes
 	opts.show_attributes_flag = true
 	display_file('tempfolder_display/bcw.opts', opts)

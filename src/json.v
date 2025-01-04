@@ -14,7 +14,9 @@ import json
 // ```
 pub fn load_classifier_file(path string) !Classifier {
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
+	dump(s)
 	cl := json.decode(Classifier, s) or { panic('Failed to parse json') }
+	dump(cl)
 	return cl
 }
 
@@ -30,7 +32,6 @@ pub fn load_instances_file(path string) !ValidateResult {
 	// mut instances := ValidateResult{}
 	// mut s := ''
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
-	// println(s)
 	instances := json.decode(ValidateResult, s) or { panic('Failed to parse json') }
 	return instances
 }
@@ -53,8 +54,10 @@ fn append_json_file[T](u T, path string) {
 // read_multiple_opts
 fn read_multiple_opts(path string) ![]ClassifierSettings {
 	mut s := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
+	dump(s)
 	r := MultipleClassifierSettingsFileStruct{
 		multiple_classifier_settings: s.map(json.decode(ClassifierSettings, it)!)
 	}
+	dump(r)
 	return r.multiple_classifier_settings
 }

@@ -1,8 +1,6 @@
 // structs.v
 module vhammll
 
-import time
-
 // pub const missings = ['?', '', 'NA', ' ']
 // pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -99,6 +97,7 @@ pub mut:
 }
 
 pub struct Classifier {
+	History
 	Parameters
 	LoadOptions
 	Class
@@ -110,17 +109,23 @@ pub mut:
 	// maximum_hamming_distance int
 	indices   []int
 	instances [][]u8
-	history   []HistoryEvent
+	// history   []HistoryEvent
+}
+
+pub struct History {
+pub mut:
+	history_events []HistoryEvent
 }
 
 pub struct OneVsRestClassifier {
 	Parameters
 	LoadOptions
 	Class
+	History
 pub mut:
 	struct_type   string = '.OneVsRestClassifier'
 	datafile_path string
-	history       []HistoryEvent
+	// history       []HistoryEvent
 }
 
 struct TotalNnParams {
@@ -131,13 +136,14 @@ mut:
 }
 
 pub struct HistoryEvent {
+	Environment
 pub mut:
-	event_date               time.Time
+	event_date               string
 	instances_count          int
 	prepurge_instances_count int
-	event_environment        Environment
-	event                    string
-	file_path                string
+	// event_environment        Environment
+	event     string
+	file_path string
 }
 
 struct Parameters {
@@ -273,11 +279,11 @@ mut:
 
 pub struct Environment {
 pub mut:
-	hamnn_version  string
-	cached_cpuinfo map[string]string
-	os_kind        string
-	os_details     string
-	arch_details   []string
+	hamnn_version string
+	// cached_cpuinfo map[string]string
+	os_kind    string
+	os_details string
+	// arch_details   []string
 	vexe_mtime     string
 	v_full_version string
 	vflags         string

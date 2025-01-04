@@ -165,10 +165,10 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	}
 	if opts.command in ['make', 'append', 'verify', 'validate', 'query'] {
 		event.file_path = ds.path
-		event.event_date = time.utc()
-		event.event_environment = get_environment()
+		event.event_date = time.utc().str()
+		event.Environment = get_environment()
 	}
-	cl.history << event
+	cl.history_events << event
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}

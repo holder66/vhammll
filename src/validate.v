@@ -36,8 +36,8 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 		weighting_flag:                  opts.weighting_flag
 		number_of_attributes:            opts.number_of_attributes
 		binning:                         cl.binning
-		classifier_instances_counts:     [cl.history[0].instances_count]
-		prepurge_instances_counts_array: [cl.history[0].prepurge_instances_count]
+		classifier_instances_counts:     [cl.history_events[0].instances_count]
+		prepurge_instances_counts_array: [cl.history_events[0].prepurge_instances_count]
 	}
 	// for each usable attribute in cl, massage the equivalent test_ds attribute
 	mut test_binned_values := []int{}

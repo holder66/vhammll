@@ -46,10 +46,10 @@ fn (mut a Environment) collect_info() {
 	if os_kind == 'linux' {
 		mut cpu_details := ''
 		if cpu_details == '' {
-			cpu_details = a.cpu_info('model name')
+			// cpu_details = a.cpu_info('model name')
 		}
 		if cpu_details == '' {
-			cpu_details = a.cpu_info('hardware')
+			// cpu_details = a.cpu_info('hardware')
 		}
 		if cpu_details == '' {
 			cpu_details = os.uname().machine
@@ -67,15 +67,15 @@ fn (mut a Environment) collect_info() {
 	wsl_check := a.cmd(command: 'cat /proc/sys/kernel/osrelease')
 	if os_kind == 'linux' {
 		os_details = a.get_linux_os_name()
-		if a.cpu_info('flags').contains('hypervisor') {
-			if wsl_check.contains('microsoft') {
-				// WSL 2 is a Managed VM and Full Linux Kernel
-				// See https://docs.microsoft.com/en-us/windows/wsl/compare-versions
-				os_details += ' (WSL 2)'
-			} else {
-				os_details += ' (VM)'
-			}
-		}
+		// if a.cpu_info('flags').contains('hypervisor') {
+		// 	if wsl_check.contains('microsoft') {
+		// 		// WSL 2 is a Managed VM and Full Linux Kernel
+		// 		// See https://docs.microsoft.com/en-us/windows/wsl/compare-versions
+		// 		os_details += ' (WSL 2)'
+		// 	} else {
+		// 		os_details += ' (VM)'
+		// 	}
+		// }
 		// WSL 1 is NOT a Managed VM and Full Linux Kernel
 		// See https://docs.microsoft.com/en-us/windows/wsl/compare-versions
 		if wsl_check.contains('Microsoft') {
@@ -107,7 +107,7 @@ fn (mut a Environment) collect_info() {
 	}
 	a.os_kind = os_kind
 	a.os_details = os_details
-	a.arch_details = arch_details
+	// a.arch_details = arch_details
 	vexe := os.getenv('VEXE')
 	a.vexe_mtime = time.unix(os.file_last_mod_unix(vexe)).str()
 	a.v_full_version = version.full_v_version(true)
@@ -196,14 +196,14 @@ fn (mut a Environment) get_linux_os_name() string {
 	return os_details
 }
 
-fn (mut a Environment) cpu_info(key string) string {
-	if a.cached_cpuinfo.len > 0 {
-		return a.cached_cpuinfo[key]
-	}
-	info := os.execute('cat /proc/cpuinfo')
-	if info.exit_code != 0 {
-		return '`cat /proc/cpuinfo` could not run'
-	}
-	a.cached_cpuinfo = a.parse(info.output, ':')
-	return a.cached_cpuinfo[key]
-}
+// fn (mut a Environment) cpu_info(key string) string {
+// 	if a.cached_cpuinfo.len > 0 {
+// 		return a.cached_cpuinfo[key]
+// 	}
+// 	info := os.execute('cat /proc/cpuinfo')
+// 	if info.exit_code != 0 {
+// 		return '`cat /proc/cpuinfo` could not run'
+// 	}
+// 	a.cached_cpuinfo = a.parse(info.output, ':')
+// 	return a.cached_cpuinfo[key]
+// }
