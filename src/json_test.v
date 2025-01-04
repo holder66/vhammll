@@ -32,10 +32,10 @@ fn test_load_classifier_file() ! {
 	assert cl.Class == tcl.Class
 	assert cl.attribute_ordering == tcl.attribute_ordering
 	assert cl.trained_attributes == tcl.trained_attributes
-	dump(cl.History)
-	dump(tcl.History)
+	// dump(cl.History)
+	// dump(tcl.History)
 	assert cl.history_events[0].event == tcl.history_events[0].event
-	assert cl.history_events[0].event_date == tcl.history_events[0].event_date
+	assert dump(cl.history_events[0].event_date) == dump(tcl.history_events[0].event_date)
 
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]

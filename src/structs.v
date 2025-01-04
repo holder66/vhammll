@@ -1,8 +1,6 @@
 // structs.v
 module vhammll
 
-import time
-
 // pub const missings = ['?', '', 'NA', ' ']
 // pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -140,7 +138,7 @@ mut:
 pub struct HistoryEvent {
 	Environment
 pub mut:
-	event_date               time.Time
+	event_date               string
 	instances_count          int
 	prepurge_instances_count int
 	// event_environment        Environment
