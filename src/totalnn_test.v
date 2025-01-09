@@ -35,8 +35,8 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
 	mut er := explore(ds, opts)
-	assert os.file_size(opts.settingsfile_path) == 4682, 'Settings file too small'
-	// display_file(opts.settingsfile_path, opts)
+	assert os.file_size(opts.settingsfile_path) == 5812, 'Settings file too small'
+	display_file(opts.settingsfile_path, opts)
 
 	opts.multiple_flag = true
 	opts.append_settings_flag = false
@@ -65,7 +65,7 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	}, 'for classifier #2'
 	opts.classifier_indices = [2, 3]
 	opts.command = 'cross'
-	// opts.show_flag = true
+	opts.show_flag = true
 	// opts.expanded_flag = true
 	opts.show_attributes_flag = true
 	result_mult := cross_validate(ds, opts)
@@ -98,6 +98,8 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
+
+	// 2025-1-7 crashing at the next step, in the multi_verify function
 	result0 := verify(opts)
 	assert result0.confusion_matrix_map == {
 		'ALL': {

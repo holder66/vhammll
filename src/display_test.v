@@ -16,8 +16,12 @@ fn testsuite_end() ! {
 }
 
 fn test_display_multiple_options() ? {
+	datafile_path := 'datasets/bcw350train'
+	mut opts := Options{
+		show_flag: true
+	}
 	mut settings1 := ClassifierSettings{
-		Parameters: Parameters{
+		Parameters:    Parameters{
 			binning:              Binning{
 				lower:    1
 				upper:    2
@@ -26,9 +30,10 @@ fn test_display_multiple_options() ? {
 			number_of_attributes: [1]
 			weighting_flag:       true
 		}
+		datafile_path: datafile_path
 	}
 	mut settings2 := ClassifierSettings{
-		Parameters: Parameters{
+		Parameters:    Parameters{
 			binning:              Binning{
 				lower:    1
 				upper:    2
@@ -37,19 +42,21 @@ fn test_display_multiple_options() ? {
 			number_of_attributes: [6]
 			weighting_flag:       true
 		}
+		datafile_path: datafile_path
 	}
 	append_json_file[ClassifierSettings](settings1, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 416
+	display_file('tempfolder_display/bcw.opts', opts)
 	append_json_file[ClassifierSettings](settings2, 'tempfolder_display/bcw.opts')
 	assert os.file_size('tempfolder_display/bcw.opts') >= 832
-	mut opts := Options{
-		show_flag: true
-	}
+	display_file('tempfolder_display/bcw.opts', opts)
+	// repeat with displaying trained attributes
+	opts.show_attributes_flag = true
 	display_file('tempfolder_display/bcw.opts', opts)
 }
 
-fn test_display_classifier() ? {
-	// make a classifier and save it, then display the saved classifier file
+fn test_display_saved_classifier() ? {
+	// make a classifier, show it, then save it, then display the saved classifier file
 	mut opts := Options{
 		command:              'make'
 		bins:                 [3, 10]
@@ -62,8 +69,8 @@ fn test_display_classifier() ? {
 	display_file(opts.outputfile_path, opts)
 }
 
-fn test_display_analyze_result() ? {
-	// analyze a dataset file, save the result, then display
+fn test_display_saved_analyze_result() ? {
+	// analyze a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
 		command:         'analyze'
 		outputfile_path: 'tempfolder_display/analyze_result'
@@ -73,8 +80,8 @@ fn test_display_analyze_result() ? {
 	display_file(opts.outputfile_path, opts)
 }
 
-fn test_display_ranking_result() ? {
-	// rank a dataset file, save the result, then display
+fn test_display_saved_ranking_result() ? {
+	// rank a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
 		command:         'rank'
 		outputfile_path: 'tempfolder_display/rank_result'
@@ -84,10 +91,10 @@ fn test_display_ranking_result() ? {
 	display_file(opts.outputfile_path, opts)
 }
 
-fn test_display_validate_result() ? {
-	// validate a dataset file, save the result, then display
+fn test_display_saved_validate_result() ? {
+	// validate a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
-		command:   'make'
+		command:   'validate'
 		show_flag: true
 	}
 	opts.datafile_path = 'datasets/bcw350train'
@@ -99,29 +106,52 @@ fn test_display_validate_result() ? {
 	display_file(opts.outputfile_path, opts)
 }
 
-fn test_display_verify_result() ? {
-	// verify a dataset file, save the result, then display
+fn test_display_saved_verify_result() ? {
+	// verify a dataset file and show the result, with and without the expanded and
+	// show_attributes flags; save the result, then display the saved result, again with
+	// and without those flags
+	println(r_b('\nTrain a classifier on bcw350train, use it to verify bcw174test'))
 	mut opts := Options{
 		datafile_path:        'datasets/bcw350train'
 		testfile_path:        'datasets/bcw174test'
 		outputfile_path:      'tempfolder_display/verify_result'
 		command:              'verify'
 		number_of_attributes: [5]
-		concurrency_flag:     true
+		concurrency_flag:     false
 		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
-
 	cl := make_classifier(ds, opts)
-	println(verify(opts))
-	_ = verify(opts)
+	println(r_b('with the expanded_flag not set:'))
+	verify(opts)
+	opts.expanded_flag = true
+	println(r_b('\nAnd with the expanded_flag set:'))
+	verify(opts)
+	println(r_b('\nAnd now with the show_attributes_flag set:'))
+	opts.show_attributes_flag = true
+	verify(opts)
+	println(r_b('\nRepeat the above three, but displaying the saved result file:'))
+	opts.expanded_flag = false
+	opts.show_attributes_flag = false
+	println(r_b('with the expanded_flag not set:'))
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
+	opts.expanded_flag = true
+	println(r_b('\nAnd with the expanded_flag set:'))
+	display_file(opts.outputfile_path, opts)
+	// repeat with show_attributes flag set
+	opts.show_attributes_flag = true
+	println(r_b('\nAnd now with the show_attributes_flag set:'))
+	display_file(opts.outputfile_path, opts)
+	// finally, show_attributes but without expanded result
+	opts.expanded_flag = false
+	println(r_b('\nAnd finally with the show_attributes_flag set and the expanded_flag not set:'))
 	display_file(opts.outputfile_path, opts)
 }
 
 fn test_display_cross_result() ? {
-	// cross-validate a dataset file, save the result, then display
+	// cross-validate a dataset file and display the result; save the result, then display
+	// the saved result file
 	mut opts := Options{
 		command:              'cross'
 		number_of_attributes: [4]
@@ -134,12 +164,17 @@ fn test_display_cross_result() ? {
 	}
 	ds := load_file('datasets/UCI/segment.arff')
 	opts.outputfile_path = 'tempfolder_display/cross_result'
-	_ = cross_validate(ds, opts)
+	cross_validate(ds, opts)
+	opts.expanded_flag = true
+	cross_validate(ds, opts)
+	opts.expanded_flag = false
+	display_file(opts.outputfile_path, opts)
+	opts.expanded_flag = true
 	display_file(opts.outputfile_path, opts)
 	opts.folds = 10
 	opts.repetitions = 10
 	opts.random_pick = true
-	_ = cross_validate(ds, opts)
+	cross_validate(ds, opts)
 	display_file(opts.outputfile_path, opts)
 	println('Done for test_display_cross_result')
 }
@@ -155,33 +190,47 @@ fn test_display_explore_result_cross() ? {
 		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
-	_ = explore(ds, opts)
+	explore(ds, opts)
+	opts.expanded_flag = true
+	explore(ds, opts)
+	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
 	// repeat with expanded flag set
+	opts.expanded_flag = true
 	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(ds, opts)
+	opts.expanded_flag = false
+	explore(ds, opts)
+	opts.expanded_flag = true
+	explore(ds, opts)
+	opts.expanded_flag = false
 	display_file(opts.outputfile_path, opts)
+	opts.expanded_flag = true
 	display_file(opts.outputfile_path, opts)
 
 	// repeat for a binary class dataset
 	opts.number_of_attributes = [0]
 	opts.datafile_path = 'datasets/bcw174test'
 	opts.purge_flag = false
-	opts.expanded_flag = true
+	opts.expanded_flag = false
 	opts.graph_flag = true
 	ds = load_file(opts.datafile_path)
-	_ = explore(ds, opts)
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
+	opts.expanded_flag = true
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
 	ds = load_file(opts.datafile_path)
-	_ = explore(ds, opts)
+	opts.expanded_flag = false
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
+	opts.expanded_flag = true
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 }
 
@@ -197,14 +246,15 @@ fn test_display_explore_result_verify() ? {
 		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
-	_ = explore(ds, opts)
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
+	opts.expanded_flag = true
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
-	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts)
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 
 	// repeat for a binary class dataset
@@ -213,13 +263,11 @@ fn test_display_explore_result_verify() ? {
 	opts.purge_flag = false
 	opts.number_of_attributes = [0]
 	ds = load_file(opts.datafile_path)
-	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts)
+	explore(ds, opts)
 	display_file(opts.outputfile_path, opts)
 
 	// repeat with purge flag set
 	opts.purge_flag = true
 	_ = explore(ds, opts)
-	display_file(opts.outputfile_path, opts)
 	display_file(opts.outputfile_path, opts)
 }

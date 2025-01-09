@@ -19,7 +19,7 @@ fn testsuite_end() ? {
 fn test_multiple_crossvalidate() ? {
 	mut opts := Options{
 		// folds: 3
-		break_on_all_flag:   true
+		break_on_all_flag:   false
 		combined_radii_flag: false
 		weighting_flag:      false
 		// total_nn_counts_flag: true
@@ -34,34 +34,17 @@ fn test_multiple_crossvalidate() ? {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
 	mut er := explore(ds, opts)
+	display_file(opts.settingsfile_path)
 	// do an ordinary crossvalidation
 	opts.command = 'cross'
-	opts.number_of_attributes = [3]
+	opts.number_of_attributes = [1]
 	opts.bins = [1, 3]
 	result = cross_validate(ds, opts)
-	// println('result in test_multiple_crossvalidate: $result')
 	// now do a multiple classifier crossvalidation
 	opts.multiple_flag = true
+	// opts.show_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.classifier_indices = [2]
-	assert cross_validate(ds, opts).confusion_matrix_map == {
-		'm': {
-			'm': 8.0
-			'f': 0.0
-			'X': 0.0
-		}
-		'f': {
-			'm': 3.0
-			'f': 0.0
-			'X': 0.0
-		}
-		'X': {
-			'm': 2.0
-			'f': 0.0
-			'X': 0.0
-		}
-	}
-	opts.classifier_indices = [3]
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'm': {
 			'm': 8.0
@@ -77,6 +60,24 @@ fn test_multiple_crossvalidate() ? {
 			'm': 0.0
 			'f': 0.0
 			'X': 2.0
+		}
+	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 8.0
+			'f': 0.0
+			'X': 0.0
+		}
+		'f': {
+			'm': 3.0
+			'f': 0.0
+			'X': 0.0
+		}
+		'X': {
+			'm': 2.0
+			'f': 0.0
+			'X': 0.0
 		}
 	}
 	opts.classifier_indices = [2, 3]
@@ -100,7 +101,7 @@ fn test_multiple_crossvalidate() ? {
 }
 
 @[assert_continues]
-fn test_multiple_crossvalidate_mixed_attributes() ? {
+fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/2_class_developer.tab'
 		settingsfile_path:    'tempfolder_multi_cross/2_class_big.opts'
@@ -163,11 +164,11 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 				opts.combined_radii_flag = mc
 				for t in ft {
 					opts.total_nn_counts_flag = t
-					// cross_validate(ds, opts)
+					cross_validate(ds, opts)
 					match ci {
 						[0] {
-							// assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
-							// opts0).confusion_matrix_map
+							assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+								opts0).confusion_matrix_map
 						}
 						[3] {
 							// assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
@@ -202,172 +203,255 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 	}
 }
 
-// fn test_multiple_crossvalidate_only_discrete_attributes() ? {
-// 	mut opts := Options{
-// 		datafile_path: 'datasets/breast-cancer-wisconsin-disc.tab'
-// 		settingsfile_path: 'tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
-// 		append_settings_flag: true
-// 		command: 'explore'
-// 		concurrency_flag: true
-// 		expanded_flag: true
-// 		verbose_flag: false
-// 	}
+fn test_multiple_crossvalidate_only_discrete_attributes() ? {
+	mut opts := Options{
+		datafile_path:        'datasets/breast-cancer-wisconsin-disc.tab'
+		settingsfile_path:    'tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
+		append_settings_flag: true
+		command:              'explore'
+		concurrency_flag:     true
+		// expanded_flag: true
+		verbose_flag: false
+	}
 
-// 	mut ds := load_file(opts.datafile_path)
-// 	ft := [false, true]
-// 	for pf in ft {
-// 		opts.purge_flag = pf
-// 		for wr in [false, true] {
-// 			opts.weight_ranking_flag = wr
-// 			for w in [false, true] {
-// 				opts.weighting_flag = w
-// 				er := explore(ds, opts)
-// 			}
-// 		}
-// 	}
-// 	display_file(opts.settingsfile_path, opts)
-// 	opts.append_settings_flag = false
-// 	opts.command = 'cross'
-// 	opts.classifier_indices = [3, 4, 6, 14]
-// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	opts.multiple_flag = true
-// 	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
-// 	opts.classifier_indices = [6,14,3,11,23,31]
+	mut ds := load_file(opts.datafile_path)
+	ft := [false, true]
+	for pf in ft {
+		opts.purge_flag = pf
+		for wr in [false, true] {
+			opts.weight_ranking_flag = wr
+			for w in [false, true] {
+				opts.weighting_flag = w
+				er := explore(ds, opts)
+			}
+		}
+	}
+	display_file(opts.settingsfile_path, opts)
+	opts.append_settings_flag = false
+	opts.command = 'cross'
+	opts.classifier_indices = [3, 4, 6, 14]
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.multiple_flag = true
+	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
+	opts.classifier_indices = [6, 14, 3, 11, 23, 31]
 
-// 		for ma in ft {
-// 			opts.break_on_all_flag = ma
-// 			for mc in ft {
-// 				opts.combined_radii_flag = mc
-// 				for t in ft {
-// 					opts.total_nn_counts_flag = t
-// 				}
-// 				cross_validate(ds, opts)
-// 			}
-// 		}
+	for ma in ft {
+		opts.break_on_all_flag = ma
+		for mc in ft {
+			opts.combined_radii_flag = mc
+			for t in ft {
+				opts.total_nn_counts_flag = t
+			}
+			cross_validate(ds, opts)
+		}
+	}
 
-// 	opts.command = 'cross'
-// 	ds = load_file(opts.datafile_path)
-// 	opts.number_of_attributes = [7]
-// 	mut result := cross_validate(ds, opts)
-// 	opts.multiple_flag = true
-// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	opts.classifier_indices = [2]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    445.0
-// 			'malignant': 13.0
-// 		}
-// 		'malignant': {
-// 			'benign':    16.0
-// 			'malignant': 225.0
-// 		}
-// 	}
-// 	opts.classifier_indices = [3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    447.0
-// 			'malignant': 11.0
-// 		}
-// 		'malignant': {
-// 			'benign':    24.0
-// 			'malignant': 217.0
-// 		}
-// 	}
-// 	opts.classifier_indices = [2, 3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    446.0
-// 			'malignant': 12.0
-// 		}
-// 		'malignant': {
-// 			'benign':    22.0
-// 			'malignant': 219.0
-// 		}
-// 	}
-// }
+	opts.command = 'cross'
+	ds = load_file(opts.datafile_path)
+	opts.number_of_attributes = [7]
+	mut result := cross_validate(ds, opts)
+	opts.multiple_flag = true
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifier_indices = [2]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'benign':    {
+			'benign':    445.0
+			'malignant': 13.0
+		}
+		'malignant': {
+			'benign':    16.0
+			'malignant': 225.0
+		}
+	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'benign':    {
+			'benign':    445.0
+			'malignant': 13.0
+		}
+		'malignant': {
+			'benign':    16.0
+			'malignant': 225.0
+		}
+	}
+	opts.classifier_indices = [2, 3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'benign':    {
+			'benign':    445.0
+			'malignant': 13.0
+		}
+		'malignant': {
+			'benign':    16.0
+			'malignant': 225.0
+		}
+	}
+}
 
-// fn test_multiple_crossvalidate_mixed_attributes() ? {
-// 	mut opts := Options{
-// 		datafile_path: 'datasets/anneal.tab'
-// 		settingsfile_path: 'tempfolder_multi_cross/anneal.opts'
-// 		append_settings_flag: true
-// 		command: 'explore'
-// 		concurrency_flag: true
-// 		expanded_flag: false
-// 		verbose_flag: false
-// 		show_flag: true
-// 	}
-// 	opts.number_of_attributes = [11,13]
-// 	opts.bins = [1,10]
-// 	mut ds := load_file(opts.datafile_path)
-// 	ft := [false, true]
-// 	for pf in ft {
-// 		opts.uniform_bins = pf
-// 		for wr in [false, true] {
-// 			opts.weight_ranking_flag = wr
-// 			for w in [false, true] {
-// 				opts.weighting_flag = w
-// 				er := explore(ds, opts)
-// 			}
-// 		}
-// 	}
-// 	display_file(opts.settingsfile_path, opts)
-// 	opts.append_settings_flag = false
-// 	opts.command = 'cross'
-// 	opts.classifier_indices = [3, 4, 6, 14]
-// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	opts.multiple_flag = true
-// 	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
-// 	for ci in [[3, 11, 4, 5, 6, 14]] {
-// 		opts.classifier_indices = ci
-// 		for ma in ft {
-// 			opts.break_on_all_flag = ma
-// 			for mc in ft {
-// 				opts.combined_radii_flag = mc
-// 				for t in ft {
-// 					opts.total_nn_counts_flag = t
-// 				}
-// 				cross_validate(ds, opts)
-// 			}
-// 		}
-// 	}
-// 	opts.command = 'cross'
-// 	ds = load_file(opts.datafile_path)
-// 	opts.number_of_attributes = [7]
-// 	mut result := cross_validate(ds, opts)
-// 	opts.multiple_flag = true
-// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-// 	opts.classifier_indices = [2]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    445.0
-// 			'malignant': 13.0
-// 		}
-// 		'malignant': {
-// 			'benign':    16.0
-// 			'malignant': 225.0
-// 		}
-// 	}
-// 	opts.classifier_indices = [3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    447.0
-// 			'malignant': 11.0
-// 		}
-// 		'malignant': {
-// 			'benign':    24.0
-// 			'malignant': 217.0
-// 		}
-// 	}
-// 	opts.classifier_indices = [2, 3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
-// 		'benign':    {
-// 			'benign':    446.0
-// 			'malignant': 12.0
-// 		}
-// 		'malignant': {
-// 			'benign':    22.0
-// 			'malignant': 219.0
-// 		}
-// 	}
-// }
+fn test_multiple_crossvalidate_mixed_attributes() ? {
+	mut opts := Options{
+		datafile_path:        'datasets/anneal.tab'
+		settingsfile_path:    'tempfolder_multi_cross/anneal.opts'
+		append_settings_flag: true
+		command:              'explore'
+		concurrency_flag:     true
+		expanded_flag:        false
+		verbose_flag:         false
+		// show_flag:            true
+	}
+	opts.number_of_attributes = [11, 13]
+	opts.bins = [1, 10]
+	mut ds := load_file(opts.datafile_path)
+	ft := [false, true]
+	for pf in ft {
+		opts.uniform_bins = pf
+		for wr in [false, true] {
+			opts.weight_ranking_flag = wr
+			for w in [false, true] {
+				opts.weighting_flag = w
+				er := explore(ds, opts)
+			}
+		}
+	}
+	// opts.show_attributes_flag = true
+	display_file(opts.settingsfile_path, opts)
+	opts.append_settings_flag = false
+	opts.command = 'cross'
+	opts.classifier_indices = [3, 4, 6, 14]
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.multiple_flag = true
+	// for ci in [[3],[4],[6],[14],[3,4],[3,6],[4,6],[3,4,6],[3,4,6,14]] {
+	for ci in [[3, 11, 4, 5, 6, 14]] {
+		opts.classifier_indices = ci
+		for ma in ft {
+			opts.break_on_all_flag = ma
+			for mc in ft {
+				opts.combined_radii_flag = mc
+				// for t in ft {
+				// 	opts.total_nn_counts_flag = t
+				dump('${ci}, ${ma}, ${mc}')
+				// }
+				cross_validate(ds, opts)
+			}
+		}
+	}
+	opts.command = 'cross'
+	ds = load_file(opts.datafile_path)
+	opts.number_of_attributes = [7]
+	mut result := cross_validate(ds, opts)
+	opts.multiple_flag = true
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifier_indices = [2]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'3': {
+			'3': 679.0
+			'U': 2.0
+			'1': 0.0
+			'5': 0.0
+			'2': 3.0
+		}
+		'U': {
+			'3': 2.0
+			'U': 38.0
+			'1': 0.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'1': {
+			'3': 1.0
+			'U': 0.0
+			'1': 7.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'5': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 67.0
+			'2': 0.0
+		}
+		'2': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 0.0
+			'2': 99.0
+		}
+	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'3': {
+			'3': 679.0
+			'U': 2.0
+			'1': 0.0
+			'5': 0.0
+			'2': 3.0
+		}
+		'U': {
+			'3': 2.0
+			'U': 38.0
+			'1': 0.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'1': {
+			'3': 1.0
+			'U': 0.0
+			'1': 7.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'5': {
+			'3': 1.0
+			'U': 0.0
+			'1': 0.0
+			'5': 66.0
+			'2': 0.0
+		}
+		'2': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 0.0
+			'2': 99.0
+		}
+	}
+	opts.classifier_indices = [2, 3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'3': {
+			'3': 679.0
+			'U': 2.0
+			'1': 0.0
+			'5': 0.0
+			'2': 3.0
+		}
+		'U': {
+			'3': 2.0
+			'U': 38.0
+			'1': 0.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'1': {
+			'3': 1.0
+			'U': 0.0
+			'1': 7.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'5': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 67.0
+			'2': 0.0
+		}
+		'2': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 0.0
+			'2': 99.0
+		}
+	}
+}

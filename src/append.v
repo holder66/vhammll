@@ -18,14 +18,15 @@ pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts 
 		println('${cl}\n${instances_to_append}')
 	}
 	mut ext_cl := cl
-	event := HistoryEvent{
-		instances_count:   instances_to_append.inferred_classes.len
-		event_date:        time.utc()
-		event_environment: get_environment()
-		event:             'append'
-		file_path:         instances_to_append.validate_file_path
+	history_event := HistoryEvent{
+		Environment:     get_environment()
+		instances_count: instances_to_append.inferred_classes.len
+		event_date:      time.utc().str()
+		// event_environment: get_environment()
+		event:     'append'
+		file_path: instances_to_append.validate_file_path
 	}
-	ext_cl.history << event
+	ext_cl.history_events << history_event
 	ext_cl.instances << instances_to_append.instances
 	ext_cl.class_values << instances_to_append.inferred_classes
 	ext_cl.class_counts = element_counts(ext_cl.class_values)

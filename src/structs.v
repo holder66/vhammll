@@ -1,8 +1,6 @@
 // structs.v
 module vhammll
 
-import time
-
 // pub const missings = ['?', '', 'NA', ' ']
 // pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -99,6 +97,7 @@ pub mut:
 }
 
 pub struct Classifier {
+	History
 	Parameters
 	LoadOptions
 	Class
@@ -110,17 +109,23 @@ pub mut:
 	// maximum_hamming_distance int
 	indices   []int
 	instances [][]u8
-	history   []HistoryEvent
+	// history   []HistoryEvent
+}
+
+pub struct History {
+pub mut:
+	history_events []HistoryEvent
 }
 
 pub struct OneVsRestClassifier {
 	Parameters
 	LoadOptions
 	Class
+	History
 pub mut:
 	struct_type   string = '.OneVsRestClassifier'
 	datafile_path string
-	history       []HistoryEvent
+	// history       []HistoryEvent
 }
 
 struct TotalNnParams {
@@ -131,13 +136,14 @@ mut:
 }
 
 pub struct HistoryEvent {
+	Environment
 pub mut:
-	event_date               time.Time
+	event_date               string
 	instances_count          int
 	prepurge_instances_count int
-	event_environment        Environment
-	event                    string
-	file_path                string
+	// event_environment        Environment
+	event     string
+	file_path string
 }
 
 struct Parameters {
@@ -183,8 +189,7 @@ pub struct Options {
 	Parameters
 	LoadOptions
 	DisplaySettings
-	MultipleOptions
-	MultipleClassifierSettingsArray
+	MultipleOptions // MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
@@ -196,6 +201,7 @@ pub mut:
 	classifierfile_path                 string
 	instancesfile_path                  string
 	multiple_classify_options_file_path string
+	multiple_classifier_settings        []ClassifierSettings
 	settingsfile_path                   string
 	help_flag                           bool
 	// multiple_flag                       bool
@@ -205,9 +211,10 @@ pub mut:
 	kagglefile_path      string
 }
 
-pub struct MultipleClassifierSettingsArray {
+pub struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
+	datafile_path                string
 }
 
 pub struct OptimalsResult {
@@ -228,6 +235,10 @@ pub struct ClassifierSettings {
 	Parameters
 	BinaryMetrics
 	Metrics
+	LoadOptions
+pub mut:
+	classifier_index int
+	datafile_path    string
 }
 
 pub struct MultipleOptions {
@@ -268,8 +279,8 @@ mut:
 
 pub struct Environment {
 pub mut:
-	hamnn_version  string
-	cached_cpuinfo map[string]string
+	hamnn_version string
+	// cached_cpuinfo map[string]string
 	os_kind        string
 	os_details     string
 	arch_details   []string
@@ -350,14 +361,14 @@ pub struct CrossVerifyResult {
 	DisplaySettings
 	Metrics
 	BinaryMetrics
-	MultipleOptions
-	MultipleClassifierSettingsArray
+	MultipleOptions // MultipleClassifierSettingsArray
 pub mut:
 	struct_type                         string = '.CrossVerifyResult'
 	command                             string
 	datafile_path                       string
 	testfile_path                       string
 	multiple_classify_options_file_path string
+	multiple_classifier_settings        []ClassifierSettings
 	labeled_classes                     []string
 	actual_classes                      []string
 	inferred_classes                    []string
@@ -386,7 +397,8 @@ pub mut:
 	classifier_instances_counts     []int
 	repetitions                     int
 	confusion_matrix                [][]string
-	trained_attributes_array        []map[string]TrainedAttribute
+	// trained_attribute_maps_array    []map[string]TrainedAttribute
+	trained_attribute_maps_array []map[string]TrainedAttribute
 }
 
 struct AttributeRange {
@@ -408,9 +420,10 @@ pub mut:
 	testfile_path    string
 	pos_neg_classes  []string
 	array_of_results []CrossVerifyResult
-	accuracy_types   []string = ['raw accuracy', 'balanced accuracy']
-	analytics        []MaxSettings
-	args             []string
+	// accuracy_types   []string = ['raw accuracy', 'balanced accuracy', ' MCC (Matthews Correlation Coefficient)']
+	// analytics        []MaxSettings
+	// analytics map[string]Analytics
+	args []string
 }
 
 pub struct PlotResult {

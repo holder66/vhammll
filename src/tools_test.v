@@ -76,14 +76,16 @@ fn test_parse_range() {
 	assert parse_range('0,0,1,2,2') == [0, 0, 1, 2, 2]
 }
 
-// test_array_min
-// fn test_array_min() {
-// 	// mut values := []{}f32
-// 	// values = [1.0, 2.0, 3.0]
-// 	println(array_min([1.0, 2.0, 3.0]))
-// }
+fn test_array_min() {
+	assert array_min([1.0, 2.0, 3.0]) == 1.0
+}
 
-// test_discretize_attribute
+fn test_last() {
+	assert last([1, 2, 3]) == 3
+	assert last(['a']) == 'a'
+	assert last([1.0, 2.0, 3.0]) == 3.0
+}
+
 fn test_discretize_attribute() {
 	mut values := [1.0, 2, 0, 3.0]
 	assert discretize_attribute(values, array_min(values), array_max(values), 3) == [
@@ -230,5 +232,6 @@ fn test_chlk1() {
 	println(g_b('This should show in bold green'))
 	println(dg('Printout in dark grey'))
 	println(m('Now for magenta!'))
+	println(r_b('This should be bold red text.'))
 	println(rgb('Bold red text on green background'))
 }

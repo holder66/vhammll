@@ -165,18 +165,16 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	}
 	if opts.command in ['make', 'append', 'verify', 'validate', 'query'] {
 		event.file_path = ds.path
-		event.event_date = time.utc()
-		event.event_environment = get_environment()
+		event.event_date = time.utc().str()
+		event.Environment = get_environment()
 	}
-	cl.history << event
-	// println('cl in make_classifier: $cl')
+	cl.history_events << event
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'make' {
 		show_classifier(cl)
 	}
 	if opts.outputfile_path != '' {
 		save_json_file[Classifier](cl, opts.outputfile_path)
 	}
-	// println('cl.trained_attributes in make_classifier: $cl.trained_attributes')
 	return cl
 }
 

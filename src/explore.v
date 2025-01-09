@@ -87,8 +87,9 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	if opts.outputfile_path != '' {
 		save_json_file[ExploreResult](results, opts.outputfile_path)
 	}
+	mut explore_analytics := explore_analytics2(results)
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
-		show_explore_trailer(results, opts)
+		show_explore_trailer(results, explore_analytics, opts)
 	}
 	// println(ds.class_counts.len)
 	if opts.graph_flag {
@@ -104,31 +105,10 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		// save the settings for the explore results with the
 		// highest balanced accuracy, true positives, and true
 		// negatives
-		append_explore_settings_to_file(results, opts)
+		// append_explore_settings_to_file(results, opts)
+		append_explore_settings_to_file(results, explore_analytics, opts)
 	}
 	return results
-}
-
-// append_explore_settings_to_file
-fn append_explore_settings_to_file(results ExploreResult, opts Options) {
-	// println('results in append_explore_settings_to_file: $results')
-	mut indices := opts.classifier_indices.clone()
-	if indices == [] {
-		indices = []int{len: 7, init: index}
-	}
-	m := explore_analytics2(results)
-	mut i := 0
-	for _, a in m {
-		if i in indices {
-			// println(results.array_of_results[a.idx])
-			append_json_file[ClassifierSettings](ClassifierSettings{
-				Parameters:    results.array_of_results[a.idx].Parameters
-				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
-				Metrics:       results.array_of_results[a.idx].Metrics
-			}, opts.settingsfile_path)
-		}
-		i += 1
-	}
 }
 
 // get_attribute_range
