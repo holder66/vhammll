@@ -12,33 +12,33 @@ fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) 
 		Metrics:       result.Metrics
 		datafile_path: os.abs_path(result.datafile_path)
 	}
-	path := opts.settingsfile_path.trim_space()
-	// check if there is already a settings file
-	if os.is_file(path) {
-		previously_stored_settings := os.read_lines(opts.settingsfile_path.trim_space()) or {
-			panic('failed to open ${opts.settingsfile_path} in append_cross_verify_settings_to_file')
-		}
-		settings_to_append.classifier_index = previously_stored_settings.len + 1
-	} else {
-		settings_to_append.classifier_index = 0
-	}
-
+	settings_to_append.classifier_index = get_next_classifier_index(opts.settingsfile_path)
 	append_json_file(settings_to_append, opts.settingsfile_path)
+}
+
+fn get_next_classifier_index(settingsfile_path string) int {
+	// check if there is already a settings file
+	if os.is_file(settingsfile_path.trim_space()) {
+		previously_stored_settings := os.read_lines(settingsfile_path.trim_space()) or {
+			panic('failed to open ${settingsfile_path} in get_next_classifier_index()')
+		}
+		return previously_stored_settings.len
+	}
+	return 0
 }
 
 // append_explore_settings_to_file
 fn append_explore_settings_to_file(results ExploreResult, explore_analytics map[string]Analytics, opts Options) {
+	next_classifier_index := get_next_classifier_index(opts.settingsfile_path)
 	mut indices := opts.classifier_indices.clone()
 	if indices == [] {
-		indices = []int{len: 7, init: index}
+		indices = []int{len: explore_analytics.len, init: index}
 	}
-	// m := explore_analytics2(results)
-	// m := explore_analytics
 	mut i := 0
 	for _, a in explore_analytics {
 		if i in indices {
 			mut u := ClassifierSettings{
-				classifier_index: i
+				classifier_index: next_classifier_index + i
 				Parameters:       results.array_of_results[a.idx].Parameters
 				BinaryMetrics:    results.array_of_results[a.idx].BinaryMetrics
 				Metrics:          results.array_of_results[a.idx].Metrics

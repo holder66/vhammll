@@ -2,7 +2,8 @@
 module vhammll
 
 import os
-import x.json2
+// import x.json2
+import json
 
 // display_file displays on the console, a results file as produced by other
 // hamnn functions; a multiple classifier settings file; or graphs for explore,
@@ -20,7 +21,7 @@ pub fn display_file(path string, in_opts Options) {
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	match true {
 		s.contains('"struct_type":".ExploreResult"') {
-			mut saved_er := json2.decode[ExploreResult](s) or { panic(err) }
+			mut saved_er := json.decode(ExploreResult, s) or { panic(err) }
 			show_explore_header(saved_er, opts.DisplaySettings)
 			for mut result in saved_er.array_of_results {
 				show_explore_line(result, opts.DisplaySettings)
@@ -35,34 +36,34 @@ pub fn display_file(path string, in_opts Options) {
 			}
 		}
 		s.contains('"struct_type":".Classifier"') {
-			saved_cl := json2.decode[Classifier](s) or { panic('Failed to parse json') }
+			saved_cl := json.decode(Classifier, s) or { panic('Failed to parse json') }
 			show_classifier(saved_cl)
 		}
 		s.contains('"struct_type":".RankingResult"') {
-			saved_rr := json2.decode[RankingResult](s) or { panic('Failed to parse json') }
+			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
 			if opts.graph_flag {
 				plot_rank(saved_rr)
 			}
 		}
 		s.contains('"struct_type":".AnalyzeResult"') {
-			saved_ar := json2.decode[AnalyzeResult](s) or { panic('Failed to parse json') }
+			saved_ar := json.decode(AnalyzeResult, s) or { panic('Failed to parse json') }
 			show_analyze(saved_ar)
 		}
 		s.contains('"struct_type":".ValidateResult"') {
-			dump(s)
-			saved_valr := json2.decode[ValidateResult](s) or { panic('Failed to parse json') }
-			dump(saved_valr)
+			// dump(s)
+			saved_valr := json.decode(ValidateResult, s) or { panic('Failed to parse json') }
+			// dump(saved_valr)
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
-			mut saved_vr := json2.decode[CrossVerifyResult](s) or {
+			mut saved_vr := json.decode(CrossVerifyResult, s) or {
 				panic('Failed to parse json as CrossVerifyResult')
 			}
 			show_verify(saved_vr, opts)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"cross"') {
-			saved_vr := json2.decode[CrossVerifyResult](s) or { panic('Failed to parse json') }
+			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
 			show_crossvalidation(saved_vr, opts)
 			// if opts.append_settings_flag {
 			// 	append_cross_verify_settings_to_file(saved_vr, opts)

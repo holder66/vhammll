@@ -70,7 +70,6 @@ fn test_multiple_verify() ? {
 	// verify that the settings file was correctly saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
-
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path

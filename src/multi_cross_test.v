@@ -42,26 +42,9 @@ fn test_multiple_crossvalidate() ? {
 	result = cross_validate(ds, opts)
 	// now do a multiple classifier crossvalidation
 	opts.multiple_flag = true
+	// opts.show_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.classifier_indices = [2]
-	assert cross_validate(ds, opts).confusion_matrix_map == {
-		'm': {
-			'm': 8.0
-			'f': 0.0
-			'X': 0.0
-		}
-		'f': {
-			'm': 3.0
-			'f': 0.0
-			'X': 0.0
-		}
-		'X': {
-			'm': 2.0
-			'f': 0.0
-			'X': 0.0
-		}
-	}
-	opts.classifier_indices = [3]
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'm': {
 			'm': 8.0
@@ -77,6 +60,24 @@ fn test_multiple_crossvalidate() ? {
 			'm': 0.0
 			'f': 0.0
 			'X': 2.0
+		}
+	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'm': {
+			'm': 8.0
+			'f': 0.0
+			'X': 0.0
+		}
+		'f': {
+			'm': 3.0
+			'f': 0.0
+			'X': 0.0
+		}
+		'X': {
+			'm': 2.0
+			'f': 0.0
+			'X': 0.0
 		}
 	}
 	opts.classifier_indices = [2, 3]
@@ -295,7 +296,7 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 		concurrency_flag:     true
 		expanded_flag:        false
 		verbose_flag:         false
-		show_flag:            true
+		// show_flag:            true
 	}
 	opts.number_of_attributes = [11, 13]
 	opts.bins = [1, 10]
@@ -342,44 +343,6 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 	opts.classifier_indices = [2]
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'3': {
-			'3': 668.0
-			'U': 9.0
-			'1': 1.0
-			'5': 0.0
-			'2': 6.0
-		}
-		'U': {
-			'3': 28.0
-			'U': 12.0
-			'1': 0.0
-			'5': 0.0
-			'2': 0.0
-		}
-		'1': {
-			'3': 1.0
-			'U': 0.0
-			'1': 7.0
-			'5': 0.0
-			'2': 0.0
-		}
-		'5': {
-			'3': 0.0
-			'U': 0.0
-			'1': 0.0
-			'5': 67.0
-			'2': 0.0
-		}
-		'2': {
-			'3': 7.0
-			'U': 0.0
-			'1': 0.0
-			'5': 0.0
-			'2': 92.0
-		}
-	}
-	opts.classifier_indices = [3]
-	assert cross_validate(ds, opts).confusion_matrix_map == {
-		'3': {
 			'3': 679.0
 			'U': 2.0
 			'1': 0.0
@@ -415,18 +378,56 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 			'2': 99.0
 		}
 	}
+	opts.classifier_indices = [3]
+	assert cross_validate(ds, opts).confusion_matrix_map == {
+		'3': {
+			'3': 679.0
+			'U': 2.0
+			'1': 0.0
+			'5': 0.0
+			'2': 3.0
+		}
+		'U': {
+			'3': 2.0
+			'U': 38.0
+			'1': 0.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'1': {
+			'3': 1.0
+			'U': 0.0
+			'1': 7.0
+			'5': 0.0
+			'2': 0.0
+		}
+		'5': {
+			'3': 1.0
+			'U': 0.0
+			'1': 0.0
+			'5': 66.0
+			'2': 0.0
+		}
+		'2': {
+			'3': 0.0
+			'U': 0.0
+			'1': 0.0
+			'5': 0.0
+			'2': 99.0
+		}
+	}
 	opts.classifier_indices = [2, 3]
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'3': {
-			'3': 675.0
+			'3': 679.0
 			'U': 2.0
-			'1': 1.0
+			'1': 0.0
 			'5': 0.0
-			'2': 6.0
+			'2': 3.0
 		}
 		'U': {
-			'3': 28.0
-			'U': 12.0
+			'3': 2.0
+			'U': 38.0
 			'1': 0.0
 			'5': 0.0
 			'2': 0.0
@@ -446,11 +447,11 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 			'2': 0.0
 		}
 		'2': {
-			'3': 6.0
+			'3': 0.0
 			'U': 0.0
 			'1': 0.0
 			'5': 0.0
-			'2': 93.0
+			'2': 99.0
 		}
 	}
 }

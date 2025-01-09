@@ -103,7 +103,7 @@ fn test_oxford_settings_file() {
 		expanded_flag:        true
 		show_attributes_flag: true
 	}
-	// display_file(os.join_path(home_dir, 'metabolomics', 'metabolomics.opts'), opts)
+	display_file(os.join_path(home_dir, 'metabolomics', 'metabolomics.opts'), opts)
 }
 
 fn test_oxford_multi_crossvalidate() {
@@ -203,6 +203,7 @@ fn test_oxford_multi_verify() {
 		expanded_flag:        true
 		show_attributes_flag: false
 	}
+
 	mut result := multi_verify(opts)
 	println(r_b('\nWhen using just the first 3 classifiers (with which we achieved maximum sensitivity,'))
 	println(r_b('we get a sensitivity of 0.714 on the test set:'))
@@ -238,3 +239,4 @@ fn test_oxford_multi_verify() {
 	assert result.sens == 0.7142857142857143
 	assert result.spec == 0.7176470588235294
 }
+

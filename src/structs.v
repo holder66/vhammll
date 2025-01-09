@@ -281,9 +281,9 @@ pub struct Environment {
 pub mut:
 	hamnn_version string
 	// cached_cpuinfo map[string]string
-	os_kind    string
-	os_details string
-	// arch_details   []string
+	os_kind        string
+	os_details     string
+	arch_details   []string
 	vexe_mtime     string
 	v_full_version string
 	vflags         string

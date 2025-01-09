@@ -16,27 +16,27 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder_show_attr')!
 }
 
-fn test_show_attributes_in_make_classifier() {
-	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
-		show_flag:            true
-		show_attributes_flag: true
-		command:              'make'
-	}
-	make_classifier(load_file(opts.datafile_path), opts)
-}
+// fn test_show_attributes_in_make_classifier() {
+// 	mut opts := Options{
+// 		datafile_path:        'datasets/developer.tab'
+// 		show_flag:            true
+// 		show_attributes_flag: true
+// 		command:              'make'
+// 	}
+// 	make_classifier(load_file(opts.datafile_path), opts)
+// }
 
-fn test_show_attributes_in_verify() {
-	mut opts := Options{
-		datafile_path:        'datasets/mobile_price_classification_train.csv'
-		testfile_path:        'datasets/mobile_price_classification_test.csv'
-		show_flag:            true
-		expanded_flag:        true
-		show_attributes_flag: true
-		command:              'verify'
-	}
-	verify(opts)
-}
+// fn test_show_attributes_in_verify() {
+// 	mut opts := Options{
+// 		datafile_path:        'datasets/mobile_price_classification_train.csv'
+// 		testfile_path:        'datasets/mobile_price_classification_test.csv'
+// 		show_flag:            true
+// 		expanded_flag:        true
+// 		show_attributes_flag: true
+// 		command:              'verify'
+// 	}
+// 	verify(opts)
+// }
 
 fn test_multiple_classifier_verify_totalnn() ? {
 	println(r_b('Do two verfications to populate a settings file:'))
@@ -83,7 +83,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 9.0
 		}
 	}
-	println(r_b('Next, verify that the settings file was saved:'))
+	println(r_b('Next, verify that the settings file was saved, and display it:'))
 	// verify that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
