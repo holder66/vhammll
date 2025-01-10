@@ -17,6 +17,8 @@ fn testsuite_end() ? {
 }
 
 fn test_oxford_crossvalidate_to_create_settings_file() {
+	println(r_b('\nStart by creating a settings file for the four sets of classifier settings,'))
+	println(r_b('by doing four cross-validations with the append_settings_flag set:'))
 	home_dir := os.home_dir()
 	mut opts := Options{
 		command:                  'cross'
@@ -36,7 +38,6 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 	}
 	ds := load_file(opts.datafile_path)
 	mut result0 := cross_validate(ds, opts)
-	// dump(result0.confusion_matrix_map)
 	assert result0.confusion_matrix_map == {
 		'Non': {
 			'Non': 146.0
@@ -47,7 +48,6 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 			'Can': 13.0
 		}
 	}
-	display_file(opts.settingsfile_path, opts)
 	opts.number_of_attributes = [1]
 	opts.bins = [3, 3]
 	opts.weight_ranking_flag = true
@@ -63,7 +63,6 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 			'Can': 13.0
 		}
 	}
-	display_file(opts.settingsfile_path, opts)
 	opts.number_of_attributes = [3]
 	opts.weight_ranking_flag = false
 	opts.balance_prevalences_flag = false
@@ -78,7 +77,6 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 			'Can': 15.0
 		}
 	}
-	display_file(opts.settingsfile_path, opts)
 	opts.number_of_attributes = [9]
 	opts.bins = [1, 4]
 	result3 := cross_validate(ds, opts)
@@ -92,12 +90,11 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 			'Can': 13.0
 		}
 	}
-	opts.show_attributes_flag = true
-	display_file(opts.settingsfile_path, opts)
 }
 
 fn test_oxford_settings_file() {
-	println(r_b('\nDisplaying the saved settings file for the four classifiers'))
+	println(r_b('\nConfirm that a settings file was successfully saved by displaying it, along with'))
+	println(r_b('the attributes on which each of the four classifiers was trained:'))
 	home_dir := os.home_dir()
 	opts := Options{
 		expanded_flag:        true
@@ -107,6 +104,7 @@ fn test_oxford_settings_file() {
 }
 
 fn test_oxford_multi_crossvalidate() {
+	println(r_b('\nConfirm that the saved settings file can be successfully used in a multiple classifier paradigm.'))
 	home_dir := os.home_dir()
 	mut opts := Options{
 		command:                             'cross'
@@ -189,7 +187,7 @@ fn test_oxford_multi_crossvalidate() {
 fn test_oxford_multi_verify() {
 	println(r_b('\nWe can apply the 4 classifier settings from previous to train classifiers on'))
 	println(r_b('the entire training dataset of 192 cases, and then classify the 92 cases in the'))
-	println(r_b('independent test dataset:'))
+	println(r_b('independent test dataset "test.tab":'))
 	home_dir := os.home_dir()
 	mut opts := Options{
 		command:                             'verify'
