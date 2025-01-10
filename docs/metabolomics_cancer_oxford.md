@@ -26,6 +26,9 @@ For the purposes of this instruction set, the two files were saved in a director
 The terminal readout should show a file type of "orange_newer", a count of 2 attributes of type "m", one attribute of type "c", and 917 attributes of type "C" (continuous). No missing data. The Class Attribute should show 175 "Non" cases and 17 "Can" cases.
 For the `test.tab` file, the corresponding class counts should be 85 "Non" and 7 "Can".
 
+## Continue with `oxford_test.v`
+At this point, you have the option of continuing to work through the steps below, or running the `oxford_test.v` file which produces the same results. To do so, type `v -stats vhammll/src/oxford_test.v`.
+
 ## Exploring the `train.tab` data
 We will leave aside the `test.tab` file, as it is to be used as an independent test set after the classifier has been optimized.
 For the explore, use an attribute number range from 1 to 10, and a binning range also from 1 to 10. There are several flags, and the explore should be done over every combination of those flags (but read ahead to avoid these time-consuming steps):
