@@ -26,6 +26,13 @@ For the purposes of this instruction set, the two files were saved in a director
 The terminal readout should show a file type of "orange_newer", a count of 2 attributes of type "m", one attribute of type "c", and 917 attributes of type "C" (continuous). No missing data. The Class Attribute should show 175 "Non" cases and 17 "Can" cases.
 For the `test.tab` file, the corresponding class counts should be 85 "Non" and 7 "Can".
 
+## Continue with `oxford_test.v`
+At this point, you have the option of continuing to work through the steps below, or running the `oxford_test.v` file which produces the same results. To do so, type 
+```sh
+cd ~/.vmodules/holder66/vhammll
+v -prod -stats src/oxford_test.v
+```
+
 ## Exploring the `train.tab` data
 We will leave aside the `test.tab` file, as it is to be used as an independent test set after the classifier has been optimized.
 For the explore, use an attribute number range from 1 to 10, and a binning range also from 1 to 10. There are several flags, and the explore should be done over every combination of those flags (but read ahead to avoid these time-consuming steps):
@@ -89,11 +96,8 @@ This would take a couple of days to run, depending on the speed of your computer
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 3 -b 3,3 -w ~/metabolomics/train.tab;
 ./vhamml cross -e -ms ~/metabolomics/metabolomics.opts -a 9 -b 1,4 -w ~/metabolomics/train.tab
 ```
-Note that the above four commands and the following steps can all be run automatically by running a test file in the vhammll distribution:
-```sh
-cd ~/.vmodules/holder66/vhammll
-v -prod -stats test src/oxford_test.v
-```
+
+
 Verify that the newly generated settings file contains the settings for all 4 classifiers, and in the correct order (the -ea flag is to display the trained
 attributes for each classifier):
 ```sh

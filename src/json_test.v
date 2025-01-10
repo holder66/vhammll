@@ -63,8 +63,8 @@ fn test_load_instances_file() ! {
 	cl = make_classifier(ds, opts)
 	vr = validate(cl, opts)!
 	tvr = load_instances_file('tempfolder_json/validate_result.json')!
-	dump(vr)
-	dump(tvr)
+	// dump(vr)
+	// dump(tvr)
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
 	assert vr.counts == tvr.counts

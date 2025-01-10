@@ -30,7 +30,6 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
 		confusion_matrix_map:                confusion_matrix_map
 	}
-	// display_file(opts.multiple_classify_options_file_path)
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
 	mut classifier_array := []Classifier{}
