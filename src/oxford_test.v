@@ -239,4 +239,3 @@ fn test_oxford_multi_verify() {
 	assert result.sens == 0.7142857142857143
 	assert result.spec == 0.7176470588235294
 }
-
