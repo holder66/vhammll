@@ -302,7 +302,7 @@ fn do_explore(opts Options) {
 }
 
 fn do_optimals(opts Options) {
-	// optimals(opts.datafile_path, opts)
+	optimals(opts.datafile_path, opts)
 }
 
 // orange

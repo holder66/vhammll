@@ -12,7 +12,11 @@ fn multi_verify(opts Options) CrossVerifyResult {
 			confusion_matrix_map[key2][key1] = 0
 		}
 	}
-	// instantiate a struct for the result
+	
+	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
+			panic('read_multiple_opts failed')
+		}
+		// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
 		Parameters:                          opts.Parameters
@@ -21,9 +25,10 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings:        read_multiple_opts(opts.multiple_classify_options_file_path) or {
-			panic('read_multiple_opts failed')
-		}
+		// multiple_classifier_settings:        read_multiple_opts(opts.multiple_classify_options_file_path) or {
+		// 	panic('read_multiple_opts failed')
+		// }
+		// multiple_classifier_settings:	multiple_classifier_settings
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
@@ -44,23 +49,29 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	// verify_result.multiple_classifier_settings = settings_array
 	// dump(verify_result.multiple_classifier_settings)
 	if mult_opts.classifier_indices == [] {
-		mult_opts.classifier_indices = []int{len: verify_result.multiple_classifier_settings.len, init: index}
+		mult_opts.classifier_indices = []int{len: multiple_classifier_settings.len, init: index}
 	}
 	verify_result.classifier_indices = mult_opts.classifier_indices
+	// dump(verify_result.classifier_indices)
 	for ci in verify_result.classifier_indices {
-		mult_opts.multiple_classifier_settings << verify_result.multiple_classifier_settings[ci]
+		mult_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
 	}
+	// dump(mult_opts.multiple_classifier_settings)
+	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
 	for i, _ in mult_opts.classifier_indices {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
 		mult_opts.multiple_flag = true
 		verify_result.Parameters = params
+		// verify_result.multiple_classifier_settings << params
 		verify_result.multiple_flag = true
+		// dump(i)
+		// dump(verify_result.Parameters)
 		classifier := make_classifier(ds, mult_opts)
 		classifier_array << classifier
 		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
 		// verify_result.trained_attribute_maps_array[idx] = classifier.trained_attributes.clone()
-		cases << generate_case_array(classifier_array.last(), test_ds)
+		cases << generate_case_array(classifier, test_ds)
 	}
 	cases = transpose(cases)
 	mut m_classify_result := ClassifyResult{}
