@@ -1,5 +1,6 @@
 ![VHamMLLL Continuous Integration](https://github.com/holder66/vhammll/actions/workflows/main.yml/badge.svg)
 ![GitHub](https://img.shields.io/github/license/holder66/VHamMLL)
+
 # VHamMLL
 A machine learning (ML) library for classification using a nearest neighbor algorithm based on Hamming distances.
 
@@ -21,11 +22,6 @@ For interactive descriptions of the two key algorithms used by VHamMLL, download
 ## Usage:
 ### To use the VHamMLL library in an existing Vlang project:
 `v install holder66.vhammll`
-
-You may also need to install its dependencies, if not automatically installed:
-```sh
-v install
-```
 
 In your v code, add:
 `import holder66.vhammll`

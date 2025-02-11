@@ -34,7 +34,7 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 // all other tab-delimited datafiles will be typed as 'orange_newer'.
 //
 // Example:
-// ```sh
+// ```v
 // assert file_type('datasets/iris.tab') == 'orange_older'
 // ```
 pub fn file_type(path string) string {
