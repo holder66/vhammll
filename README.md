@@ -23,11 +23,6 @@ For interactive descriptions of the two key algorithms used by VHamMLL, download
 ### To use the VHamMLL library in an existing Vlang project:
 `v install holder66.vhammll`
 
-You may also need to install its dependencies, if not automatically installed:
-```sh
-v install
-```
-
 In your v code, add:
 `import holder66.vhammll`
 
