@@ -3,7 +3,8 @@ module vhammll
 
 // import arrays
 
-// optimals determines which classifiers provide the best balanced accuracy, highest total for
+// optimals determines which classifiers provide the best balanced accuracy, best Matthews
+// Correlation Coefficient (MCC), highest total for
 // correct inferences, and highest correct inferences per class, for multiple classifiers whose
 // settings are stored in a settings file.
 // ```sh
