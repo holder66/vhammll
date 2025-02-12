@@ -16,6 +16,11 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolder_oxford')!
 }
 
+fn test_note_re_datafile_locations() {
+	println(r_b('\nThis test file assumes that the Oxford dataset train and test files are in\na folder named 'metabolomics', and that this folder is itself in the user\'s home directory.'))
+	println(r_b('\nIt is also assumed that the two files have been prepared according to the \ninstructions in the documentation file \'metabolomics_cancer_oxford.md\'.'))
+}
+
 fn test_oxford_crossvalidate_to_create_settings_file() {
 	println(r_b('\nStart by creating a settings file for the four sets of classifier settings,'))
 	println(r_b('by doing four cross-validations with the append_settings_flag set:'))
@@ -109,7 +114,7 @@ fn test_oxford_multi_crossvalidate() {
 	mut opts := Options{
 		command:                             'cross'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'train.tab')
-		multiple_classify_options_file_path: os.join_path(home_dir, 'metabolomics', 'metabolomics.opts')
+		multiple_classify_options_file_path: 'tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		multiple_flag:        true
 		expanded_flag:        true
@@ -193,7 +198,7 @@ fn test_oxford_multi_verify() {
 		command:                             'verify'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'train.tab')
 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'test.tab')
-		multiple_classify_options_file_path: os.join_path(home_dir, 'metabolomics', 'metabolomics.opts')
+		multiple_classify_options_file_path: 'tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		multiple_flag:        true
 		classifier_indices:   []
