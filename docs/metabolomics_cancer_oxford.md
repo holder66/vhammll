@@ -188,7 +188,7 @@ This gives a good specificity of 0.847, but a poor sensitivity of only 0.571:
 ```
 TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
  4     3    72    13   0.571  0.847  0.235  0.960     0.333         82.61%    70.92%   0.286
-    ```
+```
 
 Using the first three classifiers only, and again setting the combined_radii-flag:
 ```sh
