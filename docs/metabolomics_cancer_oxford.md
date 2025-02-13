@@ -104,7 +104,7 @@ attributes for each classifier):
 ./vhamml display -ea ~/metabolomics/metabolomics.opts
 ```
 Which should give:
-```sh
+```
 Multiple Classifier Options file: /Users/henryolders/metabolomics/metabolomics.opts
                Classifier:   0            1            2            3            
      Number of attributes:   4            1            3            9            
@@ -151,34 +151,51 @@ Use all four classifiers in a multiple-classifier cross-validation of train.tab:
 ./vhamml cross -e -m ~/metabolomics/metabolomics.opts ~/metabolomics/train.tab
 ```
 This gives the highest balanced accuracy of 86.32%.:
-```sh
+```
 TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
 14     3   158    17   0.824  0.903  0.452  0.981     0.583         89.58%    86.32%   0.561
 ```  
 
-To obtain the highest sensitivity, use only the first 3 classifiers. Add the combined_radii_flag, -mc, to give a higher specificity without a loss of sensitivity:
+To obtain the highest sensitivity, use only the first 3 classifiers:
+```sh
+./vhamml cross -e -m ~/metabolomics/metabolomics.opts -m# 0,1,2 ~/metabolomics/train.tab
+```
+giving:
+```
+TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
+15     2   124    51   0.882  0.709  0.227  0.984     0.361         72.40%    79.55%   0.353
+```
+
+Add the combined_radii_flag, -mc, to give a higher specificity without a loss of sensitivity:
 ```sh
 ./vhamml cross -e -m ~/metabolomics/metabolomics.opts -m# 0,1,2 -mc ~/metabolomics/train.tab
 ```
 which gives:
-```sh
+```
 TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
 15     2   132    43   0.882  0.754  0.259  0.985     0.400         76.56%    81.83%   0.394
 ```
 Feel free to experiment. You may be able to improve on these settings, either by using different classifier settings, or different flags for the cross-validation.
 
-If these are the best settings we can find for optimizing classification using the training data only, let's try them when applied to the entire training set (192 cases, instead of the 191 cases for each leave-one-out cross-validation) and then to classify the 92 cases in the independent test set `test.tab`:
+If these are the best settings we can find for optimizing classification using the training data only, let's try them when applied to the entire training set (192 cases, instead of the 191 cases for each leave-one-out cross-validation) and then to classify the 92 cases in the independent test set `test.tab`.
+
+First, we will use all four classifiers which gave the highest balanced accuracy for the training dataset:
 
 ```sh
 ./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab ~/metabolomics/train.tab
 ```
-This gives a good specificity of 0.847, but a poor sensitivity of only 0.571.
+This gives a good specificity of 0.847, but a poor sensitivity of only 0.571:
+```
+TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC
+ 4     3    72    13   0.571  0.847  0.235  0.960     0.333         82.61%    70.92%   0.286
+    ```
+
 Using the first three classifiers only, and again setting the combined_radii-flag:
 ```sh
 ./vhamml verify -e -m ~/metabolomics/metabolomics.opts -t ~/metabolomics/test.tab -m# 0,1,2 -mc ~/metabolomics/train.tab
 ```
 We now get:
-```sh
+```
 Verification of "/Users/henryolders/metabolomics/test.tab" using multiple classifiers from "/Users/henryolders/metabolomics/train.tab"
 Classifier parameters are in file "/Users/henryolders/metabolomics/metabolomics.opts"
 break_on_all_flag: false     combined_radii_flag: true      total_nn_counts_flag: false     class_missing_purge_flag: false
