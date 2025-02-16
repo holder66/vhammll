@@ -32,35 +32,25 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	}
 	if opts.balance_prevalences_flag {
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
-		// println(ds.Class)
 		mut transposed_data := transpose(ds.data)
-		// println('transposed_data before: ${transposed_data}')
 		mut multipliers := map[string]int{}
 		for class, count in ds.class_counts {
 			multipliers[class] = (ds.class_values.len - count) / count
 		}
-		// println('multipliers: ${multipliers}')
 		mut idx := 0
 		for class in ds.class_values {
 			if multipliers[class] > 0 {
 				for _ in 1 .. multipliers[class] {
-					// println(transposed_data[idx])
 					transposed_data.insert(idx, transposed_data[idx])
 					idx += 1
 				}
 			}
 			idx += 1
 		}
-
-		// println('transposed_data after: $transposed_data')
 		ds.data = transpose(transposed_data)
-		// println(ds.data)
 		// update the Class struct items
-		// println(ds.attribute_names)
 		ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
-		// println(ds.class_values)
 		ds.class_counts = element_counts(ds.class_values)
-		// println(ds.class_counts)
 		// redo the useful_attribute maps
 		ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 		ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
@@ -71,10 +61,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		Parameters:    opts.Parameters
 		datafile_path: ds.path
 		LoadOptions:   opts.LoadOptions
-		// struct_type: '.Classifier'
-		// binning: get_binning(opts.bins)
 	}
-	// println('opts.binning: $opts.binning')
 	if opts.binning.lower > 0 {
 		cl.binning = opts.binning
 	} else {
@@ -83,25 +70,17 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	// calculate the least common multiple for class_counts, for use
 	// when the weighting_flag is set
 	cl.lcm_class_counts = i64(lcm(get_map_values(ds.class_counts)))
-	// println("cl.lcm_class_counts: $cl.lcm_class_counts")
 	// first, rank the attributes using the bins and exclude params, and take
 	// the highest-ranked number_of_attributes (all the usable attributes if
 	// number_of_attributes is 0)
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
-	// println('ds: $ds')
 	ranking_result := rank_attributes(ds, rank_opts)
-	// println('ranking_result: $ranking_result')
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
-	// println('ranked_attributes in make_classifier: $ranked_attributes')
-	// cl.binning = ranking_result.binning
-	// println('binning in make_classifier: $cl.binning')
-	// println('opts.number_of_attributes in make_classifier: ${opts.number_of_attributes[0]}')
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {
 		ranked_attributes = ranked_attributes[..opts.number_of_attributes[0]].clone()
 	}
-	// println('ranked_attributes: $ranked_attributes')
 	// for continuous attributes, discretize and get binned values
 	// for discrete attributes, create a translation table to go from
 	// strings to integers (note that this table needs to be saved)
@@ -143,10 +122,9 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		}
 		attr_binned_values << binned_values.map(u8(it))
 	}
+	// dump(attr_binned_values)
 	// get the maximum possible hamming distance for this classifier
 	cl.maximum_hamming_distance = max_ham_dist(cl.trained_attributes)
-	// println('maximum_hamming_distance: ${cl.maximum_hamming_distance}')
-	// println('attr_binned_values: $attr_binned_values')
 	cl.instances = transpose(attr_binned_values)
 	cl.attribute_ordering = attr_names
 	prepurge_instances_count := cl.instances.len
@@ -200,7 +178,6 @@ fn make_translation_table(array []string, missings []string) map[string]int {
 fn max_ham_dist(atts map[string]TrainedAttribute) int {
 	mut maximum_hamming_distance := 0
 	for _, attr in atts {
-		// println(attr)
 		if attr.attribute_type == 'C' {
 			maximum_hamming_distance += attr.bins
 		} else {
