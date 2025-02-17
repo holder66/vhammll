@@ -51,6 +51,8 @@ const vhammll_help = "
                      be used by make_classifier to produce a classifier with 
                      that number of attributes. More than one integer will be 
                      used by explore to provide a range and an interval;
+    -af --all-flags: used with explore to repeat the explore operation for all
+                     possible combinations of flags -bp, -p, -u, -w, -wr, and -x; 
     -b --bins:       can be one, two, or 3 integers; a single integer for one 
                      bin value to be used for all attributes; two integers for 
                      a range of bin values; a third integer specifies an 
@@ -441,6 +443,8 @@ Usage: v run . explore <options> <path_to_dataset_file>
 Options:
   -a --attributes: a range for the number of attributes (picked from the list
       of ranked attributes) to be used in training the classifier;
+  -af --all-flags: used with explore to repeat the explore operation for all
+      possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
   -b --bins: a range for the number of bins for continuous attributes;
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: show expanded results on the console;
@@ -448,7 +452,7 @@ Options:
   -g --graph: generates plots of accuracy vs number of attributes used; for 
       binary classifiers (ie only 2 classes) also generates AUC plots;
   -o --output: followed by the path to a file in which the ExploreResult
-        struct will be saved;
+      struct will be saved;
   -p --purge: remove instances which are duplicates after binning;
   -r --reps: number of repetitions; if > 1, a random selection of 
       instances to be included in each fold will be applied;

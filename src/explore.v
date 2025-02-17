@@ -25,7 +25,36 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
-	// println(opts.classifier_indices)
+	if opts.explore_all_flags {
+		// in a series of nested loops, repeatedly execute the explore 
+		// function over both true and false settings for the various
+		// flags in opts.Parameters
+		mut af_opts := opts
+		mut af_result := ExploreResult{}
+		ft := [false, true]
+		for ub in ft {
+			af_opts.uniform_bins = ub
+			for wr in ft {
+				af_opts.weight_ranking_flag = wr
+				for w in ft {
+					af_opts.weighting_flag = w
+					for p in ft {
+						af_opts.purge_flag = p
+						for bp in ft {
+							af_opts.balance_prevalences_flag = bp
+							dump(af_opts.Parameters)
+							af_result = run_explore(ds, af_opts)
+						}
+					}
+				}
+			}
+		}
+	return af_result // returns just the last result for multiple explores
+	}
+	return run_explore(ds, opts)
+}
+
+fn run_explore(ds Dataset, opts Options) ExploreResult {
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		LoadOptions:     ds.LoadOptions
@@ -110,6 +139,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	}
 	return results
 }
+
 
 // get_attribute_range
 fn get_attribute_range(atts []int, max int) AttributeRange {

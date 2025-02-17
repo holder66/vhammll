@@ -27,6 +27,8 @@ pub mut:
 //    be used by make_classifier to produce a classifier with that number
 //    of attributes. More than one integer will be used by
 //    explore to provide a range and an interval.
+// -af --all-flags, used with explore to repeat the explore operation for 
+//    all possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
 // -b --bins, can be one, two, or 3 integers; a single integer for one bin
 //    value to be used for all attributes; two integers for a range of bin
 //    values; a third integer specifies an interval for the range (note that
@@ -145,6 +147,7 @@ fn get_options(args []string) Options {
 	if option(args, ['-b', '--bins']) != '' {
 		opts.bins = parse_range(option(args, ['-b', '--bins']))
 	}
+	opts.explore_all_flags = flag(args, ['-af', '--all-flags'])
 	opts.concurrency_flag = flag(args, ['-c', '--concurrent'])
 	opts.exclude_flag = flag(args, ['-x', '--exclude'])
 	opts.graph_flag = flag(args, ['-g', '--graph'])

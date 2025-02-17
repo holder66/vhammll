@@ -196,6 +196,7 @@ pub mut:
 	bins                                []int = [1, 16]
 	concurrency_flag                    bool
 	datafile_path                       string = 'datasets/developer.tab'
+	explore_all_flags	bool
 	testfile_path                       string
 	outputfile_path                     string
 	classifierfile_path                 string
