@@ -23,10 +23,9 @@ fn test_multiple_verify() ? {
 		concurrency_flag:  false
 		break_on_all_flag: true
 		command:           'verify'
-	}
-	mut disp := DisplaySettings{
 		verbose_flag:  false
-		expanded_flag: false
+		expanded_flag: true
+		show_attributes_flag: true
 	}
 	mut result := CrossVerifyResult{}
 

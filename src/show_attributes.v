@@ -14,6 +14,7 @@ module vhammll
 // import strings
 
 fn show_classifier_attributes(cl Classifier) {
+	dump(cl)
 	show_trained_attributes(cl.trained_attributes)
 }
 
@@ -32,6 +33,7 @@ fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
 }
 
 fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
+	// dump(atts_map)
 	println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
 	for attr, val in atts_map {
 		println('${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' +
@@ -40,7 +42,7 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
 }
 
 fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
-	dump(result.trained_attribute_maps_array)
+	// dump(result.trained_attribute_maps_array)
 	for i, idx in result.classifier_indices {
 		println(g_b('Trained attributes for classifier ${idx} on dataset "${result.datafile_path}"'))
 		// dump(idx)

@@ -90,6 +90,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	mut binned_values := []int{}
 	// loop through usable continuous attributes
 	for attr_index, attr_values in ds.useful_continuous_attributes {
+		// dump(ds.attribute_names[attr_index])
 		rank_value_array = []
 		maximum_rank_value = 0
 		attr_index_for_maximum_rank_value = 0
@@ -142,6 +143,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 					}
 					row << count
 				}
+				// dump([[bin_value], row])
 				if opts.weight_ranking_flag {
 					rank_value += sum_along_row_weighted(row, get_map_values(ds.class_counts))
 				} else {
@@ -224,7 +226,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 
 // get_rank_value_for_strings
 fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, opts Options) i64 {
-	// println('values: $values  class_values: $class_values  class_counts: $class_counts  $exclude')
+	// println('values: $values  class_values: $class_values  class_counts: $class_counts')
 	mut rank_val := i64(0)
 	mut count := 0
 	mut row := []int{}
