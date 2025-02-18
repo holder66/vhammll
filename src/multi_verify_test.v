@@ -20,11 +20,11 @@ fn testsuite_end() ? {
 
 fn test_multiple_verify() ? {
 	mut opts := Options{
-		concurrency_flag:  false
-		break_on_all_flag: true
-		command:           'verify'
-		verbose_flag:  false
-		expanded_flag: true
+		concurrency_flag:     false
+		break_on_all_flag:    true
+		command:              'verify'
+		verbose_flag:         false
+		expanded_flag:        true
 		show_attributes_flag: true
 	}
 	mut result := CrossVerifyResult{}

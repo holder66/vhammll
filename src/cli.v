@@ -27,7 +27,7 @@ pub mut:
 //    be used by make_classifier to produce a classifier with that number
 //    of attributes. More than one integer will be used by
 //    explore to provide a range and an interval.
-// -af --all-flags, used with explore to repeat the explore operation for 
+// -af --all-flags, used with explore to repeat the explore operation for
 //    all possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
 // -b --bins, can be one, two, or 3 integers; a single integer for one bin
 //    value to be used for all attributes; two integers for a range of bin

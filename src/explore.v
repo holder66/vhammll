@@ -26,7 +26,7 @@ module vhammll
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
 	if opts.explore_all_flags {
-		// in a series of nested loops, repeatedly execute the explore 
+		// in a series of nested loops, repeatedly execute the explore
 		// function over both true and false settings for the various
 		// flags in opts.Parameters
 		mut af_opts := opts
@@ -49,7 +49,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 				}
 			}
 		}
-	return af_result // returns just the last result for multiple explores
+		return af_result // returns just the last result for multiple explores
 	}
 	return run_explore(ds, opts)
 }
@@ -139,7 +139,6 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 	}
 	return results
 }
-
 
 // get_attribute_range
 fn get_attribute_range(atts []int, max int) AttributeRange {

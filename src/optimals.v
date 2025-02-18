@@ -12,7 +12,7 @@ module vhammll
 // purge_flag: discard duplicate settings
 // Output options:
 // show_flag: prints a list of classifier settings indices for each category;
-// expanded_flag: for each setting, prints the Parameters, results obtained, and Metrics 
+// expanded_flag: for each setting, prints the Parameters, results obtained, and Metrics
 // outputfile_path: saves the settings in a file given by the path. Useful if the settings are purged.
 // ```
 pub fn optimals(path string, opts Options) OptimalsResult {
@@ -25,6 +25,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	} else {
 		settings = all_settings.clone()
 	}
+	// dump(settings)
 	mut result := OptimalsResult{
 		class_counts:                             settings[0].class_counts_int
 		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
@@ -35,17 +36,21 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
 		correct_inferences_total_max_classifiers: idxs_max(settings.map(array_sum(it.correct_counts)))
 	}
+	dump(result)
 	for i, _ in result.classes {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.map(it.correct_counts[i]))
 	}
+	dump(result)
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
 	}
 	if opts.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
 		println(lg('Total number of settings: ${all_settings.len}'))
-		if opts.purge_flag {println(lg('Duplicates purged: ${all_settings.len - settings.len}'))}
+		if opts.purge_flag {
+			println(lg('Duplicates purged: ${all_settings.len - settings.len}'))
+		}
 		println(c_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
 		show_multiple_classifier_settings_details(filter_array_by_index(settings, result.balanced_accuracy_max_classifiers),
 			result.balanced_accuracy_max_classifiers)
@@ -71,7 +76,6 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 	return result
 }
-
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
 	// in a loop, compare the last element to all the previous elements. If a match is found, discard

@@ -19,7 +19,7 @@ fn testsuite_end() ? {
 fn test_explore_ox_mets_to_create_settings_file() {
 	home_dir := os.home_dir()
 	mut opts := Options{
-		command:              'explore'
+		command: 'explore'
 		// concurrency_flag:     true
 		datafile_path:        os.join_path(home_dir, 'metabolomics', 'mets-train.tab')
 		number_of_attributes: [1, 6]
@@ -27,7 +27,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		append_settings_flag: true
 
 		settingsfile_path: 'tempfolder_ox_mets/ox_mets_settings.opts'
-		expanded_flag: true
+		expanded_flag:     true
 	}
 	ds := load_file(opts.datafile_path)
 	ft := [false, true]
@@ -47,7 +47,6 @@ fn test_explore_ox_mets_to_create_settings_file() {
 	optimals(opts.settingsfile_path, opts)
 }
 
-
 fn test_multiple_crossvalidate_of_ox_mets() {
 	home_dir := os.home_dir()
 	mut opts := Options{
@@ -64,55 +63,54 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags:'))
 	ft := [false, true]
 
-	for ci in [[65,27,67]] {
+	for ci in [[65, 27, 67]] {
 		opts.classifier_indices = ci
-	for ma in ft {
-		opts.break_on_all_flag = ma
-		for mc in ft {
-			opts.combined_radii_flag = mc
-			for tnc in ft {
-				opts.total_nn_counts_flag = tnc
-				for cmp in ft {
-					dump(opts.classifier_indices)
-					result := cross_validate(ds, opts)
-					// assert cross_validate(ds, opts).mcc == 0.5367394391967351
-					// assert cross_validate(ds, opts).confusion_matrix_map in [
-					// 	{
-					// 		'Met': {
-					// 			'Met': 8.0
-					// 			'Pri': 3.0
-					// 		}
-					// 		'Pri': {
-					// 			'Met': 1.0
-					// 			'Pri': 5.0
-					// 		}
-					// 	},
-					// 	{
-					// 		'Met': {
-					// 			'Met': 8.0
-					// 			'Pri': 2.0
-					// 		}
-					// 		'Pri': {
-					// 			'Met': 1.0
-					// 			'Pri': 5.0
-					// 		}
-					// 	},
-					// ]
+		for ma in ft {
+			opts.break_on_all_flag = ma
+			for mc in ft {
+				opts.combined_radii_flag = mc
+				for tnc in ft {
+					opts.total_nn_counts_flag = tnc
+					for cmp in ft {
+						dump(opts.classifier_indices)
+						result := cross_validate(ds, opts)
+						// assert cross_validate(ds, opts).mcc == 0.5367394391967351
+						// assert cross_validate(ds, opts).confusion_matrix_map in [
+						// 	{
+						// 		'Met': {
+						// 			'Met': 8.0
+						// 			'Pri': 3.0
+						// 		}
+						// 		'Pri': {
+						// 			'Met': 1.0
+						// 			'Pri': 5.0
+						// 		}
+						// 	},
+						// 	{
+						// 		'Met': {
+						// 			'Met': 8.0
+						// 			'Pri': 2.0
+						// 		}
+						// 		'Pri': {
+						// 			'Met': 1.0
+						// 			'Pri': 5.0
+						// 		}
+						// 	},
+						// ]
+					}
 				}
 			}
 		}
 	}
-}
-	with classifiers 5,8,46, we get MCC 0.633 with all flags false; also with 8,20
 	println(r_b('\nIndependently of what flags are used, we always get an MCC of 0.537.'))
 	println(r_b('\nWith classifiers 5,8,46 or classifiers 8,20 we get and MCC of 0.633 when all flags are false.'))
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = false
 	opts.total_nn_counts_flag = false
 	opts.class_missing_purge_flag = false
-	opts.classifier_indices = [5,8,46]
+	opts.classifier_indices = [5, 8, 46]
 	assert cross_validate(ds, opts).mcc == 0.6326266278117372
-	opts.classifier_indices = [8,20]
+	opts.classifier_indices = [8, 20]
 	assert cross_validate(ds, opts).mcc == 0.6326266278117372
 }
 

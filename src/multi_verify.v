@@ -12,11 +12,11 @@ fn multi_verify(opts Options) CrossVerifyResult {
 			confusion_matrix_map[key2][key1] = 0
 		}
 	}
-	
+
 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-			panic('read_multiple_opts failed')
-		}
-		// instantiate a struct for the result
+		panic('read_multiple_opts failed')
+	}
+	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
 		Parameters:                          opts.Parameters
@@ -29,11 +29,11 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		// 	panic('read_multiple_opts failed')
 		// }
 		// multiple_classifier_settings:	multiple_classifier_settings
-		labeled_classes:                     test_ds.class_values
-		class_counts:                        test_ds.class_counts
-		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
-		confusion_matrix_map:                confusion_matrix_map
+		labeled_classes:      test_ds.class_values
+		class_counts:         test_ds.class_counts
+		classes:              test_ds.classes
+		pos_neg_classes:      get_pos_neg_classes(test_ds.class_counts)
+		confusion_matrix_map: confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path)
