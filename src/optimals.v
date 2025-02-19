@@ -25,7 +25,6 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	} else {
 		settings = all_settings.clone()
 	}
-	// dump(settings)
 	mut result := OptimalsResult{
 		class_counts:                             settings[0].class_counts_int
 		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
@@ -36,12 +35,11 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
 		correct_inferences_total_max_classifiers: idxs_max(settings.map(array_sum(it.correct_counts)))
 	}
-	dump(result)
+
 	for i, _ in result.classes {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.map(it.correct_counts[i]))
 	}
-	dump(result)
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
 	}

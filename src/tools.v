@@ -92,12 +92,16 @@ fn print_array(array []string) {
 }
 
 // get_map_values returns an array of a map's values (for integer values)
+// fn get_map_values(input map[string]int) []int {
+// 	mut values := []int{}
+// 	for _, value in input {
+// 		values << value
+// 	}
+// 	return values
+// }
+
 fn get_map_values(input map[string]int) []int {
-	mut values := []int{}
-	for _, value in input {
-		values << value
-	}
-	return values
+	return input.values()
 }
 
 // get_integer_keys returns the keys for an integer map

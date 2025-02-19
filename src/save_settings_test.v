@@ -30,17 +30,17 @@ fn test_append_cross_verify_settings_to_file() {
 	// opts.show_flag = true
 	cross_validate(ds, opts)
 	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 1171
-	// display_file(opts.settingsfile_path)
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 1170
+	display_file(opts.settingsfile_path)
 
 	// add another classifier
 	opts.bins = [3, 3]
 	cross_validate(ds, opts)
-	// display_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 2247
+	display_file(opts.settingsfile_path)
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 2245
 }
 
-fn test_append_explore_settings_to_file() {
+fn test_append_explore_cross_settings_to_file() {
 	mut opts := Options{
 		number_of_attributes: [1, 4]
 		bins:                 [2, 7]
@@ -54,11 +54,35 @@ fn test_append_explore_settings_to_file() {
 	mut ds := load_file(opts.datafile_path)
 	// opts.show_flag = true
 	explore(ds, opts)
+	display_file(opts.settingsfile_path)
 	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 9832
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 9823
 
 	// now add another explore
 	opts.uniform_bins = false
 	explore(ds, opts)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 17422
+	display_file(opts.settingsfile_path)
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 17406
+}
+
+fn test_append_explore_verify_settings_to_file() {
+	mut opts := Options{
+		datafile_path:        'datasets/bcw350train'
+		testfile_path:        'datasets/bcw174test'
+		settingsfile_path:    'tempfolder_save_settings/bcw.opts'
+		command:              'explore'
+		append_settings_flag: true
+	}
+	mut ds := load_file(opts.datafile_path)
+	opts.show_flag = true
+	explore(ds, opts)
+	display_file(opts.settingsfile_path)
+	// assert os.is_file(opts.settingsfile_path.trim_space())
+	// assert os.file_size(opts.settingsfile_path.trim_space()) == 9832
+
+	// now add another explore
+	opts.weight_ranking_flag = true
+	explore(ds, opts)
+	display_file(opts.settingsfile_path)
+	// assert os.file_size(opts.settingsfile_path.trim_space()) == 17422
 }

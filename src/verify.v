@@ -19,6 +19,7 @@ import runtime
 // outputfile_path: saves the result as a json file
 // ```
 pub fn verify(opts Options) CrossVerifyResult {
+	mut ds := load_file(opts.datafile_path)
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]StringFloatMap{}
@@ -29,6 +30,10 @@ pub fn verify(opts Options) CrossVerifyResult {
 		}
 	}
 	// instantiate a struct for the result
+	mut inferences_map := map[string]int{}
+	for key, _ in ds.class_counts {
+		inferences_map[key] = 0
+	}
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
 		Parameters:                          opts.Parameters
@@ -43,9 +48,16 @@ pub fn verify(opts Options) CrossVerifyResult {
 		classes:                             test_ds.classes
 		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
 		confusion_matrix_map:                confusion_matrix_map
+		correct_inferences:                  inferences_map.clone()
+		incorrect_inferences:                inferences_map.clone()
+		wrong_inferences:                    inferences_map.clone()
+		true_positives:                      inferences_map.clone()
+		true_negatives:                      inferences_map.clone()
+		false_positives:                     inferences_map.clone()
+		false_negatives:                     inferences_map.clone()
 	}
 	verify_result.binning = get_binning(opts.bins)
-	mut ds := load_file(opts.datafile_path)
+	// mut ds := load_file(opts.datafile_path)
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
 		cl = make_classifier(ds, opts)
@@ -74,7 +86,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 		}
 		for i, _ in case {
 			classify_result = <-result_channel
-			// println(classify_result)
 			if opts.verbose_flag {
 				verbose_result(i, cl, classify_result)
 			}
@@ -150,6 +161,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	if verify_result.pos_neg_classes.len == 2 {
 		verify_result.BinaryMetrics = get_binary_stats(verify_result)
 	}
+	assert verify_result.correct_counts.len == verify_result.classes.len
 
 	// verify_result.command = 'verify'
 	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
