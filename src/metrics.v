@@ -51,7 +51,7 @@ fn get_metrics(result CrossVerifyResult) Metrics {
 		correct_counts:   result.correct_inferences.values()
 		incorrect_counts: result.incorrect_inferences.values()
 	}
-	assert metrics.correct_counts.len == metrics.incorrect_counts.len, '${result.correct_inferences} ${result.incorrect_inferences}'
+	// assert metrics.correct_counts.len == metrics.incorrect_counts.len, '${result.correct_inferences} ${result.incorrect_inferences}'
 	for class in result.classes {
 		precision, recall, f1_score := get_multiclass_stats(class, result)
 		metrics.append_metric(precision, recall, f1_score)

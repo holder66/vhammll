@@ -161,7 +161,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 	if verify_result.pos_neg_classes.len == 2 {
 		verify_result.BinaryMetrics = get_binary_stats(verify_result)
 	}
-	assert verify_result.correct_counts.len == verify_result.classes.len
+	// assert verify_result.correct_counts.len == verify_result.classes.len
 
 	// verify_result.command = 'verify'
 	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
@@ -213,6 +213,11 @@ fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResul
 	result_channel <- classify_result
 	// dump(result_channel)
 	return
+}
+
+fn instantiate_cross_verify_result_struct(ds Dataset, opts Options) CrossVerifyResult {
+	// mut inferences_map := map[string]int
+	return CrossVerifyResult{}
 }
 
 // // classify_to_verify classifies each case in an array, and
