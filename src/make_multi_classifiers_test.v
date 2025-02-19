@@ -5,14 +5,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_make_multi_classifiers') {
-		os.rmdir_all('tempfolder_make_multi_classifiers')!
+	if os.is_dir('tempfolders/tempfolder_make_multi_classifiers') {
+		os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 	}
-	os.mkdir_all('tempfolder_make_multi_classifiers')!
+	os.mkdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_make_multi_classifiers')!
+	os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 }
 
 fn test_make_multi_classifiers() {
@@ -26,7 +26,7 @@ fn test_make_multi_classifiers() {
 	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolder_make_multi_classifiers/leuk.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_make_multi_classifiers/leuk.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]

@@ -6,14 +6,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_multi_cross') {
-		os.rmdir_all('tempfolder_multi_cross')!
+	if os.is_dir('tempfolders/tempfolder_multi_cross') {
+		os.rmdir_all('tempfolders/tempfolder_multi_cross')!
 	}
-	os.mkdir_all('tempfolder_multi_cross')!
+	os.mkdir_all('tempfolders/tempfolder_multi_cross')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_multi_cross')!
+	os.rmdir_all('tempfolders/tempfolder_multi_cross')!
 }
 
 fn test_multiple_crossvalidate() ? {
@@ -29,7 +29,7 @@ fn test_multiple_crossvalidate() ? {
 	mut result := CrossVerifyResult{}
 	// create an .opts file with settings for multiple classifiers
 	opts.datafile_path = 'datasets/developer.tab'
-	opts.settingsfile_path = 'tempfolder_multi_cross/3_class.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_multi_cross/3_class.opts'
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
@@ -104,7 +104,7 @@ fn test_multiple_crossvalidate() ? {
 fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/2_class_developer.tab'
-		settingsfile_path:    'tempfolder_multi_cross/2_class_big.opts'
+		settingsfile_path:    'tempfolders/tempfolder_multi_cross/2_class_big.opts'
 		append_settings_flag: true
 		command:              'explore'
 		concurrency_flag:     true
@@ -206,7 +206,7 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/breast-cancer-wisconsin-disc.tab'
-		settingsfile_path:    'tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
+		settingsfile_path:    'tempfolders/tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
 		append_settings_flag: true
 		command:              'explore'
 		concurrency_flag:     true
@@ -290,7 +290,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 fn test_multiple_crossvalidate_mixed_attributes() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/anneal.tab'
-		settingsfile_path:    'tempfolder_multi_cross/anneal.opts'
+		settingsfile_path:    'tempfolders/tempfolder_multi_cross/anneal.opts'
 		append_settings_flag: true
 		command:              'explore'
 		concurrency_flag:     true

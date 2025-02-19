@@ -6,14 +6,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_oxford') {
-		os.rmdir_all('tempfolder_oxford')!
+	if os.is_dir('tempfolders/tempfolder_oxford') {
+		os.rmdir_all('tempfolders/tempfolder_oxford')!
 	}
-	os.mkdir_all('tempfolder_oxford')!
+	os.mkdir_all('tempfolders/tempfolder_oxford')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_oxford')!
+	os.rmdir_all('tempfolders/tempfolder_oxford')!
 }
 
 fn test_note_re_datafile_locations() {
@@ -37,7 +37,7 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 		balance_prevalences_flag: true
 		append_settings_flag:     true
 
-		settingsfile_path: 'tempfolder_oxford/oxford_settings.opts'
+		settingsfile_path: 'tempfolders/tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		expanded_flag: true
 	}
@@ -114,7 +114,7 @@ fn test_oxford_multi_crossvalidate() {
 	mut opts := Options{
 		command:                             'cross'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'train.tab')
-		multiple_classify_options_file_path: 'tempfolder_oxford/oxford_settings.opts'
+		multiple_classify_options_file_path: 'tempfolders/tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		multiple_flag:        true
 		expanded_flag:        true
@@ -198,7 +198,7 @@ fn test_oxford_multi_verify() {
 		command:                             'verify'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'train.tab')
 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'test.tab')
-		multiple_classify_options_file_path: 'tempfolder_oxford/oxford_settings.opts'
+		multiple_classify_options_file_path: 'tempfolders/tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		multiple_flag:        true
 		classifier_indices:   []

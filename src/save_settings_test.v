@@ -5,14 +5,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_save_settings') {
-		os.rmdir_all('tempfolder_save_settings')!
+	if os.is_dir('tempfolders/tempfolder_save_settings') {
+		os.rmdir_all('tempfolders/tempfolder_save_settings')!
 	}
-	os.mkdir_all('tempfolder_save_settings')!
+	os.mkdir_all('tempfolders/tempfolder_save_settings')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_save_settings')!
+	os.rmdir_all('tempfolders/tempfolder_save_settings')!
 }
 
 fn test_append_cross_verify_settings_to_file() {
@@ -22,7 +22,7 @@ fn test_append_cross_verify_settings_to_file() {
 		concurrency_flag:     true
 		uniform_bins:         true
 		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:    'tempfolder_save_settings/iris.opts'
+		settingsfile_path:    'tempfolders/tempfolder_save_settings/iris.opts'
 		command:              'cross'
 		append_settings_flag: true
 	}
@@ -47,7 +47,7 @@ fn test_append_explore_cross_settings_to_file() {
 		concurrency_flag:     true
 		uniform_bins:         true
 		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:    'tempfolder_save_settings/iris.opts'
+		settingsfile_path:    'tempfolders/tempfolder_save_settings/iris.opts'
 		command:              'explore'
 		append_settings_flag: true
 	}
@@ -69,7 +69,7 @@ fn test_append_explore_verify_settings_to_file() {
 	mut opts := Options{
 		datafile_path:        'datasets/bcw350train'
 		testfile_path:        'datasets/bcw174test'
-		settingsfile_path:    'tempfolder_save_settings/bcw.opts'
+		settingsfile_path:    'tempfolders/tempfolder_save_settings/bcw.opts'
 		command:              'explore'
 		append_settings_flag: true
 	}

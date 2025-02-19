@@ -6,14 +6,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_show_attr') {
-		os.rmdir_all('tempfolder_show_attr')!
+	if os.is_dir('tempfolders/tempfolder_show_attr') {
+		os.rmdir_all('tempfolders/tempfolder_show_attr')!
 	}
-	os.mkdir_all('tempfolder_show_attr')!
+	os.mkdir_all('tempfolders/tempfolder_show_attr')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_show_attr')!
+	os.rmdir_all('tempfolders/tempfolder_show_attr')!
 }
 
 // fn test_show_attributes_in_make_classifier() {
@@ -50,7 +50,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolder_show_attr/leuk.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_show_attr/leuk.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]

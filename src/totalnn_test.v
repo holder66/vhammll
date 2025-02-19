@@ -8,14 +8,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_totalnn') {
-		os.rmdir_all('tempfolder_totalnn')!
+	if os.is_dir('tempfolders/tempfolder_totalnn') {
+		os.rmdir_all('tempfolders/tempfolder_totalnn')!
 	}
-	os.mkdir_all('tempfolder_totalnn')!
+	os.mkdir_all('tempfolders/tempfolder_totalnn')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_totalnn')!
+	os.rmdir_all('tempfolders/tempfolder_totalnn')!
 }
 
 fn test_multiple_classifier_crossvalidate_totalnn() {
@@ -30,7 +30,7 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	mut result := CrossVerifyResult{}
 
 	opts.datafile_path = 'datasets/2_class_developer.tab'
-	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/2_class.opts'
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path)
@@ -91,7 +91,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolder_totalnn/leuk.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/leuk.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]
@@ -172,7 +172,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	mut result := CrossVerifyResult{}
 
 // 	opts.datafile_path = 'datasets/2_class_developer.tab'
-// 	opts.settingsfile_path = 'tempfolder_totalnn/2_class.opts'
+// 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/2_class.opts'
 // 	opts.append_settings_flag = true
 // 	opts.weight_ranking_flag = true
 // 	mut er := explore(load_file(opts.datafile_path), opts)
@@ -213,7 +213,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 // 	mut opts := Options{
 // 		datafile_path: 'datasets/breast-cancer-wisconsin-disc.tab'
-// 		settingsfile_path: 'tempfolder_totalnn/breast-cancer-wisconsin-disc.opts'
+// 		settingsfile_path: 'tempfolders/tempfolder_totalnn/breast-cancer-wisconsin-disc.opts'
 // 		append_settings_flag: true
 // 		total_nn_counts_flag: true
 // 		command: 'explore'
@@ -384,12 +384,12 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // println('Done with leukemia')
 
 // // now with a saved classifier
-// opts.outputfile_path = 'tempfolder_totalnn/classifierfile'
+// opts.outputfile_path = 'tempfolders/tempfolder_totalnn/classifierfile'
 // cl = Classifier{}
 // result = CrossVerifyResult{}
 // cl = make_classifier(mut ds, opts)
 // cl = Classifier{}
-// result = verify(load_classifier_file('tempfolder_totalnn/classifierfile')?, opts)?
+// result = verify(load_classifier_file('tempfolders/tempfolder_totalnn/classifierfile')?, opts)?
 // assert result.correct_count == 171
 // assert result.wrong_count == 3
 
@@ -410,12 +410,12 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // println('Done with soybean-large-train.tab')
 
 // // now with a saved classifier
-// opts.outputfile_path = 'tempfolder_totalnn/classifierfile'
+// opts.outputfile_path = 'tempfolders/tempfolder_totalnn/classifierfile'
 // cl = Classifier{}
 // result = CrossVerifyResult{}
 // cl = make_classifier(mut ds, opts)
 // cl = Classifier{}
-// result = verify(load_classifier_file('tempfolder_totalnn/classifierfile')?, opts)?
+// result = verify(load_classifier_file('tempfolders/tempfolder_totalnn/classifierfile')?, opts)?
 // assert result.correct_count == 340
 // assert result.wrong_count == 36
 
@@ -439,12 +439,12 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	println('Done with mnist_test.tab')
 
 // 	// now with a saved classifier
-// 	opts.outputfile_path = 'tempfolder_totalnn/classifierfile'
+// 	opts.outputfile_path = 'tempfolders/tempfolder_totalnn/classifierfile'
 // 	cl = Classifier{}
 // 	result = CrossVerifyResult{}
 // 	cl = make_classifier(mut ds, opts)
 // 	cl = Classifier{}
-// 	result = verify(load_classifier_file('tempfolder_totalnn/classifierfile')?, opts)?
+// 	result = verify(load_classifier_file('tempfolders/tempfolder_totalnn/classifierfile')?, opts)?
 // 	assert result.correct_count == 9982
 // 	assert result.wrong_count == 18
 
@@ -458,7 +458,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	result = CrossVerifyResult{}
 // 	opts.datafile_path = '../../mnist_train.tab'
 // 	opts.testfile_path = ''
-// 	opts.outputfile_path = 'tempfolder_totalnn/classifierfile'
+// 	opts.outputfile_path = 'tempfolders/tempfolder_totalnn/classifierfile'
 // 	opts.number_of_attributes = [313]
 // 	opts.bins = [2, 2]
 // 	opts.concurrency_flag = true
@@ -466,7 +466,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	ds = load_file(opts.datafile_path)
 // 	cl = make_classifier(mut ds, opts)
 // 	opts.testfile_path = 'datasets/mnist_test.tab'
-// 	result = verify(load_classifier_file('tempfolder_totalnn/classifierfile') ?, opts)
+// 	result = verify(load_classifier_file('tempfolders/tempfolder_totalnn/classifierfile') ?, opts)
 // 	assert result.correct_count == 9566
 // 	assert result.wrong_count == 434
 

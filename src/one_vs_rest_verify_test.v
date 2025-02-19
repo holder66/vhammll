@@ -8,14 +8,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_one_vs_rest_verify') {
-		os.rmdir_all('tempfolder_one_vs_rest_verify')!
+	if os.is_dir('tempfolders/tempfolder_one_vs_rest_verify') {
+		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
 	}
-	os.mkdir_all('tempfolder_one_vs_rest_verify')!
+	os.mkdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_one_vs_rest_verify')!
+	os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
 }
 
 // test_one_vs_rest_verify
@@ -33,7 +33,7 @@ fn test_one_vs_rest_verify() ? {
 
 	opts.datafile_path = 'datasets/onevsrest_train.tab'
 	opts.testfile_path = 'datasets/onevsrest_test.tab'
-	opts.settingsfile_path = 'tempfolder_one_vs_rest_verify/onevsrest.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_one_vs_rest_verify/onevsrest.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [0]
 	opts.bins = [5, 5]

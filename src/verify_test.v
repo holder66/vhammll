@@ -4,14 +4,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ! {
-	if os.is_dir('tempfolder_verify') {
-		os.rmdir_all('tempfolder_verify')!
+	if os.is_dir('tempfolders/tempfolder_verify') {
+		os.rmdir_all('tempfolders/tempfolder_verify')!
 	}
-	os.mkdir_all('tempfolder_verify')!
+	os.mkdir_all('tempfolders/tempfolder_verify')!
 }
 
 fn testsuite_end() ! {
-	os.rmdir_all('tempfolder_verify')!
+	os.rmdir_all('tempfolders/tempfolder_verify')!
 }
 
 // test_verify
@@ -71,7 +71,7 @@ fn test_verify() ? {
 	println('Done with bcw350train')
 
 	// now with a saved classifier
-	opts.outputfile_path = 'tempfolder_verify/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
 	cl = make_classifier(load_file(opts.datafile_path), opts)
 	opts.classifierfile_path = opts.outputfile_path
 	opts.outputfile_path = ''
@@ -94,7 +94,7 @@ fn test_verify() ? {
 	println('Done with soybean-large-train.tab')
 
 	// now with a saved classifier
-	opts.outputfile_path = 'tempfolder_verify/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
 	cl = make_classifier(load_file(opts.datafile_path), opts)
 	opts.classifierfile_path = opts.outputfile_path
 	opts.outputfile_path = ''
@@ -118,7 +118,7 @@ fn test_verify() ? {
 		println('Done with mnist_test.tab')
 
 		// now with a saved classifier
-		opts.outputfile_path = 'tempfolder_verify/classifierfile'
+		opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
 		cl = make_classifier(load_file(opts.datafile_path), opts)
 		opts.classifierfile_path = opts.outputfile_path
 		opts.outputfile_path = ''

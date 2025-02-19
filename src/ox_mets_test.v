@@ -6,14 +6,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_ox_mets') {
-		os.rmdir_all('tempfolder_ox_mets')!
+	if os.is_dir('tempfolders/tempfolder_ox_mets') {
+		os.rmdir_all('tempfolders/tempfolder_ox_mets')!
 	}
-	os.mkdir_all('tempfolder_ox_mets')!
+	os.mkdir_all('tempfolders/tempfolder_ox_mets')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_ox_mets')!
+	os.rmdir_all('tempfolders/tempfolder_ox_mets')!
 }
 
 fn test_explore_ox_mets_to_create_settings_file() {
@@ -26,7 +26,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		bins:                 [2, 15]
 		append_settings_flag: true
 
-		settingsfile_path: 'tempfolder_ox_mets/ox_mets_settings.opts'
+		settingsfile_path: 'tempfolders/tempfolder_ox_mets/ox_mets_settings.opts'
 		expanded_flag:     true
 	}
 	ds := load_file(opts.datafile_path)

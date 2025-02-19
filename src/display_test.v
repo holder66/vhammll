@@ -5,14 +5,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ! {
-	if os.is_dir('tempfolder_display') {
-		os.rmdir_all('tempfolder_display')!
+	if os.is_dir('tempfolders/tempfolder_display') {
+		os.rmdir_all('tempfolders/tempfolder_display')!
 	}
-	os.mkdir_all('tempfolder_display')!
+	os.mkdir_all('tempfolders/tempfolder_display')!
 }
 
 fn testsuite_end() ! {
-	os.rmdir_all('tempfolder_display')!
+	os.rmdir_all('tempfolders/tempfolder_display')!
 }
 
 fn test_display_multiple_options() ? {
@@ -44,15 +44,15 @@ fn test_display_multiple_options() ? {
 		}
 		datafile_path: datafile_path
 	}
-	append_json_file[ClassifierSettings](settings1, 'tempfolder_display/bcw.opts')
-	assert os.file_size('tempfolder_display/bcw.opts') >= 416
-	display_file('tempfolder_display/bcw.opts', opts)
-	append_json_file[ClassifierSettings](settings2, 'tempfolder_display/bcw.opts')
-	assert os.file_size('tempfolder_display/bcw.opts') >= 832
-	display_file('tempfolder_display/bcw.opts', opts)
+	append_json_file[ClassifierSettings](settings1, 'tempfolders/tempfolder_display/bcw.opts')
+	assert os.file_size('tempfolders/tempfolder_display/bcw.opts') >= 416
+	display_file('tempfolders/tempfolder_display/bcw.opts', opts)
+	append_json_file[ClassifierSettings](settings2, 'tempfolders/tempfolder_display/bcw.opts')
+	assert os.file_size('tempfolders/tempfolder_display/bcw.opts') >= 832
+	display_file('tempfolders/tempfolder_display/bcw.opts', opts)
 	// repeat with displaying trained attributes
 	opts.show_attributes_flag = true
-	display_file('tempfolder_display/bcw.opts', opts)
+	display_file('tempfolders/tempfolder_display/bcw.opts', opts)
 }
 
 fn test_display_saved_classifier() ? {
@@ -63,7 +63,7 @@ fn test_display_saved_classifier() ? {
 		number_of_attributes: [8]
 		show_flag:            true
 	}
-	opts.outputfile_path = 'tempfolder_display/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_display/classifierfile'
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(ds, opts)
 	display_file(opts.outputfile_path, opts)
@@ -73,7 +73,7 @@ fn test_display_saved_analyze_result() ? {
 	// analyze a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
 		command:         'analyze'
-		outputfile_path: 'tempfolder_display/analyze_result'
+		outputfile_path: 'tempfolders/tempfolder_display/analyze_result'
 		show_flag:       true
 	}
 	_ = analyze_dataset(load_file('datasets/UCI/anneal.arff'), opts)
@@ -84,7 +84,7 @@ fn test_display_saved_ranking_result() ? {
 	// rank a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
 		command:         'rank'
-		outputfile_path: 'tempfolder_display/rank_result'
+		outputfile_path: 'tempfolders/tempfolder_display/rank_result'
 		show_flag:       true
 	}
 	_ = rank_attributes(load_file('datasets/UCI/anneal.arff'), opts)
@@ -100,7 +100,7 @@ fn test_display_saved_validate_result() ? {
 	opts.datafile_path = 'datasets/bcw350train'
 	mut ds := load_file(opts.datafile_path)
 	cl := make_classifier(ds, opts)
-	opts.outputfile_path = 'tempfolder_display/validate_result'
+	opts.outputfile_path = 'tempfolders/tempfolder_display/validate_result'
 	opts.testfile_path = 'datasets/bcw174validate'
 	_ = validate(cl, opts)!
 	display_file(opts.outputfile_path, opts)
@@ -114,7 +114,7 @@ fn test_display_saved_verify_result() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/bcw350train'
 		testfile_path:        'datasets/bcw174test'
-		outputfile_path:      'tempfolder_display/verify_result'
+		outputfile_path:      'tempfolders/tempfolder_display/verify_result'
 		command:              'verify'
 		number_of_attributes: [5]
 		concurrency_flag:     false
@@ -163,7 +163,7 @@ fn test_display_cross_result() ? {
 		show_flag:            true
 	}
 	ds := load_file('datasets/UCI/segment.arff')
-	opts.outputfile_path = 'tempfolder_display/cross_result'
+	opts.outputfile_path = 'tempfolders/tempfolder_display/cross_result'
 	cross_validate(ds, opts)
 	opts.expanded_flag = true
 	cross_validate(ds, opts)
@@ -186,7 +186,7 @@ fn test_display_explore_result_cross() ? {
 		bins:                 [2, 3]
 		number_of_attributes: [2, 3]
 		concurrency_flag:     true
-		outputfile_path:      'tempfolder_display/explore_result'
+		outputfile_path:      'tempfolders/tempfolder_display/explore_result'
 		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)
@@ -242,7 +242,7 @@ fn test_display_explore_result_verify() ? {
 		bins:                 [2, 6]
 		number_of_attributes: [12, 15]
 		concurrency_flag:     true
-		outputfile_path:      'tempfolder_display/explore_result'
+		outputfile_path:      'tempfolders/tempfolder_display/explore_result'
 		show_flag:            true
 	}
 	mut ds := load_file(opts.datafile_path)

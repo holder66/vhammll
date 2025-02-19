@@ -4,14 +4,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ! {
-	if os.is_dir('tempfolder_load_file') {
-		os.rmdir_all('tempfolder_load_file')!
+	if os.is_dir('tempfolders/tempfolder_load_file') {
+		os.rmdir_all('tempfolders/tempfolder_load_file')!
 	}
-	os.mkdir_all('tempfolder_load_file')!
+	os.mkdir_all('tempfolders/tempfolder_load_file')!
 }
 
 fn testsuite_end() ! {
-	os.rmdir_all('tempfolder_load_file')!
+	os.rmdir_all('tempfolders/tempfolder_load_file')!
 }
 
 fn test_file_type() {

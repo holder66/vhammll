@@ -8,14 +8,14 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_multiple_verify') {
-		os.rmdir_all('tempfolder_multiple_verify')!
+	if os.is_dir('tempfolders/tempfolder_multiple_verify') {
+		os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
 	}
-	os.mkdir_all('tempfolder_multiple_verify')!
+	os.mkdir_all('tempfolders/tempfolder_multiple_verify')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_multiple_verify')!
+	os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
 }
 
 fn test_multiple_verify() ? {
@@ -31,7 +31,7 @@ fn test_multiple_verify() ? {
 
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolder_multiple_verify/leuk.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_multiple_verify/leuk.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]
@@ -176,7 +176,7 @@ fn test_multiple_verify_with_multiple_classes() ? {
 
 	opts.datafile_path = 'datasets/onevsrest_train.tab'
 	opts.testfile_path = 'datasets/onevsrest_test.tab'
-	opts.settingsfile_path = 'tempfolder_multiple_verify/onevsrest.opts'
+	opts.settingsfile_path = 'tempfolders/tempfolder_multiple_verify/onevsrest.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]

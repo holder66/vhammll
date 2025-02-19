@@ -5,14 +5,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolder_json') {
-		os.rmdir_all('tempfolder_json')!
+	if os.is_dir('tempfolders/tempfolder_json') {
+		os.rmdir_all('tempfolders/tempfolder_json')!
 	}
-	os.mkdir_all('tempfolder_json')!
+	os.mkdir_all('tempfolders/tempfolder_json')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolder_json')!
+	os.rmdir_all('tempfolders/tempfolder_json')!
 }
 
 fn test_load_classifier_file() ! {
@@ -20,14 +20,14 @@ fn test_load_classifier_file() ! {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 	mut opts := Options{
-		outputfile_path: 'tempfolder_json/classifierfile'
+		outputfile_path: 'tempfolders/tempfolder_json/classifierfile'
 		command:         'make' // the make command is necessary to create a proper file
 	}
 	opts.bins = [2, 4]
 	opts.number_of_attributes = [4]
 	ds = load_file('datasets/developer.tab')
 	cl = make_classifier(ds, opts)
-	tcl = load_classifier_file('tempfolder_json/classifierfile')!
+	tcl = load_classifier_file('tempfolders/tempfolder_json/classifierfile')!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
 	assert cl.attribute_ordering == tcl.attribute_ordering
@@ -41,7 +41,7 @@ fn test_load_classifier_file() ! {
 	opts.number_of_attributes = [2]
 	ds = load_file('datasets/iris.tab')
 	cl = make_classifier(ds, opts)
-	tcl = load_classifier_file('tempfolder_json/classifierfile')!
+	tcl = load_classifier_file('tempfolders/tempfolder_json/classifierfile')!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
 	assert cl.attribute_ordering == tcl.attribute_ordering
@@ -56,13 +56,13 @@ fn test_load_instances_file() ! {
 	mut vr := ValidateResult{}
 	mut tvr := ValidateResult{}
 	mut opts := Options{
-		outputfile_path: 'tempfolder_json/validate_result.json'
+		outputfile_path: 'tempfolders/tempfolder_json/validate_result.json'
 	}
 	opts.testfile_path = 'datasets/test_validate.tab'
 	ds = load_file('datasets/test.tab')
 	cl = make_classifier(ds, opts)
 	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder_json/validate_result.json')!
+	tvr = load_instances_file('tempfolders/tempfolder_json/validate_result.json')!
 	// dump(vr)
 	// dump(tvr)
 	assert vr.Class == tvr.Class
@@ -73,7 +73,7 @@ fn test_load_instances_file() ! {
 	ds = load_file('datasets/soybean-large-train.tab')
 	cl = make_classifier(ds, opts)
 	vr = validate(cl, opts)!
-	tvr = load_instances_file('tempfolder_json/validate_result.json')!
+	tvr = load_instances_file('tempfolders/tempfolder_json/validate_result.json')!
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
 	assert vr.counts == tvr.counts
@@ -91,8 +91,8 @@ fn test_append() ? {
 		Metrics:       result.Metrics
 		datafile_path: opts.datafile_path
 	}
-	append_json_file(c_s, 'tempfolder_json/append_file.opts')
-	saved := read_multiple_opts('tempfolder_json/append_file.opts')!
+	append_json_file(c_s, 'tempfolders/tempfolder_json/append_file.opts')
+	saved := read_multiple_opts('tempfolders/tempfolder_json/append_file.opts')!
 	assert saved[0].correct_counts == c_s.correct_counts
 	opts.number_of_attributes = [3]
 	opts.weighting_flag = true
@@ -103,8 +103,8 @@ fn test_append() ? {
 		Metrics:       result2.Metrics
 		datafile_path: opts.datafile_path
 	}
-	append_json_file(c_s2, 'tempfolder_json/append_file.opts')
-	saved2 := read_multiple_opts('tempfolder_json/append_file.opts')!
+	append_json_file(c_s2, 'tempfolders/tempfolder_json/append_file.opts')
+	saved2 := read_multiple_opts('tempfolders/tempfolder_json/append_file.opts')!
 	assert saved2[0].correct_counts == c_s.correct_counts
 	assert saved2[1].correct_counts == c_s2.correct_counts
 	assert saved2[0].datafile_path == opts.datafile_path

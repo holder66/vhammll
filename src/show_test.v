@@ -4,14 +4,14 @@ module vhammll
 import os
 
 fn testsuite_begin() ! {
-	if os.is_dir('tempfolder_show') {
-		os.rmdir_all('tempfolder_show')!
+	if os.is_dir('tempfolders/tempfolder_show') {
+		os.rmdir_all('tempfolders/tempfolder_show')!
 	}
-	os.mkdir_all('tempfolder_show')!
+	os.mkdir_all('tempfolders/tempfolder_show')!
 }
 
 fn testsuite_end() ! {
-	os.rmdir_all('tempfolder_show')!
+	os.rmdir_all('tempfolders/tempfolder_show')!
 }
 
 // test_show_analyze has no asserts; the console output needs
@@ -52,42 +52,42 @@ fn test_show_append() ? {
 	mut val_results := ValidateResult{}
 	// create the classifier file and save it
 	opts.command = 'make'
-	opts.outputfile_path = 'tempfolder_show/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
 	mut ds := load_file('datasets/test.tab')
 	cl = make_classifier(ds, opts)
 	// do a validation and save the result
-	opts.outputfile_path = 'tempfolder_show/instancesfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/test_validate.tab'
 	val_results = validate(cl, opts)!
 	// now do the append, first from val_results, and
 	// saving the extended classifier
-	opts.outputfile_path = 'tempfolder_show/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
 	opts.command = 'append'
 	tcl = append_instances(cl, val_results, opts)
 
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
-	tcl = append_instances(load_classifier_file('tempfolder_show/classifierfile')!, load_instances_file('tempfolder_show/instancesfile')!,
+	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!, load_instances_file('tempfolders/tempfolder_show/instancesfile')!,
 		opts)
 
 	// repeat with soybean
 	opts.command = 'make'
-	opts.outputfile_path = 'tempfolder_show/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
 	ds = load_file('datasets/soybean-large-train.tab')
 	cl = make_classifier(ds, opts)
 	// do a validation and save the result
-	opts.outputfile_path = 'tempfolder_show/instancesfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/soybean-large-validate.tab'
 	val_results = validate(cl, opts)!
 	// now do the append, first from val_results, and
 	// saving the extended classifier
-	opts.outputfile_path = 'tempfolder_show/classifierfile'
+	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
 	opts.command = 'append'
 	tcl = append_instances(cl, val_results, opts)
 
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
-	tcl = append_instances(load_classifier_file('tempfolder_show/classifierfile')!, load_instances_file('tempfolder_show/instancesfile')!,
+	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!, load_instances_file('tempfolders/tempfolder_show/instancesfile')!,
 		opts)
 }
 
@@ -270,7 +270,7 @@ fn test_show_multiple_classifier_settings_options() ? {
 	mut opts := Options{
 		datafile_path:     'datasets/UCI/leukemia38train'
 		testfile_path:     'datasets/UCI/leukemia34test'
-		settingsfile_path: 'tempfolder_show/leuk.opts'
+		settingsfile_path: 'tempfolders/tempfolder_show/leuk.opts'
 	}
 	mut result := CrossVerifyResult{}
 	mut ds := Dataset{}

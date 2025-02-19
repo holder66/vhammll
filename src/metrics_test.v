@@ -6,14 +6,14 @@ module vhammll
 import math
 
 // fn testsuite_begin() ! {
-// 	if os.is_dir('tempfolder_metrics') {
-// 		os.rmdir_all('tempfolder_metrics')!
+// 	if os.is_dir('tempfolders/tempfolder_metrics') {
+// 		os.rmdir_all('tempfolders/tempfolder_metrics')!
 // 	}
-// 	os.mkdir_all('tempfolder_metrics')!
+// 	os.mkdir_all('tempfolders/tempfolder_metrics')!
 // }
 
 // fn testsuite_end() ! {
-// 	os.rmdir_all('tempfolder_metrics')!
+// 	os.rmdir_all('tempfolders/tempfolder_metrics')!
 // }
 
 fn test_wt_avg() ? {

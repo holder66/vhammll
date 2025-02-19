@@ -18,10 +18,10 @@ fn testsuite_begin() ? {
 	f.close()
 
 	os.execute_or_panic('v -keepc run temp.v')
-	if os.is_dir('tempfolder_cli') {
-		os.rmdir_all('tempfolder_cli')!
+	if os.is_dir('tempfolders/tempfolder_cli') {
+		os.rmdir_all('tempfolders/tempfolder_cli')!
 	}
-	os.mkdir_all('tempfolder_cli')!
+	os.mkdir_all('tempfolders/tempfolder_cli')!
 }
 
 fn testsuite_end() ? {
@@ -31,14 +31,14 @@ fn testsuite_end() ? {
 	if os.exists('temp.v') {
 		os.rm('temp.v')!
 	}
-	os.rmdir_all('tempfolder_cli')!
+	os.rmdir_all('tempfolders/tempfolder_cli')!
 }
 
 fn test_explore() {
 	println(os.execute_or_panic('./temp explore --help'))
 	println(os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab'))
 	println(os.execute_or_panic('./temp explore -g -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
-	println(os.execute_or_panic('./temp explore -g -e -c -o tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
+	println(os.execute_or_panic('./temp explore -g -e -c -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
 	println(os.execute_or_panic('./temp cross -c -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
 }
 
@@ -46,8 +46,8 @@ fn test_verify() {
 	println(os.execute_or_panic('./temp verify -h'))
 	println(os.execute_or_panic('./temp verify -c -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train'))
 	// save a classifier to a file
-	println(os.execute_or_panic('./temp make -a 33 -b 2,16 -w -o tempfolder_cli/soybean.cl vhammll/datasets/soybean-large-train.tab'))
-	println(os.execute_or_panic('./temp verify -c -w -s -k tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab'))
+	println(os.execute_or_panic('./temp make -a 33 -b 2,16 -w -o tempfolders/tempfolder_cli/soybean.cl vhammll/datasets/soybean-large-train.tab'))
+	println(os.execute_or_panic('./temp verify -c -w -s -k tempfolders/tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab'))
 }
 
 fn test_analyze() {
@@ -60,7 +60,7 @@ fn test_analyze() {
 fn test_make() {
 	println(os.execute_or_panic('./temp make'))
 	println(os.execute_or_panic('./temp make -a 7 -b 3,7 vhammll/datasets/developer.tab'))
-	println(os.execute_or_panic('./temp make -a 7 -b 3,7 -x -e -o tempfolder_cli/dev.cl vhammll/datasets/developer.tab'))
+	println(os.execute_or_panic('./temp make -a 7 -b 3,7 -x -e -o tempfolders/tempfolder_cli/dev.cl vhammll/datasets/developer.tab'))
 }
 
 fn test_cross() {
@@ -74,11 +74,11 @@ fn test_cross() {
 
 fn test_append() ? {
 	// make a classifier
-	println(os.execute_or_panic('./temp make -a 4 -o tempfolder_cli/bcw.cl vhammll/datasets/bcw350train'))
+	println(os.execute_or_panic('./temp make -a 4 -o tempfolders/tempfolder_cli/bcw.cl vhammll/datasets/bcw350train'))
 	// make an instances file by doing a validation
-	println(os.execute_or_panic('./temp validate -k tempfolder_cli/bcw.cl -o tempfolder_cli/bcw.inst -t vhammll/datasets/bcw174test'))
+	println(os.execute_or_panic('./temp validate -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw.inst -t vhammll/datasets/bcw174test'))
 	// use the instances file to append to the saved classifier
-	println(os.execute_or_panic('./temp append -k tempfolder_cli/bcw.cl -o tempfolder_cli/bcw-ext.cl tempfolder_cli/bcw.inst'))
+	println(os.execute_or_panic('./temp append -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw-ext.cl tempfolders/tempfolder_cli/bcw.inst'))
 }
 
 fn test_rank_attributes() {
@@ -100,10 +100,10 @@ fn test_rank_attributes() {
 }
 
 fn test_display() {
-	println(os.execute_or_panic('./temp cross -c -b 2,4 -a 4 -o tempfolder_cli/cross_result.txt vhammll/datasets/developer.tab'))
-	println(os.execute_or_panic('./temp display -e tempfolder_cli/cross_result.txt'))
-	println(os.execute_or_panic('./temp rank -o tempfolder_cli/rank_result.txt vhammll/datasets/UCI/segment.arff'))
-	// println(os.execute_or_panic('./temp display -g tempfolder_cli/rank_result.txt'))
+	println(os.execute_or_panic('./temp cross -c -b 2,4 -a 4 -o tempfolders/tempfolder_cli/cross_result.txt vhammll/datasets/developer.tab'))
+	println(os.execute_or_panic('./temp display -e tempfolders/tempfolder_cli/cross_result.txt'))
+	println(os.execute_or_panic('./temp rank -o tempfolders/tempfolder_cli/rank_result.txt vhammll/datasets/UCI/segment.arff'))
+	// println(os.execute_or_panic('./temp display -g tempfolders/tempfolder_cli/rank_result.txt'))
 }
 
 fn test_purge_for_missing_class_values() {
