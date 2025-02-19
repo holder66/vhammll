@@ -63,7 +63,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 			nearest_neighbors_by_class = []i64{len: cl.class_counts.len, init: 0}
 			nearest_neighbors_by_class_unweighted = []i64{len: cl.class_counts.len, init: 0}
 			for class_index in 0 .. cl.classes.len {
-				classes_weighting := int(i64(lcm(get_map_values(cl.class_counts))) / cl.class_counts[cl.classes[class_index]])
+				classes_weighting := int(i64(lcm(cl.class_counts.values())) / cl.class_counts[cl.classes[class_index]])
 				class_weights << classes_weighting
 				// 	if disp.verbose_flag {
 				// 	println('classifier_weighted_increment: ${classifier_weighted_increment}     classes_weighting: ${classes_weighting}')

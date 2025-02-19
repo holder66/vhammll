@@ -25,7 +25,6 @@ fn test_rank_attributes_plot() {
 		command:       'rank'
 	}
 	opts.graph_flag = true
-	println(opts)
 	result = rank_attributes(load_file(opts.datafile_path), opts)
 	opts.exclude_flag = true
 	result = rank_attributes(load_file(opts.datafile_path), opts)

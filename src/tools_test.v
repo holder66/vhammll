@@ -81,9 +81,9 @@ fn test_array_min() {
 }
 
 fn test_last() {
-	assert last([1, 2, 3]) == 3
-	assert last(['a']) == 'a'
-	assert last([1.0, 2.0, 3.0]) == 3.0
+	assert [1, 2, 3].last() == 3
+	assert ['a'].last() == 'a'
+	assert [1.0, 2.0, 3.0].last() == 3.0
 }
 
 fn test_discretize_attribute() {
@@ -143,12 +143,6 @@ fn test_discretize_attribute_with_range_check() {
 	mut values := [1, 6, 9, 10, 0, -1, 12]
 	assert discretize_attribute_with_range_check(values, 0, 10, 2) == [1, 2, 2, 2, 1, 0, 0]
 	assert discretize_attribute_with_range_check(values, -5, 15, 4) == [2, 3, 3, 4, 2, 1, 4]
-}
-
-// test_get_map_values
-fn test_get_map_values() {
-	mut elements := ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
-	assert get_map_values(element_counts(elements)) == [1, 3, 1, 1, 1, 1, 1, 1]
 }
 
 // test_convert_to_one_bit

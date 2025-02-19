@@ -66,60 +66,11 @@ fn parse_range(arg string) []int {
 	return arg.split(',').map(it.int())
 }
 
-// // parse_range takes a string like '3,6,8' and returns [3, 6, 8]
-// fn parse_range(arg string) []int {
-// 	mut str := arg
-// 	mut res := [arg.int()]
-// 	for _ in 0 .. (arg.len - 1) {
-// 		str = str[1..]
-// 		if str[0] == 44 {
-// 			res << str[1..].int()
-// 		}
-// 	}
-// 	return res
-// }
-
-// // last returns the last element of a string array
-// pub fn last(array []string) string {
-// 	return array[array.len - 1]
-// }
-
 // print_array
 fn print_array(array []string) {
 	for line in array {
 		println(line)
 	}
-}
-
-// get_map_values returns an array of a map's values (for integer values)
-// fn get_map_values(input map[string]int) []int {
-// 	mut values := []int{}
-// 	for _, value in input {
-// 		values << value
-// 	}
-// 	return values
-// }
-
-fn get_map_values(input map[string]int) []int {
-	return input.values()
-}
-
-// get_integer_keys returns the keys for an integer map
-fn get_integer_keys(input map[int]int) []int {
-	mut keys := []int{}
-	for key, _ in input {
-		keys << key
-	}
-	return keys
-}
-
-// get_string_keys returns the string keys for a map
-fn get_string_keys(input map[string]int) []string {
-	mut keys := []string{}
-	for key, _ in input {
-		keys << key
-	}
-	return keys
 }
 
 // discretize_attribute returns an array of integers representing bin numbers
@@ -357,14 +308,6 @@ pub fn is_nan[T](f T) bool {
 		}
 	}
 	return f != f
-}
-
-// last returns the last element of a string array
-fn last[T](array []T) T {
-	if array.len == 0 {
-		panic('the array function last() was called on an empty array')
-	}
-	return array[array.len - 1]
 }
 
 // array_min returns the minimum value in the array

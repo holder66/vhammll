@@ -69,7 +69,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	}
 	// calculate the least common multiple for class_counts, for use
 	// when the weighting_flag is set
-	cl.lcm_class_counts = i64(lcm(get_map_values(ds.class_counts)))
+	cl.lcm_class_counts = i64(lcm(ds.class_counts.values()))
 	// first, rank the attributes using the bins and exclude params, and take
 	// the highest-ranked number_of_attributes (all the usable attributes if
 	// number_of_attributes is 0)
@@ -131,7 +131,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	if opts.purge_flag {
 		cl = purge(cl)
 		cl.postpurge_class_counts = element_counts(cl.class_values)
-		cl.postpurge_lcm_class_counts = i64(lcm(get_map_values(cl.postpurge_class_counts)))
+		cl.postpurge_lcm_class_counts = i64(lcm(cl.postpurge_class_counts.values()))
 		cl.class_counts = element_counts(cl.class_values)
 		cl.lcm_class_counts = cl.postpurge_lcm_class_counts
 	}

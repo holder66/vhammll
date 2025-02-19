@@ -142,7 +142,7 @@ fn get_options(args []string) Options {
 	opts.non_options = oscmdline.only_non_options(args)
 	if opts.non_options.len > 0 {
 		opts.command = opts.non_options[0]
-		opts.datafile_path = last(opts.non_options)
+		opts.datafile_path = opts.non_options.last()
 	}
 	if option(args, ['-b', '--bins']) != '' {
 		opts.bins = parse_range(option(args, ['-b', '--bins']))

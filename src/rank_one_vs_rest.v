@@ -143,7 +143,7 @@ pub fn rank_one_vs_rest(ds Dataset, opts Options) RankingResult {
 					row << count
 				}
 				if opts.weight_ranking_flag {
-					rank_value += sum_along_row_weighted(row, get_map_values(ds.class_counts))
+					rank_value += sum_along_row_weighted(row, ds.class_counts.values())
 				} else {
 					rank_value += sum_along_row_unweighted(row)
 				}

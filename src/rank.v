@@ -145,7 +145,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 				}
 				// dump([[bin_value], row])
 				if opts.weight_ranking_flag {
-					rank_value += sum_along_row_weighted(row, get_map_values(ds.class_counts))
+					rank_value += sum_along_row_weighted(row, ds.class_counts.values())
 				} else {
 					rank_value += sum_along_row_unweighted(row)
 				}
@@ -248,7 +248,7 @@ fn get_rank_value_for_strings(values []string, class_values []string, class_coun
 			row << count
 		}
 		if opts.weight_ranking_flag {
-			rank_val += sum_along_row_weighted(row, get_map_values(class_counts))
+			rank_val += sum_along_row_weighted(row, class_counts.values())
 		} else {
 			rank_val += sum_along_row_unweighted(row)
 		}

@@ -53,8 +53,8 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 		cvr := expr.array_of_results[s.idx]
 		s.settings = analytics_settings(cvr)
 		s.binary_counts = [cvr.t_p, cvr.f_n, cvr.t_n, cvr.f_p]
-		s.multiclass_correct_counts = get_map_values(cvr.correct_inferences)
-		s.multiclass_incorrect_counts = get_map_values(cvr.incorrect_inferences)
+		s.multiclass_correct_counts = cvr.correct_inferences.values()
+		s.multiclass_incorrect_counts = cvr.incorrect_inferences.values()
 	}
 	return m
 }

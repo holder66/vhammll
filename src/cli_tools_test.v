@@ -50,9 +50,9 @@ fn test_show_help() ? {
 
 fn test_last() ? {
 	mut array := ['abc', 'defg', 'xyz']
-	assert last(array) == 'xyz'
+	assert array.last() == 'xyz'
 	array = ['abc']
-	assert last(array) == 'abc'
+	assert array.last() == 'abc'
 }
 
 fn test_print_array() ? {

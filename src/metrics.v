@@ -47,9 +47,9 @@ fn (mut m Metrics) avg_metrics() Metrics {
 // get_metrics
 fn get_metrics(result CrossVerifyResult) Metrics {
 	mut metrics := Metrics{
-		class_counts_int: get_map_values(result.class_counts)
-		correct_counts:   get_map_values(result.correct_inferences)
-		incorrect_counts: get_map_values(result.incorrect_inferences)
+		class_counts_int: result.class_counts.values()
+		correct_counts:   result.correct_inferences.values()
+		incorrect_counts: result.incorrect_inferences.values()
 	}
 	assert metrics.correct_counts.len == metrics.incorrect_counts.len, '${result.correct_inferences} ${result.incorrect_inferences}'
 	for class in result.classes {
