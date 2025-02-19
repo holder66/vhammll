@@ -16,12 +16,13 @@ pub mut:
 
 // the command line interface app for the holder66.vhamml ML library.
 // In a terminal, type:
-// `v run . --help`
+// `v run . --help`, or `v run . -h`, or simply `v run .`
 // ```sh
 // Usage: v run . [command] [flags] <path_to_datafile>
 // Datafiles should be either tab-delimited, or have extension .csv or .arff
 // Commands: analyze | append | cross | display | examples | explore
 // | make | optimals | orange | query | rank | validate | verify
+// To get help with individual commands, type `v run . [command] -h`
 // Flags and options:
 // -a --attributes, can be one, two, or 3 integers; a single integer will
 //    be used by make_classifier to produce a classifier with that number

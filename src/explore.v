@@ -22,6 +22,8 @@ module vhammll
 // graph_flag: generate plots of Receiver Operating Characteristics (ROC)
 // 	by attributes used; ROC by bins used, and accuracy by attributes
 //	used.
+// explore_all_flags: repeat the explore operation for all possible
+//  combinations of flags -bp, -p, -u, -w, -wr, and -x;
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
