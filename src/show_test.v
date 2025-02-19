@@ -67,8 +67,8 @@ fn test_show_append() ? {
 
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
-	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!, load_instances_file('tempfolders/tempfolder_show/instancesfile')!,
-		opts)
+	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!,
+		load_instances_file('tempfolders/tempfolder_show/instancesfile')!, opts)
 
 	// repeat with soybean
 	opts.command = 'make'
@@ -87,8 +87,8 @@ fn test_show_append() ? {
 
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
-	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!, load_instances_file('tempfolders/tempfolder_show/instancesfile')!,
-		opts)
+	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!,
+		load_instances_file('tempfolders/tempfolder_show/instancesfile')!, opts)
 }
 
 fn test_show_classifier() {
