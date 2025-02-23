@@ -134,16 +134,19 @@ Options:
 
 const optimals_help = '
 Description:
-"optimals" determines which classifiers provide the best balanced accuracy, highest total for
+"optimals" determines which classifiers provide the best balanced accuracy, 
+best Matthews Correlation Coefficient (MCC), highest total for
 correct inferences, and highest correct inferences per class, for multiple classifiers whose
 settings are stored in a settings file specified by the last command line argument.
 
 Usage:
-Generate or append to a settings file using "explore" or "cross" with the -ms flag 
-to specify the path for the setting file, then: v run . optimals <path_to_settings_file>
+v run . optimals -e <path_to_settings_file>
+v run . optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
 
 Options:
--e --expanded: show expanded results on the console.
+-e --expanded: show expanded results on the console
+-p --purge: remove duplicate settings (ie settings with identical parameters)
+-o --output: followed by the path to a file to save the (purged) settings
 '
 
 const examples_help = '
