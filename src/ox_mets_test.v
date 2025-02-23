@@ -77,7 +77,8 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags, stopping when correct_counts is [11,5]. This gives the best result, with a Matthews Correlation Coefficient of 0.874'))
 	ft := [false, true]
 	mut result := CrossVerifyResult{}
-	outer: for ci in [[42], [44], [61], [42,44],[42,61],[44,61],[42, 44, 61]] {
+	outer: for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
+		[42, 44, 61]] {
 		opts.classifier_indices = ci
 		for ma in ft {
 			opts.break_on_all_flag = ma
@@ -89,7 +90,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 						opts.class_missing_purge_flag = cmp
 						opts.expanded_flag = false
 						if cross_validate(ds, opts).correct_counts == [11, 5] {
-							println('Classifiers: ${ci}; break_on_all_flag: $ma     combined_radii_flag: $mc      total_nn_counts_flag: $tnc     class_missing_purge_flag: $cmp')
+							println('Classifiers: ${ci}; break_on_all_flag: ${ma}     combined_radii_flag: ${mc}      total_nn_counts_flag: ${tnc}     class_missing_purge_flag: ${cmp}')
 							// break outer
 						}
 					}
@@ -117,19 +118,19 @@ fn test_ox_mets_multi_verify() {
 		// expanded_flag:                       true
 		show_attributes_flag: true
 	}
-	for ci in [[42], [44], [61], [42,44],[42,61],[44,61],[42, 44, 61]] {
+	for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
+		[42, 44, 61]] {
 		opts.expanded_flag = false
 		opts.classifier_indices = ci
 		for ma in ft {
 			opts.break_on_all_flag = ma
 			for cmp in ft {
 				opts.class_missing_purge_flag = cmp
-				if multi_verify(opts).correct_counts == [4,1] {
-				opts.expanded_flag = true
-				result = multi_verify(opts)
+				if multi_verify(opts).correct_counts == [4, 1] {
+					opts.expanded_flag = true
+					result = multi_verify(opts)
+				}
 			}
-		}
-		
 		}
 	}
 
