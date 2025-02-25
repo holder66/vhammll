@@ -21,7 +21,7 @@ pub mut:
 // Usage: v run . [command] [flags] <path_to_datafile>
 // Datafiles should be either tab-delimited, or have extension .csv or .arff
 // Commands: analyze | append | cross | display | examples | explore
-// | make | optimals | orange | query | rank | validate | verify
+// | make | optimals | orange | partition | query | rank | validate | verify
 // To get help with individual commands, type `v run . [command] -h`
 // Flags and options:
 // -a --attributes, can be one, two, or 3 integers; a single integer will
@@ -79,6 +79,7 @@ pub mut:
 //  is missing;
 // -r --reps, number of repetitions; if > 1, a random selection of
 // 	instances to be included in each fold will be applied
+// -rand, when partitioning datafiles, picks cases randomly (instead of sequentially)
 // -s --show, output results to the console;
 // -t --test, followed by the path to the datafile to be verified or validated;
 // -u --uniform, specifies if uniform binning is to be used for the explore
@@ -118,6 +119,7 @@ pub fn cli(cli_options CliOptions) ! {
 			'make' { make(opts) }
 			'optimals' { do_optimals(opts) }
 			'orange' { orange() }
+			'partition' { do_partition(opts)! }
 			'query' { do_query(opts)! }
 			'rank' { rank(opts) }
 			'validate' { do_validate(opts)! }
@@ -168,6 +170,7 @@ fn get_options(args []string) Options {
 	opts.purge_flag = flag(args, ['-p', '--purge'])
 	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])
+	opts.random_pick = flag(args, ['-rand'])
 	if option(args, ['-a', '--attributes']) != '' {
 		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
 	}
@@ -180,6 +183,12 @@ fn get_options(args []string) Options {
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))
 		// println('opts.classifier_indices in cli.v: ${opts.classifier_indices}')
+	}
+	if option(args, ['-p#']) != '' {
+		opts.partition_sizes = parse_range(option(args, ['-p#']))
+	}
+	if option(args, ['-ps']) != '' {
+		opts.partitionfiles_paths = parse_paths(option(args, ['-ps']))
 	}
 	opts.testfile_path = option(args, ['-t', '--test'])
 	opts.outputfile_path = option(args, ['-o', '--output'])
@@ -206,6 +215,7 @@ fn show_help(opts Options) string {
 		'validate' { validate_help }
 		'display' { display_help }
 		'examples' { examples_help }
+		'partition' { partition_help }
 		else { vhammll_help }
 	}
 }
@@ -338,4 +348,8 @@ fn make(opts Options) {
 	if opts.expanded_flag {
 		println(cl)
 	}
+}
+
+fn do_partition(opts Options) ! {
+	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths, opts.random_pick)!
 }

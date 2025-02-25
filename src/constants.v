@@ -34,8 +34,10 @@ const vhammll_help = "
     optimals:  determines which classifiers provide the best balanced accuracy, 
                highest total for correct inferences, and highest correct inferences 
                per class, for multiple classifiers whose settings are stored 
-               in a settings file specified by the last command line argument.
+               in a settings file specified by the last command line argument;
     orange:    print an explanation of Orange file formats to the console;
+    partition: breaks a datafile into two or more partitions and saves each
+               partition into a separate datafile;
     query:     using a classifier, create an instance using an interactive
                dialogue and then classify that instance;
     rank:      rank order the dataset's attributes in terms of their
@@ -93,8 +95,12 @@ const vhammll_help = "
     -p --purge:      remove instances which are duplicates after binning;
     -pmc --purge-missing-classes: removes instances for which the class value
                      is missing;
+    -p#:             followed by a list of integers specifying the relative
+                     sizes of each partition (used with the partition command);
+    -ps:             followed by a list of partition file paths;
     -r --reps:       number of repetitions; if > 1, a random selection of
                      instances to be included in each fold will be applied;
+    -rand:           used with partition; picks cases randomly for each partition;
     -s --show:       output results to the console;
     -t --test:       followed by the path to the datafile to be verified or
                      validated;
@@ -467,4 +473,26 @@ Options:
       class prevalences;
   -wr: when ranking attributes, weight contributions by class prevalences;
   -x --exclude: exclude missing values from rank value calculations;
+'
+
+const partition_help = '
+Description:
+"partition" splits a datafile into two or more partitions, saving each partition
+into a separate datafile which includes the header from the original datafile.
+The size of each partition is specified in a list of integers, each of which
+represents the numerator of a fraction of which the denominator is the sum of
+the integers. For example: 2,1 splits into 2 partitions, the first being 2/3 of 
+the total cases, the second comprising the remaining one third. 5,2,2 splits into 
+3 partitions, the first 5/9 of the cases, the other two both 2/9 of the total.
+If the total cases do not divide equally, the remainder go into the last partition.
+Cases for each partition are picked randomly (but a case can only be in one 
+partition).
+
+Usage: v run . partition <options> <path_to_dataset_file>
+
+Options:
+  -p#:             followed by a list of integers specifying the relative
+                   sizes of each partition (used with the partition command);
+  -ps:             followed by a list of partition file paths;
+  -rand:           cases are picked randomly (no repeats)
 '

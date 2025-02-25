@@ -76,6 +76,12 @@ fn test_parse_range() {
 	assert parse_range('0,0,1,2,2') == [0, 0, 1, 2, 2]
 }
 
+fn test_parse_paths() {
+	assert parse_paths('').len == 0
+	assert parse_paths('abc123') == ['abc123']
+	assert parse_paths('abc,123,0,bd12') == ['abc','123','0','bd12']
+}
+
 fn test_array_min() {
 	assert array_min([1.0, 2.0, 3.0]) == 1.0
 }

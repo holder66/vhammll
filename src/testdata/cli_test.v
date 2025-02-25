@@ -36,9 +36,9 @@ fn testsuite_end() ? {
 
 fn test_explore() {
 	println(os.execute_or_panic('./temp explore --help'))
-	println(os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab'))
-	println(os.execute_or_panic('./temp explore -g -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
-	println(os.execute_or_panic('./temp explore -g -e -c -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
+	println(os.execute_or_panic('./temp explore  vhammll/datasets/iris.tab'))
+	println(os.execute_or_panic('./temp explore  -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
+	println(os.execute_or_panic('./temp explore  -e -c -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
 	println(os.execute_or_panic('./temp cross -c -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
 }
 
@@ -94,7 +94,7 @@ fn test_rank_attributes() {
 	r = os.execute_or_panic('./temp rank -b 2,6 -x -a 2 vhammll/datasets/iris.tab')
 	// println(r.output)
 	assert r.output.contains('Bin range for continuous attributes: from 2 to 6 with interval 1')
-	r = os.execute_or_panic('./temp rank -x -g vhammll/datasets/anneal.tab')
+	r = os.execute_or_panic('./temp rank -x vhammll/datasets/anneal.tab')
 	// println(r.output)
 	assert r.output.contains('8   carbon                           3  C           78.90      7')
 }
@@ -120,3 +120,16 @@ fn test_purge_for_missing_class_values() {
 	// assert r.output.len == 1379
 	// assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
 }
+
+fn test_partitioning() {
+	path1 := 'tempfolders/tempfolder_cli/part1.tab'
+	path2 := 'tempfolders/tempfolder_cli/part2.tab'
+	path3 := 'tempfolders/tempfolder_cli/part3.tab'
+	println(os.execute_or_panic('./temp partition'))
+	println(os.execute_or_panic('./temp partition -p# 3,2,1 -ps ${path1},${path2},${path3} -rand vhammll/datasets/developer.tab'))
+	assert os.exists(path1)
+	assert os.exists(path2)
+	assert os.exists(path3)
+	assert os.read_lines(path3)!.len == 4
+}
+
