@@ -16,6 +16,7 @@ fn partition_file(partition_sizes []int, in_file string, out_files []string, ran
 	mut lines := os.read_lines(in_file)!
 	header_lines, data_lines = match f_type {
 		'orange_newer' {partition_orange_newer_file(lines)}
+		'orange_older' {partition_orange_older_file(lines)}
 		else {panic('file type of file "in_file" was not recognized')}
 	}
 	mut partition_size := data_lines.len / arrays.sum(partition_sizes)!
@@ -29,11 +30,11 @@ fn partition_file(partition_sizes []int, in_file string, out_files []string, ran
 	for length in partition_lengths {
 		partition_indices << generate_pick_list(length, data_lines.len, partition_indices, random_flag)!
 	}
-	dump(partition_indices)
+	// dump(partition_indices)
 	for i, indices in partition_indices {
 		mut new_file := header_lines.clone()
 		new_file << filter_array_by_index(data_lines, indices)
-		for s in new_file {dump(s)}
+		// for s in new_file {dump(s)}
 		if out_files.len == partition_indices.len {
 		os.write_lines(out_files[i], new_file)!
 	}
@@ -42,6 +43,10 @@ fn partition_file(partition_sizes []int, in_file string, out_files []string, ran
 
 fn partition_orange_newer_file(lines []string) ([]string, []string) {
 	return lines[..1], lines[1..]
+}
+
+fn partition_orange_older_file(lines []string) ([]string, []string) {
+	return lines[..3], lines[3..]
 }
 
 // generate a pick list of indices
