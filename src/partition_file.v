@@ -13,29 +13,31 @@ fn partition_file(partition_sizes []int, in_file string, out_files []string, ran
 	mut data_lines := []string{}
 	// get file type, so we know how to home in on the data rows
 	f_type := file_type(in_file)
-	dump(f_type)
 	mut lines := os.read_lines(in_file)!
 	header_lines, data_lines = match f_type {
 		'orange_newer' {partition_orange_newer_file(lines)}
 		else {panic('file type of file "in_file" was not recognized')}
 	}
-	dump(header_lines)
-	dump(data_lines.len)
-	dump(arrays.sum(partition_sizes)!)
 	mut partition_size := data_lines.len / arrays.sum(partition_sizes)!
-	dump(partition_size)
+	// dump(partition_size)
 	mut partition_lengths := []int{}
 	for size in partition_sizes#[..-1] {
 		partition_lengths << size * partition_size
 	}
 	partition_lengths << data_lines.len - arrays.sum(partition_lengths)!
-	dump(partition_lengths)
 	mut partition_indices := [][]int{}
 	for length in partition_lengths {
-
-	partition_indices << generate_pick_list(length, data_lines.len, partition_indices, random_flag)!
-}
-dump(partition_indices)
+		partition_indices << generate_pick_list(length, data_lines.len, partition_indices, random_flag)!
+	}
+	dump(partition_indices)
+	for i, indices in partition_indices {
+		mut new_file := header_lines.clone()
+		new_file << filter_array_by_index(data_lines, indices)
+		for s in new_file {dump(s)}
+		if out_files.len == partition_indices.len {
+		os.write_lines(out_files[i], new_file)!
+	}
+	}
 }
 
 fn partition_orange_newer_file(lines []string) ([]string, []string) {
