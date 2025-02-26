@@ -130,7 +130,7 @@ fn testsuite_end() ? {
 // 						opts.expanded_flag = false
 // 						result = cross_validate(ds, opts)
 // 						println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
-		
+
 // 	}
 // }
 
@@ -153,15 +153,13 @@ fn test_ox2_multi_verify() {
 		// expanded_flag:                       true
 		show_attributes_flag: true
 	}
-	for ci in [[19,61,73],[6,61,73,97],[53,61,73],[53,61,73,97],[61,73]] {
+	for ci in [[19, 61, 73], [6, 61, 73, 97], [53, 61, 73], [53, 61, 73, 97],
+		[61, 73]] {
 		// opts.expanded_flag = true
 		opts.classifier_indices = ci
-			opts.break_on_all_flag = true
-result = multi_verify(opts)
-println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
-				
-			
-		
+		opts.break_on_all_flag = true
+		result = multi_verify(opts)
+		println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
 	}
 	// opts.expanded_flag = true
 	// opts.classifier_indices = [44]

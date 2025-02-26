@@ -79,7 +79,7 @@ fn test_parse_range() {
 fn test_parse_paths() {
 	assert parse_paths('').len == 0
 	assert parse_paths('abc123') == ['abc123']
-	assert parse_paths('abc,123,0,bd12') == ['abc','123','0','bd12']
+	assert parse_paths('abc,123,0,bd12') == ['abc', '123', '0', 'bd12']
 }
 
 fn test_array_min() {

@@ -194,7 +194,7 @@ pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
 	bins                                []int = [1, 16]
-	partition_sizes		[]int
+	partition_sizes                     []int
 	concurrency_flag                    bool
 	datafile_path                       string = 'datasets/developer.tab'
 	explore_all_flags                   bool
@@ -205,7 +205,7 @@ pub mut:
 	multiple_classify_options_file_path string
 	multiple_classifier_settings        []ClassifierSettings
 	settingsfile_path                   string
-	partitionfiles_paths		[]string
+	partitionfiles_paths                []string
 	help_flag                           bool
 	// multiple_flag                       bool
 	append_settings_flag bool

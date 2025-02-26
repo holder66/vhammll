@@ -130,7 +130,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 						opts.expanded_flag = false
 // 						result = cross_validate(ds, opts)
 // 						println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
-		
+
 // 	}
 // }
 
@@ -159,15 +159,13 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 			opts.break_on_all_flag = true
 // result = multi_verify(opts)
 // println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
-				
-			
-		
-	// }
-	// opts.expanded_flag = true
-	// opts.classifier_indices = [44]
-	// result = multi_verify(opts)
-	// assert result.sens == 0.5
-	// assert result.spec == 0.8
-	// println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
-	// println(r_b('we get a sensitivity of 0.5, and specificity of 0.8, on the test set'))
+
+// }
+// opts.expanded_flag = true
+// opts.classifier_indices = [44]
+// result = multi_verify(opts)
+// assert result.sens == 0.5
+// assert result.spec == 0.8
+// println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
+// println(r_b('we get a sensitivity of 0.5, and specificity of 0.8, on the test set'))
 // }

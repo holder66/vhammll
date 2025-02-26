@@ -69,7 +69,9 @@ fn parse_range(arg string) []int {
 // parse_paths takes a string of file paths separated by commas
 // and returns an array of strings, one per path
 fn parse_paths(arg string) []string {
-	if arg == '' {return []string{len: 0}}
+	if arg == '' {
+		return []string{len: 0}
+	}
 	return arg.split(',').map(it)
 }
 

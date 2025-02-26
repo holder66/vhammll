@@ -351,5 +351,6 @@ fn make(opts Options) {
 }
 
 fn do_partition(opts Options) ! {
-	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths, opts.random_pick)!
+	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths,
+		opts.random_pick)!
 }

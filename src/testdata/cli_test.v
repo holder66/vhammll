@@ -132,4 +132,3 @@ fn test_partitioning() {
 	assert os.exists(path3)
 	assert os.read_lines(path3)!.len == 4
 }
-
