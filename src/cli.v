@@ -74,7 +74,9 @@ pub mut:
 // -o --output, followed by the path to a file in which a classifier, a
 //    result, instances used for validation, or a query instance will be
 //    stored;
-// -p --purge, removes instances which after binning are duplicates
+// -p --purge, removes instances which after binning are duplicates;
+// -p#, 
+// -ps,
 // -pmc --purge-missing-classes, removes instances for which the class value
 //  is missing;
 // -r --reps, number of repetitions; if > 1, a random selection of

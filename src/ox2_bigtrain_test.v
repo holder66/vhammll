@@ -17,45 +17,48 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_ox2_bigtrain')!
 }
 
-fn test_explore_ox_mets_to_create_settings_file() {
-	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the explore_all_flags flag set to true). Save the settings in a temporary settings file.'))
-	home_dir := os.home_dir()
-	temp_file := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain.opts'
-	temp_purged := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain-purged.opts'
-	saved_file := 'src/testdata/ox2-purged.opts'
-	mut opts := Options{
-		command: 'explore'
-		// concurrency_flag:     true
-		datafile_path:        os.join_path(home_dir, 'mets', 'ox2_bigtrain.tab')
-		number_of_attributes: [1, 10]
-		bins:                 [2, 14]
-		append_settings_flag: true
-		explore_all_flags:    true
-		settingsfile_path:    temp_file
-		expanded_flag:        true
-	}
-	ds := load_file(opts.datafile_path)
-	explore(ds, opts)
-	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purges settings to a temporary file:'))
-	opts.purge_flag = true
-	opts.outputfile_path = temp_purged
-	optimals(opts.settingsfile_path, opts)
-	println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
-	if os.is_file(saved_file) {
-		saved := os.read_file(saved_file)!
-		temp := os.read_file(temp_purged)!
-		assert saved == temp
-	} else {
-		os.cp(temp_purged, saved_file)!
-	}
-}
+// fn test_explore_ox_mets_to_create_settings_file() {
+// 	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the explore_all_flags flag set to true). Save the settings in a temporary settings file.'))
+// 	home_dir := os.home_dir()
+// 	temp_file := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain.opts'
+// 	temp_purged := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain-purged.opts'
+// 	saved_file := 'src/testdata/ox2_bigtrain-purged.opts'
+// 	mut opts := Options{
+// 		command: 'explore'
+// 		// concurrency_flag:     true
+// 		datafile_path:        os.join_path(home_dir, 'mets', 'ox2_bigtrain.tab')
+// 		number_of_attributes: [1, 10]
+// 		bins:                 [2, 14]
+// 		append_settings_flag: true
+// 		explore_all_flags:    true
+// 		settingsfile_path:    temp_file
+// 		expanded_flag:        true
+// 	}
+// 	ds := load_file(opts.datafile_path)
+// 	explore(ds, opts)
+// 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purges settings to a temporary file:'))
+// 	opts.purge_flag = true
+// 	opts.outputfile_path = temp_purged
+// 	optimals(opts.settingsfile_path, opts)
+// 	println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
+// 	if os.is_file(saved_file) {
+// 		saved := os.read_file(saved_file)!
+// 		temp := os.read_file(temp_purged)!
+// 		assert saved == temp
+// 	} else {
+// 		os.cp(temp_purged, saved_file)!
+// 	}
+// }
 
 // fn test_optimal_settings() {
 // 	home_dir := os.home_dir()
+// 	temp_file := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain.opts'
+// 	temp_purged := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain-purged.opts'
+// 	saved_file := 'src/testdata/ox2_bigtrain-purged.opts'
 // 	mut opts := Options{
 // 		command:                             'cross'
-// 		datafile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_odds.tsv')
-// 		multiple_classify_options_file_path: 'src/testdata/ox2-purged.opts'
+// 		datafile_path:                       os.join_path(home_dir, 'mets', 'ox2_bigtrain.tab')
+// 		multiple_classify_options_file_path: saved_file
 // 		// verbose_flag:         true
 // 		multiple_flag: true
 // 		expanded_flag: true
@@ -66,73 +69,108 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 // 		panic('read_multiple_opts failed')
 // 	}
-// 	println(r_b('\nVerify that classifiers 53 and 89 in the purged settings file correspond to the settings giving best balanced accuracy of 82.94%.'))
-// 	assert multiple_classifier_settings.len == 98
-// 	assert multiple_classifier_settings[53].correct_counts == [137,10]
-// 	assert multiple_classifier_settings[89].bal_acc == 82.94205794205794
-// 	println(r_b('\nVerify that classifier 61 in the purged settings file correspond to the settings giving best Matthews Correlation Coefficient of 0.605, and highest total correct inferences of 159/167;'))
-// 	assert multiple_classifier_settings[61].correct_counts == [154, 5]
-// 	assert multiple_classifier_settings[61].incorrect_counts == [0,8]
-// 	assert multiple_classifier_settings[61].mcc == 0.6046668771221878
-
-// 	println(r_b('and verify that classifier 61 in the purged settings file gives the highest specificity of 1.0, and classifier 73 the highest sensitivity of 1.0'))
-// 	assert multiple_classifier_settings[61].spec == 1.0
-// 	assert multiple_classifier_settings[73].sens == 1.0
-// 	for i in [53,89,61,73] {
+// 	println(r_b('\nVerify that classifiers 52 and 78 in the purged settings file correspond to the settings giving best balanced accuracy of 84.25%.'))
+// 	assert multiple_classifier_settings.len == 97
+// 	assert multiple_classifier_settings[52].correct_counts == [154,15]
+// 	assert multiple_classifier_settings[78].bal_acc == 84.25364077669903
+// 	println(r_b('\nVerify that classifiers 77, 85, and 87 in the purged settings file correspond to the settings giving best Matthews Correlation Coefficient of 0.605, and highest total correct inferences of 159/167;'))
+// 	assert multiple_classifier_settings[77].correct_counts == [205,8]
+// 	assert multiple_classifier_settings[85].incorrect_counts == [1,8]
+// 	assert multiple_classifier_settings[87].mcc == 0.64925528941314
+// 	println(r_b('\nand verify that classifier 74 in the purged settings file gives the highest specificity of 1.0, and classifier 73 the highest sensitivity of 1.0'))
+// 	assert multiple_classifier_settings[74].spec == 1.0
+// 	assert multiple_classifier_settings[52].sens == 0.9375
+// 	for i in [52,77,74] {
 // 		opts.classifier_indices = [i]
 // 		cross_validate(ds, opts)
 // 	}
 // }
 
-// fn test_multiple_crossvalidate_of_ox2() {
-// 	home_dir := os.home_dir()
-// 	saved_file := 'src/testdata/ox2-purged.opts'
-// 	mut opts := Options{
-// 		command:                             'cross'
-// 		datafile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_odds.tsv')
-// 		multiple_classify_options_file_path: saved_file
-// 		multiple_flag:                       true
-// 	}
-// 	ds := load_file(opts.datafile_path)
-// 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags.'))
-// 	ft := [false, true]
-// 	mut result := CrossVerifyResult{}
-// 	// outer: for ci in [[61,73,97],[6,61,73,97],[53,61,73,97]] {
-// 	// 	opts.classifier_indices = ci
-// 	// 	for ma in ft {
-// 	// 		opts.break_on_all_flag = ma
-// 	// 		for mc in ft {
-// 	// 			opts.combined_radii_flag = mc
-// 	// 			for tnc in ft {
-// 	// 				opts.total_nn_counts_flag = tnc
-// 	// 				for cmp in ft {
-// 	// 					opts.class_missing_purge_flag = cmp
-// 	// 					opts.expanded_flag = false
-// 	// 					// if cross_validate(ds, opts).correct_counts == [11, 5] {
-// 	// 					// 	assert ci == [42, 44, 61]
-// 	// 					dump(cross_validate(ds, opts).correct_counts)
-// 	// 						println('Classifiers: ${ci}; break_on_all_flag: ${ma}     combined_radii_flag: ${mc}      total_nn_counts_flag: ${tnc}     class_missing_purge_flag: ${cmp}')
-// 	// 						// break outer
-// 	// 					// }
-// 	// 				}
-// 	// 			}
-// 	// 		}
-// 	// 	}
-// 	// }
-// 	println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 6 sets of settings producing an optimum "area under the ROC curve"'))
-// 	outer2: for ci in [[19,61,73],[6,61,73,97],[53,61,73],[53,61,73,97],[61,73]] {
-// 		opts.classifier_indices = ci
-// 			opts.break_on_all_flag = false
-// 				opts.combined_radii_flag = true
-// 					opts.total_nn_counts_flag = false
+fn test_multiple_crossvalidate_of_ox2() {
+	home_dir := os.home_dir()
+	temp_file := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain.opts'
+	temp_purged := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain-purged.opts'
+	saved_file := 'src/testdata/ox2_bigtrain-purged.opts'
+	mut opts := Options{
+		command:                             'cross'
+		datafile_path:                       os.join_path(home_dir, 'mets', 'ox2_bigtrain.tab')
+		multiple_classify_options_file_path: saved_file
+		multiple_flag:                       true
+	}
+	ds := load_file(opts.datafile_path)
+	// 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags.'))
+	ft := [false, true]
+	mut result := CrossVerifyResult{}
+		// outer: for ci in [[52,78,30,74]] {
+		// 	opts.classifier_indices = ci
+		// 	for ma in ft {
+		// 		opts.break_on_all_flag = ma
+		// 		for mc in ft {
+		// 			opts.combined_radii_flag = mc
+		// 			for tnc in ft {
+		// 				opts.total_nn_counts_flag = tnc
+		// 				for cmp in ft {
+		// 					opts.class_missing_purge_flag = cmp
+		// 					opts.expanded_flag = false
+		// 					dump(cross_validate(ds, opts).correct_counts)
+		// 						println('${ci}ma: ${ma}  mc: ${mc}   tnc: ${tnc}  cmp: ${cmp}')
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
+	// println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 4 sets of settings producing an optimum "area under the ROC curve"'))
+	// outer2: for ci in [[52, 77, 74], [52, 77, 30], [52, 74], [52, 77]] {
+	// 	opts.classifier_indices = ci
+	// 	for ma in ft {
+	// 		opts.break_on_all_flag = ma
+	// 		for mc in ft {
+	// 			opts.combined_radii_flag = mc
 
-// 						opts.class_missing_purge_flag = false
-// 						opts.expanded_flag = false
-// 						result = cross_validate(ds, opts)
-// 						println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
+	// 			for tnc in ft {
+	// 				opts.total_nn_counts_flag = tnc
 
-// 	}
-// }
+	// 				opts.class_missing_purge_flag = false
+	// 				// opts.expanded_flag = true
+	// 				result = cross_validate(ds, opts)
+	// 				println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
+	// 			}
+	// 		}
+	// 	}
+	// }
+	println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 4 sets of settings producing an optimum "area under the ROC curve"'))
+
+	opts.expanded_flag = true 
+	// opts.classifier_indices = [52, 77, 74]
+	// cross_validate(ds, opts)
+	// opts.classifier_indices = [52, 77, 30]
+	// opts.combined_radii_flag = true 
+	// cross_validate(ds, opts)
+	// opts.classifier_indices = [52, 74]
+	// opts.combined_radii_flag = false
+	// opts.total_nn_counts_flag = true 
+	// cross_validate(ds, opts)
+	// opts.classifier_indices = [52, 77]
+	// cross_validate(ds, opts)
+
+	opts.combined_radii_flag = false
+	opts.total_nn_counts_flag = false
+	opts.command = 'verify'
+	opts.show_attributes_flag = true
+	opts.testfile_path = os.join_path(home_dir, 'mets', 'ox2_bigvalidate.tab')
+	opts.classifier_indices = [52, 77, 74]
+	result = multi_verify(opts)
+	// dump(result)
+	opts.classifier_indices = [52, 77, 30]
+	opts.combined_radii_flag = true 
+	multi_verify(opts)
+	opts.classifier_indices = [52, 74]
+	opts.combined_radii_flag = false
+	opts.total_nn_counts_flag = true 
+	multi_verify(opts)
+	opts.classifier_indices = [52, 77]
+	multi_verify(opts)
+}
 
 // fn test_ox2_multi_verify() {
 // 	mut result := CrossVerifyResult{}

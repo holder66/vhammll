@@ -27,6 +27,14 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
+	// instantiate a struct for SettingsForROC
+	// look for the class with the fewest instances
+	// dump(ds.class_counts)
+	// class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
+	// mut roc_settings := SettingsForROC{
+	// 	classifiers_for_roc: []ClassifierSettings{len: ds.class_counts[class_with_fewest_cases]}
+	// }
+	// dump(roc_settings)
 	if opts.explore_all_flags {
 		// in a series of nested loops, repeatedly execute the explore
 		// function over both true and false settings for the various

@@ -456,6 +456,16 @@ fn get_map_key_for_max_value(m map[string]int) string {
 	return ''
 }
 
+fn get_map_key_for_min_value(m map[string]int) string {
+	min := array_min(m.values())
+	for key, val in m {
+		if val == min {
+			return key
+		}
+	}
+	return ''
+}
+
 // plurality_vote returns the string whose count is greater
 // than the count of any other string in arr
 fn plurality_vote(arr []string) string {

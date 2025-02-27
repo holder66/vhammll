@@ -199,6 +199,18 @@ fn test_lcm_u128() {
 	assert lcm_u128(arr).str() == '276006689320991032513398787039572030'
 }
 
+fn test_get_map_key_for_max_and_min_value() {
+	mut m := {
+		'a': 4
+		'b': 7
+		'c': 0
+		'd': -12
+		'e': -2
+	}
+	assert get_map_key_for_max_value(m) == 'b'
+	assert get_map_key_for_min_value(m) == 'd'
+}
+
 // test_plurality_vote
 fn test_plurality_vote() ? {
 	assert plurality_vote(['a', 'a', 'b']) == 'a'

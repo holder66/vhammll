@@ -429,6 +429,12 @@ pub mut:
 	args []string
 }
 
+pub struct SettingsForROC {
+pub mut:
+	classifiers_for_roc []ClassifierSettings
+	map_of_class_counts map[int][]int
+}
+
 pub struct PlotResult {
 pub mut:
 	bin             int

@@ -15,7 +15,9 @@ fn testsuite_end() ? {
 }
 
 fn test_max_ham_dist() {
-	mut opts := Options{}
+	mut opts := Options{
+		expanded_flag: true
+	}
 	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(ds, opts)
 	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
