@@ -30,6 +30,43 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
+	// instantiate a struct for SettingsForROC
+	// look for the class with the fewest instances
+	// dump(ds.class_counts)
+	// class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
+	// mut roc_settings := SettingsForROC{
+	// 	classifiers_for_roc: []ClassifierSettings{len: ds.class_counts[class_with_fewest_cases]}
+	// }
+	// dump(opts)
+	if opts.traverse_all_flags && opts.multiple_flag {
+		// in a series of nested loops, repeatedly execute the cross_validate
+		// function over both true and false settings for the various
+		// flags in opts.Parameters
+		mut af_opts := opts
+		af_opts.show_flag = false
+		mut af_result := CrossVerifyResult{}
+		ft := [false, true]
+		for ma in ft {
+			af_opts.break_on_all_flag = ma
+			for mc in ft {
+				af_opts.combined_radii_flag = mc
+				for tnc in ft {
+					af_opts.total_nn_counts_flag = tnc
+					for cmp in ft {
+						af_opts.class_missing_purge_flag = cmp
+						// dump(af_opts.Parameters)
+						af_result = run_cross_validate(ds, af_opts)
+						println('${af_result.correct_counts} ma ${ma} mc ${mc} tnc ${tnc} cmp ${cmp} ${af_opts.classifier_indices}')
+					}
+				}
+			}
+		}
+		return af_result // returns just the last result for multiple cross_validates
+	}
+	return run_cross_validate(ds, opts)
+}
+
+pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path
 	mut total_instances := ds.Class.class_values.len

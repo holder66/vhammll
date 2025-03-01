@@ -18,7 +18,7 @@ fn testsuite_end() ? {
 }
 
 // fn test_explore_ox_mets_to_create_settings_file() {
-// 	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the explore_all_flags flag set to true). Save the settings in a temporary settings file.'))
+// 	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 // 	home_dir := os.home_dir()
 // 	temp_file := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain.opts'
 // 	temp_purged := 'tempfolders/tempfolder_ox2_bigtrain/ox2_bigtrain-purged.opts'
@@ -30,7 +30,7 @@ fn testsuite_end() ? {
 // 		number_of_attributes: [1, 10]
 // 		bins:                 [2, 14]
 // 		append_settings_flag: true
-// 		explore_all_flags:    true
+// 		traverse_all_flags:    true
 // 		settingsfile_path:    temp_file
 // 		expanded_flag:        true
 // 	}
@@ -101,24 +101,24 @@ fn test_multiple_crossvalidate_of_ox2() {
 	// 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags.'))
 	ft := [false, true]
 	mut result := CrossVerifyResult{}
-		// outer: for ci in [[52,78,30,74]] {
-		// 	opts.classifier_indices = ci
-		// 	for ma in ft {
-		// 		opts.break_on_all_flag = ma
-		// 		for mc in ft {
-		// 			opts.combined_radii_flag = mc
-		// 			for tnc in ft {
-		// 				opts.total_nn_counts_flag = tnc
-		// 				for cmp in ft {
-		// 					opts.class_missing_purge_flag = cmp
-		// 					opts.expanded_flag = false
-		// 					dump(cross_validate(ds, opts).correct_counts)
-		// 						println('${ci}ma: ${ma}  mc: ${mc}   tnc: ${tnc}  cmp: ${cmp}')
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
+	// outer: for ci in [[52,78,30,74]] {
+	// 	opts.classifier_indices = ci
+	// 	for ma in ft {
+	// 		opts.break_on_all_flag = ma
+	// 		for mc in ft {
+	// 			opts.combined_radii_flag = mc
+	// 			for tnc in ft {
+	// 				opts.total_nn_counts_flag = tnc
+	// 				for cmp in ft {
+	// 					opts.class_missing_purge_flag = cmp
+	// 					opts.expanded_flag = false
+	// 					dump(cross_validate(ds, opts).correct_counts)
+	// 						println('${ci}ma: ${ma}  mc: ${mc}   tnc: ${tnc}  cmp: ${cmp}')
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 	// println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 4 sets of settings producing an optimum "area under the ROC curve"'))
 	// outer2: for ci in [[52, 77, 74], [52, 77, 30], [52, 74], [52, 77]] {
 	// 	opts.classifier_indices = ci
@@ -140,15 +140,15 @@ fn test_multiple_crossvalidate_of_ox2() {
 	// }
 	println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 4 sets of settings producing an optimum "area under the ROC curve"'))
 
-	opts.expanded_flag = true 
+	opts.expanded_flag = true
 	// opts.classifier_indices = [52, 77, 74]
 	// cross_validate(ds, opts)
 	// opts.classifier_indices = [52, 77, 30]
-	// opts.combined_radii_flag = true 
+	// opts.combined_radii_flag = true
 	// cross_validate(ds, opts)
 	// opts.classifier_indices = [52, 74]
 	// opts.combined_radii_flag = false
-	// opts.total_nn_counts_flag = true 
+	// opts.total_nn_counts_flag = true
 	// cross_validate(ds, opts)
 	// opts.classifier_indices = [52, 77]
 	// cross_validate(ds, opts)
@@ -162,11 +162,11 @@ fn test_multiple_crossvalidate_of_ox2() {
 	result = multi_verify(opts)
 	// dump(result)
 	opts.classifier_indices = [52, 77, 30]
-	opts.combined_radii_flag = true 
+	opts.combined_radii_flag = true
 	multi_verify(opts)
 	opts.classifier_indices = [52, 74]
 	opts.combined_radii_flag = false
-	opts.total_nn_counts_flag = true 
+	opts.total_nn_counts_flag = true
 	multi_verify(opts)
 	opts.classifier_indices = [52, 77]
 	multi_verify(opts)

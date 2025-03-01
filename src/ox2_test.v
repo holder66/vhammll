@@ -18,7 +18,7 @@ fn testsuite_end() ? {
 }
 
 // fn test_explore_ox_mets_to_create_settings_file() {
-// 	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the explore_all_flags flag set to true). Save the settings in a temporary settings file.'))
+// 	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 // 	home_dir := os.home_dir()
 // 	temp_file := 'tempfolders/tempfolder_ox2/ox2.opts'
 // 	temp_purged := 'tempfolders/tempfolder_ox2/ox2-purged.opts'
@@ -30,7 +30,7 @@ fn testsuite_end() ? {
 // 		number_of_attributes: [1, 10]
 // 		bins:                 [2, 14]
 // 		append_settings_flag: true
-// 		explore_all_flags:    true
+// 		traverse_all_flags:    true
 // 		settingsfile_path:    temp_file
 // 		expanded_flag:        true
 // 	}

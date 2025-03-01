@@ -19,6 +19,37 @@ import runtime
 // outputfile_path: saves the result as a json file
 // ```
 pub fn verify(opts Options) CrossVerifyResult {
+	if opts.traverse_all_flags && opts.multiple_flag {
+		// in a series of nested loops, repeatedly execute the mu
+		// function over both true and false settings for the various
+		// flags in opts.Parameters
+		mut af_opts := opts
+		af_opts.show_flag = false
+		mut af_result := CrossVerifyResult{}
+		ft := [false, true]
+		for ma in ft {
+			af_opts.break_on_all_flag = ma
+			for mc in ft {
+				af_opts.combined_radii_flag = mc
+				for mt in ft {
+					af_opts.total_nn_counts_flag = mt
+					af_result = multi_verify(af_opts)
+					println('${af_result.correct_counts} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifier_indices}')
+				}
+			}
+		}
+		return af_result // returns just the last result
+	}
+	if opts.multiple_flag {
+		return multi_verify(opts)
+	}
+	if opts.one_vs_rest_flag {
+		return one_vs_rest_verify(opts)
+	}
+	return run_verify(opts)
+}
+
+fn run_verify(opts Options) CrossVerifyResult {
 	mut ds := load_file(opts.datafile_path)
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)

@@ -75,7 +75,7 @@ pub mut:
 //    result, instances used for validation, or a query instance will be
 //    stored;
 // -p --purge, removes instances which after binning are duplicates;
-// -p#, 
+// -p#,
 // -ps,
 // -pmc --purge-missing-classes, removes instances for which the class value
 //  is missing;
@@ -125,7 +125,7 @@ pub fn cli(cli_options CliOptions) ! {
 			'query' { do_query(opts)! }
 			'rank' { rank(opts) }
 			'validate' { do_validate(opts)! }
-			'verify' { do_verify(opts)! }
+			'verify' { verify(opts) }
 			else { println('unrecognized command') }
 		}
 	}
@@ -287,13 +287,13 @@ fn do_query(opts Options) ! {
 }
 
 // verify
-fn do_verify(opts Options) ! {
-	match true {
-		opts.multiple_flag { multi_verify(opts) }
-		opts.one_vs_rest_flag { one_vs_rest_verify(opts) }
-		else { verify(opts) }
-	}
-}
+// fn do_verify(opts Options) ! {
+// 	match true {
+// 		opts.multiple_flag { multi_verify(opts) }
+// 		opts.one_vs_rest_flag { one_vs_rest_verify(opts) }
+// 		else { verify(opts) }
+// 	}
+// }
 
 // validate
 fn do_validate(opts Options) ! {

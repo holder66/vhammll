@@ -17,7 +17,7 @@ fn testsuite_end() ? {
 }
 
 fn test_explore_ox_mets_to_create_settings_file() {
-	println(r_b('\nDo an explore using cross-validation on the mets-train.tab dataset, over all combinations of settings (with the explore_all_flags flag set to true). Save the settings in a temporary settings file.'))
+	println(r_b('\nDo an explore using cross-validation on the mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 	home_dir := os.home_dir()
 	temp_file := 'tempfolders/tempfolder_ox_mets/ox_mets_settings.opts'
 	temp_purged := 'tempfolders/tempfolder_ox_mets/ox_mets_settings_purged.opts'
@@ -29,7 +29,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		number_of_attributes: [1, 12]
 		bins:                 [2, 16]
 		append_settings_flag: true
-		explore_all_flags:    true
+		traverse_all_flags:    true
 		settingsfile_path:    temp_file
 		expanded_flag:        true
 	}

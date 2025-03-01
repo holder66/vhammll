@@ -197,7 +197,7 @@ pub mut:
 	partition_sizes                     []int
 	concurrency_flag                    bool
 	datafile_path                       string = 'datasets/developer.tab'
-	explore_all_flags                   bool
+	traverse_all_flags                   bool
 	testfile_path                       string
 	outputfile_path                     string
 	classifierfile_path                 string
