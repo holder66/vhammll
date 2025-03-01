@@ -197,7 +197,7 @@ pub mut:
 	partition_sizes                     []int
 	concurrency_flag                    bool
 	datafile_path                       string = 'datasets/developer.tab'
-	traverse_all_flags                   bool
+	traverse_all_flags                  bool
 	testfile_path                       string
 	outputfile_path                     string
 	classifierfile_path                 string
@@ -429,10 +429,12 @@ pub mut:
 	args []string
 }
 
+//
 pub struct SettingsForROC {
 pub mut:
-	classifiers_for_roc []ClassifierSettings
-	map_of_class_counts map[int][]int
+	class_fewest_cases_index int
+	classifiers_for_roc      []ClassifierSettings
+	array_of_correct_counts  [][]int
 }
 
 pub struct PlotResult {

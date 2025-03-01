@@ -4,15 +4,7 @@
 // actually, more fruitful might be just to use the u8 type, since it is unlikely that there would be more than 255 values for discrete attributes. And in this situation, compression is unnecessary, since we do not need bitstrings to get Hamming distances when only positive integers are involved.
 module vhammll
 
-// import math
 import time
-
-// struct Prevalence {
-// 	mut:
-// 	class string
-// 	start_count int
-// 	multiplier int
-// }
 
 // make_classifier returns a Classifier struct, given a Dataset (as created by
 // load_file).

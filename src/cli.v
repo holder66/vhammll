@@ -152,7 +152,7 @@ fn get_options(args []string) Options {
 	if option(args, ['-b', '--bins']) != '' {
 		opts.bins = parse_range(option(args, ['-b', '--bins']))
 	}
-	opts.explore_all_flags = flag(args, ['-af', '--all-flags'])
+	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
 	opts.concurrency_flag = flag(args, ['-c', '--concurrent'])
 	opts.exclude_flag = flag(args, ['-x', '--exclude'])
 	opts.graph_flag = flag(args, ['-g', '--graph'])

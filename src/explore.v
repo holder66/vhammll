@@ -22,20 +22,24 @@ module vhammll
 // graph_flag: generate plots of Receiver Operating Characteristics (ROC)
 // 	by attributes used; ROC by bins used, and accuracy by attributes
 //	used.
-// explore_all_flags: repeat the explore operation for all possible
-//  combinations of flags -bp, -p, -u, -w, -wr, and -x;
+// traverse_all_flags: repeat the explore operation for all possible
+//  combinations of the flags uniform_bins, weight_ranking_flag, etc;
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
-	// dump(ds.class_counts)
-	// class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
-	// mut roc_settings := SettingsForROC{
-	// 	classifiers_for_roc: []ClassifierSettings{len: ds.class_counts[class_with_fewest_cases]}
-	// }
-	// dump(roc_settings)
-	if opts.explore_all_flags {
+	class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
+	// class_fewest_cases_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
+	// dump(class_with_fewest_cases)
+	// dump(class_fewest_cases_index)
+	mut roc_settings := SettingsForROC{
+		class_fewest_cases_index: ds.classes.index(class_with_fewest_cases)
+		classifiers_for_roc:      []ClassifierSettings{len:
+			ds.class_counts[class_with_fewest_cases] + 1}
+		array_of_correct_counts:  [][]int{len: ds.class_counts[class_with_fewest_cases] + 1, init: []int{len: ds.classes.len}}
+	}
+	if opts.traverse_all_flags {
 		// in a series of nested loops, repeatedly execute the explore
 		// function over both true and false settings for the various
 		// flags in opts.Parameters
@@ -52,16 +56,50 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 						af_opts.purge_flag = p
 						for bp in ft {
 							af_opts.balance_prevalences_flag = bp
-							dump(af_opts.Parameters)
 							af_result = run_explore(ds, af_opts)
+							roc_settings = update_settings_for_roc(roc_settings, af_result)
 						}
 					}
 				}
 			}
 		}
+		for roc in cleanup_roc_settings(roc_settings).classifiers_for_roc {
+		println('${roc.t_p}   ${roc.t_n}   ${roc.sens}   ${1 - roc.spec}')
+	}
 		return af_result // returns just the last result for multiple explores
 	}
 	return run_explore(ds, opts)
+}
+
+fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) SettingsForROC {
+	mut updated := previous
+	for i, stored_counts in previous.array_of_correct_counts {
+		for j, new_counts in af_result.array_of_results.map(it.correct_counts) {
+			if array_sum(stored_counts) < array_sum(new_counts)
+				&& new_counts[previous.class_fewest_cases_index] == i {
+				dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
+				updated.array_of_correct_counts[i] = new_counts
+				updated.classifiers_for_roc[i] = ClassifierSettings{
+					Parameters:    af_result.array_of_results[j].Parameters
+					Metrics:       af_result.array_of_results[j].Metrics
+					BinaryMetrics: af_result.array_of_results[j].BinaryMetrics
+					LoadOptions:   af_result.array_of_results[j].LoadOptions
+				}
+				break
+			}
+		}
+	}
+	return updated
+}
+
+fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
+	mut cleaned := SettingsForROC{
+		class_fewest_cases_index: starting.class_fewest_cases_index
+		array_of_correct_counts:  starting.array_of_correct_counts.filter(array_sum(it) > 0)
+		classifiers_for_roc:      purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
+	}
+
+	return cleaned
 }
 
 fn run_explore(ds Dataset, opts Options) ExploreResult {

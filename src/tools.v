@@ -416,6 +416,21 @@ fn idxs_max[T](a []T) []int {
 	return idxs
 }
 
+// idxs_zero returns an array of indices pointing to all the elements
+// of the original array which are zero
+fn idxs_zero[T](a []T) []int {
+	if a == [] {
+		panic('idxs_max was called on an empty array')
+	}
+	mut idxs := []int{cap: a.len}
+	for i, val in a {
+		if val == 0 {
+			idxs << i
+		}
+	}
+	return idxs
+}
+
 // get_binning
 fn get_binning(bins []int) Binning {
 	if bins == [0] {

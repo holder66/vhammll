@@ -29,7 +29,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		number_of_attributes: [1, 12]
 		bins:                 [2, 16]
 		append_settings_flag: true
-		traverse_all_flags:    true
+		traverse_all_flags:   true
 		settingsfile_path:    temp_file
 		expanded_flag:        true
 	}
