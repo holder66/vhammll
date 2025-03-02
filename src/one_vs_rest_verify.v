@@ -44,7 +44,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 		actual_classes:                      test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
+		pos_neg_classes:                     get_pos_neg_classes(test_ds)
 		confusion_matrix_map:                confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)

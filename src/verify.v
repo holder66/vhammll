@@ -50,7 +50,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 }
 
 fn run_verify(opts Options) CrossVerifyResult {
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
 	mut confusion_matrix_map := map[string]StringFloatMap{}
@@ -77,7 +77,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 		labeled_classes:                     test_ds.class_values
 		class_counts:                        test_ds.class_counts
 		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds.class_counts)
+		pos_neg_classes:                     get_pos_neg_classes(test_ds)
 		confusion_matrix_map:                confusion_matrix_map
 		correct_inferences:                  inferences_map.clone()
 		incorrect_inferences:                inferences_map.clone()
@@ -88,7 +88,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 		false_negatives:                     inferences_map.clone()
 	}
 	verify_result.binning = get_binning(opts.bins)
-	// mut ds := load_file(opts.datafile_path)
+	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
 		cl = make_classifier(ds, opts)
@@ -161,7 +161,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	// 	}
 	// 	verify_result.classifier_indices = mult_opts.classifier_indices
-	// 	// mut ds := load_file(opts.datafile_path)
+	// 	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 	// 	// 	MultipleClassifierSettingsArray{}
 	// 	// }

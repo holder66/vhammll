@@ -29,16 +29,21 @@ module vhammll
 pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// dump(opts)
 	// instantiate a struct for SettingsForROC
+	mut roc_master_class := opts.positive_class
+	if opts.positive_class == '' {
+
+	
 	// look for the class with the fewest instances
-	class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
-	// class_fewest_cases_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
-	// dump(class_with_fewest_cases)
-	// dump(class_fewest_cases_index)
+	roc_master_class = get_map_key_for_min_value(ds.class_counts)
+}
+	// master_class_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
+	// dump(roc_master_class)
+	// dump(master_class_index)
 	mut roc_settings := SettingsForROC{
-		class_fewest_cases_index: ds.classes.index(class_with_fewest_cases)
+		master_class_index: ds.classes.index(roc_master_class)
 		classifiers_for_roc:      []ClassifierSettings{len:
-			ds.class_counts[class_with_fewest_cases] + 1}
-		array_of_correct_counts:  [][]int{len: ds.class_counts[class_with_fewest_cases] + 1, init: []int{len: ds.classes.len}}
+			ds.class_counts[roc_master_class] + 1}
+		array_of_correct_counts:  [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
 	}
 	if opts.traverse_all_flags {
 		// in a series of nested loops, repeatedly execute the explore
@@ -59,10 +64,10 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 						for bp in ft {
 							af_opts.balance_prevalences_flag = bp
 							af_result = run_explore(ds, af_opts)
-							dump(af_result)
+							// dump(af_result)
 							if af_opts.generate_roc_flag {
 								roc_settings = update_settings_for_roc(roc_settings, af_result)
-								dump(roc_settings)
+								// dump(roc_settings)
 							}
 						}
 					}
@@ -88,7 +93,7 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 	for i, stored_counts in previous.array_of_correct_counts {
 		for j, new_counts in af_result.array_of_results.map(it.correct_counts) {
 			if array_sum(stored_counts) < array_sum(new_counts)
-				&& new_counts[previous.class_fewest_cases_index] == i {
+				&& new_counts[previous.master_class_index] == i {
 				// dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
 				updated.array_of_correct_counts[i] = new_counts
 				updated.classifiers_for_roc[i] = ClassifierSettings{
@@ -108,7 +113,7 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
 	// dump(starting)
 	mut cleaned := SettingsForROC{
-		class_fewest_cases_index: starting.class_fewest_cases_index
+		master_class_index: starting.master_class_index
 		array_of_correct_counts:  starting.array_of_correct_counts.filter(array_sum(it) > 0)
 		classifiers_for_roc:      purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
 	}
@@ -126,9 +131,10 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 		DisplaySettings: opts.DisplaySettings
 		AttributeRange:  get_attribute_range(opts.number_of_attributes,
 			ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len)
-		pos_neg_classes: get_pos_neg_classes(ds.class_counts)
+		pos_neg_classes: get_pos_neg_classes(ds)
 		args:            opts.args
 	}
+	dump(results.pos_neg_classes)
 	mut result := CrossVerifyResult{
 		pos_neg_classes: results.pos_neg_classes
 	}

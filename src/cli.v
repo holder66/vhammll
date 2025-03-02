@@ -75,6 +75,7 @@ pub mut:
 //    result, instances used for validation, or a query instance will be
 //    stored;
 // -p --purge, removes instances which after binning are duplicates;
+// -pos, followed by the name of the class to be considered the Positive class;
 // -p#,
 // -ps,
 // -pmc --purge-missing-classes, removes instances for which the class value
@@ -187,9 +188,10 @@ fn get_options(args []string) Options {
 	if option(args, ['-r', '--reps']) != '' {
 		opts.repetitions = option(args, ['-r', '--reps']).int()
 	}
+	if option(args, ['-pos', '--positive-class']) != '' {
+		opts.positive_class = option(args, ['-pos', '--positive-class'])
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))
-		// println('opts.classifier_indices in cli.v: ${opts.classifier_indices}')
 	}
 	if option(args, ['-p#']) != '' {
 		opts.partition_sizes = parse_range(option(args, ['-p#']))

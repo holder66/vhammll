@@ -33,9 +33,9 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
 	// dump(ds.class_counts)
-	// class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
+	// roc_master_class := get_map_key_for_min_value(ds.class_counts)
 	// mut roc_settings := SettingsForROC{
-	// 	classifiers_for_roc: []ClassifierSettings{len: ds.class_counts[class_with_fewest_cases]}
+	// 	classifiers_for_roc: []ClassifierSettings{len: ds.class_counts[roc_master_class]}
 	// }
 	// dump(opts)
 	if opts.traverse_all_flags && opts.multiple_flag {
@@ -95,7 +95,7 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		labeled_classes:                     ds.class_values
 		class_counts:                        ds.class_counts
 		classes:                             ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(ds.class_counts)
+		pos_neg_classes:                     get_pos_neg_classes(ds)
 		confusion_matrix_map:                confusion_matrix_map
 		correct_inferences:                  inferences_map.clone()
 		incorrect_inferences:                inferences_map.clone()

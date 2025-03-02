@@ -1,4 +1,4 @@
-// ox2_test.v
+// ox2_cancers_only_test.v
 
 module vhammll
 
@@ -7,32 +7,35 @@ import os
 // import vtl
 
 fn testsuite_begin() ? {
-	if os.is_dir('tempfolders/tempfolder_ox2') {
-		os.rmdir_all('tempfolders/tempfolder_ox2')!
+	if os.is_dir('tempfolders/tempfolder_ox2_cancers_only') {
+		os.rmdir_all('tempfolders/tempfolder_ox2_cancers_only')!
 	}
-	os.mkdir_all('tempfolders/tempfolder_ox2')!
+	os.mkdir_all('tempfolders/tempfolder_ox2_cancers_only')!
 }
 
 fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_ox2')!
+	os.rmdir_all('tempfolders/tempfolder_ox2_cancers_only')!
 }
 
 fn test_explore_ox_mets_to_create_settings_file() {
-	println(r_b('\nDo an explore using cross-validation on the all_mets_v_other_odd.tsv dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
+	println(r_b('\nDo an explore using cross-validation on the ~/mets/ox2_mets_train.tsv dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 	home_dir := os.home_dir()
-	temp_file := 'tempfolders/tempfolder_ox2/ox2.opts'
-	temp_purged := 'tempfolders/tempfolder_ox2/ox2-purged.opts'
+	temp_file := 'tempfolders/tempfolder_ox2_cancers_only/ox2.opts'
+	temp_purged := 'tempfolders/tempfolder_ox2_cancers_only/ox2-purged.opts'
 	saved_file := 'src/testdata/ox2-purged.opts'
 	mut opts := Options{
 		command: 'explore'
 		// concurrency_flag:     true
-		datafile_path:        os.join_path(home_dir, 'mets', 'all_mets_v_other_odd.tsv')
+		datafile_path:        os.join_path(home_dir, 'mets', 'ox2_mets_train.tsv')
 		number_of_attributes: [1, 10]
 		bins:                 [2, 14]
 		append_settings_flag: true
 		traverse_all_flags:    true
 		settingsfile_path:    temp_file
 		expanded_flag:        true
+		generate_roc_flag: true
+		positive_class: 'Mets'
+
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	explore(ds, opts)
@@ -61,7 +64,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 		expanded_flag: true
 // 		// show_attributes_flag: true
 // 	}
-// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
+// 	ds := load_file(opts.datafile_path)
 // 	optimals(opts.multiple_classify_options_file_path, opts)
 // 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 // 		panic('read_multiple_opts failed')
@@ -93,7 +96,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 		multiple_classify_options_file_path: saved_file
 // 		multiple_flag:                       true
 // 	}
-// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
+// 	ds := load_file(opts.datafile_path)
 // 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags.'))
 // 	ft := [false, true]
 // 	mut result := CrossVerifyResult{}
@@ -134,38 +137,38 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	}
 // }
 
-fn test_ox2_multi_verify() {
-	mut result := CrossVerifyResult{}
-	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
-	println(r_b('the entire all_mets_v_other_odds.tsv dataset of  cases, and then classify the  cases in the'))
-	println(r_b('independent all_mets_v_other_evens.tsv dataset:'))
-	home_dir := os.home_dir()
+// fn test_ox2_multi_verify() {
+// 	mut result := CrossVerifyResult{}
+// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
+// 	println(r_b('the entire all_mets_v_other_odds.tsv dataset of  cases, and then classify the  cases in the'))
+// 	println(r_b('independent all_mets_v_other_evens.tsv dataset:'))
+// 	home_dir := os.home_dir()
 
-	ft := [false, true]
-	mut opts := Options{
-		command:                             'verify'
-		datafile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_odds.tsv')
-		testfile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_evens.tsv')
-		multiple_classify_options_file_path: 'src/testdata/ox2-purged.opts'
-		multiple_flag:                       true
-		// combined_radii_flag:                 false
-		// break_on_all_flag: true
-		// expanded_flag:                       true
-		show_attributes_flag: true
-	}
-	for ci in [[19, 61, 73], [6, 61, 73, 97], [53, 61, 73], [53, 61, 73, 97],
-		[61, 73]] {
-		// opts.expanded_flag = true
-		opts.classifier_indices = ci
-		opts.break_on_all_flag = true
-		result = multi_verify(opts)
-		println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
-	}
-	// opts.expanded_flag = true
-	// opts.classifier_indices = [44]
-	// result = multi_verify(opts)
-	// assert result.sens == 0.5
-	// assert result.spec == 0.8
-	// println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
-	// println(r_b('we get a sensitivity of 0.5, and specificity of 0.8, on the test set'))
-}
+// 	ft := [false, true]
+// 	mut opts := Options{
+// 		command:                             'verify'
+// 		datafile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_odds.tsv')
+// 		testfile_path:                       os.join_path(home_dir, 'mets', 'all_mets_v_other_evens.tsv')
+// 		multiple_classify_options_file_path: 'src/testdata/ox2-purged.opts'
+// 		multiple_flag:                       true
+// 		// combined_radii_flag:                 false
+// 		// break_on_all_flag: true
+// 		// expanded_flag:                       true
+// 		show_attributes_flag: true
+// 	}
+// 	for ci in [[19, 61, 73], [6, 61, 73, 97], [53, 61, 73], [53, 61, 73, 97],
+// 		[61, 73]] {
+// 		// opts.expanded_flag = true
+// 		opts.classifier_indices = ci
+// 		opts.break_on_all_flag = true
+// 		result = multi_verify(opts)
+// 		println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
+// 	}
+// 	// opts.expanded_flag = true
+// 	// opts.classifier_indices = [44]
+// 	// result = multi_verify(opts)
+// 	// assert result.sens == 0.5
+// 	// assert result.spec == 0.8
+// 	// println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
+// 	// println(r_b('we get a sensitivity of 0.5, and specificity of 0.8, on the test set'))
+// }

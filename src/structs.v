@@ -15,6 +15,7 @@ pub mut:
 	class_name                 string // the attribute which holds the class
 	class_index                int
 	classes                    []string // to ensure that the ordering remains the same
+	// positive_class string
 	class_values               []string
 	missing_class_values       []int // these are the indices of the original class values array
 	class_counts               map[string]int
@@ -179,6 +180,7 @@ pub mut:
 pub struct LoadOptions {
 	DefaultVals
 pub mut:
+	positive_class string
 	class_missing_purge_flag bool
 }
 
@@ -434,7 +436,7 @@ pub mut:
 //
 pub struct SettingsForROC {
 pub mut:
-	class_fewest_cases_index int
+	master_class_index int
 	classifiers_for_roc      []ClassifierSettings
 	array_of_correct_counts  [][]int
 }

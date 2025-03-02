@@ -52,5 +52,5 @@ fn test_partition_file() ! {
 	opts.bins = [3, 3]
 	opts.balance_prevalences_flag = true
 	opts.command = 'cross'
-	result = cross_validate(load_file(opts.datafile_path), opts)
+	result = cross_validate(load_file(opts.datafile_path, opts.LoadOptions), opts)
 }

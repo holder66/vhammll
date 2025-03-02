@@ -32,11 +32,11 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		labeled_classes:      test_ds.class_values
 		class_counts:         test_ds.class_counts
 		classes:              test_ds.classes
-		pos_neg_classes:      get_pos_neg_classes(test_ds.class_counts)
+		pos_neg_classes:      get_pos_neg_classes(test_ds)
 		confusion_matrix_map: confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
 	mut mult_opts := opts

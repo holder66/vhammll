@@ -465,6 +465,8 @@ Options:
   -p --purge: remove instances which are duplicates after binning;
   -r --reps: number of repetitions; if > 1, a random selection of 
       instances to be included in each fold will be applied;
+  -roc: collect settings for generating a Receiver Operating Characteristic (ROC)
+      curve; if followed by a file path, appends classifier setting to this file;
   -s --show: show output on the console;
   -t --test: followed by the path to a second file, used for verifications;
   -u --uniform: specifies that the number of bins used will be the same

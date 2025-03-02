@@ -127,22 +127,26 @@ fn get_binary_stats(result CrossVerifyResult) BinaryMetrics {
 }
 
 // get_pos_neg_classes
-fn get_pos_neg_classes(class_counts map[string]int) []string {
-	mut pos_class := ''
+fn get_pos_neg_classes(ds Dataset) []string {
+	mut pos_class := ds.positive_class
 	mut neg_class := ''
-	if class_counts.len == 2 {
+	if ds.class_counts.len == 2 {
 		mut keys := []string{}
 		mut counts := []int{}
-		for key, value in class_counts {
+		for key, value in ds.class_counts {
 			keys << key
 			counts << value
 		}
-		// use the class with fewer instances as the true positive class
-		pos_class = keys[0]
-		neg_class = keys[1]
-		if counts[0] > counts[1] {
-			pos_class = keys[1]
-			neg_class = keys[0]
+		if pos_class == '' {    // ie not specified by the user
+			// use the class with fewer instances as the true positive class
+			pos_class = keys[0]
+			neg_class = keys[1]
+			if counts[0] > counts[1] {
+				pos_class = keys[1]
+				neg_class = keys[0]
+			}
+		} else {
+			neg_class = keys.filter(it != pos_class)[0]
 		}
 	}
 	return [pos_class, neg_class]

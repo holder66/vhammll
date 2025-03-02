@@ -34,7 +34,7 @@ fn testsuite_end() ? {
 // 		settingsfile_path:    temp_file
 // 		expanded_flag:        true
 // 	}
-// 	ds := load_file(opts.datafile_path)
+// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 // 	explore(ds, opts)
 // 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purges settings to a temporary file:'))
 // 	opts.purge_flag = true
@@ -64,7 +64,7 @@ fn testsuite_end() ? {
 // 		expanded_flag: true
 // 		// show_attributes_flag: true
 // 	}
-// 	ds := load_file(opts.datafile_path)
+// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 // 	optimals(opts.multiple_classify_options_file_path, opts)
 // 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 // 		panic('read_multiple_opts failed')
@@ -97,7 +97,7 @@ fn test_multiple_crossvalidate_of_ox2() {
 		multiple_classify_options_file_path: saved_file
 		multiple_flag:                       true
 	}
-	ds := load_file(opts.datafile_path)
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags.'))
 	ft := [false, true]
 	mut result := CrossVerifyResult{}
