@@ -319,6 +319,7 @@ fn cross(opts Options) {
 
 // do_explore
 fn do_explore(opts Options) {
+	// dump(opts)
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	explore(ds, opts)
 }

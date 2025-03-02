@@ -27,6 +27,7 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
+	// dump(opts)
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
 	class_with_fewest_cases := get_map_key_for_min_value(ds.class_counts)
@@ -44,6 +45,7 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		// function over both true and false settings for the various
 		// flags in opts.Parameters
 		mut af_opts := opts
+		// dump(af_opts)
 		mut af_result := ExploreResult{}
 		ft := [false, true]
 		for ub in ft {
@@ -57,8 +59,10 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 						for bp in ft {
 							af_opts.balance_prevalences_flag = bp
 							af_result = run_explore(ds, af_opts)
+							dump(af_result)
 							if af_opts.generate_roc_flag {
 								roc_settings = update_settings_for_roc(roc_settings, af_result)
+								dump(roc_settings)
 							}
 						}
 					}
@@ -97,15 +101,18 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 			}
 		}
 	}
+	dump(updated.array_of_correct_counts)
 	return updated
 }
 
 fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
+	// dump(starting)
 	mut cleaned := SettingsForROC{
 		class_fewest_cases_index: starting.class_fewest_cases_index
 		array_of_correct_counts:  starting.array_of_correct_counts.filter(array_sum(it) > 0)
 		classifiers_for_roc:      purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
 	}
+	// dump(cleaned)
 	return cleaned
 }
 
