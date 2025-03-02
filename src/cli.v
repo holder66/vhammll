@@ -190,6 +190,7 @@ fn get_options(args []string) Options {
 	}
 	if option(args, ['-pos', '--positive-class']) != '' {
 		opts.positive_class = option(args, ['-pos', '--positive-class'])
+	}
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))
 	}

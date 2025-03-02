@@ -34,7 +34,6 @@ fn test_show_analyze() {
 		class_missing_purge_flag: true
 	), opts)
 	show_analyze(ar)
-
 	ar = analyze_dataset(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
 		opts)
 	show_analyze(ar)
@@ -165,7 +164,7 @@ fn test_show_explore_cross() ? {
 		datafile_path:        'datasets/developer.tab'
 		command:              'explore'
 	}
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	results = explore(ds, opts)
 
@@ -188,7 +187,7 @@ fn test_show_explore_verify() ? {
 		datafile_path:        'datasets/bcw350train'
 		testfile_path:        'datasets/bcw174test'
 	}
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	results = explore(ds, opts)
 	opts.weighting_flag = true
@@ -237,7 +236,7 @@ fn test_show_validate() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
-	ds = load_file(opts.datafile_path)
+	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	cl = make_classifier(ds, opts)
 	result = validate(cl, opts)!
@@ -258,7 +257,7 @@ fn test_show_verify() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
-	ds = load_file(opts.datafile_path)
+	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	result = verify(opts)
 	opts.weighting_flag = true
