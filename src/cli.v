@@ -80,8 +80,11 @@ pub mut:
 // -pmc --purge-missing-classes, removes instances for which the class value
 //  is missing;
 // -r --reps, number of repetitions; if > 1, a random selection of
-// 	instances to be included in each fold will be applied
-// -rand, when partitioning datafiles, picks cases randomly (instead of sequentially)
+// 	instances to be included in each fold will be applied;
+// -rand, when partitioning datafiles, picks cases randomly (instead of sequentially);
+// -roc, generate sensitivity vs 1-specificity values for generating a Receiver
+//    Operating Characteristic (ROC) curve; if followed by a file path, save the
+//    corresponding classifier settings to that file
 // -s --show, output results to the console;
 // -t --test, followed by the path to the datafile to be verified or validated;
 // -u --uniform, specifies if uniform binning is to be used for the explore
@@ -173,6 +176,8 @@ fn get_options(args []string) Options {
 	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])
 	opts.random_pick = flag(args, ['-rand'])
+	opts.generate_roc_flag = flag(args, ['-roc'])
+
 	if option(args, ['-a', '--attributes']) != '' {
 		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
 	}
@@ -198,6 +203,7 @@ fn get_options(args []string) Options {
 	opts.multiple_classify_options_file_path = option(args, ['-m', '--multiple'])
 	opts.settingsfile_path = option(args, ['-ms'])
 	opts.kagglefile_path = option(args, ['-ka', '--kaggle'])
+	opts.roc_settingsfile_path = option(args, ['-roc'])
 	return opts
 }
 

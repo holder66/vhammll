@@ -3,16 +3,19 @@ module vhammll
 
 fn test_settings_for_roc() {
 	mut opts := Options{
-		traverse_all_flags: true
-		datafile_path:      'datasets/bcw350train'
-		testfile_path: 'datasets/bcw174test'
-		bins:               [1, 6]
+		traverse_all_flags:    true
+		generate_roc_flag:     true
+		roc_settingsfile_path: 'src/testdata/roc_settings.opts'
+		datafile_path:         'datasets/bcw350train'
+		testfile_path:         'datasets/bcw174test'
+		bins:                  [1, 6]
 		// number_of_attributes: [1,4]
 		// show_flag: true
-		expanded_flag: true
+		// expanded_flag: true
 	}
 	mut ds := load_file(opts.datafile_path)
 	explore(ds, opts)
+	display_file(opts.roc_settingsfile_path)
 }
 
 // fn test_explore_cross() ? {

@@ -172,6 +172,7 @@ pub mut:
 	show_attributes_flag bool
 	graph_flag           bool
 	verbose_flag         bool
+	generate_roc_flag    bool
 }
 
 @[params]
@@ -205,6 +206,7 @@ pub mut:
 	multiple_classify_options_file_path string
 	multiple_classifier_settings        []ClassifierSettings
 	settingsfile_path                   string
+	roc_settingsfile_path               string
 	partitionfiles_paths                []string
 	help_flag                           bool
 	// multiple_flag                       bool

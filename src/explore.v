@@ -57,15 +57,23 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 						for bp in ft {
 							af_opts.balance_prevalences_flag = bp
 							af_result = run_explore(ds, af_opts)
-							roc_settings = update_settings_for_roc(roc_settings, af_result)
+							if af_opts.generate_roc_flag {
+								roc_settings = update_settings_for_roc(roc_settings, af_result)
+							}
 						}
 					}
 				}
 			}
 		}
-		for roc in cleanup_roc_settings(roc_settings).classifiers_for_roc {
-		println('${roc.t_p}   ${roc.t_n}   ${roc.sens}   ${1 - roc.spec}')
-	}
+		if af_opts.generate_roc_flag {
+			for roc in cleanup_roc_settings(roc_settings).classifiers_for_roc {
+				println('${roc.t_p:5}   ${roc.t_n:5}   ${roc.sens:-5.4f}   ${1 - roc.spec:-5.4f}')
+
+				if af_opts.roc_settingsfile_path != '' {
+					append_roc_settings_to_file(roc, af_opts.roc_settingsfile_path)
+				}
+			}
+		}
 		return af_result // returns just the last result for multiple explores
 	}
 	return run_explore(ds, opts)
@@ -77,7 +85,7 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 		for j, new_counts in af_result.array_of_results.map(it.correct_counts) {
 			if array_sum(stored_counts) < array_sum(new_counts)
 				&& new_counts[previous.class_fewest_cases_index] == i {
-				dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
+				// dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
 				updated.array_of_correct_counts[i] = new_counts
 				updated.classifiers_for_roc[i] = ClassifierSettings{
 					Parameters:    af_result.array_of_results[j].Parameters
@@ -98,7 +106,6 @@ fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
 		array_of_correct_counts:  starting.array_of_correct_counts.filter(array_sum(it) > 0)
 		classifiers_for_roc:      purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
 	}
-
 	return cleaned
 }
 

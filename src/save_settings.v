@@ -16,6 +16,12 @@ fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) 
 	append_json_file(settings_to_append, opts.settingsfile_path)
 }
 
+fn append_roc_settings_to_file(roc_settings ClassifierSettings, roc_settingsfile_path string) {
+	mut settings_to_append := roc_settings
+	settings_to_append.classifier_index = get_next_classifier_index(roc_settingsfile_path)
+	append_json_file(settings_to_append, roc_settingsfile_path)
+}
+
 fn get_next_classifier_index(settingsfile_path string) int {
 	// check if there is already a settings file
 	if os.is_file(settingsfile_path.trim_space()) {
