@@ -666,3 +666,16 @@ fn filter_array_by_index[T](array []T, keep_indices []int) []T {
 	}
 	return result
 }
+
+// pick_array_elements_by_index outputs an array of elements from the 
+// original, picked by using the values in a second array as indices into 
+// the first. 
+fn pick_array_elements_by_index[T](array []T, indices []int) []T {
+	if array.len == 0 || indices.len == 0 {return []T{}}
+	mut result := []T{cap: array.len}
+	for indx in indices {
+		if indx >= array.len {continue}
+		result << array[indx]
+	}
+	return result
+}

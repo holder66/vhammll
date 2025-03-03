@@ -30,12 +30,11 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		number_of_attributes: [1, 10]
 		bins:                 [2, 14]
 		append_settings_flag: true
-		traverse_all_flags:    true
+		traverse_all_flags:   true
 		settingsfile_path:    temp_file
 		expanded_flag:        true
-		generate_roc_flag: true
-		positive_class: 'Mets'
-
+		generate_roc_flag:    true
+		positive_class:       'Mets'
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	explore(ds, opts)

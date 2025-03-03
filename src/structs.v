@@ -12,9 +12,9 @@ pub mut:
 
 pub struct Class {
 pub mut:
-	class_name                 string // the attribute which holds the class
-	class_index                int
-	classes                    []string // to ensure that the ordering remains the same
+	class_name  string // the attribute which holds the class
+	class_index int
+	classes     []string // to ensure that the ordering remains the same
 	// positive_class string
 	class_values               []string
 	missing_class_values       []int // these are the indices of the original class values array
@@ -180,7 +180,7 @@ pub mut:
 pub struct LoadOptions {
 	DefaultVals
 pub mut:
-	positive_class string
+	positive_class           string
 	class_missing_purge_flag bool
 }
 
@@ -236,6 +236,7 @@ pub mut:
 	classes                                     []string
 	correct_inferences_by_class_max             []int
 	correct_inferences_by_class_max_classifiers [][]int
+	receiver_operating_characteristic_settings  []int
 }
 
 pub struct ClassifierSettings {
@@ -436,9 +437,9 @@ pub mut:
 //
 pub struct SettingsForROC {
 pub mut:
-	master_class_index int
-	classifiers_for_roc      []ClassifierSettings
-	array_of_correct_counts  [][]int
+	master_class_index      int
+	classifiers_for_roc     []ClassifierSettings
+	array_of_correct_counts [][]int
 }
 
 pub struct PlotResult {

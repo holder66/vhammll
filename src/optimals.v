@@ -40,6 +40,25 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.map(it.correct_counts[i]))
 	}
+	// to display the settings for ROC, we assume the first entry in correct_counts is the master class
+	// thus the highest value for the entries in this position is
+	max_roc_entry := result.correct_inferences_by_class_max[0]
+	correct_counts := settings.map(it.correct_counts)
+	mut roc_classifier_indices := []int{len: max_roc_entry + 1, init: -1}
+	mut roc_table := [][]int{len: max_roc_entry + 1, init: []int{len: result.classes.len}}
+	for i, mut counts in roc_table { // i is the value for the master class's correct count
+		for j, corrects in correct_counts { // j is the classifier index
+			if corrects[0] == i {
+				if array_sum(corrects) > array_sum(counts) {
+					roc_table[i] = corrects
+					roc_classifier_indices[i] = j
+				}
+				continue
+			}
+		}
+	}
+	result.receiver_operating_characteristic_settings = roc_classifier_indices.filter(it != -1)
+
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
 	}
@@ -66,6 +85,9 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 			show_multiple_classifier_settings_details(filter_array_by_index(settings,
 				result.correct_inferences_by_class_max_classifiers[i]), result.correct_inferences_by_class_max_classifiers[i])
 		}
+		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
+		show_multiple_classifier_settings_details(pick_array_elements_by_index(settings, result.receiver_operating_characteristic_settings),
+			result.receiver_operating_characteristic_settings)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {

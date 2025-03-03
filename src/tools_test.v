@@ -247,3 +247,28 @@ fn test_chlk1() {
 	println(r_b('This should be bold red text.'))
 	println(rgb('Bold red text on green background'))
 }
+
+fn test_filter_array_by_index() {
+	assert filter_array_by_index([36, 40, 66], [0]) == [36]
+	assert filter_array_by_index([36, 40, 66], [0, 1]) == [36, 40]
+	assert filter_array_by_index([36, 40, 66], [1, 0]) == [36, 40]
+	assert filter_array_by_index([36, 40, 66], [2, 0]) == [36, 66]
+	assert filter_array_by_index([36, 40, 66], [1, 2]) == [40, 66]
+	assert filter_array_by_index([]int{}, [0]) == []
+	assert filter_array_by_index([36, 40, 66], [0, 5]) == [36]
+	assert filter_array_by_index([36, 40, 66], [5, 1, 1]) == [40]
+	assert filter_array_by_index([]string{}, [0]) == []
+}
+
+fn test_pick_array_elements_by_index() {
+	assert pick_array_elements_by_index([36, 40, 66], [0]) == [36]
+	assert pick_array_elements_by_index([36, 40, 66], [0, 1]) == [36, 40]
+	assert pick_array_elements_by_index([36, 40, 66], [1, 0]) == [40, 36]
+	assert pick_array_elements_by_index([36, 40, 66], [2, 0]) == [66, 36]
+	assert pick_array_elements_by_index([36, 40, 66], [1, 2]) == [40, 66]
+	assert pick_array_elements_by_index([36, 40, 66], []int{}) == []
+	assert pick_array_elements_by_index([]int{}, [0]) == []
+	assert pick_array_elements_by_index([36, 40, 66], [0, 5]) == [36]
+	assert pick_array_elements_by_index([36, 40, 66], [5, 1, 1]) == [40, 40]
+	assert pick_array_elements_by_index([]string{}, [0]) == []
+}

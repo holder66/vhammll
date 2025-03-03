@@ -137,7 +137,7 @@ fn get_pos_neg_classes(ds Dataset) []string {
 			keys << key
 			counts << value
 		}
-		if pos_class == '' {    // ie not specified by the user
+		if pos_class == '' { // ie not specified by the user
 			// use the class with fewer instances as the true positive class
 			pos_class = keys[0]
 			neg_class = keys[1]

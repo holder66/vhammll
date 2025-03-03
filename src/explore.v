@@ -31,19 +31,16 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 	// instantiate a struct for SettingsForROC
 	mut roc_master_class := opts.positive_class
 	if opts.positive_class == '' {
-
-	
-	// look for the class with the fewest instances
-	roc_master_class = get_map_key_for_min_value(ds.class_counts)
-}
+		// look for the class with the fewest instances
+		roc_master_class = get_map_key_for_min_value(ds.class_counts)
+	}
 	// master_class_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
 	// dump(roc_master_class)
 	// dump(master_class_index)
 	mut roc_settings := SettingsForROC{
-		master_class_index: ds.classes.index(roc_master_class)
-		classifiers_for_roc:      []ClassifierSettings{len:
-			ds.class_counts[roc_master_class] + 1}
-		array_of_correct_counts:  [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
+		master_class_index:      ds.classes.index(roc_master_class)
+		classifiers_for_roc:     []ClassifierSettings{len: ds.class_counts[roc_master_class] + 1}
+		array_of_correct_counts: [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
 	}
 	if opts.traverse_all_flags {
 		// in a series of nested loops, repeatedly execute the explore
@@ -113,9 +110,9 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
 	// dump(starting)
 	mut cleaned := SettingsForROC{
-		master_class_index: starting.master_class_index
-		array_of_correct_counts:  starting.array_of_correct_counts.filter(array_sum(it) > 0)
-		classifiers_for_roc:      purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
+		master_class_index:      starting.master_class_index
+		array_of_correct_counts: starting.array_of_correct_counts.filter(array_sum(it) > 0)
+		classifiers_for_roc:     purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
 	}
 	// dump(cleaned)
 	return cleaned
