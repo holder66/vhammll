@@ -28,7 +28,7 @@ FUNCTION get rank value (for each dataset case, its assigned class value; bin va
 	SUM the values in the row sums cell across the rows; the result is the rank value
 	RETURN the rank value
 
-FUNCTION binning (list of attribute values; number of bins to use); returns a bin value corresponding to each attribute value
+FUNCTION binning (list of attribute values; number of bins to use); returns a list of bin values corresponding to each attribute's value
 	SET UP a list of bin values
 	CALCULATE the MINIMUM and the MAXIMUM values for the list of attribute values
 	CALCULATE the BIN SIZE as (MAXIMUM - MINIMUM) / number of bins to use

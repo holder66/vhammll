@@ -9,8 +9,14 @@ const vhammll_help = "
     of the holder66.vhamml Machine Learning library.
     help, -h, --help to display this usage information.
     For help with any of the commands below, enter the command followed by
+<<<<<<< Updated upstream
       -h or --help, eg v run . make --help, or just enter the command,
       eg v run . explore
+=======
+      -h or --help, eg v run main.v make --help, or just enter the command,
+      eg v run main.v explore
+
+>>>>>>> Stashed changes
     Usage:
     Specify the file's path as the last command line argument, 
       eg, v run . analyze -s datasets/iris.tab
@@ -49,6 +55,7 @@ const vhammll_help = "
                instances;
     
     Options:
+<<<<<<< Updated upstream
     -a --attributes: can be one, two, or 3 integers; a single integer will
                      be used by make_classifier to produce a classifier with 
                      that number of attributes. More than one integer will be 
@@ -63,60 +70,21 @@ const vhammll_help = "
     -bp, --balanced-prevalences: multiply the number of instances for classes
                      with low prevalence, to more closely balance prevalences;
     -c --concurrent: enable parallel processing to use multiple cores;
+=======
+    Note - only the options which apply in general are shown here. Use 
+    v run main.v <command> -h to show options specific to that command.
+
+>>>>>>> Stashed changes
     -e --expanded:   show expanded results on the console;
-    -ea:             display information re trained attributes on the console, 
-                     for classification operations;
-    -f --folds:      default is leave-one-out;
     -g --graph:      generates plots that show in your default web browser;
     -h --help:        
-    -k --classifier: followed by the path to a file for a saved Classifier;
-    -ka --kaggle:    followed by the path to a file. Used with the 'validate' 
-                     command, a csv file suitable for submission to a Kaggle 
-                     competition is created;
-    -m --multiple:   classify using more than one trained classifier, followed
-                     by the path to a json file with parameters to generate
-                     each classifier;
-    -ma:             when multiple classifiers are used, stop classifying when 
-                     matches have been found for all classifiers;
-    -mc:             when multiple classifiers are used, combine the possible 
-                     hamming distances for each classifier into a single list;
-    -mt:             when multiple classifiers are used, add the nearest
-                     neighbors from each classifier, weight by class
-                     prevalences, and then infer from the totals;
-    -m#:             followed by a list of which classifiers to apply in a 
-                     multiple classification run (zero-indexed);
-    -ms:             append the settings to a file (path follows flag) for use 
-                     in multiple classification (with -m#). When used with
-                     'explore', the settings for cases identified in the 
-                     analytics are appended;
     -o --output:     followed by the path to a file in which a classifier, a
                      result, instances used for validation, or a query instance 
                      is to be stored;
-    -p --purge:      remove instances which are duplicates after binning;
-    -pmc --purge-missing-classes: removes instances for which the class value
-                     is missing;
-    -p#:             followed by a list of integers specifying the relative
-                     sizes of each partition (used with the partition command);
-    -ps:             followed by a list of partition file paths;
-    -r --reps:       number of repetitions; if > 1, a random selection of
-                     instances to be included in each fold will be applied;
-    -rand:           used with partition; picks cases randomly for each partition;
     -s --show:       output results to the console;
     -t --test:       followed by the path to the datafile to be verified or
                      validated;
-    -u --uniform:    specifies that the number of bins used will be the same
-                     for all attributes for the explore command (note: to
-                     obtain uniform binning with verify, validate, query, or
-                     or cross-validate, specify the same value for binning,
-                     eg -b 4,4))
-    -v --verbose:    display additional information for debugging;
-    -w --weight:     when classifying, weight the nearest neighbour counts by 
-                     class prevalences;
-    -wr:             when ranking attributes, weight contributions by 
-                     class prevalences;
-    -x --exclude:    do not take into account missing values when ranking 
-                     attributes;
-        
+    -v --verbose:    display additional information for debugging.      
   "
 
 const display_help = '
@@ -129,8 +97,8 @@ Display can be used to print out a multiple classifier settings file.
 
 Usage:
 first save a results file, eg 
-v run . rank -o <path_to_results_file> <path_to_dataset_file>
-Then: v run . display <path_to_results_file>
+v run main.v rank -o <path_to_results_file> <path_to_dataset_file>
+Then: v run main.v display <path_to_results_file>
 
 Options:
 -e --expanded: show expanded results on the console 
@@ -146,8 +114,8 @@ correct inferences, and highest correct inferences per class, for multiple class
 settings are stored in a settings file specified by the last command line argument.
 
 Usage:
-v run . optimals -e <path_to_settings_file>
-v run . optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
+v run main.v optimals -e <path_to_settings_file>
+v run main.v optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
 
 Options:
 -e --expanded: show expanded results on the console
@@ -163,7 +131,7 @@ to continue by hitting the "return" key, and then executes the example
 and displays the result on the console. 
 
 Usage:
-To start the demonstration, enter "v run . examples go"
+To start the demonstration, enter "v run main.v examples go"
 
 Options:
 To stop before completing the demo, hit ctrl-C
@@ -181,7 +149,7 @@ missing values;
 5. a breakdown of the class attribute, showing counts for each class. 
 
 Usage:
- v run . analyze <path_to_dataset_file>
+ v run main.v analyze <path_to_dataset_file>
 
 Options:
 -h --help: displays this message.
@@ -196,7 +164,7 @@ generated by the validate or query commands (using the -o option). information
 about the extended classifier is displayed on the console.
 Optionally, the extended classifier can be stored in a file specified by -o. 
 
-Usage: v run . append -k <path_to_classifier_file> -o <path_to_instances_file> (this 
+Usage: v run main.v append -k <path_to_classifier_file> -o <path_to_instances_file> (this 
 assumes that iris.cl and instancesfile have already been created)
 
 Required:
@@ -213,7 +181,7 @@ Description:
 "make" creates a classifier from the datafile given as the last argument.
 Returns a classifier struct.
 
-Usage: v run . make -s <path_to_dataset_file>
+Usage: v run main.v make -s <path_to_dataset_file>
 
 Options:
   -a --attributes: the number of attributes (picked from the list of 
@@ -236,7 +204,7 @@ class.
 Optionally, the new instance can be saved in an instances file specified by -o.
 This instances file can be used by "append" to extend the classifier.
 
-Usage: v run . query -k <path_to_classifier_file>
+Usage: v run main.v query -k <path_to_classifier_file>
 
 Options:
 In addition to the options below, the options for the "make" command are also
@@ -253,7 +221,7 @@ const orange_help = "
 Description:
 How to format files as per Orange.
 
-Usage: v run . orange
+Usage: v run main.v orange
 
 Options: none
 
@@ -303,7 +271,7 @@ attributes is copied from the classification dataset. Each instance in the
 verification dataset is classified, and the inferred classes are compared to 
 the labeled classes to provide accuracy and other statistics.
 
-Usage: v run . verify -c -e -t datasets/bcw174test datasets/bcw350train
+Usage: v run main.v verify -c -e -t datasets/bcw174test datasets/bcw350train
 
 Required:
 -t --test: path to a test file to be verified.
@@ -346,7 +314,7 @@ inferred classes are displayed on the console.
 IMPORTANT: The validation dataset should still have an identified
 class attribute; however, the values should be empty.
 
-Usage: v run . validate -o ~/instancesfile -t datasets/bcw174validate <path_to_dataset_file> 
+Usage: v run main.v validate -o ~/instancesfile -t datasets/bcw174validate <path_to_dataset_file> 
 
 Required:
   -t --test: followed by the file path for the datafile to be used 
@@ -388,7 +356,7 @@ attributes need to be recalculated for the subset, and the map of unique
 values for discrete attributes may be different also for the subset 
 compared to the whole dataset. 
 
-Usage: v run . cross -c <path_to_dataset_file>
+Usage: v run main.v cross -c <path_to_dataset_file>
 
 Options:
   -a --attributes: the number of attributes (picked from the list of 
@@ -431,7 +399,7 @@ the interval. For example, --bins 2,12,3 would indicate to do
 cross-validations for bins settings of 2, 5, 8, and 11. Note that a 
 single integer specifies the upper end of a range starting at 1.
 
-Usage: v run . explore <options> <path_to_dataset_file> 
+Usage: v run main.v explore <options> <path_to_dataset_file> 
 
 Options:
   -a --attributes: a range for the number of attributes (picked from the list
@@ -474,7 +442,7 @@ If the total cases do not divide equally, the remainder go into the last partiti
 Cases for each partition are picked randomly (but a case can only be in one 
 partition).
 
-Usage: v run . partition <options> <path_to_dataset_file>
+Usage: v run main.v partition <options> <path_to_dataset_file>
 
 Options:
   -p#:             followed by a list of integers specifying the relative
