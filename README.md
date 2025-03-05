@@ -58,11 +58,11 @@ fn main() {
     vhammll.cli()!
 }
 ```
-Assuming you've named the directory or folder `vhamml` and the file within `main.v`, in the terminal:
-`v run .` followed by the command line arguments, eg
-`v run . --help` or `v run . analyze <path_to_dataset_file>`
+Assuming the file containing the `main()` function is named `main.v`, in the terminal:
+`v run main.v` followed by the command line arguments, eg
+`v run main.v --help` or `v run . analyze <path_to_dataset_file>`
 Command-specific help is available, like so:
-`v run . explore --help` or `v run . explore -h`
+`v run main.v explore --help` or `v run . explore -h`
 
 Note that the publicly available datasets included with the VHamMLL distribution can be found at `~/.vmodules/holder66/vhammll/datasets`.
 
@@ -70,14 +70,13 @@ That's it!
 
 ## Tutorial:
 ```sh
-v run . examples go
+v run main.v examples go
 ```
 
 ## Updating:
 ```sh
 v up        # installs the latest release of V
-v update    # get the latest version of the libraries, including holder66.vhammll
-v .         # recompile
+v update    # get the latest version of the libraries, including holder66.vhammllj
 ```
 
 

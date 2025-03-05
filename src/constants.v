@@ -7,13 +7,16 @@ const vhammll_help = "
     Description:
     vhamml.v is a command line interface app to make use of the functionality
     of the holder66.vhamml Machine Learning library.
+
     help, -h, --help to display this usage information.
+
     For help with any of the commands below, enter the command followed by
       -h or --help, eg v run . make --help, or just enter the command,
-      eg v run . explore
+      eg v run main.v explore
+
     Usage:
     Specify the file's path as the last command line argument, 
-      eg, v run . analyze -s datasets/iris.tab
+      eg, v run main.v analyze -s datasets/iris.tab
     
     Commands:
     analyze:   generates information about a dataset, for printing to the 
@@ -49,6 +52,9 @@ const vhammll_help = "
                instances;
     
     Options:
+    Note - only the options which apply in general are shown here. Use 
+    `v run main.v <command> -h` to show options specific to that command.
+
     -a --attributes: can be one, two, or 3 integers; a single integer will
                      be used by make_classifier to produce a classifier with 
                      that number of attributes. More than one integer will be 

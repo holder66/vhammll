@@ -174,6 +174,8 @@ pub mut:
 	graph_flag           bool
 	verbose_flag         bool
 	generate_roc_flag    bool
+	limit_output         int
+	overfitting_flag     bool
 }
 
 @[params]
@@ -197,6 +199,7 @@ pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
 	bins                                []int = [1, 16]
+	explore_rank                        []int
 	partition_sizes                     []int
 	concurrency_flag                    bool
 	datafile_path                       string = 'datasets/developer.tab'

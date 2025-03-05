@@ -8,7 +8,9 @@ Description:
   "rank" rank orders a dataset\'s attributes in terms of ability 
 to distinguish between classes; it takes into account class prevalences.
 
-Usage: v run . rank -x -g -wr <path_to_dataset_file>
+Usage: `v run main.v rank <options> <path_to_dataset_file>`
+
+Example: `v run .main.v rank -b 3,6 -x -wr datasets/iris.tab`
 
 Options: 
   -b --bins, eg, "3,6" specifies the lower and upper limits for the number 
@@ -16,7 +18,15 @@ Options:
   -x --exclude, exclude missing values from rank value calculations;
   -g --graph, produce a plot showing rank values vs number of bins for   
       continuous attributes.
+  -l --limit-output, followed by an integer which specifies how many
+  		attributes should be included in the console listing.
+  -ov --overfitting, console output and graph to include information
+  		allowing for an assessment of overfitting likelihood.
+  -exr --explore-rank, followed by eg "2,7", will repeat the ranking
+  		exercise over the binning range from 2 through 7.
+  -u --uniform, uses uniform binning over all attributes.
   -wr, weight contribution to ranking by considering class prevalences.
+
     '
 
 // rank_attributes takes a Dataset and returns a list of all the
