@@ -9,14 +9,9 @@ const vhammll_help = "
     of the holder66.vhamml Machine Learning library.
     help, -h, --help to display this usage information.
     For help with any of the commands below, enter the command followed by
-<<<<<<< Updated upstream
-      -h or --help, eg v run . make --help, or just enter the command,
-      eg v run . explore
-=======
       -h or --help, eg v run main.v make --help, or just enter the command,
       eg v run main.v explore
 
->>>>>>> Stashed changes
     Usage:
     Specify the file's path as the last command line argument, 
       eg, v run . analyze -s datasets/iris.tab
@@ -55,26 +50,9 @@ const vhammll_help = "
                instances;
     
     Options:
-<<<<<<< Updated upstream
-    -a --attributes: can be one, two, or 3 integers; a single integer will
-                     be used by make_classifier to produce a classifier with 
-                     that number of attributes. More than one integer will be 
-                     used by explore to provide a range and an interval;
-    -af --all-flags: used with explore to repeat the explore operation for all
-                     possible combinations of flags -bp, -p, -u, -w, -wr, and -x; 
-    -b --bins:       can be one, two, or 3 integers; a single integer for one 
-                     bin value to be used for all attributes; two integers for 
-                     a range of bin values; a third integer specifies an 
-                     interval for the range (note that the binning range is 
-                     from the upper to the lower value);
-    -bp, --balanced-prevalences: multiply the number of instances for classes
-                     with low prevalence, to more closely balance prevalences;
-    -c --concurrent: enable parallel processing to use multiple cores;
-=======
     Note - only the options which apply in general are shown here. Use 
     v run main.v <command> -h to show options specific to that command.
 
->>>>>>> Stashed changes
     -e --expanded:   show expanded results on the console;
     -g --graph:      generates plots that show in your default web browser;
     -h --help:        

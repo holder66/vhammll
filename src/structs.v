@@ -172,7 +172,7 @@ pub mut:
 	expanded_flag        bool
 	show_attributes_flag bool
 	graph_flag           bool
-	help_flag                           bool
+	help_flag            bool
 	verbose_flag         bool
 	generate_roc_flag    bool
 }
@@ -211,7 +211,7 @@ pub mut:
 	settingsfile_path                   string
 	roc_settingsfile_path               string
 	partitionfiles_paths                []string
-	
+
 	// multiple_flag                       bool
 	append_settings_flag bool
 	command              string

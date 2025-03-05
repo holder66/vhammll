@@ -55,7 +55,7 @@ pub mut:
 // -l --limit-output, followed by an integer which specifies how many
 //  	attributes should be included in the console listing: DisplaySettings.limit_output
 // -m --multiple, classify using more than one trained classifier, followed by
-//    the path to a json file with parameters to generate each classifier: 
+//    the path to a json file with parameters to generate each classifier:
 //    Options.multiple_classify_options_file_path
 // -ma when multiple classifiers are used, stop classifying when matches
 //    have been found for all classifiers;
