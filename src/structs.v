@@ -211,12 +211,10 @@ pub mut:
 	settingsfile_path                   string
 	roc_settingsfile_path               string
 	partitionfiles_paths                []string
-
-	// multiple_flag                       bool
-	append_settings_flag bool
-	command              string
-	args                 []string
-	kagglefile_path      string
+	append_settings_flag                bool
+	command                             string
+	args                                []string
+	kagglefile_path                     string
 }
 
 pub struct MultipleClassifierSettingsFileStruct {
