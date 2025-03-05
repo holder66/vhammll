@@ -86,8 +86,8 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 				result.correct_inferences_by_class_max_classifiers[i]), result.correct_inferences_by_class_max_classifiers[i])
 		}
 		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
-		show_multiple_classifier_settings_details(pick_array_elements_by_index(settings, result.receiver_operating_characteristic_settings),
-			result.receiver_operating_characteristic_settings)
+		show_multiple_classifier_settings_details(pick_array_elements_by_index(settings,
+			result.receiver_operating_characteristic_settings), result.receiver_operating_characteristic_settings)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {

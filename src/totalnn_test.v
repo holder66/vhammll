@@ -33,9 +33,9 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/2_class.opts'
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut er := explore(ds, opts)
-	assert os.file_size(opts.settingsfile_path) == 5807, 'Settings file too small'
+	assert os.file_size(opts.settingsfile_path) == 5907, 'Settings file too small'
 	display_file(opts.settingsfile_path, opts)
 
 	opts.multiple_flag = true
@@ -97,7 +97,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.bins = [5, 5]
 	opts.purge_flag = true
 	opts.weight_ranking_flag = true
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 
 	// 2025-1-7 crashing at the next step, in the multi_verify function
 	result0 := verify(opts)
@@ -175,9 +175,9 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/2_class.opts'
 // 	opts.append_settings_flag = true
 // 	opts.weight_ranking_flag = true
-// 	mut er := explore(load_file(opts.datafile_path), opts)
+// 	mut er := explore(load_file(opts.datafile_path, opts.LoadOptions), opts)
 // 	opts.command = 'cross'
-// 	mut ds := load_file(opts.datafile_path)
+// 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 // 	opts.number_of_attributes = [3]
 // 	opts.bins = [1, 3]
 // 	result = cross_validate(ds, opts)
@@ -219,7 +219,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 		command: 'explore'
 // 	}
 
-// 	ds := load_file(opts.datafile_path)
+// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 // 	ft := [false, true]
 // 	for pf in ft {
 // 		opts.purge_flag = pf
@@ -249,7 +249,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	}
 // }
 // opts.command = 'cross'
-// ds = load_file(opts.datafile_path)
+// ds = load_file(opts.datafile_path, opts.LoadOptions)
 // opts.number_of_attributes = [7]
 // result = cross_validate(ds, opts)
 // opts.multiple_flag = true
@@ -288,7 +288,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // opts.bins = [1,2]
 // opts.number_of_attributes = [2]
 // opts.weighting_flag = false
-// ds = load_file(opts.datafile_path)
+// ds = load_file(opts.datafile_path, opts.LoadOptions)
 // // println(ds.class_values)
 // cl1 = make_classifier(mut ds, opts)
 // mut test_ds1 := load_file(opts.testfile_path)
@@ -316,7 +316,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // opts.classifierfile_path = ''
 // opts.number_of_attributes = [1]
 // opts.weighting_flag = true
-// ds = load_file(opts.datafile_path)
+// ds = load_file(opts.datafile_path, opts.LoadOptions)
 // cl1 = make_classifier(mut ds, opts)
 // test_ds1 = load_file(opts.testfile_path)
 // // println(test_ds1.class_values)
@@ -352,7 +352,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // opts.number_of_attributes = [1]
 // opts.bins = [5,5]
 // opts.weighting_flag = true
-// ds = load_file(opts.datafile_path)
+// ds = load_file(opts.datafile_path, opts.LoadOptions)
 // cl1 = make_classifier(mut ds, opts)
 // test_ds1 = load_file(opts.testfile_path)
 // // println(test_ds1.class_values)
@@ -401,7 +401,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // opts.number_of_attributes = [33]
 // opts.bins = [2, 16]
 // opts.weighting_flag = true
-// ds = load_file(opts.datafile_path)
+// ds = load_file(opts.datafile_path, opts.LoadOptions)
 // cl = make_classifier(mut ds, opts)
 // result = verify(cl, opts)?
 // assert result.correct_count == 340
@@ -430,7 +430,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	opts.bins = [2, 2]
 // 	opts.weighting_flag = false
 // 	disp.show_flag = false
-// 	ds = load_file(opts.datafile_path)
+// 	ds = load_file(opts.datafile_path, opts.LoadOptions)
 // 	cl = make_classifier(mut ds, opts)
 // 	result = verify(cl, opts)?
 // 	assert result.correct_count == 9982
@@ -463,7 +463,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 // 	opts.bins = [2, 2]
 // 	opts.concurrency_flag = true
 // 	opts.weighting_flag = false
-// 	ds = load_file(opts.datafile_path)
+// 	ds = load_file(opts.datafile_path, opts.LoadOptions)
 // 	cl = make_classifier(mut ds, opts)
 // 	opts.testfile_path = 'datasets/mnist_test.tab'
 // 	result = verify(load_classifier_file('tempfolders/tempfolder_totalnn/classifierfile') ?, opts)

@@ -3,6 +3,22 @@ module vhammll
 
 // import math
 
+const rank_help = '
+Description:
+  "rank" rank orders a dataset\'s attributes in terms of ability 
+to distinguish between classes; it takes into account class prevalences.
+
+Usage: v run . rank -x -g -wr <path_to_dataset_file>
+
+Options: 
+  -b --bins, eg, "3,6" specifies the lower and upper limits for the number 
+      of slices or bins for continuous attributes;
+  -x --exclude, exclude missing values from rank value calculations;
+  -g --graph, produce a plot showing rank values vs number of bins for   
+      continuous attributes.
+  -wr, weight contribution to ranking by considering class prevalences.
+    '
+
 // rank_attributes takes a Dataset and returns a list of all the
 // dataset's usable attributes, ranked in order of each attribute's
 // ability to separate the classes.
@@ -40,31 +56,30 @@ module vhammll
 //
 // ```sh
 // Options:
-// -b --bins: specifies the range for binning (slicing) continous attributes;
-// -x --exclude:  to exclude missing values when calculating rank values;
+// `binning`: specifies the range for binning (slicing) continous attributes;
+// `weight_ranking_flag`: appplies prevalences of each class in calculating rankings;
+// `exclude_flag`: exclude missing values when calculating rank values;
 // Output options:
-// `show_flag` to print the ranked list to the console;
-// `graph_flag` to generate plots of rank values for each attribute on the
+// `show_flag`: print the ranked list to the console;
+// `graph_flag`:generate plots of rank values for each attribute on the
 //     y axis, with number of bins on the x axis.
-// `outputfile_path`, saves the result as json.
+// `outputfile_path`: saves the result as json.
 // ```
 pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
-	// println('opts in rank_attributes: $opts')
-	// to get the denominator for calculating percentages of rank values,
-	// we get the rank value for the class attribute, which should be 100%
 	mut ranking_result := RankingResult{
 		LoadOptions:         ds.LoadOptions
 		path:                ds.path
 		exclude_flag:        opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag
 	}
+	// to get the denominator for calculating percentages of rank values,
+	// we get the rank value for the class attribute, which should be 100%
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
 		ds.Class.class_counts, opts))
-	// println(opts.weight_ranking_flag)
 	if opts.verbose_flag && opts.command == 'rank' {
 		println('perfect_rank_value: ${perfect_rank_value}')
 	}
-	mut ranked_atts := []RankedAttribute{}
+	mut ranked_attributes := []RankedAttribute{}
 	mut binning := Binning{}
 	if ds.useful_continuous_attributes.len != 0 {
 		// binning = get_binning(opts.bins)
@@ -161,7 +176,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			// bin_number -= interval
 		}
 		rank_value_array = rank_value_array.map(100.0 * f32(it) / perfect_rank_value)
-		ranked_atts << RankedAttribute{
+		ranked_attributes << RankedAttribute{
 			attribute_index:  attr_index_for_maximum_rank_value
 			attribute_name:   ds.attribute_names[attr_index_for_maximum_rank_value]
 			attribute_type:   ds.attribute_types[attr_index_for_maximum_rank_value]
@@ -174,7 +189,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	for attr_index, attr_values in ds.useful_discrete_attributes {
 		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts,
 			opts)
-		ranked_atts << RankedAttribute{
+		ranked_attributes << RankedAttribute{
 			attribute_index: attr_index
 			attribute_name:  ds.attribute_names[attr_index]
 			attribute_type:  ds.attribute_types[attr_index]
@@ -206,9 +221,9 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 
 		return 0
 	}
-	ranking_result.array_of_ranked_attributes = ranked_atts
+	ranking_result.array_of_ranked_attributes = ranked_attributes
 	// custom sort on descending rank value, then ascending bins, then index
-	ranked_atts.sort_with_compare(custom_sort_fn)
+	ranked_attributes.sort_with_compare(custom_sort_fn)
 	ranking_result.binning = binning
 	// println(opts)
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'rank' {

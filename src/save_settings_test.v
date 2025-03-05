@@ -26,18 +26,18 @@ fn test_append_cross_verify_settings_to_file() {
 		command:              'cross'
 		append_settings_flag: true
 	}
-	ds := load_file(opts.datafile_path)
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// opts.show_flag = true
 	cross_validate(ds, opts)
 	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 1170
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 1190
 	display_file(opts.settingsfile_path)
 
 	// add another classifier
 	opts.bins = [3, 3]
 	cross_validate(ds, opts)
 	display_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 2245
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 2285
 }
 
 fn test_append_explore_cross_settings_to_file() {
@@ -51,18 +51,18 @@ fn test_append_explore_cross_settings_to_file() {
 		command:              'explore'
 		append_settings_flag: true
 	}
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// opts.show_flag = true
 	explore(ds, opts)
 	display_file(opts.settingsfile_path)
 	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 9823
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 10003
 
 	// now add another explore
 	opts.uniform_bins = false
 	explore(ds, opts)
 	display_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 17406
+	assert os.file_size(opts.settingsfile_path.trim_space()) == 17726
 }
 
 fn test_append_explore_verify_settings_to_file() {
@@ -73,7 +73,7 @@ fn test_append_explore_verify_settings_to_file() {
 		command:              'explore'
 		append_settings_flag: true
 	}
-	mut ds := load_file(opts.datafile_path)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	explore(ds, opts)
 	display_file(opts.settingsfile_path)

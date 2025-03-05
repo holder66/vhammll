@@ -208,22 +208,6 @@ Options:
 -e --expanded: print out the extended classifier struct on the console.
   '
 
-const rank_help = '
-Description:
-  "rank" rank orders a dataset\'s attributes in terms of ability 
-to distinguish between classes; it takes into account class prevalences.
-
-Usage: v run . rank -x -g -wr <path_to_dataset_file>
-
-Options: 
-  -b --bins, eg, "3,6" specifies the lower and upper limits for the number 
-      of slices or bins for continuous attributes;
-  -x --exclude, exclude missing values from rank value calculations;
-  -g --graph, produce a plot showing rank values vs number of bins for   
-      continuous attributes.
-  -wr, weight contribution to ranking by considering class prevalences.
-    '
-
 const make_help = '
 Description:
 "make" creates a classifier from the datafile given as the last argument.
