@@ -172,6 +172,7 @@ pub mut:
 	expanded_flag        bool
 	show_attributes_flag bool
 	graph_flag           bool
+	help_flag            bool
 	verbose_flag         bool
 	generate_roc_flag    bool
 	limit_output         int
@@ -213,12 +214,10 @@ pub mut:
 	settingsfile_path                   string
 	roc_settingsfile_path               string
 	partitionfiles_paths                []string
-	help_flag                           bool
-	// multiple_flag                       bool
-	append_settings_flag bool
-	command              string
-	args                 []string
-	kagglefile_path      string
+	append_settings_flag                bool
+	command                             string
+	args                                []string
+	kagglefile_path                     string
 }
 
 pub struct MultipleClassifierSettingsFileStruct {

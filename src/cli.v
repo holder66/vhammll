@@ -14,24 +14,19 @@ pub mut:
 	args []string
 }
 
-// the command line interface app for the holder66.vhamml ML library.
-// In a terminal, type:
-// `v run . --help`, or `v run . -h`, or simply `v run .`
+// cli() is the command line interface app for the holder66.vhamml ML library.
 // ```sh
-// Usage: v run . [command] [flags] <path_to_datafile>
+// Usage: v run main.v [command] [flags and options] <path_to_file>
 // Datafiles should be either tab-delimited, or have extension .csv or .arff
 // Commands: analyze | append | cross | display | examples | explore
 // | make | optimals | orange | partition | query | rank | validate | verify
-// To get help with individual commands, type `v run . [command] -h`
-// Flags and options:
-// -a --attributes, can be one, two, or 3 integers; a single integer will
-//    be used by make_classifier to produce a classifier with that number
-//    of attributes. More than one integer will be used by
-//    explore to provide a range and an interval.
-// -af --all-flags, used with explore to repeat the explore operation for
-//    all possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
-// -b --bins, can be one, two, or 3 integers; a single integer for one bin
-//    value to be used for all attributes; two integers for a range of bin
+// To get help with individual commands, type `v run main.v [command] -h`
+//
+// Flags and options (note that most are specific to commands):
+// -a --attributes, followed by one, two, or 3 integers: Parameters.number_of_attributes
+// -af --all-flags: Options.traverse_all_flags
+// -b --bins, followed by one, two, or 3 integers: Binning
+//    A single value will be used for all attributes; two integers for a range of bin
 //    values; a third integer specifies an interval for the range (note that
 //    the binning range is from the upper to the lower value);
 //    note: when doing an explore, the first integer specifies the lower
@@ -42,20 +37,26 @@ pub mut:
 //    the number of bins for all continuous attributes; two integers for a
 //    range of uniform bin values for the explore command; a third integer
 //    for the interval to be used over the explore range;
-// -bp, --balanced-prevalences, multiply the number of instances for classes
-//    with low prevalence, to more closely balance prevalences;
-// -c --concurrent, permit parallel processing to use multiple cores;
-// -e --expanded, expanded results on the console;
+// -bp, --balanced-prevalences: Parameters.balance_prevalences_flag
+// -c --concurrent, permit parallel processing to use multiple cores: Options.concurrency_flag
+// -e --expanded, expanded results on the console: DisplaySettings.expanded_flag
 // -ea display information re trained attributes on the console, for
-//    classification operations;
-// -f --folds, default is leave-one-out;
-// -g --graph, displays a plot;
-// -h --help,
-// -k --classifier, followed by the path to a file for a saved Classifier
+//    classification operations; DisplaySettings.show_attributes_flag
+// -exr --explore-rank, followed by eg "2,7", will repeat the ranking
+//    exercise over the binning range from 2 through 7 ⇒ Options.explore_rank
+// -f --folds, followed by an integer specifying the number of folds in
+//    cross-validation. The default is leave-one-out: Parameters.folds
+// -g --graph, displays a plot: DisplaySettings.graph_flag
+// -h --help: DisplaySettings.help_flag
+// -k --classifier, followed by the path to a file for a saved Classifier: Options.classifierfile_path
 // -ka --kaggle, followed by the path to a file. Used with the "validate" command,
-// 	  a csv file suitable for submission to a Kaggle competition is created;
+// 	  a csv file suitable for submission to a Kaggle competition is created
+//		Options.kagglefile_path
+// -l --limit-output, followed by an integer which specifies how many
+//  	attributes should be included in the console listing: DisplaySettings.limit_output
 // -m --multiple, classify using more than one trained classifier, followed by
-//    the path to a json file with parameters to generate each classifier;
+//    the path to a json file with parameters to generate each classifier:
+//    Options.multiple_classify_options_file_path
 // -ma when multiple classifiers are used, stop classifying when matches
 //    have been found for all classifiers;
 // -mc when multiple classifiers are used, combine the possible hamming
@@ -74,6 +75,8 @@ pub mut:
 // -o --output, followed by the path to a file in which a classifier, a
 //    result, instances used for validation, or a query instance will be
 //    stored;
+// -ov --overfitting, console output and graph to include information
+// 	  allowing for an assessment of overfitting likelihood.
 // -p --purge, removes instances which after binning are duplicates;
 // -pos, followed by the name of the class to be considered the Positive class;
 // -p#,
