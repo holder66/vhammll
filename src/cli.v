@@ -156,9 +156,7 @@ fn get_options(args []string) Options {
 		opts.command = opts.non_options[0]
 		opts.datafile_path = opts.non_options.last()
 	}
-	if option(args, ['-b', '--bins']) != '' {
-		opts.bins = parse_range(option(args, ['-b', '--bins']))
-	}
+	
 	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
 	opts.concurrency_flag = flag(args, ['-c', '--concurrent'])
 	opts.exclude_flag = flag(args, ['-x', '--exclude'])
@@ -176,6 +174,7 @@ fn get_options(args []string) Options {
 	opts.one_vs_rest_flag = flag(args, ['-mr'])
 	opts.total_nn_counts_flag = flag(args, ['-mt'])
 	opts.append_settings_flag = flag(args, ['-ms'])
+	opts.overfitting_flag = flag(args, ['-ov', '--overfitting'])
 	opts.purge_flag = flag(args, ['-p', '--purge'])
 	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])
@@ -188,11 +187,22 @@ fn get_options(args []string) Options {
 	if option(args, ['-f', '--folds']) != '' {
 		opts.folds = option(args, ['-f', '--folds']).int()
 	}
+
+	if option(args, ['-l', '--limit-output']) != '' {
+		opts.limit_output = option(args, ['-l', '--limit-output']).int()
+	}
+
 	if option(args, ['-r', '--reps']) != '' {
 		opts.repetitions = option(args, ['-r', '--reps']).int()
 	}
 	if option(args, ['-pos', '--positive-class']) != '' {
 		opts.positive_class = option(args, ['-pos', '--positive-class'])
+	}
+	if option(args, ['-b', '--bins']) != '' {
+		opts.bins = parse_range(option(args, ['-b', '--bins']))
+	}
+	if option(args, ['-exr', '--explore-rank']) != '' {
+		opts.explore_rank = parse_range(option(args, ['-exr', '--explore-rank']))
 	}
 	if option(args, ['-m#']) != '' {
 		opts.classifier_indices = parse_range(option(args, ['-m#']))

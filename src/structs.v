@@ -76,6 +76,7 @@ mut:
 
 pub struct RankingResult {
 	LoadOptions
+	DisplaySettings
 pub mut:
 	struct_type                string = '.RankingResult'
 	path                       string

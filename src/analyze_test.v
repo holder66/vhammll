@@ -40,7 +40,7 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		datafile_path: 'datasets/class_missing_developer.tab'
 	}
 	mut ds := Dataset{}
-	ds = load_file(opts.datafile_path)
+	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	mut pr := analyze_dataset(ds, opts)
 	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'

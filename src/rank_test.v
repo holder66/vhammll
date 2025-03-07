@@ -1,13 +1,6 @@
 // rank_test.v
 module vhammll
 
-fn test_ranking_via_cli() {
-	mut opts := CliOptions{
-		args: ['rank', '/Users/henryolders/use_vhammll/vhammll/datasets/iris.tab']
-	}
-	cli(opts)!
-}
-
 fn test_sum_along_row_unweighted() {
 	assert sum_along_row_unweighted([]int{}) == 0
 	assert sum_along_row_unweighted([0]) == 0

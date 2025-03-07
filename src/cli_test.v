@@ -35,6 +35,7 @@ fn testsuite_end() ? {
 }
 
 fn test_explore() {
+	opts := CliOptions{}
 	println(os.execute_or_panic('./temp explore --help'))
 	println(os.execute_or_panic('./temp explore  vhammll/datasets/iris.tab'))
 	println(os.execute_or_panic('./temp explore  -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))

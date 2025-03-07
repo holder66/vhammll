@@ -14,18 +14,19 @@ Example: `v run .main.v rank -b 3,6 -x -wr datasets/iris.tab`
 
 Options: 
   -b --bins, eg, "3,6" specifies the lower and upper limits for the number 
-      of slices or bins for continuous attributes;
-  -x --exclude, exclude missing values from rank value calculations;
+      of slices or bins for continuous attributes [Options.bins]
+  -x --exclude, exclude missing values from rank value calculations [Parameters.exclude_flag]
   -g --graph, produce a plot showing rank values vs number of bins for   
-      continuous attributes.
+      continuous attributes [DisplaySettings.graph_flag]
   -l --limit-output, followed by an integer which specifies how many
-  		attributes should be included in the console listing.
+  		attributes should be included in the console listing [DisplaySettings.limit_output]
   -ov --overfitting, console output and graph to include information
-  		allowing for an assessment of overfitting likelihood.
+  		allowing for an assessment of overfitting likelihood [DisplaySettings.overfitting_flag]
   -exr --explore-rank, followed by eg "2,7", will repeat the ranking
-  		exercise over the binning range from 2 through 7.
-  -u --uniform, uses uniform binning over all attributes.
-  -wr, weight contribution to ranking by considering class prevalences.
+  		exercise over the binning range from 2 through 7 [Options.explore_rank]
+  -u --uniform, uses uniform binning over all attributes [Parameters.uniform_bins]
+  -wr, weight contribution to ranking by considering class 
+      prevalences [Parameters.weight_ranking_flag]
 
     '
 
@@ -69,6 +70,9 @@ Options:
 // `binning`: specifies the range for binning (slicing) continous attributes;
 // `weight_ranking_flag`: appplies prevalences of each class in calculating rankings;
 // `exclude_flag`: exclude missing values when calculating rank values;
+// `explore_rank`: gives start and end values for maximum binning number to be
+//     over an exploration of ranking for different binning values;
+// 
 // Output options:
 // `show_flag`: print the ranked list to the console;
 // `graph_flag`:generate plots of rank values for each attribute on the
@@ -78,10 +82,12 @@ Options:
 pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	mut ranking_result := RankingResult{
 		LoadOptions:         ds.LoadOptions
+		DisplaySettings:	 opts.DisplaySettings
 		path:                ds.path
 		exclude_flag:        opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag
 	}
+	// dump(opts)
 	// to get the denominator for calculating percentages of rank values,
 	// we get the rank value for the class attribute, which should be 100%
 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
@@ -144,6 +150,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 
 			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
 				bin_number)
+			// dump(binned_values)
 			// loop through each possible value for bin in the bins bin_number + 1
 			for bin_value in 0 .. bin_number + 1 {
 				// a bin_value of 0 represents a missing value, so skip
@@ -175,6 +182,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 					rank_value += sum_along_row_unweighted(row)
 				}
 			}
+			dump(rank_value)
 			// for each attribute, find the maximum for the rank_values and
 			// the corresponding number of bins
 			if rank_value >= maximum_rank_value {
@@ -185,6 +193,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			rank_value_array << f32(rank_value)
 			// bin_number -= interval
 		}
+		// dump(rank_value_array)
 		rank_value_array = rank_value_array.map(100.0 * f32(it) / perfect_rank_value)
 		ranked_attributes << RankedAttribute{
 			attribute_index:  attr_index_for_maximum_rank_value

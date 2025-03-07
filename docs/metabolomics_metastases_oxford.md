@@ -58,7 +58,7 @@ fn main() {
 		bins: [2,10]
 		append_settings_flag: true
 	}
-	ds := vhammll.load_file(opts.datafile_path)
+	ds := vhammll.load_file(opts.datafile_path, opts.LoadOptions)
 	ft := [false, true]
 	for ub in ft {
 		opts.uniform_bins = ub
