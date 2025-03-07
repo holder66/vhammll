@@ -79,7 +79,7 @@ Options:
 //     y axis, with number of bins on the x axis.
 // `outputfile_path`: saves the result as json.
 // ```
-pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
+pub fn rank_attributes_old(ds Dataset, opts Options) RankingResult {
 	mut ranking_result := RankingResult{
 		LoadOptions:         ds.LoadOptions
 		DisplaySettings:	 opts.DisplaySettings

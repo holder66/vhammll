@@ -26,6 +26,6 @@ fn test_new_ranking_function() {
 		command: 'rank'
 	}
 	mut ds := load_file('datasets/developer.tab')
+	rank_attributes_old(ds, opts)
 	rank_attributes(ds, opts)
-	rank_attributes_new(ds, opts)
 }
