@@ -102,7 +102,9 @@ pub fn show_rank_attributes(result RankingResult) {
 	println(b_u('         Name                         Index  Type   Rank Value   Bins'))
 	mut array_to_print := []string{}
 	for i, attr in result.array_of_ranked_attributes {
-		if result.limit_output != 0 && i >= result.limit_output {break}
+		if result.limit_output != 0 && i >= result.limit_output {
+			break
+		}
 		array_to_print << '${i + 1:6}   ${attr.attribute_name:-27} ${attr.attribute_index:6} ${attr.attribute_type:2}         ${attr.rank_value:7.2f} ${attr.bins:6}'
 	}
 	print_array(array_to_print)

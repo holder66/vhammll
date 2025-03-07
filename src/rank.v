@@ -72,7 +72,7 @@ Options:
 // `exclude_flag`: exclude missing values when calculating rank values;
 // `explore_rank`: gives start and end values for maximum binning number to be
 //     over an exploration of ranking for different binning values;
-// 
+//
 // Output options:
 // `show_flag`: print the ranked list to the console;
 // `graph_flag`:generate plots of rank values for each attribute on the
@@ -82,7 +82,7 @@ Options:
 pub fn rank_attributes_old(ds Dataset, opts Options) RankingResult {
 	mut ranking_result := RankingResult{
 		LoadOptions:         ds.LoadOptions
-		DisplaySettings:	 opts.DisplaySettings
+		DisplaySettings:     opts.DisplaySettings
 		path:                ds.path
 		exclude_flag:        opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag

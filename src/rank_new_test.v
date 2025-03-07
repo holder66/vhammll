@@ -7,7 +7,8 @@ fn test_pairs() {
 	assert pairs(1) == []
 	assert pairs(2) == [[0, 1]]
 	assert pairs(3) == [[0, 1], [0, 2], [1, 2]]
-	assert pairs(4) == [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
+	assert pairs(4) == [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3],
+		[2, 3]]
 }
 
 fn test_abs_diff() {
@@ -20,12 +21,17 @@ fn test_abs_diff() {
 
 fn test_new_ranking_function() {
 	mut opts := Options{
-		bins: [3,6]
-		weight_ranking_flag: true
-		show_flag: true
-		command: 'rank'
+		bins:                     [3, 6]
+		weight_ranking_flag:      true
+		show_flag:                true
+		exclude_flag:             true
+		class_missing_purge_flag: true
+		command:                  'rank'
 	}
-	mut ds := load_file('datasets/developer.tab')
-	rank_attributes_old(ds, opts)
-	rank_attributes(ds, opts)
+	mut ds := load_file('datasets/2_class_developer.tab')
+	result_old := rank_attributes_old(ds, opts)
+	result_new := rank_attributes(ds, opts)
+	assert result_old.binning == result_new.binning
+	assert result_old.array_of_ranked_attributes == result_new.array_of_ranked_attributes
+	assert result_old == result_new
 }
