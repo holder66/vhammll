@@ -113,6 +113,7 @@ fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
 
 // discretize_attribute_with_range_check takes an array of generic attribute values, as
 // well as minimum and maximum values for that attribute, and the number of bins to use.
+// Bin numbering starts at 1, as bin 0 is used for missing values).
 // If the value to be binned is a nan (ie a missing value, or if it is outside of the
 // range given by min and max), the assigned bin number will be zero.
 fn discretize_attribute_with_range_check[T](values []T, min T, max T, bins int) []int {

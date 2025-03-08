@@ -104,7 +104,7 @@ fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings 
 	mut purged_settings := []int{cap: settings.len}
 	for i in 1 .. settings.len {
 		idx := settings.len - i
-		// println('${idx}, ${settings[idx].classifier_index}')
+		// println('${idx}, ${settings[idx].classifier_id}')
 		// test if the last element has the same parameters as any of the elements is the remainder;
 		// if not, move its index into the purged_settings array
 

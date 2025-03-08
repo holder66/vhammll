@@ -22,6 +22,8 @@ fn test_rank_attributes() {
 		bins:                [3, 3]
 		exclude_flag:        true
 		weight_ranking_flag: true
+		show_flag:           false
+		command:             'rank'
 	}
 	mut ds := load_file('datasets/developer.tab')
 	mut rank_value := rank_attributes(ds, opts).array_of_ranked_attributes[1].rank_value
@@ -36,13 +38,12 @@ fn test_rank_attributes() {
 	assert rank_value >= 95.65217
 	assert rank_value <= 95.65219
 	ds = load_file('datasets/anneal.tab')
-	// assert rank_attributes(ds, opts).array_of_ranked_attributes[3].attribute_name == 'formability'
+	assert rank_attributes(ds, opts).array_of_ranked_attributes[3].attribute_name == 'formability'
 	opts.bins = [2, 2]
 	ds = load_file('datasets/mnist_test.tab')
 	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 38.08885
 	assert rank_value <= 38.08886
-
 	opts.weight_ranking_flag = false
 	ds = load_file('datasets/developer.tab')
 	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[1].rank_value

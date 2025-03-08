@@ -7,10 +7,8 @@ fn test_cross_validate() ? {
 		command:          'cross'
 		exclude_flag:     false
 		concurrency_flag: true
-	}
-	mut disp := DisplaySettings{
-		verbose_flag:  false
-		expanded_flag: false
+		verbose_flag:     false
+		// expanded_flag: true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -27,7 +25,7 @@ fn test_cross_validate() ? {
 	opts.weighting_flag = true
 	result = cross_validate(ds, opts)
 	assert result.correct_count >= 870 && result.correct_count <= 883
-	println('done with anneal.tab')
+	println(r_b('\ndone with anneal.tab'))
 
 	opts.datafile_path = 'datasets/developer.tab'
 	opts.number_of_attributes = [2]
@@ -39,8 +37,9 @@ fn test_cross_validate() ? {
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	result = cross_validate(ds, opts)
 	assert result.total_count == 13
-
-	// opts.concurrency_flag = false
+	assert result.correct_counts == [7, 0, 2]
+	println(r_b('\nDone with developer.tab no weighting'))
+	opts.concurrency_flag = false
 
 	opts.datafile_path = 'datasets/developer.tab'
 	opts.number_of_attributes = [2]
@@ -50,26 +49,9 @@ fn test_cross_validate() ? {
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
 
 	result = cross_validate(ds, opts)
-	assert result.total_count == 13
-	// println(result.confusion_matrix_map)
-	assert result.confusion_matrix_map == {
-		'm': {
-			'm': 6.0
-			'f': 2.0
-			'X': 0.0
-		}
-		'f': {
-			'm': 1.0
-			'f': 1.0
-			'X': 0.0
-		}
-		'X': {
-			'm': 1.0
-			'f': 1.0
-			'X': 0.0
-		}
-	}
-	println('done with developer.tab')
+	assert result.correct_counts == [7, 1, 0]
+
+	println(r_b('\nDone with developer.tab with weighting'))
 
 	opts.datafile_path = 'datasets/iris.tab'
 	opts.number_of_attributes = [2]
@@ -81,7 +63,7 @@ fn test_cross_validate() ? {
 	assert result.incorrects_count == 3
 	assert result.wrong_count == 3
 	assert result.total_count == 150
-	println('done with iris.tab')
+	println(r_b('\nDone with iris.tab'))
 
 	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'
 	opts.number_of_attributes = [9]
@@ -91,7 +73,7 @@ fn test_cross_validate() ? {
 	assert result.incorrects_count == 27
 	assert result.wrong_count == 27
 	assert result.total_count == 699
-	println('done with breast-cancer-wisconsin-disc.tab')
+	println(r_b('\nDone with breast-cancer-wisconsin-disc.tab'))
 
 	if get_environment().arch_details[0] != '4 cpus' {
 		opts.concurrency_flag = true

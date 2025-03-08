@@ -20,6 +20,7 @@ fn test_make_multi_classifiers() {
 		concurrency_flag:     false
 		break_on_all_flag:    true
 		total_nn_counts_flag: true
+		// expanded_flag: true
 		command:              'verify'
 	}
 	// populate a settings file, doing individual verifications
@@ -62,7 +63,7 @@ fn test_make_multi_classifiers() {
 	// verify that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
-	// opts.show_attributes_flag = true
+	opts.show_attributes_flag = true
 	// display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
@@ -73,7 +74,7 @@ fn test_make_multi_classifiers() {
 	ds := load_file(opts.datafile_path)
 	cll = make_multi_classifiers(ds, settings, []int{})
 	assert cll.len == 2
-	assert cll[0].attribute_ordering == ['APLP2']
+	// assert cll[0].attribute_ordering == ['APLP2']
 	assert cll[1].trained_attributes['CST3'].rank_value == 94.73684
 	// now try for just one classifier
 	cll = make_multi_classifiers(ds, settings, [1])

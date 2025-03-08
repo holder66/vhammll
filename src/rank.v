@@ -182,7 +182,7 @@ pub fn rank_attributes_old(ds Dataset, opts Options) RankingResult {
 					rank_value += sum_along_row_unweighted(row)
 				}
 			}
-			dump(rank_value)
+
 			// for each attribute, find the maximum for the rank_values and
 			// the corresponding number of bins
 			if rank_value >= maximum_rank_value {
