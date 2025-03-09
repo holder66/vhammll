@@ -13,9 +13,9 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		}
 	}
 
-	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-		panic('read_multiple_opts failed')
-	}
+	// multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
+	// 	panic('read_multiple_opts failed')
+	// }
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         opts.LoadOptions
@@ -25,10 +25,6 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		// multiple_classifier_settings:        read_multiple_opts(opts.multiple_classify_options_file_path) or {
-		// 	panic('read_multiple_opts failed')
-		// }
-		// multiple_classifier_settings:	multiple_classifier_settings
 		labeled_classes:      test_ds.class_values
 		class_counts:         test_ds.class_counts
 		classes:              test_ds.classes
@@ -43,22 +39,23 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
 
 	// settings_array := classifier_settings.multiple_classifier_settings
-	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifier_indices)
+	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifiers)
 
 	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	// verify_result.multiple_classifier_settings = settings_array
 	// dump(verify_result.multiple_classifier_settings)
-	if mult_opts.classifier_indices == [] {
-		mult_opts.classifier_indices = []int{len: multiple_classifier_settings.len, init: index}
-	}
-	verify_result.classifier_indices = mult_opts.classifier_indices
-	// dump(verify_result.classifier_indices)
-	for ci in verify_result.classifier_indices {
-		mult_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
-	}
+	// if mult_opts.classifiers == [] {
+	// 	mult_opts.classifiers = multiple_classifier_settings.map(it.classifier_id)
+	// }
+	// verify_result.classifiers = mult_opts.classifiers
+	// // dump(verify_result.classifiers)
+	// for ci in verify_result.classifiers {
+	// 	mult_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
+	// }
+	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path, mult_opts.classifiers) or {panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')}
 	// dump(mult_opts.multiple_classifier_settings)
 	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
-	for i, _ in mult_opts.classifier_indices {
+	for i, _ in mult_opts.classifiers {
 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 		mult_opts.Parameters = params
 		mult_opts.multiple_flag = true

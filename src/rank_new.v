@@ -131,6 +131,7 @@ fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
 // by opts.bins. It returns the maximum rank value found and the corresponding number of bins.
 fn rank_continuous_attribute(i int, ds Dataset, opts Options) (int, int, []i64) {
 	mut result := 0
+	mut binning_range := get_binning(opts.bins)
 	mut max_rank_value := 0
 	mut bins_for_max_rank_value := 0
 	mut rank_value_array := []i64{}
@@ -138,7 +139,7 @@ fn rank_continuous_attribute(i int, ds Dataset, opts Options) (int, int, []i64) 
 	mut weights := ds.class_counts.values()
 	mut class_indices_by_case := []int{len: ds.class_values.len, init: find(ds.classes,
 		ds.class_values[index])}
-	for bin_number in opts.bins[0] .. opts.bins[1] + 1 {
+	for bin_number in binning_range.lower .. binning_range.upper + 1 {
 		mut hits := [][]int{len: ds.classes.len, init: []int{len: bin_number + 1}}
 		binning := discretize_attribute_with_range_check(values, array_min(values.filter(!is_nan(it))),
 			array_max(values.filter(!is_nan(it))), bin_number)

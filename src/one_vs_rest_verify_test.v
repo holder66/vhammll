@@ -90,7 +90,7 @@ fn test_one_vs_rest_verify() ? {
 	// opts.multiple_classify_options_file_path = opts.settingsfile_path
 	// opts.settingsfile_path = ''
 	// // with classifier 0
-	// opts.classifier_indices = [0]
+	// opts.classifiers = [0]
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// // classifier 0 with total_nn_counts_flag true
@@ -99,15 +99,15 @@ fn test_one_vs_rest_verify() ? {
 	// assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// // with classifier 1
 	// opts.total_nn_counts_flag = false
-	// opts.classifier_indices = [1]
+	// opts.classifiers = [1]
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// opts.total_nn_counts_flag = true
-	// opts.classifier_indices = [1]
+	// opts.classifiers = [1]
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// // with both classifiers
-	// opts.classifier_indices = []
+	// opts.classifiers = []
 	// result = multi_verify(opts)
 	// assert result.confusion_matrix_map == {
 	// 	'ALL': {
@@ -161,7 +161,7 @@ fn test_one_vs_rest_verify() ? {
 	// 	}
 	// }
 	// // with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
-	// opts.classifier_indices = []
+	// opts.classifiers = []
 	// opts.break_on_all_flag = false
 	// opts.combined_radii_flag = false
 	// opts.total_nn_counts_flag = true

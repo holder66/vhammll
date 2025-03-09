@@ -81,7 +81,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	assert multiple_classifier_settings[61].spec == 1.0
 // 	assert multiple_classifier_settings[73].sens == 1.0
 // 	for i in [53,89,61,73] {
-// 		opts.classifier_indices = [i]
+// 		opts.classifiers = [i]
 // 		cross_validate(ds, opts)
 // 	}
 // }
@@ -100,7 +100,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	ft := [false, true]
 // 	mut result := CrossVerifyResult{}
 // 	// outer: for ci in [[61,73,97],[6,61,73,97],[53,61,73,97]] {
-// 	// 	opts.classifier_indices = ci
+// 	// 	opts.classifiers = ci
 // 	// 	for ma in ft {
 // 	// 		opts.break_on_all_flag = ma
 // 	// 		for mc in ft {
@@ -123,7 +123,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	// }
 // 	println(r_b('\nA manual inspection of the results of the previous exercise shows that there are 6 sets of settings producing an optimum "area under the ROC curve"'))
 // 	outer2: for ci in [[19,61,73],[6,61,73,97],[53,61,73],[53,61,73,97],[61,73]] {
-// 		opts.classifier_indices = ci
+// 		opts.classifiers = ci
 // 			opts.break_on_all_flag = false
 // 				opts.combined_radii_flag = true
 // 					opts.total_nn_counts_flag = false
@@ -158,13 +158,13 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	for ci in [[19, 61, 73], [6, 61, 73, 97], [53, 61, 73], [53, 61, 73, 97],
 // 		[61, 73]] {
 // 		// opts.expanded_flag = true
-// 		opts.classifier_indices = ci
+// 		opts.classifiers = ci
 // 		opts.break_on_all_flag = true
 // 		result = multi_verify(opts)
 // 		println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
 // 	}
 // 	// opts.expanded_flag = true
-// 	// opts.classifier_indices = [44]
+// 	// opts.classifiers = [44]
 // 	// result = multi_verify(opts)
 // 	// assert result.sens == 0.5
 // 	// assert result.spec == 0.8

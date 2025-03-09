@@ -34,7 +34,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 				for mt in ft {
 					af_opts.total_nn_counts_flag = mt
 					af_result = multi_verify(af_opts)
-					println('${af_result.correct_counts} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifier_indices}')
+					println('${af_result.correct_counts} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
 				}
 			}
 		}
@@ -157,16 +157,16 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// 	verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	// 	// mult_opts.break_on_all_flag = opts.break_on_all_flag
 	// 	// mult_opts.combined_radii_flag = opts.combined_radii_flag
-	// 	if mult_opts.classifier_indices == [] {
-	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
+	// 	if mult_opts.classifiers == [] {
+	// 		mult_opts.classifiers = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	// 	}
-	// 	verify_result.classifier_indices = mult_opts.classifier_indices
+	// 	verify_result.classifier_indices = mult_opts.classifiers
 	// 	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 	// 	// 	MultipleClassifierSettingsArray{}
 	// 	// }
 	// 	// println('mult_opts: $mult_opts')
-	// 	for i in mult_opts.classifier_indices {
+	// 	for i in mult_opts.classifiers {
 	// 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 
 	// 		// for params in saved_params.multiple_classifier_settings {

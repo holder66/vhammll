@@ -74,20 +74,18 @@ pub fn display_file(path string, in_opts Options) {
 			multiple_classifier_settings := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
-			// settings := multiple_classifier_settings_list.multiple_classifier_settings
 			if multiple_classifier_settings.len > 0 {
 				println(m_u('Multiple Classifier Options file: ${path}'))
-				// create an array for fictitious classifier indices
-				classifier_indices := []int{len: multiple_classifier_settings.len, init: index}
+				classifiers := multiple_classifier_settings.map(it.classifier_id)
 				show_multiple_classifier_settings_details(multiple_classifier_settings,
-					classifier_indices)
+					classifiers)
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
-					mut classifiers := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),
-						multiple_classifier_settings, classifier_indices)
-					for idx in classifier_indices {
-						println(g_b('Trained attributes for classifier ${idx} on dataset ${multiple_classifier_settings[0].datafile_path}'))
-						show_trained_attributes(classifiers[idx].trained_attributes)
+					mut classifiers_array := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),
+						multiple_classifier_settings, classifiers)
+					for i, idx in classifiers_array {
+						println(g_b('Trained attributes for classifier ${classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
+						show_trained_attributes(idx.trained_attributes)
 					}
 				}
 			}

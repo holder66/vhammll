@@ -83,7 +83,7 @@ fn multiple_classifier_classify_totalnn(classifiers []Classifier, case [][]u8, l
 				}
 			}
 			if opts.verbose_flag {
-				println('classifier: ${i}   radius: ${radius}    class_weights: ${class_weights}    classifier_weights: ${classifier_weights}   nearest_neighbors_by_class_unweighted: ${nearest_neighbors_by_class_unweighted}     lcm_class_counts: ${cl.lcm_class_counts}     nearest_neighbors_by_class: ${nearest_neighbors_by_class}')
+				println('classifier ID: ${i}   radius: ${radius}    class_weights: ${class_weights}    classifier_weights: ${classifier_weights}   nearest_neighbors_by_class_unweighted: ${nearest_neighbors_by_class_unweighted}     lcm_class_counts: ${cl.lcm_class_counts}     nearest_neighbors_by_class: ${nearest_neighbors_by_class}')
 			}
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
 		}

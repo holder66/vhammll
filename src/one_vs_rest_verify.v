@@ -163,16 +163,16 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// 	verify_result.MultipleClassifierSettings = mult_opts.MultipleClassifierSettings
 	// 	// mult_opts.break_on_all_flag = opts.break_on_all_flag
 	// 	// mult_opts.combined_radii_flag = opts.combined_radii_flag
-	// 	if mult_opts.classifier_indices == [] {
-	// 		mult_opts.classifier_indices = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
+	// 	if mult_opts.classifiers == [] {
+	// 		mult_opts.classifiers = []int{len: mult_opts.multiple_classifier_settings.len, init: index}
 	// 	}
-	// 	verify_result.classifier_indices = mult_opts.classifier_indices
+	// 	verify_result.classifier_indices = mult_opts.classifiers
 	// 	// mut ds := load_file(opts.datafile_path)
 	// 	// mut saved_params := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 	// 	// 	MultipleClassifierSettings{}
 	// 	// }
 	// 	// println('mult_opts: $mult_opts')
-	// 	for i in mult_opts.classifier_indices {
+	// 	for i in mult_opts.classifiers {
 	// 		mut params := mult_opts.multiple_classifier_settings[i].Parameters
 
 	// 		// for params in saved_params.multiple_classifier_settings {

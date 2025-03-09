@@ -159,7 +159,7 @@ fn test_display_cross_result() ? {
 		folds:                5
 		repetitions:          0
 		random_pick:          false
-		concurrency_flag:     true
+		// concurrency_flag:     true
 		show_flag:            true
 	}
 	ds := load_file('datasets/UCI/segment.arff')
@@ -176,7 +176,7 @@ fn test_display_cross_result() ? {
 	opts.random_pick = true
 	cross_validate(ds, opts)
 	display_file(opts.outputfile_path, opts)
-	println('Done for test_display_cross_result')
+	println(r_b('\nDone for test_display_cross_result'))
 }
 
 fn test_display_explore_result_cross() ? {

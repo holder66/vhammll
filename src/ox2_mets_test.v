@@ -80,7 +80,7 @@ fn test_optimal_settings() {
 	println(r_b('\nTest that a multiple classifier cross-validation using classifiers 48 and 16 gives correct counts of 14 out of 16 and 10 out of 12'))
 	opts.traverse_all_flags = false
 	for i in [[48, 16]] {
-		opts.classifier_indices = i
+		opts.classifiers = i
 		assert cross_validate(ds, opts).correct_counts == [14, 10]
 	}
 }
@@ -104,7 +104,7 @@ fn test_ox2_multi_verify() {
 	println(r_b('\nTest that for classifiers 13 and 15 used individually, we get correct counts\n of 6 out of 8 cases for mets, and 1 out of 4 cases for no mets. For classifier 48, \nit is 8 and 1 correct, and for multiple classification with classifiers 48 and 16, \nit is 7 and 2 cases correctly identified.'))
 	test_values := [[6, 1], [6, 1], [8, 1], [7, 2]]
 	for i, ci in [[13], [15], [48], [48, 16]] {
-		opts.classifier_indices = ci
+		opts.classifiers = ci
 		assert verify(opts).correct_counts == test_values[i]
 	}
 }

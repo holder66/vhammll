@@ -200,7 +200,7 @@ pub struct Options {
 pub mut:
 	struct_type                         string = '.Options'
 	non_options                         []string
-	bins                                []int = [1, 16]
+	bins                                []int = [2, 16]
 	explore_rank                        []int
 	partition_sizes                     []int
 	concurrency_flag                    bool
@@ -224,21 +224,20 @@ pub mut:
 pub struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
-	datafile_path                string
 }
 
 pub struct OptimalsResult {
 pub mut:
 	class_counts                                []int
 	balanced_accuracy_max                       f64
-	balanced_accuracy_max_classifiers           []int
+	balanced_accuracy_max_classifiers           []int// refers to an array of classsifier ID values
 	mcc_max                                     f64
-	mcc_max_classifiers                         []int
+	mcc_max_classifiers                         []int// refers to an array of classsifier ID values
 	correct_inferences_total_max                int
-	correct_inferences_total_max_classifiers    []int
+	correct_inferences_total_max_classifiers    []int// refers to an array of classsifier ID values
 	classes                                     []string
 	correct_inferences_by_class_max             []int
-	correct_inferences_by_class_max_classifiers [][]int
+	correct_inferences_by_class_max_classifiers [][]int// refers to an array of classsifier ID values
 	receiver_operating_characteristic_settings  []int
 }
 
@@ -248,7 +247,7 @@ pub struct ClassifierSettings {
 	Metrics
 	LoadOptions
 pub mut:
-	classifier_index int
+	classifier_id int
 	datafile_path    string
 }
 
@@ -258,7 +257,7 @@ pub mut:
 	break_on_all_flag    bool
 	combined_radii_flag  bool
 	total_nn_counts_flag bool
-	classifier_indices   []int
+	classifiers   []int // refers to an array of classsifier ID values
 }
 
 struct RadiusResults {
@@ -290,7 +289,7 @@ mut:
 
 pub struct Environment {
 pub mut:
-	hamnn_version string
+	vhammll_version string
 	// cached_cpuinfo map[string]string
 	os_kind        string
 	os_details     string

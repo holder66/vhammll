@@ -14,7 +14,6 @@ module vhammll
 // import strings
 
 fn show_classifier_attributes(cl Classifier) {
-	dump(cl)
 	show_trained_attributes(cl.trained_attributes)
 }
 
@@ -43,7 +42,7 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
 
 fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
 	// dump(result.trained_attribute_maps_array)
-	for i, idx in result.classifier_indices {
+	for i, idx in result.classifiers {
 		println(g_b('Trained attributes for classifier ${idx} on dataset "${result.datafile_path}"'))
 		// dump(idx)
 		show_trained_attributes(result.trained_attribute_maps_array[i])

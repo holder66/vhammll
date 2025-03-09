@@ -185,7 +185,7 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 }
 
 const headers = {
-	0:  'Classifier:'
+	0:  'Classifier ID:'
 	1:  'Number of attributes:'
 	2:  'Binning:'
 	3:  'Exclude missing values:'
@@ -211,7 +211,7 @@ const attribute_headings = {
 fn show_multiple_classifier_settings(result CrossVerifyResult, opts Options) {
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
-	show_multiple_classifier_settings_details(result.multiple_classifier_settings, result.classifier_indices)
+	show_multiple_classifier_settings_details(result.multiple_classifier_settings, result.classifiers)
 	if opts.show_attributes_flag {
 		if result.multiple_classifier_settings.len > 0 {
 			if opts.command == 'cross' {
@@ -239,8 +239,7 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 	}
 	mut row_data := []string{len: headers.len, init: ''}
 	mut col_width_array := []int{}
-	for i, ci in classifier_list {
-		par := multiple_classifier_settings[i]
+	for par in multiple_classifier_settings.filter(it.classifier_id in classifier_list) {
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
@@ -251,7 +250,7 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 			col_width = minimum_column_width
 		}
 		col_width_array << col_width
-		row_data[0] += '${ci:-13}' + pad(col_width - 13)
+		row_data[0] += '${par.classifier_id:-13}' + pad(col_width - 13)
 		row_data[1] += '${a.number_of_attributes[0]:-13}' + pad(col_width - 13)
 		binning := '${a.binning.lower}, ${a.binning.upper}, ${a.binning.interval}'
 		row_data[2] += '${binning:-13}' + pad(col_width - 13)
@@ -447,7 +446,7 @@ fn show_detailed_result(final_inferred_class string, labeled_classes []string, m
 	println('classifier  sphere index  radius  nearest neighbors  ratio  inferred class')
 	for i, icr in mcr.results_by_classifier {
 		a := icr.results_by_radius.last()
-		println('${mcr.classifier_indices[i]:10}  ${a.sphere_index:12}  ${a.radius:6}  ${a.nearest_neighbors_by_class:-17} ${get_ratio(a.nearest_neighbors_by_class):6.2f}  ${a.inferred_class} ')
+		println('${mcr.classifiers[i]:10}  ${a.sphere_index:12}  ${a.radius:6}  ${a.nearest_neighbors_by_class:-17} ${get_ratio(a.nearest_neighbors_by_class):6.2f}  ${a.inferred_class} ')
 	}
 	println('           ${final_inferred_class} ${labeled_classes}')
 }

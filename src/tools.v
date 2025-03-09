@@ -443,7 +443,7 @@ fn get_binning(bins []int) Binning {
 	}
 	if bins.len == 1 {
 		return Binning{
-			lower:    1
+			lower:    bins[0]
 			upper:    bins[0]
 			interval: 1
 		}

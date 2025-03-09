@@ -73,7 +73,7 @@ fn test_optimal_settings() {
 	assert multiple_classifier_settings[42].incorrect_counts == [0, 3]
 	assert multiple_classifier_settings[53].correct_counts == [8, 5]
 	for i in [44, 69, 42, 53] {
-		opts.classifier_indices = [i]
+		opts.classifiers = [i]
 		// cross_validate(ds, opts)
 	}
 }
@@ -94,7 +94,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	mut result := CrossVerifyResult{}
 	outer: for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
 		[42, 44, 61]] {
-		opts.classifier_indices = ci
+		opts.classifiers = ci
 		for ma in ft {
 			opts.break_on_all_flag = ma
 			for mc in ft {
@@ -137,7 +137,7 @@ fn test_ox_mets_multi_verify() {
 	for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
 		[42, 44, 61]] {
 		opts.expanded_flag = false
-		opts.classifier_indices = ci
+		opts.classifiers = ci
 		for ma in ft {
 			opts.break_on_all_flag = ma
 			for cmp in ft {
@@ -149,7 +149,7 @@ fn test_ox_mets_multi_verify() {
 		}
 	}
 	opts.expanded_flag = true
-	opts.classifier_indices = [44]
+	opts.classifiers = [44]
 	result = multi_verify(opts)
 	assert result.sens == 0.5
 	assert result.spec == 0.8

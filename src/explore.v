@@ -131,7 +131,6 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 		pos_neg_classes: get_pos_neg_classes(ds)
 		args:            opts.args
 	}
-	dump(results.pos_neg_classes)
 	mut result := CrossVerifyResult{
 		pos_neg_classes: results.pos_neg_classes
 	}

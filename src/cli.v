@@ -67,8 +67,8 @@ pub mut:
 //    each classifier, weight by class prevalences, and then infer
 //    from the totals;
 // -m# followed by a list of which classifiers to apply in a multiple classi-
-//	  fication run (zero-indexed); also used to specify which classifiers to
-//    append to a settings file;
+//	  fication run; also used to specify which classifiers to
+//    append to a settings file. These values are classifier IDs, not array indices.
 // -ms append the settings to a file (path follows flag) for use in multiple
 //    classification (with -m#). When used with 'explore', the settings for
 //    cases identified in the analytics are appended;
@@ -205,7 +205,7 @@ fn get_options(args []string) Options {
 		opts.explore_rank = parse_range(option(args, ['-exr', '--explore-rank']))
 	}
 	if option(args, ['-m#']) != '' {
-		opts.classifier_indices = parse_range(option(args, ['-m#']))
+		opts.classifiers = parse_range(option(args, ['-m#']))
 	}
 	if option(args, ['-p#']) != '' {
 		opts.partition_sizes = parse_range(option(args, ['-p#']))
