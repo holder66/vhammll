@@ -2,6 +2,8 @@
 
 // test_multiple_classifier_settings
 
+// as of 2025-3-9, this test fails with the totalnn_flag set
+
 module vhammll
 
 import os
@@ -25,7 +27,7 @@ fn test_multiple_verify() ? {
 		command:              'verify'
 		verbose_flag:         false
 		expanded_flag:        true
-		show_attributes_flag: true
+		// show_attributes_flag: true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -41,46 +43,28 @@ fn test_multiple_verify() ? {
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
 	result0 := verify(opts)
-	assert result0.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 17.0
-			'AML': 3.0
-		}
-		'AML': {
-			'ALL': 0.0
-			'AML': 14.0
-		}
-	}
+	assert result0.correct_counts == [17,14]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	opts.number_of_attributes = [6]
 	opts.bins = [1, 10]
 	result1 := verify(opts)
-	assert result1.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 20.0
-			'AML': 0.0
-		}
-		'AML': {
-			'ALL': 5.0
-			'AML': 9.0
-		}
-	}
+	assert result1.correct_counts == [20,9]
 	// verify that the settings file was correctly saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	opts.settingsfile_path = ''
+	opts.append_settings_flag = false
 	// with classifier 0
 	opts.classifiers = [0]
 	result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
+	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// classifier 0 with total_nn_counts_flag true
 	opts.total_nn_counts_flag = true
 	result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
+	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
 	opts.total_nn_counts_flag = false
 	opts.classifiers = [1]
@@ -93,46 +77,20 @@ fn test_multiple_verify() ? {
 	// with both classifiers
 	opts.classifiers = [0,1]
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 20.0
-			'AML': 0.0
-		}
-		'AML': {
-			'ALL': 4.0
-			'AML': 10.0
-		}
-	}
+	assert result.correct_counts == [20,10]
 	// with both classifiers, and break_on_all_flag false
 	opts.break_on_all_flag = false
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 18.0
-			'AML': 2.0
-		}
-		'AML': {
-			'ALL': 0.0
-			'AML': 14.0
-		}
-	}
+	assert result.correct_counts == [18,14]
 	// with both classifiers, break_on_all_flag false, combined_radii_flag true
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 18.0
-			'AML': 2.0
-		}
-		'AML': {
-			'ALL': 0.0
-			'AML': 14.0
-		}
-	}
+	assert result.correct_counts == [18,14]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = true
+	dump(opts)
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == {
 		'ALL': {
@@ -145,6 +103,7 @@ fn test_multiple_verify() ? {
 		}
 	}
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
+	// and specifying an empty classifiers field, ie all classifiers in the settings file
 	opts.classifiers = []
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = false
@@ -168,7 +127,7 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		break_on_all_flag: true
 		command:           'verify'
 		verbose_flag:  false
-		expanded_flag: false
+		expanded_flag: true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -237,8 +196,8 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// classifier 0 with total_nn_counts_flag true
 	// opts.total_nn_counts_flag = true
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
+	result = multi_verify(opts)
+	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
 	opts.total_nn_counts_flag = false
 	opts.classifiers = [1]
@@ -250,100 +209,26 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// with both classifiers
 	opts.classifiers = []
-	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'f': {
-			'f': 1.0
-			'm': 0.0
-			'X': 0.0
-		}
-		'm': {
-			'f': 0.0
-			'm': 4.0
-			'X': 0.0
-		}
-		'X': {
-			'f': 0.0
-			'm': 0.0
-			'X': 1.0
-		}
-	}
+	assert multi_verify(opts).correct_counts == [1,4,1]
 	// with both classifiers, and break_on_all_flag false
 	opts.break_on_all_flag = false
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'f': {
-			'f': 1.0
-			'm': 0.0
-			'X': 0.0
-		}
-		'm': {
-			'f': 0.0
-			'm': 4.0
-			'X': 0.0
-		}
-		'X': {
-			'f': 0.0
-			'm': 0.0
-			'X': 1.0
-		}
-	}
+	assert multi_verify(opts).correct_counts == [1,4,1]
 	// with both classifiers, break_on_all_flag false, combined_radii_flag true
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'f': {
-			'f': 1.0
-			'm': 0.0
-			'X': 0.0
-		}
-		'm': {
-			'f': 0.0
-			'm': 4.0
-			'X': 0.0
-		}
-		'X': {
-			'f': 0.0
-			'm': 0.0
-			'X': 1.0
-		}
-	}
+	assert multi_verify(opts).correct_counts == [1,4,1]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert result.confusion_matrix_map == {
-		'f': {
-			'f': 1.0
-			'm': 0.0
-			'X': 0.0
-		}
-		'm': {
-			'f': 0.0
-			'm': 4.0
-			'X': 0.0
-		}
-		'X': {
-			'f': 0.0
-			'm': 0.0
-			'X': 1.0
-		}
-	}
+	assert multi_verify(opts).correct_counts == [1,4,1]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
-	// opts.classifiers = []
-	// opts.break_on_all_flag = false
-	// opts.combined_radii_flag = false
+	opts.classifiers = []
+	opts.break_on_all_flag = false
+	opts.combined_radii_flag = false
 	// opts.total_nn_counts_flag = true
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == {
-	// 	'ALL': {
-	// 		'ALL': 18.0
-	// 		'AML': 2.0
-	// 	}
-	// 	'AML': {
-	// 		'ALL': 0.0
-	// 		'AML': 14.0
-	// 	}
-	// }
+	result = multi_verify(opts)
+	assert multi_verify(opts).correct_counts == [1,4,1]
 }

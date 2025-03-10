@@ -16,11 +16,19 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 		LoadOptions:                ds.LoadOptions
 		DisplaySettings:            opts.DisplaySettings
 		path:                       ds.path
-		binning:                    get_binning(opts.bins)
+		// binning:                    get_binning(opts.bins)
 		exclude_flag:               opts.exclude_flag
 		weight_ranking_flag:        opts.weight_ranking_flag
 		array_of_ranked_attributes: []RankedAttribute{cap: ds.useful_discrete_attributes.len +
 			ds.useful_continuous_attributes.len}
+	}
+	mut binning := Binning{}
+	if ds.useful_continuous_attributes.len != 0 {
+		if opts.binning.lower > 0 {
+			binning = opts.binning
+		} else {
+			binning = get_binning(opts.bins)
+		}
 	}
 	mut rank_value_map := map[int]i64{}
 	mut binning_map := map[int]int{}
@@ -35,8 +43,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 				highest_rank_value = rank_discrete_attribute(i, ds, opts)
 			}
 			i in ds.useful_continuous_attributes.keys() {
-				r_v, bin_number, rank_value_array := rank_continuous_attribute(i, ds,
-					opts)
+				r_v, bin_number, rank_value_array := rank_continuous_attribute(i, ds, binning, opts.exclude_flag, opts.weight_ranking_flag)
 				rank_value_map[i] = r_v
 				binning_map[i] = bin_number
 				rank_value_array_map[i] = rank_value_array
@@ -129,9 +136,9 @@ fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
 
 // rank_continuous_attribute calculates rank values for attribute i over a range of bin values given
 // by opts.bins. It returns the maximum rank value found and the corresponding number of bins.
-fn rank_continuous_attribute(i int, ds Dataset, opts Options) (int, int, []i64) {
+fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool) (int, int, []i64) {
 	mut result := 0
-	mut binning_range := get_binning(opts.bins)
+	
 	mut max_rank_value := 0
 	mut bins_for_max_rank_value := 0
 	mut rank_value_array := []i64{}
@@ -144,13 +151,13 @@ fn rank_continuous_attribute(i int, ds Dataset, opts Options) (int, int, []i64) 
 		binning := discretize_attribute_with_range_check(values, array_min(values.filter(!is_nan(it))),
 			array_max(values.filter(!is_nan(it))), bin_number)
 		for j, val in binning {
-			if val == 0 && opts.exclude_flag {
+			if val == 0 && exclude_flag {
 				continue
 			}
 			hits[class_indices_by_case[j]][val] += 1
 		}
 		// for each column in hits, sum up the absolute differences between each pair of values
-		result = sum_absolute_differences(pairs(ds.classes.len), hits, weights, opts.weight_ranking_flag)
+		result = sum_absolute_differences(pairs(ds.classes.len), hits, weights, weight_ranking_flag)
 		rank_value_array << result
 		if result > max_rank_value {
 			max_rank_value = result

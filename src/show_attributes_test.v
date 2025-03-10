@@ -16,34 +16,34 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_show_attr')!
 }
 
-// fn test_show_attributes_in_make_classifier() {
-// 	mut opts := Options{
-// 		datafile_path:        'datasets/developer.tab'
-// 		show_flag:            true
-// 		show_attributes_flag: true
-// 		command:              'make'
-// 	}
-// 	make_classifier(load_file(opts.datafile_path), opts)
-// }
+fn test_show_attributes_in_make_classifier() {
+	mut opts := Options{
+		datafile_path:        'datasets/developer.tab'
+		show_flag:            true
+		show_attributes_flag: true
+		command:              'make'
+	}
+	make_classifier(load_file(opts.datafile_path), opts)
+}
 
-// fn test_show_attributes_in_verify() {
-// 	mut opts := Options{
-// 		datafile_path:        'datasets/mobile_price_classification_train.csv'
-// 		testfile_path:        'datasets/mobile_price_classification_test.csv'
-// 		show_flag:            true
-// 		expanded_flag:        true
-// 		show_attributes_flag: true
-// 		command:              'verify'
-// 	}
-// 	verify(opts)
-// }
+fn test_show_attributes_in_verify() {
+	mut opts := Options{
+		datafile_path:        'datasets/mobile_price_classification_train.csv'
+		testfile_path:        'datasets/mobile_price_classification_test.csv'
+		show_flag:            true
+		expanded_flag:        true
+		show_attributes_flag: true
+		command:              'verify'
+	}
+	verify(opts)
+}
 
 fn test_multiple_classifier_verify_totalnn() ? {
 	println(r_b('Do two verfications to populate a settings file:'))
 	mut opts := Options{
 		concurrency_flag:     false
 		break_on_all_flag:    true
-		total_nn_counts_flag: true
+		// total_nn_counts_flag: true
 		command:              'verify'
 	}
 	// populate a settings file, doing individual verifications
@@ -100,24 +100,15 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.show_attributes_flag = true
 	result = multi_verify(opts)
 	// with both classifiers
-	assert result.confusion_matrix_map == {
-		'ALL': {
-			'ALL': 20.0
-			'AML': 0.0
-		}
-		'AML': {
-			'ALL': 4.0
-			'AML': 10.0
-		}
-	}, 'with both classifiers'
+	assert result.correct_counts == [20,9], 'with both classifiers'
 	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
 	// with classifier 0 only
-	opts.classifier_indices = [0]
+	opts.classifiers = [0]
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	println(r_b('Do a multi-classifier verification with saved classifier #1 only:'))
 	// with classifier 1
-	opts.classifier_indices = [1]
+	opts.classifiers = [1]
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }

@@ -123,7 +123,7 @@ fn test_oxford_multi_crossvalidate() {
 	ds := load_file(opts.datafile_path)
 	// use a single classifier in a multi-classifier cross-validation
 	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
-	opts.classifier_indices = [0]
+	opts.classifiers = [0]
 	println(r_b('\nFor classifier 0:'))
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'Non': {
@@ -136,7 +136,7 @@ fn test_oxford_multi_crossvalidate() {
 		}
 	}
 	// use a different classifier in a multi-classifier cross-validation
-	opts.classifier_indices = [3]
+	opts.classifiers = [3]
 	println(r_b('\nAnd for classifier 3:'))
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'Non': {
@@ -150,7 +150,7 @@ fn test_oxford_multi_crossvalidate() {
 	}
 	println(r_b('\nNext, test using all four classifiers. We expect a balanced accuracy of 86.32%'))
 	// with all 4 classifiers, we get the highest balanced accuracy of 86.32%:
-	opts.classifier_indices = []
+	opts.classifiers = []
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'Non': {
 			'Non': 158.0
@@ -163,7 +163,7 @@ fn test_oxford_multi_crossvalidate() {
 	}
 	println(r_b('\nUsing only the first 3 classifiers, we should get maximum sensitivity of 0.882'))
 	// with the first 3 classifiers we get the highest sensitivity of 0.882:
-	opts.classifier_indices = [0, 1, 2]
+	opts.classifiers = [0, 1, 2]
 	assert cross_validate(ds, opts).confusion_matrix_map == {
 		'Non': {
 			'Non': 124.0
@@ -201,7 +201,7 @@ fn test_oxford_multi_verify() {
 		multiple_classify_options_file_path: 'tempfolders/tempfolder_oxford/oxford_settings.opts'
 		// verbose_flag:         true
 		multiple_flag:        true
-		classifier_indices:   []
+		classifiers:   []
 		combined_radii_flag:  false
 		expanded_flag:        true
 		show_attributes_flag: false
@@ -210,7 +210,7 @@ fn test_oxford_multi_verify() {
 	mut result := multi_verify(opts)
 	println(r_b('\nWhen using just the first 3 classifiers (with which we achieved maximum sensitivity,'))
 	println(r_b('we get a sensitivity of 0.714 on the test set:'))
-	opts.classifier_indices = [0, 1, 2]
+	opts.classifiers = [0, 1, 2]
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == {
 		'Non': {

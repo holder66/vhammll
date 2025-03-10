@@ -20,8 +20,6 @@ import time
 // ```
 pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	mut ds := dds
-	{
-	}
 	if opts.balance_prevalences_flag {
 		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 		mut transposed_data := transpose(ds.data)
@@ -54,10 +52,11 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		datafile_path: ds.path
 		LoadOptions:   opts.LoadOptions
 	}
+	// if binning is specified already in parameters, use it
 	if opts.binning.lower > 0 {
 		cl.binning = opts.binning
 	} else {
-		cl.binning = get_binning(opts.bins)
+		cl.binning = get_binning(opts.bins) // this may mean getting default values
 	}
 	// calculate the least common multiple for class_counts, for use
 	// when the weighting_flag is set
@@ -68,6 +67,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
 	ranking_result := rank_attributes(ds, rank_opts)
+	// dump(ranking_result.array_of_ranked_attributes[0..10])
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {

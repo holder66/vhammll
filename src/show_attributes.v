@@ -27,12 +27,10 @@ fn show_attributes_for_verify(result CrossVerifyResult) {
 
 fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
 	println(g_b('Trained attributes for classifier on dataset "${result.datafile_path}"'))
-	// dump(result.trained_attribute_maps_array)
 	show_trained_attributes(result.trained_attribute_maps_array[0])
 }
 
 fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
-	// dump(atts_map)
 	println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
 	for attr, val in atts_map {
 		println('${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' +
@@ -41,17 +39,9 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute) {
 }
 
 fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
-	// dump(result.trained_attribute_maps_array)
 	for i, idx in result.classifiers {
 		println(g_b('Trained attributes for classifier ${idx} on dataset "${result.datafile_path}"'))
-		// dump(idx)
 		show_trained_attributes(result.trained_attribute_maps_array[i])
 	}
 }
 
-// fn show_trained_attributes_for_multiple_classifier_settings(classifier_settings []ClassifierSettings, classifier_indices []int) {
-// 	for idx in classifier_indices {
-// 		println(g_b('Trained attributes for classifier ${idx} on dataset ${classifier_settings[0].datafile_path}'))
-// 		// show_trained_attributes(classifier_settings[idx].trained_attributes)
-// 	}
-// }

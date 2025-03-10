@@ -3,8 +3,9 @@
 module vhammll
 
 fn multi_verify(opts Options) CrossVerifyResult {
+	mut mult_opts := opts
 	// load the testfile as a Dataset struct
-	mut test_ds := load_file(opts.testfile_path, opts.LoadOptions)
+	mut test_ds := load_file(mult_opts.testfile_path, mult_opts.LoadOptions)
 	mut confusion_matrix_map := map[string]StringFloatMap{}
 	// for each class, instantiate an entry in the confusion matrix map
 	for key1, _ in test_ds.class_counts {
@@ -12,64 +13,44 @@ fn multi_verify(opts Options) CrossVerifyResult {
 			confusion_matrix_map[key2][key1] = 0
 		}
 	}
-
-	// multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-	// 	panic('read_multiple_opts failed')
-	// }
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		datafile_path:                       opts.datafile_path
-		testfile_path:                       opts.testfile_path
-		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
+		LoadOptions:                         mult_opts.LoadOptions
+		Parameters:                          mult_opts.Parameters
+		DisplaySettings:                     mult_opts.DisplaySettings
+		MultipleOptions:                     mult_opts.MultipleOptions
+		datafile_path:                       mult_opts.datafile_path
+		testfile_path:                       mult_opts.testfile_path
+		multiple_classify_options_file_path: mult_opts.multiple_classify_options_file_path
 		labeled_classes:      test_ds.class_values
 		class_counts:         test_ds.class_counts
 		classes:              test_ds.classes
 		pos_neg_classes:      get_pos_neg_classes(test_ds)
 		confusion_matrix_map: confusion_matrix_map
 	}
-	verify_result.binning = get_binning(opts.bins)
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	verify_result.binning = get_binning(mult_opts.bins)
+	mut ds := load_file(mult_opts.datafile_path, mult_opts.LoadOptions)
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
-	mut mult_opts := opts
-	// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
-
-	// settings_array := classifier_settings.multiple_classifier_settings
-	// cll := make_multi_classifiers(ds, settings_array, mult_opts.classifiers)
-
-	// verify_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
-	// verify_result.multiple_classifier_settings = settings_array
-	// dump(verify_result.multiple_classifier_settings)
-	// if mult_opts.classifiers == [] {
-	// 	mult_opts.classifiers = multiple_classifier_settings.map(it.classifier_id)
-	// }
-	// verify_result.classifiers = mult_opts.classifiers
-	// // dump(verify_result.classifiers)
-	// for ci in verify_result.classifiers {
-	// 	mult_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
-	// }
 	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path, mult_opts.classifiers) or {panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')}
-	// dump(mult_opts.multiple_classifier_settings)
 	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
-	for i, _ in mult_opts.classifiers {
-		mut params := mult_opts.multiple_classifier_settings[i].Parameters
-		mult_opts.Parameters = params
-		mult_opts.multiple_flag = true
-		verify_result.Parameters = params
-		// verify_result.multiple_classifier_settings << params
-		verify_result.multiple_flag = true
-		// dump(i)
-		// dump(verify_result.Parameters)
-		classifier := make_classifier(ds, mult_opts)
+	verify_result.classifiers = []int{}
+	for settings in mult_opts.multiple_classifier_settings {
+		mut local_opts := Options{
+			Parameters: settings.Parameters
+		}
+		verify_result.classifiers << settings.classifier_id
+		local_opts.Parameters.multiple_flag = false
+		// mut params := settings.Parameters
+		// params.multiple_flag = true
+		// mult_opts.Parameters = params
+		// verify_result.Parameters = params
+		classifier := make_classifier(ds, local_opts)
 		classifier_array << classifier
 		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
-		// verify_result.trained_attribute_maps_array[idx] = classifier.trained_attributes.clone()
 		cases << generate_case_array(classifier, test_ds)
 	}
+	// dump(mult_opts.Parameters)
 	cases = transpose(cases)
 	mut m_classify_result := ClassifyResult{}
 	mut maximum_hamming_distance_array := []int{}
