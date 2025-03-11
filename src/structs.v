@@ -230,14 +230,14 @@ pub struct OptimalsResult {
 pub mut:
 	class_counts                                []int
 	balanced_accuracy_max                       f64
-	balanced_accuracy_max_classifiers           []int// refers to an array of classsifier ID values
+	balanced_accuracy_max_classifiers           []int // refers to an array of classsifier ID values
 	mcc_max                                     f64
-	mcc_max_classifiers                         []int// refers to an array of classsifier ID values
+	mcc_max_classifiers                         []int // refers to an array of classsifier ID values
 	correct_inferences_total_max                int
-	correct_inferences_total_max_classifiers    []int// refers to an array of classsifier ID values
+	correct_inferences_total_max_classifiers    []int // refers to an array of classsifier ID values
 	classes                                     []string
 	correct_inferences_by_class_max             []int
-	correct_inferences_by_class_max_classifiers [][]int// refers to an array of classsifier ID values
+	correct_inferences_by_class_max_classifiers [][]int // refers to an array of classsifier ID values
 	receiver_operating_characteristic_settings  []int
 }
 
@@ -246,9 +246,13 @@ pub struct ClassifierSettings {
 	BinaryMetrics
 	Metrics
 	LoadOptions
+	ClassifierID
+}
+
+pub struct ClassifierID {
 pub mut:
 	classifier_id int
-	datafile_path    string
+	datafile_path string
 }
 
 pub struct MultipleOptions {
@@ -257,7 +261,7 @@ pub mut:
 	break_on_all_flag    bool
 	combined_radii_flag  bool
 	total_nn_counts_flag bool
-	classifiers   []int // refers to an array of classsifier ID values
+	classifiers          []int // refers to an array of classsifier ID values
 }
 
 struct RadiusResults {

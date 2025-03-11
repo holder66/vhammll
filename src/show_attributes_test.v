@@ -41,10 +41,10 @@ fn test_show_attributes_in_verify() {
 fn test_multiple_classifier_verify_totalnn() ? {
 	println(r_b('Do two verfications to populate a settings file:'))
 	mut opts := Options{
-		concurrency_flag:     false
-		break_on_all_flag:    true
+		concurrency_flag:  false
+		break_on_all_flag: true
 		// total_nn_counts_flag: true
-		command:              'verify'
+		command: 'verify'
 	}
 	// populate a settings file, doing individual verifications
 	mut result := CrossVerifyResult{}
@@ -100,7 +100,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.show_attributes_flag = true
 	result = multi_verify(opts)
 	// with both classifiers
-	assert result.correct_counts == [20,9], 'with both classifiers'
+	assert result.correct_counts == [20, 9], 'with both classifiers'
 	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
 	// with classifier 0 only
 	opts.classifiers = [0]

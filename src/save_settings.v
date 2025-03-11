@@ -24,9 +24,12 @@ fn append_roc_settings_to_file(roc_settings ClassifierSettings, roc_settingsfile
 
 fn get_next_classifier_index(settingsfile_path string) int {
 	// check if there is already a settings file
-	if !os.is_file(settingsfile_path.trim_space()) { return 0 }
-	previously_stored_settings := read_multiple_opts(settingsfile_path) or 
-		{panic('Failed to read ${settingsfile_path} in get_next_classifier_index()')}
+	if !os.is_file(settingsfile_path.trim_space()) {
+		return 0
+	}
+	previously_stored_settings := read_multiple_opts(settingsfile_path) or {
+		panic('Failed to read ${settingsfile_path} in get_next_classifier_index()')
+	}
 	return array_max(previously_stored_settings.map(it.classifier_id)) + 1
 }
 
@@ -42,10 +45,10 @@ fn append_explore_settings_to_file(results ExploreResult, explore_analytics map[
 		if i in indices {
 			mut u := ClassifierSettings{
 				classifier_id: next_classifier_index + i
-				Parameters:       results.array_of_results[a.idx].Parameters
-				BinaryMetrics:    results.array_of_results[a.idx].BinaryMetrics
-				Metrics:          results.array_of_results[a.idx].Metrics
-				datafile_path:    os.abs_path(opts.datafile_path)
+				Parameters:    results.array_of_results[a.idx].Parameters
+				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
+				Metrics:       results.array_of_results[a.idx].Metrics
+				datafile_path: os.abs_path(opts.datafile_path)
 			}
 			append_json_file(u, opts.settingsfile_path)
 		}

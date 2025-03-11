@@ -24,8 +24,8 @@ fn test_one_vs_rest_verify() ? {
 		concurrency_flag:  false
 		break_on_all_flag: false
 		command:           'verify'
-		verbose_flag:  false
-		expanded_flag: true
+		verbose_flag:      false
+		expanded_flag:     true
 	}
 	mut result := CrossVerifyResult{}
 

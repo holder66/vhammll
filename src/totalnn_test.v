@@ -26,7 +26,7 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 		show_flag:            false
 		total_nn_counts_flag: true
 		command:              'explore'
-		expanded_flag: true
+		expanded_flag:        true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -73,7 +73,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 		break_on_all_flag:    true
 		total_nn_counts_flag: true
 		command:              'verify'
-		expanded_flag: true
+		expanded_flag:        true
 	}
 	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
@@ -116,7 +116,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	}
 	// verify that the settings file was saved, and
 	// is the right length
-	
+
 	assert os.file_size(opts.settingsfile_path) >= 929
 	// display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path

@@ -239,7 +239,7 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 	}
 	mut row_data := []string{len: headers.len, init: ''}
 	mut col_width_array := []int{}
-	for par in multiple_classifier_settings.filter(it.classifier_id in classifier_list) {
+	for par in multiple_classifier_settings {
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics

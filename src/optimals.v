@@ -29,16 +29,16 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		class_counts:                             settings[0].class_counts_int
 		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
 		balanced_accuracy_max:                    array_max(settings.map(it.balanced_accuracy))
-		balanced_accuracy_max_classifiers:        idxs_max(settings.map(it.balanced_accuracy))
+		balanced_accuracy_max_classifiers:        settings.filter(it.balanced_accuracy == array_max(settings.map(it.balanced_accuracy))).map(it.classifier_id)
 		mcc_max:                                  array_max(settings.map(it.mcc))
-		mcc_max_classifiers:                      idxs_max(settings.map(it.mcc))
+		mcc_max_classifiers:                      settings.filter(it.mcc == array_max(settings.map(it.mcc))).map(it.classifier_id)
 		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
-		correct_inferences_total_max_classifiers: idxs_max(settings.map(array_sum(it.correct_counts)))
+		correct_inferences_total_max_classifiers: settings.filter(it.correct_counts == array_max(settings.map(it.correct_counts))).map(it.classifier_id)
 	}
 
 	for i, _ in result.classes {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
-		result.correct_inferences_by_class_max_classifiers << idxs_max(settings.map(it.correct_counts[i]))
+		result.correct_inferences_by_class_max_classifiers << settings.filter(it.correct_counts[i] == array_max(settings.map(it.correct_counts[i]))).map(it.classifier_id)
 	}
 	// to display the settings for ROC, we assume the first entry in correct_counts is the master class
 	// thus the highest value for the entries in this position is

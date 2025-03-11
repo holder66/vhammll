@@ -27,11 +27,12 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		// concurrency_flag:     true
 		datafile_path:        os.join_path(home_dir, 'metabolomics', 'mets-train.tab')
 		number_of_attributes: [1, 12]
-		bins:                 [2, 16]
+		bins:                 [2, 6]
 		append_settings_flag: true
 		traverse_all_flags:   true
 		settingsfile_path:    temp_file
 		expanded_flag:        true
+		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	explore(ds, opts)
@@ -65,7 +66,7 @@ fn test_optimal_settings() {
 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
 	}
-	println(r_b('\nVerify that classifiers 44 and 69 in the purged settings file correspond to the settings giving best balanced accuracy of 83.33%, best Matthews Correlation Coefficient of 0.751, and highest total correct inferences of 15/17;'))
+	println(r_b('\nVerify that classifiers 20, 30, 85, and 100 in the purged settings file correspond to the settings giving best balanced accuracy of 78.79%, best Matthews Correlation Coefficient of 0.604, and highest total correct inferences of 14/17;'))
 	assert multiple_classifier_settings.len == 90
 	assert multiple_classifier_settings[44].correct_counts == [11, 4]
 	assert multiple_classifier_settings[69].mcc == 0.7510676161988108

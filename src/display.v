@@ -77,6 +77,7 @@ pub fn display_file(path string, in_opts Options) {
 			if multiple_classifier_settings.len > 0 {
 				println(m_u('Multiple Classifier Options file: ${path}'))
 				classifiers := multiple_classifier_settings.map(it.classifier_id)
+				dump(classifiers)
 				show_multiple_classifier_settings_details(multiple_classifier_settings,
 					classifiers)
 				if opts.show_attributes_flag {

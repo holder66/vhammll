@@ -21,7 +21,7 @@ fn test_make_multi_classifiers() {
 		break_on_all_flag:    true
 		total_nn_counts_flag: true
 		// expanded_flag: true
-		command:              'verify'
+		command: 'verify'
 	}
 	// populate a settings file, doing individual verifications
 	mut result := CrossVerifyResult{}

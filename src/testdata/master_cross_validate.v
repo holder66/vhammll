@@ -56,7 +56,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 						af_opts.class_missing_purge_flag = cmp
 						// dump(af_opts.Parameters)
 						af_result = run_cross_validate(ds, af_opts)
-						println('${af_result.correct_counts} ma ${ma} mc ${mc} tnc ${tnc} cmp ${cmp} ${af_opts.classifiers}')
+						println('${af_result.correct_counts} ma ${ma} mc ${mc} tnc ${tnc} cmp ${cmp} ${af_opts.classifier_indices}')
 					}
 				}
 			}
@@ -108,14 +108,42 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	if opts.multiple_flag {
 		// disable concurrency, as not implemented for multiple classifiers
 		cross_opts.concurrency_flag = false
-		cross_opts.multiple_classifier_settings = pick_classifiers(cross_opts.multiple_classify_options_file_path,
-			cross_opts.classifiers) or {
-			panic('Unable to load file ${cross_opts.multiple_classify_options_file_path}')
+		mut classifier_array := []Classifier{}
+		// classifier_settings is a MultipleClassifierSettingsArray struct; first, read in all the classifier settings
+		multiple_classifier_settings := read_multiple_opts(cross_opts.multiple_classify_options_file_path) or {
+			panic('read_multiple_opts failed')
 		}
-		// if the intent is to use all the classifiers in the settings file, ie opts.classifiers is empty,
-		// then we need to fill in opts.classifiers from the classifier_id's in the individual settings.
-		cross_opts.classifiers = cross_opts.multiple_classifier_settings.map(it.classifier_id)
+		// settings_array := classifier_settings.multiple_classifier_settings
+		cross_opts.break_on_all_flag = opts.break_on_all_flag
+		cross_opts.combined_radii_flag = opts.combined_radii_flag
+		if opts.classifier_indices == [] {
+			cross_opts.classifier_indices = []int{len: multiple_classifier_settings.len, init: index}
+		} else {
+			cross_opts.classifier_indices = opts.classifier_indices
+		}
+		cross_result.classifier_indices = cross_opts.classifier_indices
+		for ci in cross_opts.classifier_indices {
+			cross_opts.multiple_classifier_settings << multiple_classifier_settings[ci]
+		}
 		cross_result.multiple_classifier_settings = cross_opts.multiple_classifier_settings
+		for i, _ in cross_opts.classifier_indices {
+			mut params := cross_opts.multiple_classifier_settings[i].Parameters
+			params.multiple_flag = true
+			cross_opts.Parameters = params
+			cross_result.Parameters = params
+			classifier_array << make_classifier(ds, cross_opts)
+		}
+		mut maximum_hamming_distance_array := []int{}
+		for cl in classifier_array {
+			maximum_hamming_distance_array << cl.maximum_hamming_distance
+		}
+		cross_opts.maximum_hamming_distance_array = maximum_hamming_distance_array
+		cross_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
+		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
+
+		if opts.verbose_flag {
+			println('cross_opts in cross_validate.v: ${cross_opts}')
+		}
 	}
 	// if there are no useful continuous attributes, set binning to 0
 	if ds.useful_continuous_attributes.len == 0 {
@@ -303,7 +331,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	if cross_opts.verbose_flag {
 		println(y('current fold: ${current_fold}'))
 	}
-	// if not a multiple classifier situation
+
 	if !cross_opts.multiple_flag {
 		part_cl := make_classifier(part_ds, cross_opts)
 		fold_result.binning = part_cl.binning
@@ -329,6 +357,8 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		for key, _ in ds.Class.class_counts {
 			confusion_matrix_row[key] = 0
 		}
+
+		// fold_result = classify_in_cross(part_cl, fold_cases, mut fold_result, cross_opts, disp)
 		for i, case in fold_cases {
 			classify_result := classify_case(part_cl, case, cross_opts)
 			if cross_opts.verbose_flag {
@@ -345,10 +375,11 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		mut classifier_array := []Classifier{}
 		mut mult_fold_cases := [][][]u8{}
 		mut mult_opts := cross_opts
-		// create an array of classifiers, one for each index in classifiers
-		for setting_params in mult_opts.multiple_classifier_settings.map(it.Parameters) {
-			mult_opts.Parameters = setting_params
-			fold_result.Parameters = setting_params
+		// create an array of classifiers, one for each index in classifier_indices
+		for i, _ in mult_opts.classifier_indices {
+			mut params := mult_opts.multiple_classifier_settings[i].Parameters
+			mult_opts.Parameters = params
+			fold_result.Parameters = params
 			part_cl := make_classifier(part_ds, mult_opts)
 			classifier_array << part_cl
 			byte_values_array = [][]u8{}
@@ -358,13 +389,25 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 				byte_values_array << process_fold_data(part_cl.trained_attributes[attr],
 					fold.data[j])
 			}
+
 			fold_cases := transpose(byte_values_array)
 			mult_fold_cases << [fold_cases]
 		}
+		// mut mult_fold_cases := [][][]u8{}
+		// for i, case in fold_cases {
+		// 	mult_fold_cases[i] = case
+		// }
+		// if cross_opts.multiple_flag {
+		// 	println('mult_fold_cases in do_one_fold: $mult_fold_cases')
+		// 	println('transposed: ${transpose(mult_fold_cases)}')
+		// }
+		// fold_result = multiple_classify_in_cross(current_fold, classifier_array, transpose(instances_to_be_classified), mut fold_result, mult_opts)
 		for i, case in transpose(mult_fold_cases) {
 			if cross_opts.verbose_flag {
 				println('\ncase: ${i:-7}  ${case}    classes: ${classifier_array[0].classes.join(' | ')}')
 			}
+			// m_classify_result := multiple_classifier_classify(classifier_array, case,
+			// fold_result.labeled_classes, mult_opts, disp)
 			m_classify_result := if mult_opts.total_nn_counts_flag {
 				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes,
 					mult_opts)
@@ -377,6 +420,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
 		}
 		fold_result.MultipleOptions = mult_opts.MultipleOptions
+		// fold_result.MultipleClassifierSettingsArray = mult_opts.MultipleClassifierSettingsArray
 	}
 	return fold_result
 }

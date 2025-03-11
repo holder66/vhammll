@@ -160,7 +160,7 @@ fn test_display_cross_result() ? {
 		repetitions:          0
 		random_pick:          false
 		// concurrency_flag:     true
-		show_flag:            true
+		show_flag: true
 	}
 	ds := load_file('datasets/UCI/segment.arff')
 	opts.outputfile_path = 'tempfolders/tempfolder_display/cross_result'

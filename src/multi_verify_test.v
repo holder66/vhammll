@@ -22,11 +22,11 @@ fn testsuite_end() ? {
 
 fn test_multiple_verify() ? {
 	mut opts := Options{
-		concurrency_flag:     false
-		break_on_all_flag:    true
-		command:              'verify'
-		verbose_flag:         false
-		expanded_flag:        true
+		concurrency_flag:  false
+		break_on_all_flag: true
+		command:           'verify'
+		verbose_flag:      false
+		expanded_flag:     true
 		// show_attributes_flag: true
 	}
 	mut result := CrossVerifyResult{}
@@ -43,13 +43,13 @@ fn test_multiple_verify() ? {
 	// settings file is getting appended
 	mut ds := load_file(opts.datafile_path)
 	result0 := verify(opts)
-	assert result0.correct_counts == [17,14]
+	assert result0.correct_counts == [17, 14]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	opts.number_of_attributes = [6]
 	opts.bins = [1, 10]
 	result1 := verify(opts)
-	assert result1.correct_counts == [20,9]
+	assert result1.correct_counts == [20, 9]
 	// verify that the settings file was correctly saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
@@ -75,18 +75,18 @@ fn test_multiple_verify() ? {
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// with both classifiers
-	opts.classifiers = [0,1]
+	opts.classifiers = [0, 1]
 	result = multi_verify(opts)
-	assert result.correct_counts == [20,10]
+	assert result.correct_counts == [20, 10]
 	// with both classifiers, and break_on_all_flag false
 	opts.break_on_all_flag = false
 	result = multi_verify(opts)
-	assert result.correct_counts == [18,14]
+	assert result.correct_counts == [18, 14]
 	// with both classifiers, break_on_all_flag false, combined_radii_flag true
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert result.correct_counts == [18,14]
+	assert result.correct_counts == [18, 14]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = true
@@ -126,8 +126,8 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		concurrency_flag:  false
 		break_on_all_flag: true
 		command:           'verify'
-		verbose_flag:  false
-		expanded_flag: true
+		verbose_flag:      false
+		expanded_flag:     true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -209,26 +209,26 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	// assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// with both classifiers
 	opts.classifiers = []
-	assert multi_verify(opts).correct_counts == [1,4,1]
+	assert multi_verify(opts).correct_counts == [1, 4, 1]
 	// with both classifiers, and break_on_all_flag false
 	opts.break_on_all_flag = false
 	result = multi_verify(opts)
-	assert multi_verify(opts).correct_counts == [1,4,1]
+	assert multi_verify(opts).correct_counts == [1, 4, 1]
 	// with both classifiers, break_on_all_flag false, combined_radii_flag true
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert multi_verify(opts).correct_counts == [1,4,1]
+	assert multi_verify(opts).correct_counts == [1, 4, 1]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = true
 	result = multi_verify(opts)
-	assert multi_verify(opts).correct_counts == [1,4,1]
+	assert multi_verify(opts).correct_counts == [1, 4, 1]
 	// with both classifiers, break_on_all_flag true, combined_radii_flag true, total_nn_counts_flag true
 	opts.classifiers = []
 	opts.break_on_all_flag = false
 	opts.combined_radii_flag = false
 	// opts.total_nn_counts_flag = true
 	result = multi_verify(opts)
-	assert multi_verify(opts).correct_counts == [1,4,1]
+	assert multi_verify(opts).correct_counts == [1, 4, 1]
 }

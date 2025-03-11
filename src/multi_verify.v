@@ -22,17 +22,20 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		datafile_path:                       mult_opts.datafile_path
 		testfile_path:                       mult_opts.testfile_path
 		multiple_classify_options_file_path: mult_opts.multiple_classify_options_file_path
-		labeled_classes:      test_ds.class_values
-		class_counts:         test_ds.class_counts
-		classes:              test_ds.classes
-		pos_neg_classes:      get_pos_neg_classes(test_ds)
-		confusion_matrix_map: confusion_matrix_map
+		labeled_classes:                     test_ds.class_values
+		class_counts:                        test_ds.class_counts
+		classes:                             test_ds.classes
+		pos_neg_classes:                     get_pos_neg_classes(test_ds)
+		confusion_matrix_map:                confusion_matrix_map
 	}
 	verify_result.binning = get_binning(mult_opts.bins)
 	mut ds := load_file(mult_opts.datafile_path, mult_opts.LoadOptions)
 	mut classifier_array := []Classifier{}
 	mut cases := [][][]u8{}
-	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path, mult_opts.classifiers) or {panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')}
+	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path,
+		mult_opts.classifiers) or {
+		panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')
+	}
 	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
 	verify_result.classifiers = []int{}
 	for settings in mult_opts.multiple_classifier_settings {

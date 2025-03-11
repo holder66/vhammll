@@ -44,4 +44,3 @@ fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
 		show_trained_attributes(result.trained_attribute_maps_array[i])
 	}
 }
-

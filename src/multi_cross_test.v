@@ -221,8 +221,8 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 		append_settings_flag: true
 		command:              'explore'
 		concurrency_flag:     true
-		expanded_flag: true
-		verbose_flag: false
+		expanded_flag:        true
+		verbose_flag:         false
 	}
 
 	mut ds := load_file(opts.datafile_path)

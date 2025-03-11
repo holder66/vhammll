@@ -53,12 +53,14 @@ fn append_json_file[T](u T, path string) {
 
 // read_multiple_opts
 fn read_multiple_opts(path string) ![]ClassifierSettings {
-	mut s := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
+	mut s := os.read_lines(path.trim_space()) or {
+		panic('failed to open ${path} in read_multiple_opts()')
+	}
+	// dump(s)
 	r := MultipleClassifierSettingsFileStruct{
 		multiple_classifier_settings: s.map(json.decode(ClassifierSettings, it)!)
 	}
-	settings := r.multiple_classifier_settings
-	return settings
+	return r.multiple_classifier_settings
 }
 
 fn pick_classifiers(path string, classifier_list []int) ![]ClassifierSettings {
