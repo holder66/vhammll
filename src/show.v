@@ -211,7 +211,7 @@ const attribute_headings = {
 fn show_multiple_classifier_settings(result CrossVerifyResult, opts Options) {
 	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
-	show_multiple_classifier_settings_details(result.multiple_classifier_settings, result.classifiers)
+	show_multiple_classifier_settings_details(result.multiple_classifier_settings)
 	if opts.show_attributes_flag {
 		if result.multiple_classifier_settings.len > 0 {
 			if opts.command == 'cross' {
@@ -232,7 +232,7 @@ const minimum_column_width = 13
 // the first parameter contains only the parameters for the classifiers to be displayed; the
 // second parameter contains the classifier number to be shown.
 // Returns an integer array with column widths.
-fn show_multiple_classifier_settings_details(multiple_classifier_settings []ClassifierSettings, classifier_list []int) []int {
+fn show_multiple_classifier_settings_details(multiple_classifier_settings []ClassifierSettings) []int {
 	if multiple_classifier_settings.len == 0 {
 		println('Error Exit: multiple_classifier_settings in show_multiple_classifier_settings_details is empty')
 		exit(1)
