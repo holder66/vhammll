@@ -9,6 +9,7 @@ import chalk
 // import math.bits
 // import encoding.binary
 import math.unsigned
+import arrays
 
 // idx_true returns the index of the first true element in boolean array a.
 // Returns -1 if no true element found.
@@ -334,19 +335,23 @@ fn array_min[T](a []T) T {
 	return val
 }
 
-// array_max returns the maximum value in the array
-fn array_max[T](a []T) T {
-	if a.len == 0 {
-		panic('.max called on an empty array')
-	}
-	mut val := a[0]
-	for e in a {
-		if e > val {
-			val = e
-		}
-	}
-	return val
+fn array_max[T](array []T) T {
+	return arrays.max(array) or {panic('array is empty')}
 }
+
+// array_max returns the maximum value in the array
+// fn array_max[T](a []T) T {
+// 	if a.len == 0 {
+// 		panic('.max called on an empty array')
+// 	}
+// 	mut val := a[0]
+// 	for e in a {
+// 		if e > val {
+// 			val = e
+// 		}
+// 	}
+// 	return val
+// }
 
 // array_sum returns the sum of an array's numeric values
 fn array_sum[T](list []T) T {

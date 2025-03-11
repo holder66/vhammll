@@ -33,7 +33,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		mcc_max:                                  array_max(settings.map(it.mcc))
 		mcc_max_classifiers:                      settings.filter(it.mcc == array_max(settings.map(it.mcc))).map(it.classifier_id)
 		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
-		correct_inferences_total_max_classifiers: settings.filter(it.correct_counts == array_max(settings.map(it.correct_counts))).map(it.classifier_id)
+		correct_inferences_total_max_classifiers: settings.filter(array_sum(it.correct_counts) == array_max(settings.map(array_sum(it.correct_counts)))).map(it.classifier_id)
 	}
 
 	for i, _ in result.classes {
