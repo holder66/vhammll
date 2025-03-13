@@ -336,7 +336,7 @@ fn array_min[T](a []T) T {
 }
 
 fn array_max[T](array []T) T {
-	return arrays.max(array) or {panic('array is empty')}
+	return arrays.max(array) or { panic('array is empty') }
 }
 
 // array_max returns the maximum value in the array

@@ -47,9 +47,8 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	// filtered_settings := settings.map(it.correct_counts[0]).filter(it == max_roc_entry)
 	mut filtered_settings := settings.filter(it.correct_counts[0] == max_roc_entry)
 	filtered_settings.sort(a.correct_counts[1] < b.correct_counts[1])
-	dump(filtered_settings.map(it.correct_counts))
 	result.receiver_operating_characteristic_settings = filtered_settings.map(it.classifier_id)
-	
+
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
 	}
@@ -86,16 +85,15 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
 	// reverse the array, then purge
 	mut result := settings.reverse()
-	mut indices_to_keep :=[]int{}
+	mut indices_to_keep := []int{}
 	for i in 0 .. settings.len {
 		a := result[i]
-		b := result[i + 1 ..].clone()
+		b := result[i + 1..].clone()
 		c := b.map(it.Parameters)
 		if a.Parameters !in c {
 			indices_to_keep << i
 		}
-
-		}
+	}
 	result_purged := filter_array_by_index(result, indices_to_keep)
 	return result_purged.reverse()
 }
