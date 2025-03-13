@@ -99,23 +99,20 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
 	// attribute parameters in the classifier
-	case := generate_case_array(cl, test_ds)
+	case_array := generate_case_array(cl, test_ds)
 	// for the instances in the test data, perform classifications
-	if opts.verbose_flag {
-		println('cl.classes in verify: ${cl.classes}')
-	}
-	// verify_result = classify_to_verify(cl, case, mut verify_result, opts, disp)
+	// verify_result = classify_to_verify(cl, case_array, mut verify_result, opts, disp)
 	// for each instance in the test data, perform a classification
 	mut classify_result := ClassifyResult{}
-	if opts.concurrency_flag {
+	if opts.concurrency_flag && !opts.multiple_flag {
 		mut work_channel := chan int{cap: runtime.nr_jobs()}
-		mut result_channel := chan ClassifyResult{cap: case.len}
-		for i, _ in case {
+		mut result_channel := chan ClassifyResult{cap: case_array.len}
+		for i, _ in case_array {
 			work_channel <- i
-			spawn option_worker_verify(work_channel, result_channel, cl, case, verify_result.labeled_classes,
+			spawn option_worker_verify(work_channel, result_channel, cl, case_array, verify_result.labeled_classes,
 				opts)
 		}
-		for i, _ in case {
+		for i, _ in case_array {
 			classify_result = <-result_channel
 			if opts.verbose_flag {
 				verbose_result(i, cl, classify_result)
@@ -125,7 +122,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		}
 	} else {
-		for i, test_instance in case {
+		for i, test_instance in case_array {
 			classify_result = classify_case(cl, test_instance, opts)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
 			verify_result.inferred_classes << classify_result.inferred_class
@@ -237,9 +234,9 @@ fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
 }
 
 // option_worker_verify
-fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, case [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) {
+fn option_worker_verify(work_channel chan int, result_channel chan ClassifyResult, cl Classifier, case_array [][]u8, labeled_classes []string, opts Options, disp DisplaySettings) {
 	mut index := <-work_channel
-	mut classify_result := classify_case(cl, case[index], opts)
+	mut classify_result := classify_case(cl, case_array[index], opts)
 	classify_result.labeled_class = labeled_classes[index]
 	result_channel <- classify_result
 	// dump(result_channel)

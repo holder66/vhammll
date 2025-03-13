@@ -17,12 +17,12 @@ import arrays
 // repeats for hamming distances which fit within the sphere, until a single maximum is found.
 // If the sphere radius reaches the maximum possible hamming distance and no single maximum
 // is found, then no class is inferred.
-fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case [][]u8, labeled_classes []string, opts Options) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_array [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class:         classifier_array[0].Class
 	}
-	// println('case in multiple_classifier_classify_totalnn: $case')
+	dump(case_array)
 	mut total_nns_by_class := []i64{len: 2}
 	mut single_maxima := []bool{len: classifier_array.len}
 	// mut weighted_totals := []f64{len: 2}
@@ -40,7 +40,7 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case [][]
 		// println('cl.instances in multiple_classifier_classify_totalnn: $cl.instances')
 		for instance in cl.instances {
 			mut hamming_dist := 0
-			for j, byte_value in case[i] {
+			for j, byte_value in case_array[i] {
 				hamming_dist += get_hamming_distance(byte_value, instance[j])
 			}
 			hamming_distances << hamming_dist
@@ -70,8 +70,10 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case [][]
 			for class_index in 0 .. cl.classes.len {
 				classes_weighting := int(i64(lcm(cl.class_counts.values())) / cl.class_counts[cl.classes[class_index]])
 				class_weights << classes_weighting
-				// dump(class_weights)
+				dump(hamming_distances_array[i])
+				dump(cl.class_values)
 				for j, dist in hamming_distances_array[i] {
+					dump(j)
 					if dist <= radius && cl.class_values[j] == cl.classes[class_index] {
 						nearest_neighbors_by_class[class_index] += (if !cl.weighting_flag
 							|| cl.lcm_class_counts == 0 {

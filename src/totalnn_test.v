@@ -140,9 +140,9 @@ fn testsuite_end() ? {
 // 	result = multi_verify(opts)
 // 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 // 	// add in the combined_radii and the class_missing_purge flags
-// 	opts.combined_radii_flag = true 
-// 	opts.class_missing_purge_flag = true 
-// 	opts.break_on_all_flag = false 
+// 	opts.combined_radii_flag = true
+// 	opts.class_missing_purge_flag = true
+// 	opts.break_on_all_flag = false
 // 	// with classifier 0 only
 // 	opts.classifiers = [0]
 // 	result = multi_verify(opts)
@@ -171,29 +171,83 @@ fn testsuite_end() ? {
 // 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 // }
 
-fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
+// fn test_multiple_classifier_verify_totalnn_discrete_attributes() ? {
+// 	mut opts := Options{
+// 		concurrency_flag:     false
+// 		break_on_all_flag: true
+// 		command:              'verify'
+// 		expanded_flag:        true
+// 	}
+// 	mut result := CrossVerifyResult{}
+// 	opts.datafile_path = 'datasets/bcw350train'
+// 	opts.testfile_path = 'datasets/bcw174test'
+// 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/bcw.opts'
+// 	opts.append_settings_flag = true
+// 	opts.number_of_attributes = [3]
+// 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+// 	result0 := verify(opts)
+// 	assert result0.correct_counts == [133,37], 'verify with 3 attributes'
+// 	opts.number_of_attributes = [4]
+// 	result1 := verify(opts)
+// 	assert result1.correct_counts == [135,36], 'verify with 4 attributes'
+// 	// verify that the settings file was saved, and
+// 	// is the right length
+
+// 	assert os.file_size(opts.settingsfile_path) == 2538
+// 	opts.show_attributes_flag = true
+// 	display_file(opts.settingsfile_path, opts)
+// 	// test verify with multiple_classify_options_file_path
+// 	opts.multiple_flag = true
+// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
+// 	opts.append_settings_flag = false
+// 	opts.show_flag = true
+// 	opts.expanded_flag = true
+// 	opts.show_attributes_flag = true
+// 	// with classifier 0 only
+// 	opts.classifiers = [0]
+// 	result = multi_verify(opts)
+// 	assert result.confusion_matrix_map == result0.confusion_matrix_map
+// 	// with classifier 1
+// 	opts.classifiers = [1]
+// 	result = multi_verify(opts)
+// 	assert result.confusion_matrix_map == result1.confusion_matrix_map
+// 	result = multi_verify(opts)
+// 	// with both classifiers
+// 	opts.classifiers = [1,0]
+// 	result = multi_verify(opts)
+// 	assert result.correct_counts == [135,37], 'with both classifiers'
+// 	// with totalnn flag set, performance deteriorates
+// 	opts.total_nn_counts_flag = true
+// 	result = multi_verify(opts)
+// 	assert result.correct_counts == [133,36]
+// }
+
+fn test_multiple_classifier_verify_totalnn_multiple_classes() ? {
 	mut opts := Options{
-		concurrency_flag:     false
-		break_on_all_flag: true
-		command:              'verify'
-		expanded_flag:        true
+		concurrency_flag: false
+		command:          'verify'
+		expanded_flag:    false
+		show_flag:        true
 	}
 	mut result := CrossVerifyResult{}
-	opts.datafile_path = 'datasets/bcw350train'
-	opts.testfile_path = 'datasets/bcw174test'
-	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/bcw.opts'
+	opts.datafile_path = 'datasets/develop_train.tab'
+	opts.testfile_path = 'datasets/develop_test.tab'
+	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/develop.opts'
 	opts.append_settings_flag = true
-	opts.number_of_attributes = [3]
+	opts.number_of_attributes = [13]
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	result0 := verify(opts)
-	assert result0.correct_counts == [133,37], 'verify with 3 attributes'
-	opts.number_of_attributes = [4]
+	assert result0.correct_counts == [10, 10, 10, 48, 20, 9, 9, 47, 10, 8, 10, 24, 6, 49, 39, 9,
+		8, 15, 4], 'verify with 13 attributes'
+	opts.number_of_attributes = [32]
+	opts.weighting_flag = true
 	result1 := verify(opts)
-	assert result1.correct_counts == [135,36], 'verify with 4 attributes'
+	assert result1.correct_counts == [10, 10, 10, 48, 24, 10, 10, 39, 10, 9, 10, 24, 9, 41, 40,
+		9, 8, 15, 4], 'verify with 4 attributes'
 	// verify that the settings file was saved, and
 	// is the right length
 
-	assert os.file_size(opts.settingsfile_path) >= 929
+	assert os.file_size(opts.settingsfile_path) == 3215
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
@@ -201,8 +255,8 @@ fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.append_settings_flag = false
 	opts.show_flag = true
-	opts.expanded_flag = true
-	opts.show_attributes_flag = true
+	// opts.expanded_flag = true
+	opts.show_attributes_flag = false
 	// with classifier 0 only
 	opts.classifiers = [0]
 	result = multi_verify(opts)
@@ -211,57 +265,64 @@ fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
 	opts.classifiers = [1]
 	result = multi_verify(opts)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
-	result = multi_verify(opts)
 	// with both classifiers
-	opts.classifiers = [1,0]
+	opts.classifiers = [1, 0]
 	result = multi_verify(opts)
-	assert result.correct_counts == [133,37], 'with both classifiers'
-	// with total
-	// // with break_on_all_flag
-	// opts.break_on_all_flag = true
-	// result = multi_verify(opts)
-	// // with both classifiers
-	// assert result.correct_counts == [20,10], 'with both classifiers'
-	// // with classifier 0 only
-	// opts.classifiers = [0]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-	// // with classifier 1
-	// opts.classifiers = [1]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result1.confusion_matrix_map
-	// // add in the combined_radii and the class_missing_purge flags
-	// opts.combined_radii_flag = true 
-	// opts.class_missing_purge_flag = true 
-	// opts.break_on_all_flag = false 
-	// // with classifier 0 only
-	// opts.classifiers = [0]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-	// // with classifier 1
-	// opts.classifiers = [1]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result1.confusion_matrix_map
-	// result = multi_verify(opts)
-	// // with both classifiers
-	// opts.classifiers = []
-	// result = multi_verify(opts)
-	// assert result.correct_counts == [18,14], 'with both classifiers'
-	// // with break_on_all_flag
-	// opts.break_on_all_flag = true
-	// result = multi_verify(opts)
-	// // with both classifiers
-	// assert result.correct_counts == [20,10], 'with both classifiers'
-	// // with classifier 0 only
-	// opts.classifiers = [0]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result0.confusion_matrix_map
-	// // with classifier 1
-	// opts.classifiers = [1]
-	// result = multi_verify(opts)
-	// assert result.confusion_matrix_map == result1.confusion_matrix_map
+	assert result.correct_counts == [10, 10, 10, 48, 24, 10, 10, 42, 10, 9, 10, 24, 9, 48, 41,
+		9, 8, 15, 4], 'with both classifiers'
+	// with totalnn flag set, performance deteriorates
+	opts.total_nn_counts_flag = true
+	result = multi_verify(opts)
+	assert result.correct_counts == [133, 36]
 }
 
+// fn test_multiple_classifier_verify_totalnn_discrete_attributes_multiple_classes() ? {
+// 	mut opts := Options{
+// 		concurrency_flag:     false
+// 		command:              'verify'
+// 		expanded_flag:        false
+// 		show_flag: true
+// 	}
+// 	mut result := CrossVerifyResult{}
+// 	opts.datafile_path = 'datasets/soybean-large-train.tab'
+// 	opts.testfile_path = 'datasets/soybean-large-test.tab'
+// 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/soybean.opts'
+// 	opts.append_settings_flag = true
+// 	opts.number_of_attributes = [13]
+// 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+// 	result0 := verify(opts)
+// 	assert result0.correct_counts == [10, 10, 10, 48, 20, 9, 9, 47, 10, 8, 10, 24, 6, 49, 39, 9, 8, 15, 4], 'verify with 13 attributes'
+// 	opts.number_of_attributes = [32]
+// 	opts.weighting_flag = true
+// 	result1 := verify(opts)
+// 	assert result1.correct_counts == [10, 10, 10, 48, 24, 10, 10, 39, 10, 9, 10, 24, 9, 41, 40, 9, 8, 15, 4], 'verify with 4 attributes'
+// 	// verify that the settings file was saved, and
+// 	// is the right length
 
-
-
+// 	assert os.file_size(opts.settingsfile_path) == 3215
+// 	opts.show_attributes_flag = true
+// 	display_file(opts.settingsfile_path, opts)
+// 	// test verify with multiple_classify_options_file_path
+// 	opts.multiple_flag = true
+// 	opts.multiple_classify_options_file_path = opts.settingsfile_path
+// 	opts.append_settings_flag = false
+// 	opts.show_flag = true
+// 	// opts.expanded_flag = true
+// 	opts.show_attributes_flag = false
+// 	// with classifier 0 only
+// 	opts.classifiers = [0]
+// 	result = multi_verify(opts)
+// 	assert result.confusion_matrix_map == result0.confusion_matrix_map
+// 	// with classifier 1
+// 	opts.classifiers = [1]
+// 	result = multi_verify(opts)
+// 	assert result.confusion_matrix_map == result1.confusion_matrix_map
+// 	// with both classifiers
+// 	opts.classifiers = [1,0]
+// 	result = multi_verify(opts)
+// 	assert result.correct_counts == [10, 10, 10, 48, 24, 10, 10, 42, 10, 9, 10, 24, 9, 48, 41, 9, 8, 15, 4], 'with both classifiers'
+// 	// with totalnn flag set, performance deteriorates
+// 	opts.total_nn_counts_flag = true
+// 	result = multi_verify(opts)
+// 	assert result.correct_counts == [133,36]
+// }

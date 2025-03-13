@@ -31,7 +31,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	verify_result.binning = get_binning(mult_opts.bins)
 	mut ds := load_file(mult_opts.datafile_path, mult_opts.LoadOptions)
 	mut classifier_array := []Classifier{}
-	mut cases := [][][]u8{}
+	mut array_of_case_arrays := [][][]u8{}
 	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path,
 		mult_opts.classifiers) or {
 		panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')
@@ -51,10 +51,10 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		classifier := make_classifier(ds, local_opts)
 		classifier_array << classifier
 		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
-		cases << generate_case_array(classifier, test_ds)
+		array_of_case_arrays << generate_case_array(classifier, test_ds)
 	}
 	// dump(mult_opts.Parameters)
-	cases = transpose(cases)
+	array_of_case_arrays = transpose(array_of_case_arrays)
 	mut m_classify_result := ClassifyResult{}
 	mut maximum_hamming_distance_array := []int{}
 	for cl in classifier_array {
@@ -70,14 +70,15 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		println('total_max_ham_dist: ${mult_opts.total_max_ham_dist}')
 		println('lcm_max_ham_dist: ${mult_opts.lcm_max_ham_dist}')
 	}
-	for i, case in cases {
+	for i, case_array in array_of_case_arrays {
 		if opts.verbose_flag {
-			println('\ncase: ${i:-7}  ${case}   classes: ${classifier_array[0].classes.join(' | ')}')
+			println('\ncase_array: ${i:-7}  ${case_array}   classes: ${classifier_array[0].classes.join(' | ')}')
 		}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(classifier_array, case, [''], mult_opts)
+			multiple_classifier_classify_totalnn(classifier_array, case_array, [''], mult_opts)
 		} else {
-			multiple_classifier_classify(classifier_array, case, test_ds.classes, mult_opts)
+			multiple_classifier_classify(classifier_array, case_array, test_ds.classes,
+				mult_opts)
 		}
 		verify_result.inferred_classes << m_classify_result.inferred_class
 		verify_result.actual_classes << verify_result.labeled_classes[i]

@@ -63,7 +63,7 @@ fn read_multiple_opts(path string) ![]ClassifierSettings {
 	return r.multiple_classifier_settings
 }
 
-// pick_classifiers reads the classifier settings file specified by path, and 
+// pick_classifiers reads the classifier settings file specified by path, and
 // returns an array of settings as determined by the classifier_id's in classifier_list.
 // NOTE: the order of classifier settings is as per the classifier_list.
 fn pick_classifiers(path string, classifier_list []int) ![]ClassifierSettings {

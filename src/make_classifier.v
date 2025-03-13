@@ -114,7 +114,6 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 		}
 		attr_binned_values << binned_values.map(u8(it))
 	}
-	// dump(attr_binned_values)
 	// get the maximum possible hamming distance for this classifier
 	cl.maximum_hamming_distance = max_ham_dist(cl.trained_attributes)
 	cl.instances = transpose(attr_binned_values)
