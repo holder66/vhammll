@@ -92,55 +92,6 @@ fn test_last() {
 	assert [1.0, 2.0, 3.0].last() == 3.0
 }
 
-fn test_discretize_attribute() {
-	mut values := [1.0, 2, 0, 3.0]
-	assert discretize_attribute(values, array_min(values), array_max(values), 3) == [
-		2,
-		3,
-		1,
-		3,
-	]
-	mut values_int := [-10, -5, 0, 5, 10, 15, 19, 20]
-	assert discretize_attribute(values_int, array_min(values_int), array_max(values_int),
-		3) == [
-		1,
-		1,
-		2,
-		2,
-		3,
-		3,
-		3,
-		3,
-	]
-	assert discretize_attribute(values_int, array_min(values_int), array_max(values_int),
-		2) == [
-		1,
-		1,
-		1,
-		2,
-		2,
-		2,
-		2,
-		2,
-	]
-	assert discretize_attribute(values_int, array_min(values_int), array_max(values_int),
-		1) == [
-		1,
-		1,
-		1,
-		1,
-		1,
-		1,
-		1,
-		1,
-	]
-	values = [1.0, 2, 0, nan[f64](), 3.0]
-	assert discretize_attribute(values, 0.0, array_max(values), 3) == [2, 3, 1, 0, 3]
-	values = [-10.0, -5, 0, 5, nan[f64](), 10, 15, 19, 20]
-	assert discretize_attribute(values, -10.0, array_max(values), 3) == [1, 1, 2, 2, 0, 3, 3, 3,
-		3]
-}
-
 fn test_discretize_attribute_with_range_check() {
 	assert discretize_attribute_with_range_check([]int{}, 0, 5, 1) == []
 	assert discretize_attribute_with_range_check([nan[f64]()], 0.0, 5.0, 1) == [0]

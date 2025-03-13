@@ -83,35 +83,6 @@ fn print_array(array []string) {
 	}
 }
 
-// discretize_attribute returns an array of integers representing bin numbers
-// bin numbers start at 1; bin 0 is for missing values (represented by
-// nan for floats; TBD for integer values)
-/*
-plan for dealing with missing values in continuous attributes:
-first, calculate the minimum and maximum values, filtering for missing values
-create an index (for cases) for missing values
-alternatively, substitute nan[f32]() for missing values
-use the previously calculated min and max to discretize. The routine should set the bin number to 0 when it encounters -max_f32
-*/
-
-fn discretize_attribute[T](values []T, min T, max T, bins int) []int {
-	// println('$min  $max  $bins')
-	mut bin_values := []int{}
-	mut bin := bins
-	bin_size := (max - min) / bins
-	for value in values {
-		if is_nan(value) { // ie, missing value
-			bin = 0
-		} else if value == max {
-			bin = bins
-		} else {
-			bin = int((value - min) / bin_size) + 1
-		}
-		bin_values << bin
-	}
-	return bin_values
-}
-
 // discretize_attribute_with_range_check takes an array of generic attribute values, as
 // well as minimum and maximum values for that attribute, and the number of bins to use.
 // Bin numbering starts at 1, as bin 0 is used for missing values).
