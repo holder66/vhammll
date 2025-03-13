@@ -63,10 +63,17 @@ fn read_multiple_opts(path string) ![]ClassifierSettings {
 	return r.multiple_classifier_settings
 }
 
+// pick_classifiers reads the classifier settings file specified by path, and 
+// returns an array of settings as determined by the classifier_id's in classifier_list.
+// NOTE: the order of classifier settings is as per the classifier_list.
 fn pick_classifiers(path string, classifier_list []int) ![]ClassifierSettings {
 	mut multiple_classifier_settings := read_multiple_opts(path)!
 	if classifier_list.len == 0 {
 		return multiple_classifier_settings
 	}
-	return multiple_classifier_settings.filter(it.classifier_id in classifier_list)
+	mut classifier_array := []ClassifierSettings{cap: classifier_list.len}
+	for classifier_id in classifier_list {
+		classifier_array << multiple_classifier_settings.filter(it.classifier_id == classifier_id)
+	}
+	return classifier_array
 }
