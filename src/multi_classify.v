@@ -37,7 +37,6 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 		multiple_flag: true
 		Class:         classifier_array[0].Class
 	}
-	dump(case)
 	mut mcr := MultipleClassifierResults{
 		MultipleOptions:       opts.MultipleOptions
 		results_by_classifier: []IndividualClassifierResults{len: classifier_array.len}

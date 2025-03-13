@@ -3,6 +3,7 @@
 module vhammll
 
 fn multi_verify(opts Options) CrossVerifyResult {
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut mult_opts := opts
 	// load the testfile as a Dataset struct
 	mut test_ds := load_file(mult_opts.testfile_path, mult_opts.LoadOptions)
@@ -14,6 +15,10 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		}
 	}
 	// instantiate a struct for the result
+	mut inferences_map := map[string]int{}
+	for key, _ in ds.class_counts {
+		inferences_map[key] = 0
+	}
 	mut verify_result := CrossVerifyResult{
 		LoadOptions:                         mult_opts.LoadOptions
 		Parameters:                          mult_opts.Parameters
@@ -27,9 +32,16 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		classes:                             test_ds.classes
 		pos_neg_classes:                     get_pos_neg_classes(test_ds)
 		confusion_matrix_map:                confusion_matrix_map
+		correct_inferences:                  inferences_map.clone()
+		incorrect_inferences:                inferences_map.clone()
+		wrong_inferences:                    inferences_map.clone()
+		true_positives:                      inferences_map.clone()
+		true_negatives:                      inferences_map.clone()
+		false_positives:                     inferences_map.clone()
+		false_negatives:                     inferences_map.clone()
 	}
 	verify_result.binning = get_binning(mult_opts.bins)
-	mut ds := load_file(mult_opts.datafile_path, mult_opts.LoadOptions)
+
 	mut classifier_array := []Classifier{}
 	mut array_of_case_arrays := [][][]u8{}
 	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path,
@@ -75,7 +87,8 @@ fn multi_verify(opts Options) CrossVerifyResult {
 			println('\ncase_array: ${i:-7}  ${case_array}   classes: ${classifier_array[0].classes.join(' | ')}')
 		}
 		m_classify_result = if opts.total_nn_counts_flag {
-			multiple_classifier_classify_totalnn(classifier_array, case_array, [''], mult_opts)
+			multiple_classifier_classify_totalnn(classifier_array, case_array, test_ds.classes,
+				mult_opts)
 		} else {
 			multiple_classifier_classify(classifier_array, case_array, test_ds.classes,
 				mult_opts)

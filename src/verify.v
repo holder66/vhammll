@@ -34,7 +34,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 				for mt in ft {
 					af_opts.total_nn_counts_flag = mt
 					af_result = multi_verify(af_opts)
-					println('${af_result.correct_counts} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
+					println('${af_result.correct_counts} ${af_result.balanced_accuracy:-6.2f} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
 				}
 			}
 		}

@@ -17,17 +17,19 @@ import arrays
 // repeats for hamming distances which fit within the sphere, until a single maximum is found.
 // If the sphere radius reaches the maximum possible hamming distance and no single maximum
 // is found, then no class is inferred.
+// case_array has an array for each classifier; these arrays contain bin numbers, one for each attribute
+// used in the classifier, which corresponds to the actual case value for that attribute (ie after binning)
 fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_array [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class:         classifier_array[0].Class
 	}
-	dump(case_array)
-	mut total_nns_by_class := []i64{len: 2}
+	// dump(case_array)
+	mut total_nns_by_class := []i64{len: classifier_array[0].classes.len}
 	mut single_maxima := []bool{len: classifier_array.len}
 	// mut weighted_totals := []f64{len: 2}
 	// mut lcm_val := lcm(get_map_values(classifier_array[0].class_counts))
-	mut nearest_neighbors_by_class := []i64{len: classifier_array[0].prepurge_class_values_len}
+	mut nearest_neighbors_by_class := []i64{len: classifier_array[0].classes.len}
 	// mut nearest_neighbors_by_class_unweighted := []i64{len: classifier_array[0].prepurge_class_values_len}
 	mut hamming_distances_array := [][]int{}
 	mut maximum_hamming_distance_array := []int{}
@@ -53,12 +55,12 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 	// dump(radii)
 	mut nearest_neighbors_by_class_array := [][]i64{}
 	mut classifier_weights := []i64{}
-	mut class_weights := []int{}
+	// mut class_weights := []int{}
 	radius_loop: for radius in radii {
 		nearest_neighbors_by_class_array = [][]i64{}
 		classifier_weights.clear()
 		for i, cl in classifier_array {
-			class_weights.clear()
+			// class_weights.clear()
 			// dump(maximum_hamming_distance_array)
 			classifier_weighted_increment := opts.lcm_max_ham_dist / maximum_hamming_distance_array[i]
 			// classes_weighting := cl.lcm_max_ham_dist / cl.maximum_hamming_distance_array
@@ -69,11 +71,11 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 			// dump(cl.classes)
 			for class_index in 0 .. cl.classes.len {
 				classes_weighting := int(i64(lcm(cl.class_counts.values())) / cl.class_counts[cl.classes[class_index]])
-				class_weights << classes_weighting
-				dump(hamming_distances_array[i])
-				dump(cl.class_values)
+				// class_weights << classes_weighting
+				// dump(class_weights)
+
+				// dump(cl.class_values)
 				for j, dist in hamming_distances_array[i] {
-					dump(j)
 					if dist <= radius && cl.class_values[j] == cl.classes[class_index] {
 						nearest_neighbors_by_class[class_index] += (if !cl.weighting_flag
 							|| cl.lcm_class_counts == 0 {
@@ -82,6 +84,7 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 							classifier_weighted_increment * classes_weighting
 						})
 					}
+					// dump(nearest_neighbors_by_class)
 				}
 			}
 			nearest_neighbors_by_class_array << nearest_neighbors_by_class
@@ -92,6 +95,8 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 				single_maxima[i] = true
 			}
 		}
+		// dump(classifier_weights)
+		// dump(single_maxima)
 		if opts.break_on_all_flag {
 			// continue until a class has been inferred for all the classifiers
 			if single_maxima.all(it == true) {
@@ -105,11 +110,12 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 		}
 	}
 	// total up the nearest neighbors by class, for all the classifierss
-	for nn in nearest_neighbors_by_class_array {
+	for i, nn in nearest_neighbors_by_class_array {
 		for j, count in nn {
-			total_nns_by_class[j] += count
+			total_nns_by_class[j] += count * opts.lcm_max_ham_dist / classifier_weights[i]
 		}
 	}
+	// dump(total_nns_by_class)
 	if single_array_maximum(total_nns_by_class) {
 		final_cr.inferred_class = classifier_array[0].classes[idx_max(total_nns_by_class)]
 		return final_cr
