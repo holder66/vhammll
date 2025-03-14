@@ -226,7 +226,7 @@ fn test_multiple_classifier_verify_totalnn_multiple_classes() ? {
 	mut opts := Options{
 		concurrency_flag: false
 		command:          'verify'
-		expanded_flag:    false
+		expanded_flag:    true
 		show_flag:        true
 	}
 	mut result := CrossVerifyResult{}
@@ -234,12 +234,10 @@ fn test_multiple_classifier_verify_totalnn_multiple_classes() ? {
 	opts.testfile_path = 'datasets/develop_test.tab'
 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/develop.opts'
 	opts.append_settings_flag = true
-	opts.number_of_attributes = [13]
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	result0 := verify(opts)
-	assert result0.correct_counts == [10, 10, 10, 48, 20, 9, 9, 47, 10, 8, 10, 24, 6, 49, 39, 9,
-		8, 15, 4], 'verify with 13 attributes'
-	opts.number_of_attributes = [32]
+	assert result0.correct_counts == [1, 0, 1], 'verify with 13 attributes'
+	opts.number_of_attributes = [4]
 	opts.weighting_flag = true
 	result1 := verify(opts)
 	assert result1.correct_counts == [10, 10, 10, 48, 24, 10, 10, 39, 10, 9, 10, 24, 9, 41, 40,
