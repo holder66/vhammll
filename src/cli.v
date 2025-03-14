@@ -79,8 +79,8 @@ pub mut:
 // 	  allowing for an assessment of overfitting likelihood.
 // -p --purge, removes instances which after binning are duplicates;
 // -pos, followed by the name of the class to be considered the Positive class;
-// -p#,
-// -ps,
+// -p#, number of partitions and their relative size (integer multiples of the smallest partition);
+// -ps, list of file paths for saving each partition in its own file;
 // -pmc --purge-missing-classes, removes instances for which the class value
 //  is missing;
 // -r --reps, number of repetitions; if > 1, a random selection of
