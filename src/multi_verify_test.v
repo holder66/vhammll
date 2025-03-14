@@ -16,9 +16,9 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolders/tempfolder_multiple_verify')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
-// }
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
+}
 
 fn test_multiple_verify() ? {
 	mut opts := Options{
