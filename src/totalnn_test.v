@@ -18,13 +18,12 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_totalnn')!
 }
 
-fn test_multiple_classifier_crossvalidate_totalnn() {
+fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	mut opts := Options{
 		// break_on_all_flag:    true
 		combined_radii_flag:  false
 		weighting_flag:       false
 		show_flag:            false
-		// total_nn_counts_flag: true
 		command:              'explore'
 		expanded_flag:        true
 	}
@@ -55,21 +54,72 @@ fn test_multiple_classifier_crossvalidate_totalnn() {
 	result = cross_validate(ds, opts)
 	assert result.correct_counts == [8,3]
 	opts.total_nn_counts_flag = true 
+	opts.classifiers = [1]
 	// opts.break_on_all_flag = true
 	result = cross_validate(ds, opts)
-	// }, 'for classifier #1'
-	// opts.classifiers = [2]
-	// cross_validate(ds, opts)
-	// // assert cross_validate(ds, opts).correct_counts == [], 'for classifier #2'
-	// opts.classifiers = [2, 3]
-	// opts.command = 'cross'
-	// opts.show_flag = true
-	// // opts.expanded_flag = true
-	// opts.show_attributes_flag = true
-	// result_mult := cross_validate(ds, opts)
-	// // assert cross_validate(ds, opts).correct_counts == [], 'for classifiers 2 & 3'
+	assert result.correct_counts == [8,3], 'for classifier #1'
+	opts.classifiers = [2]
+	cross_validate(ds, opts)
+	assert cross_validate(ds, opts).correct_counts == [9,2], 'for classifier #2'
+	opts.classifiers = [2, 3]
+	opts.command = 'cross'
+	opts.show_flag = true
+	// opts.expanded_flag = true
+	result_mult := cross_validate(ds, opts)
+	assert cross_validate(ds, opts).correct_counts == [8,3], 'for classifiers 2 & 3'
 }
 
+fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
+	mut opts := Options{
+		// break_on_all_flag:    true
+		combined_radii_flag:  false
+		weighting_flag:       false
+		show_flag:            false
+		// total_nn_counts_flag: true
+		command:              'explore'
+		expanded_flag:        true
+	}
+	mut result := CrossVerifyResult{}
+
+	opts.datafile_path = 'datasets/developer.tab'
+	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/developer.opts'
+	opts.append_settings_flag = true
+	opts.weight_ranking_flag = true
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	mut er := explore(ds, opts)
+	assert os.file_size(opts.settingsfile_path) == 7026, 'Settings file too small'
+	display_file(opts.settingsfile_path, opts)
+	// repeat display with show attributes
+	opts.show_attributes_flag = true
+	display_file(opts.settingsfile_path, opts)
+
+	// show optimals without and with purging
+	optimals(opts.settingsfile_path, opts)
+	opts.purge_flag = true
+	optimals(opts.settingsfile_path, opts)
+	opts.multiple_flag = true
+	opts.append_settings_flag = false
+	opts.show_attributes_flag = false
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.classifiers = [0,2]
+	opts.command = 'cross'
+	// opts.verbose_flag = true
+	result = cross_validate(ds, opts)
+	assert result.correct_counts == [8,3,2]
+	opts.total_nn_counts_flag = true 
+	// opts.break_on_all_flag = true
+	result = cross_validate(ds, opts)
+	assert result.correct_counts == [8,3,2]
+	opts.classifiers = [2]
+	cross_validate(ds, opts)
+	assert cross_validate(ds, opts).correct_counts == [8,3,2], 'for classifier #2'
+	opts.classifiers = [2, 3]
+	opts.command = 'cross'
+	opts.show_flag = true
+	// opts.expanded_flag = true
+	result_mult := cross_validate(ds, opts)
+	assert cross_validate(ds, opts).correct_counts == [8,0,0], 'for classifiers 2 & 3'
+}
 fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
 	mut opts := Options{
 		concurrency_flag:     false

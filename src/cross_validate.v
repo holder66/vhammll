@@ -52,12 +52,12 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 				af_opts.combined_radii_flag = mc
 				for tnc in ft {
 					af_opts.total_nn_counts_flag = tnc
-					for cmp in ft {
-						af_opts.class_missing_purge_flag = cmp
+					// for cmp in ft {
+					// 	af_opts.class_missing_purge_flag = cmp
 						// dump(af_opts.Parameters)
 						af_result = run_cross_validate(ds, af_opts)
-						println('${af_result.correct_counts} ma ${ma} mc ${mc} tnc ${tnc} cmp ${cmp} ${af_opts.classifiers}')
-					}
+						println('${af_result.correct_counts}  ${af_result.balanced_accuracy} ma ${ma} mc ${mc} tnc ${tnc} ${af_opts.classifiers}')
+					// }
 				}
 			}
 		}
@@ -89,7 +89,6 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		LoadOptions:     cross_opts.LoadOptions
 		DisplaySettings: opts.DisplaySettings
 		MultipleOptions: cross_opts.MultipleOptions
-		// MultipleClassifierSettingsArray: cross_opts.MultipleClassifierSettingsArray
 		datafile_path:                       ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
 		labeled_classes:                     ds.class_values
@@ -105,23 +104,37 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		false_positives:                     inferences_map.clone()
 		false_negatives:                     inferences_map.clone()
 	}
+	cross_result.binning = get_binning(cross_opts.bins)
+
 	if opts.multiple_flag {
 		// disable concurrency, as not implemented for multiple classifiers
 		cross_opts.concurrency_flag = false
+		// mut classifier_array := []Classifier{}
+		// mut array_of_case_arrays := [][][]u8{}
+
 		cross_opts.multiple_classifier_settings = pick_classifiers(cross_opts.multiple_classify_options_file_path,
 			cross_opts.classifiers) or {
 			panic('Unable to load file ${cross_opts.multiple_classify_options_file_path}')
 		}
+		cross_result.multiple_classifier_settings = cross_opts.multiple_classifier_settings
+		mut maximum_hamming_distance_array := []int{}
+		for cl in cross_result.multiple_classifier_settings {
+			maximum_hamming_distance_array << cl.maximum_hamming_distance
+		}
+		cross_opts.maximum_hamming_distance_array = maximum_hamming_distance_array
+		cross_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
+		cross_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
+
 		// if the intent is to use all the classifiers in the settings file, ie opts.classifiers is empty,
 		// then we need to fill in opts.classifiers from the classifier_id's in the individual settings.
 		cross_opts.classifiers = cross_opts.multiple_classifier_settings.map(it.classifier_id)
-		cross_result.multiple_classifier_settings = cross_opts.multiple_classifier_settings
+		
 	}
 	// if there are no useful continuous attributes, set binning to 0
-	if ds.useful_continuous_attributes.len == 0 {
-		cross_opts.bins = [0]
-	}
-	cross_result.binning = get_binning(cross_opts.bins)
+	// if ds.useful_continuous_attributes.len == 0 {
+	// 	cross_opts.bins = [0]
+	// }
+	
 	mut repetition_result := CrossVerifyResult{}
 	for rep in 0 .. repeats {
 		// generate a pick list of indices
@@ -372,10 +385,12 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes,
 					mult_opts)
 			}
+			// dump(m_classify_result)
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]
 			fold_result.nearest_neighbors_by_class << m_classify_result.nearest_neighbors_by_class
 		}
+
 		fold_result.MultipleOptions = mult_opts.MultipleOptions
 	}
 	return fold_result

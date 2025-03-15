@@ -42,6 +42,7 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 			}
 			hamming_distances << hamming_dist
 		}
+		final_cr.weighting_flag_array << cl.weighting_flag
 		hamming_distances_array << hamming_distances
 	}
 	mut radii := element_counts(arrays.flatten(hamming_distances_array)).keys()
