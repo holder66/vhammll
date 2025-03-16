@@ -50,8 +50,7 @@ fn test_explore_traverse_all_flags() {
 		datafile_path:        'datasets/iris.tab'
 		settingsfile_path:    'tempfolders/tempfolder_explore/iris.opts'
 	}
-	saved_file := os.join_path(os.home_dir(), '.vmodules/holder66/vhammll/src/testdata',
-		'iris_purged.opts')
+	saved_file := 'testdata/iris_purged.opts'
 	mut ds := load_file(opts.datafile_path)
 	result = explore(ds, opts)
 	assert os.is_file(opts.settingsfile_path)

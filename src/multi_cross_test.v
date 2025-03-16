@@ -182,9 +182,9 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 }
 
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {
-	mut datafile := os.join_path(os.home_dir(), '.vmodules/holder66/vhammll', 'datasets/breast-cancer-wisconsin-disc.tab')
-	mut settingsfile := os.join_path(os.home_dir(), '.vmodules/holder66/vhammll', 'tempfolders/tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts')
-	mut resultfile := os.join_path(os.home_dir(), '.vmodules/holder66/vhammll', 'tempfolders/tempfolder_multi_cross/resultfile')
+	mut datafile :=  'datasets/breast-cancer-wisconsin-disc.tab'
+	mut settingsfile := 'tempfolders/tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
+	mut resultfile := 'tempfolders/tempfolder_multi_cross/resultfile'
 
 	mut arguments := CliOptions{
 		args: ['cross', '-a', '9', '-w', '-ms', '${settingsfile}', '-e', '${datafile}']
