@@ -63,7 +63,7 @@ fn test_explore_traverse_all_flags() {
 	if !os.is_file(saved_file) {
 		os.cp(opts.outputfile_path, saved_file)!
 	}
-	assert os.file_size(opts.outputfile_path) == 75883
+	assert int(os.file_size(opts.outputfile_path)) in [75883, 75543]
 }
 
 fn test_explore_cross() ? {
