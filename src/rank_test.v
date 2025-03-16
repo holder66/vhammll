@@ -146,3 +146,20 @@ fn test_rank_attribute_sorting() {
 	}
 	assert atts == ['height', 'weight', 'number', 'negative', 'age', 'lastname', 'city', 'SEC']
 }
+
+fn test_pairs() {
+	assert pairs(0) == []
+	assert pairs(1) == []
+	assert pairs(2) == [[0, 1]]
+	assert pairs(3) == [[0, 1], [0, 2], [1, 2]]
+	assert pairs(4) == [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3],
+		[2, 3]]
+}
+
+fn test_abs_diff() {
+	assert abs_diff(0, 0) == 0
+	assert abs_diff(0, 4) == 4
+	assert abs_diff(3, -9) == 12
+	assert abs_diff(-2, -8) == 6
+	assert abs_diff(-0, 5) == 5
+}
