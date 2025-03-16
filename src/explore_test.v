@@ -55,7 +55,7 @@ fn test_explore_traverse_all_flags() {
 	mut ds := load_file(opts.datafile_path)
 	result = explore(ds, opts)
 	assert os.is_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path) in [253572, 252452]
+	assert int(os.file_size(opts.settingsfile_path)) in [253572, 252452]
 	opts.purge_flag = true
 	opts.expanded_flag = true
 	opts.outputfile_path = 'tempfolders/tempfolder_explore/iris_purged.opts'
