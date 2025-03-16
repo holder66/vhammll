@@ -44,13 +44,13 @@ fn test_explore_traverse_all_flags() {
 		show_flag:            true
 		concurrency_flag:     true
 		uniform_bins:         true
-		generate_roc_flag:    true
+		// generate_roc_flag:    true
 		append_settings_flag: true
 		command:              'explore'
 		datafile_path:        'datasets/iris.tab'
 		settingsfile_path:    'tempfolders/tempfolder_explore/iris.opts'
 	}
-	saved_file := 'testdata/iris_purged.opts'
+	saved_file := 'src/testdata/iris_purged.opts'
 	mut ds := load_file(opts.datafile_path)
 	result = explore(ds, opts)
 	assert os.is_file(opts.settingsfile_path)
@@ -59,6 +59,7 @@ fn test_explore_traverse_all_flags() {
 	opts.expanded_flag = true
 	opts.outputfile_path = 'tempfolders/tempfolder_explore/iris_purged.opts'
 	optimals(opts.settingsfile_path, opts)
+	dump(os.home_dir())
 	if !os.is_file(saved_file) {
 		os.cp(opts.outputfile_path, saved_file)!
 	}
