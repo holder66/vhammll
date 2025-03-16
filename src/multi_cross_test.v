@@ -182,7 +182,7 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 }
 
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {
-	mut datafile :=  'datasets/breast-cancer-wisconsin-disc.tab'
+	mut datafile := 'datasets/breast-cancer-wisconsin-disc.tab'
 	mut settingsfile := 'tempfolders/tempfolder_multi_cross/breast-cancer-wisconsin-disc.opts'
 	mut resultfile := 'tempfolders/tempfolder_multi_cross/resultfile'
 
