@@ -27,7 +27,6 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(ds Dataset, opts Options) ExploreResult {
-	// dump(opts)
 	// instantiate a struct for SettingsForROC
 	mut roc_master_class := opts.positive_class
 	if opts.positive_class == '' {
@@ -35,8 +34,6 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		roc_master_class = get_map_key_for_min_value(ds.class_counts)
 	}
 	// master_class_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
-	// dump(roc_master_class)
-	// dump(master_class_index)
 	mut roc_settings := SettingsForROC{
 		master_class_index:      ds.classes.index(roc_master_class)
 		classifiers_for_roc:     []ClassifierSettings{len: ds.class_counts[roc_master_class] + 1}
@@ -47,7 +44,6 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 		// function over both true and false settings for the various
 		// flags in opts.Parameters
 		mut af_opts := opts
-		// dump(af_opts)
 		mut af_result := ExploreResult{}
 		ft := [false, true]
 		for ub in ft {
@@ -61,10 +57,8 @@ pub fn explore(ds Dataset, opts Options) ExploreResult {
 						for bp in ft {
 							af_opts.balance_prevalences_flag = bp
 							af_result = run_explore(ds, af_opts)
-							// dump(af_result)
 							if af_opts.generate_roc_flag {
 								roc_settings = update_settings_for_roc(roc_settings, af_result)
-								// dump(roc_settings)
 							}
 						}
 					}
@@ -103,7 +97,6 @@ fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) Set
 			}
 		}
 	}
-	dump(updated.array_of_correct_counts)
 	return updated
 }
 
@@ -174,7 +167,6 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 		}
 		atts += results.att_interval
 	}
-	// println('maximum_hamming_distance in explore: ${results.maximum_hamming_distance}')
 	results.array_of_results = array_of_results
 	// results.analytics = get_explore_analytics(results)
 	if opts.outputfile_path != '' {
@@ -184,7 +176,6 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_explore_trailer(results, explore_analytics, opts)
 	}
-	// println(ds.class_counts.len)
 	if opts.graph_flag {
 		// println('Just prior to plot_explore')
 		plot_explore(results, opts)

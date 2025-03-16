@@ -77,7 +77,7 @@ fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_arra
 			}
 		}
 		if opts.break_on_all_flag {
-		// continue until a class has been inferred for all the classifiers
+			// continue until a class has been inferred for all the classifiers
 			if single_maxima.all(it == true) {
 				break radius_loop
 			}

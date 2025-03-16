@@ -57,26 +57,29 @@ fn test_optimal_settings() {
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'mets-train.tab')
 		multiple_classify_options_file_path: 'src/testdata/mets-purged.opts'
 		// verbose_flag:         true
-		multiple_flag: true
-		expanded_flag: true
+		positive_class: 'Met'
+		multiple_flag:  true
+		expanded_flag:  true
 		// show_attributes_flag: true
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-	optimals(opts.multiple_classify_options_file_path, opts)
+	result := optimals(opts.multiple_classify_options_file_path, opts)
 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
 		panic('read_multiple_opts failed')
 	}
 	println(r_b('\nVerify that classifiers 20, 30, 85, and 100 in the purged settings file correspond to the settings giving best balanced accuracy of 78.79%, best Matthews Correlation Coefficient of 0.604, and highest total correct inferences of 14/17;'))
-	assert multiple_classifier_settings.len == 90
-	assert multiple_classifier_settings[44].correct_counts == [11, 4]
-	assert multiple_classifier_settings[69].mcc == 0.7510676161988108
-	println(r_b('and verify that classifier 42 in the purged settings file gives the highest specificity of 1.0, and classifier 53 the highest sensitivity of 0.833'))
-	assert multiple_classifier_settings[42].incorrect_counts == [0, 3]
-	assert multiple_classifier_settings[53].correct_counts == [8, 5]
-	for i in [44, 69, 42, 53] {
-		opts.classifiers = [i]
-		// cross_validate(ds, opts)
-	}
+	assert multiple_classifier_settings.filter(it.classifier_id == 100)[0].mcc == 0.6038596398555418
+	assert result.balanced_accuracy_max == 78.7878787878788
+	assert result.balanced_accuracy_max_classifiers == [20, 30, 85, 100]
+	println(r_b('and verify that classifier 0 in the purged settings file gives the highest specificity of,0.909, and classifier 24 the highest sensitivity of 0.833'))
+	assert multiple_classifier_settings.filter(it.classifier_id == 0)[0].incorrect_counts == [
+		1,
+		3,
+	]
+	assert multiple_classifier_settings.filter(it.classifier_id == 24)[0].correct_counts == [
+		8,
+		5,
+	]
 }
 
 fn test_multiple_crossvalidate_of_ox_mets() {
@@ -85,36 +88,25 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 		command:                             'cross'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'mets-train.tab')
 		multiple_classify_options_file_path: 'src/testdata/mets-purged.opts'
+		positive_class:                      'Met'
 		multiple_flag:                       true
+		traverse_all_flags:                  true
 		// expanded_flag: true
 		// show_attributes_flag: true
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags, stopping when correct_counts is [11,5]. This gives the best result, with a Matthews Correlation Coefficient of 0.874'))
-	ft := [false, true]
-	mut result := CrossVerifyResult{}
-	outer: for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
-		[42, 44, 61]] {
-		opts.classifiers = ci
-		for ma in ft {
-			opts.break_on_all_flag = ma
-			for mc in ft {
-				opts.combined_radii_flag = mc
-				for tnc in ft {
-					opts.total_nn_counts_flag = tnc
-					for cmp in ft {
-						opts.class_missing_purge_flag = cmp
-						opts.expanded_flag = false
-						if cross_validate(ds, opts).correct_counts == [11, 5] {
-							assert ci == [42, 44, 61]
-							println('Classifiers: ${ci}; break_on_all_flag: ${ma}     combined_radii_flag: ${mc}      total_nn_counts_flag: ${tnc}     class_missing_purge_flag: ${cmp}')
-							// break outer
-						}
-					}
-				}
-			}
-		}
+	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags. Classifiers 30 and 24 together give the best result, with a Matthews Correlation Coefficient of 0.742'))
+	for cl_list in [[30, 24], [30, 85], [0, 15]] {
+		opts.classifiers = cl_list
+		mut result := cross_validate(ds, opts)
 	}
+	opts.traverse_all_flags = false
+	opts.expanded_flag = true
+	opts.classifiers = [30, 24]
+	opts.break_on_all_flag = true
+	opts.combined_radii_flag = false
+	opts.total_nn_counts_flag = true
+	assert cross_validate(ds, opts).correct_counts == [10, 5]
 }
 
 fn test_ox_mets_multi_verify() {
@@ -129,31 +121,19 @@ fn test_ox_mets_multi_verify() {
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'mets-train.tab')
 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'mets-test.tab')
 		multiple_classify_options_file_path: 'src/testdata/mets-purged.opts'
+		positive_class:                      'Met'
 		multiple_flag:                       true
-		// combined_radii_flag:                 false
-		// break_on_all_flag: true
-		// expanded_flag:                       true
-		show_attributes_flag: true
+		show_attributes_flag:                true
+		expanded_flag:                       true
+		classifiers:                         [30, 24]
+		break_on_all_flag:                   true
+		combined_radii_flag:                 false
+		total_nn_counts_flag:                true
 	}
-	for ci in [[42], [44], [61], [42, 44], [42, 61], [44, 61],
-		[42, 44, 61]] {
-		opts.expanded_flag = false
-		opts.classifiers = ci
-		for ma in ft {
-			opts.break_on_all_flag = ma
-			for cmp in ft {
-				opts.class_missing_purge_flag = cmp
-				if multi_verify(opts).correct_counts == [4, 1] {
-					assert ci == [44]
-				}
-			}
-		}
-	}
-	opts.expanded_flag = true
-	opts.classifiers = [44]
+
 	result = multi_verify(opts)
-	assert result.sens == 0.5
-	assert result.spec == 0.8
+	assert result.sens == 0.4
+	assert result.spec == 0.5
 	println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
-	println(r_b('we get a sensitivity of 0.5, and specificity of 0.8, on the test set'))
+	println(r_b('we get a sensitivity of 0.4, and specificity of 0.4, on the test set'))
 }

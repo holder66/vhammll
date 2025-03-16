@@ -33,7 +33,7 @@ fn test_verify() ? {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	assert verify(opts).correct_count == 10
-
+	dump(verify(opts))
 	println('Done with test.tab')
 
 	// now with a binary classifier with continuous values
