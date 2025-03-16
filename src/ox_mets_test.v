@@ -131,7 +131,7 @@ fn test_ox_mets_multi_verify() {
 		total_nn_counts_flag:                true
 	}
 
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.sens == 0.4
 	assert result.spec == 0.5
 	println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
