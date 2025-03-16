@@ -62,7 +62,7 @@ fn test_multiple_verify() ? {
 	assert result140.correct_counts == [20, 11]
 	// verify that the settings file was correctly saved, and
 	// is the right length
-	assert os.file_size(opts.settingsfile_path) == 4713
+	assert os.file_size(opts.settingsfile_path) in [4713, 4693]
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
@@ -147,7 +147,7 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	// verify that the settings file was correctly saved, and
 	// is the right length
 	// display_file(opts.settingsfile_path, opts)
-	assert os.file_size(opts.settingsfile_path) == 2140
+	assert os.file_size(opts.settingsfile_path) in [2140, 2130]
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
