@@ -41,9 +41,9 @@ fn test_explore_traverse_all_flags() {
 		bins:                 [2, 3]
 		traverse_all_flags:   true
 		// expanded_flag: true
-		show_flag:            true
-		concurrency_flag:     true
-		uniform_bins:         true
+		show_flag:        true
+		concurrency_flag: true
+		uniform_bins:     true
 		// generate_roc_flag:    true
 		append_settings_flag: true
 		command:              'explore'
