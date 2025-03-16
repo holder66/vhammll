@@ -70,17 +70,23 @@ fn test_optimal_settings() {
 	}
 	println(r_b('\nTest that classifiers 40 and 50 in the purged settings file correspond to the settings giving best balanced accuracy of 84.38%.'))
 	assert multiple_classifier_settings.len == 64
-	assert multiple_classifier_settings.filter(it.classifier_id == 40)[0].correct_counts == [15, 9]
+	assert multiple_classifier_settings.filter(it.classifier_id == 40)[0].correct_counts == [
+		15,
+		9,
+	]
 	assert multiple_classifier_settings.filter(it.classifier_id == 50)[0].bal_acc == 84.375
 	println(r_b('\nTest that classifier 124 in the purged settings file corresponds to the setting giving second best Matthews Correlation Coefficient of 0.641, and total correct inferences of 23/28;'))
-	assert multiple_classifier_settings.filter(it.classifier_id == 124)[0].correct_counts == [13, 10]
+	assert multiple_classifier_settings.filter(it.classifier_id == 124)[0].correct_counts == [
+		13,
+		10,
+	]
 	assert multiple_classifier_settings.filter(it.classifier_id == 124)[0].mcc == 0.6408461287109104
 
 	// opts.expanded_flag = false
 	println(r_b('\nTest that a multiple classifier cross-validation using classifiers 45, 50, and 129 gives correct counts of 15 out of 16 and 9 out of 12'))
 	opts.traverse_all_flags = true
 	opts.expanded_flag = false
-	for i in [[45,50,129],[45,50,124,129],[40,151,156]] {
+	for i in [[45, 50, 129], [45, 50, 124, 129], [40, 151, 156]] {
 		opts.classifiers = i
 		cross_validate(ds, opts)
 	}
@@ -98,12 +104,13 @@ fn test_ox2_multi_verify() {
 		multiple_classify_options_file_path: 'src/testdata/ox2_mets_train-purged.opts'
 		multiple_flag:                       true
 		positive_class:                      'Mets'
-		traverse_all_flags: true
+		traverse_all_flags:                  true
 		// expanded_flag:        true
 		// show_attributes_flag: true
 	}
 	println(r_b('\nTest that for classifiers 13 and 15 used individually, we get correct counts\n of 6 out of 8 cases for mets, and 1 out of 4 cases for no mets. For classifier 48, \nit is 8 and 1 correct, and for multiple classification with classifiers 48 and 16, \nit is 7 and 2 cases correctly identified.'))
-	test_values := [[40],[50],[124],[45,50],[50,129],[45,50,129],[130,55],[151,156],[40,151,156]]
+	test_values := [[40], [50], [124], [45, 50], [50, 129], [45, 50, 129],
+		[130, 55], [151, 156], [40, 151, 156]]
 	for ci in test_values {
 		opts.classifiers = ci
 		verify(opts)
