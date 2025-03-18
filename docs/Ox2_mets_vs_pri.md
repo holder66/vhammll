@@ -42,7 +42,7 @@ For the explore, use an attribute number range from 1 to 8, and a binning range 
 Purge duplicate settings from the settings file, saving to a new file:
 `./main optimals -e -p -o ox2_mets_train-purged.opts`
 
-It is important to note that the actual settings obtained in the explore process are dependent on which cases were picked to go into the train file. Since this is a random process, it is suggested that you create a file using the same cases, ie, rows
+It is important to note that the actual settings obtained in the explore process are dependent on which cases were picked to go into the train file. Since this was a random process, it is suggested that you create a file using the same cases, ie, rows
 22,37,38,41,49,55,59,64,68,75,80,84,94,99,110,111,149,163,165,171,175,176,192,194,201,211,220,240,244,247,263,264,268,280,284,291,292,296,311,320,321,333 from the original datafile. 
 
 This process helps us to identify the settings giving maximum values for balanced accuracy of 84.38% (classifier 13) and Matthews Correlation Coefficient (MCC) of 0.710, sensitivity of 0.938, and specificity of 0.833. 
