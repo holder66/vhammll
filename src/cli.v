@@ -75,7 +75,7 @@ pub mut:
 // -o --output, followed by the path to a file in which a classifier, a
 //    result, instances used for validation, or a query instance will be
 //    stored;
-// -ov --overfitting, console output and graph to include information
+// -of --overfitting, console output and graph to include information
 // 	  allowing for an assessment of overfitting likelihood.
 // -p --purge, removes instances which after binning are duplicates;
 // -pos, followed by the name of the class to be considered the Positive class;
@@ -174,7 +174,7 @@ fn get_options(args []string) Options {
 	opts.one_vs_rest_flag = flag(args, ['-mr'])
 	opts.total_nn_counts_flag = flag(args, ['-mt'])
 	opts.append_settings_flag = flag(args, ['-ms'])
-	opts.overfitting_flag = flag(args, ['-ov', '--overfitting'])
+	opts.overfitting_flag = flag(args, ['-of', '--overfitting'])
 	opts.purge_flag = flag(args, ['-p', '--purge'])
 	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])

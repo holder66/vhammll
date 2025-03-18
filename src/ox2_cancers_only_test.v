@@ -28,7 +28,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		// concurrency_flag:     true
 		datafile_path:        os.join_path(home_dir, 'mets', 'ox2_mets_train.tsv')
 		number_of_attributes: [1, 10]
-		bins:                 [2, 14]
+		bins:                 [2, 10]
 		append_settings_flag: true
 		traverse_all_flags:   true
 		settingsfile_path:    temp_file

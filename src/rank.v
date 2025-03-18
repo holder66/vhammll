@@ -120,7 +120,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			}
 			i in ds.useful_continuous_attributes.keys() {
 				r_v, bin_number, rank_value_array := rank_continuous_attribute(i, ds,
-					binning, opts.exclude_flag, opts.weight_ranking_flag)
+					binning, opts.exclude_flag, opts.weight_ranking_flag, opts.overfitting_flag)
 				rank_value_map[i] = r_v
 				binning_map[i] = bin_number
 				rank_value_array_map[i] = rank_value_array
@@ -189,184 +189,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	return result
 }
 
-// pub fn rank_attributes_old(ds Dataset, opts Options) RankingResult {
-// 	mut ranking_result := RankingResult{
-// 		LoadOptions:         ds.LoadOptions
-// 		DisplaySettings:     opts.DisplaySettings
-// 		path:                ds.path
-// 		exclude_flag:        opts.exclude_flag
-// 		weight_ranking_flag: opts.weight_ranking_flag
-// 	}
-// 	// dump(opts)
-// 	// to get the denominator for calculating percentages of rank values,
-// 	// we get the rank value for the class attribute, which should be 100%
-// 	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
-// 		ds.Class.class_counts, opts))
-// 	if opts.verbose_flag && opts.command == 'rank' {
-// 		println('perfect_rank_value: ${perfect_rank_value}')
-// 	}
-// 	mut ranked_attributes := []RankedAttribute{}
-// 	mut binning := Binning{}
-// 	if ds.useful_continuous_attributes.len != 0 {
-// 		// binning = get_binning(opts.bins)
-// 		if opts.binning.lower > 0 {
-// 			binning = opts.binning
-// 		} else {
-// 			binning = get_binning(opts.bins)
-// 		}
-// 	}
 
-// 	// for each usable attribute, calculate a rank value taking into
-// 	// account the class prevalences
-// 	// create an array of the unique class values
-// 	mut count := 0
-// 	// mut diff := 0
-// 	mut rank_value := i64(0)
-// 	mut rank_value_array := []f32{}
-// 	mut maximum_rank_value := i64(0)
-// 	mut attr_index_for_maximum_rank_value := 0
-// 	mut bin_number_for_maximum_rank_value := 0
-// 	mut min := f32(0.0)
-// 	mut max := f32(0.0)
-// 	mut binned_values := []int{}
-// 	// loop through usable continuous attributes
-// 	for attr_index, attr_values in ds.useful_continuous_attributes {
-// 		// dump(ds.attribute_names[attr_index])
-// 		rank_value_array = []
-// 		maximum_rank_value = 0
-// 		attr_index_for_maximum_rank_value = 0
-// 		bin_number_for_maximum_rank_value = 0
-// 		min = array_min(attr_values.filter(!is_nan(it)))
-// 		max = array_max(attr_values)
-// 		// discretize each attribute by binning, over the bins given by lower
-// 		// and upper and using an interval given by interval; go from high to
-// 		// low, so that the maximum rank value used
-// 		// is associated with the smallest bin number giving that rank value.
-
-// 		// create an array whose values are the bin numbers we want to use
-// 		mut bin_numbers := []int{}
-// 		mut b := binning.lower
-// 		// println('$lower $upper $interval')
-// 		for {
-// 			bin_numbers << b
-// 			b += binning.interval
-// 			if b > binning.upper {
-// 				break
-// 			}
-// 		}
-// 		bin_numbers.reverse_in_place()
-// 		for bin_number in bin_numbers {
-// 			rank_value = i64(0)
-
-// 			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
-// 				bin_number)
-// 			// dump(binned_values)
-// 			// loop through each possible value for bin in the bins bin_number + 1
-// 			for bin_value in 0 .. bin_number + 1 {
-// 				// a bin_value of 0 represents a missing value, so skip
-// 				// if opts.exclude_flag is true
-// 				if bin_value == 0 && opts.exclude_flag {
-// 					continue
-// 				}
-// 				mut row := []int{}
-// 				// loop through classes
-// 				for class, _ in ds.class_counts {
-// 					// at this point, we have the columns and rows we need
-// 					// now to populate it
-// 					// we can't use the same strategy as for discrete attributes
-// 					// of creating an 2d array, since binned_values are integers
-// 					// and class_values are strings
-// 					count = 0
-// 					for i, value in binned_values {
-// 						// println('binned_values i: $i')
-// 						if value == bin_value && ds.class_values[i] == class {
-// 							count += 1
-// 						}
-// 					}
-// 					row << count
-// 				}
-// 				// dump([[bin_value], row])
-// 				if opts.weight_ranking_flag {
-// 					rank_value += sum_along_row_weighted(row, ds.class_counts.values())
-// 				} else {
-// 					rank_value += sum_along_row_unweighted(row)
-// 				}
-// 			}
-
-// 			// for each attribute, find the maximum for the rank_values and
-// 			// the corresponding number of bins
-// 			if rank_value >= maximum_rank_value {
-// 				maximum_rank_value = rank_value
-// 				attr_index_for_maximum_rank_value = attr_index
-// 				bin_number_for_maximum_rank_value = bin_number
-// 			}
-// 			rank_value_array << f32(rank_value)
-// 			// bin_number -= interval
-// 		}
-// 		// dump(rank_value_array)
-// 		rank_value_array = rank_value_array.map(100.0 * f32(it) / perfect_rank_value)
-// 		ranked_attributes << RankedAttribute{
-// 			attribute_index:  attr_index_for_maximum_rank_value
-// 			attribute_name:   ds.attribute_names[attr_index_for_maximum_rank_value]
-// 			attribute_type:   ds.attribute_types[attr_index_for_maximum_rank_value]
-// 			rank_value:       100.0 * f32(maximum_rank_value) / perfect_rank_value
-// 			rank_value_array: rank_value_array
-// 			bins:             bin_number_for_maximum_rank_value
-// 		}
-// 	}
-// 	// loop through discrete attributes
-// 	for attr_index, attr_values in ds.useful_discrete_attributes {
-// 		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts,
-// 			opts)
-// 		ranked_attributes << RankedAttribute{
-// 			attribute_index: attr_index
-// 			attribute_name:  ds.attribute_names[attr_index]
-// 			attribute_type:  ds.attribute_types[attr_index]
-// 			rank_value:      100.0 * f32(rank_value) / perfect_rank_value
-// 		}
-// 	}
-// 	custom_sort_fn := fn (a &RankedAttribute, b &RankedAttribute) int {
-// 		if a.rank_value > b.rank_value {
-// 			return -1
-// 		}
-// 		if a.rank_value < b.rank_value {
-// 			return 1
-// 		}
-// 		if a.rank_value == b.rank_value {
-// 			if a.bins > b.bins {
-// 				return 1
-// 			}
-// 			if a.bins < b.bins {
-// 				return -1
-// 			}
-// 			if a.bins == b.bins {
-// 				if a.attribute_index < b.attribute_index {
-// 					return -1
-// 				}
-// 				return 1
-// 			}
-// 			return 0
-// 		}
-
-// 		return 0
-// 	}
-// 	ranking_result.array_of_ranked_attributes = ranked_attributes
-// 	// custom sort on descending rank value, then ascending bins, then index
-// 	ranked_attributes.sort_with_compare(custom_sort_fn)
-// 	ranking_result.binning = binning
-// 	// println(opts)
-// 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'rank' {
-// 		// println(ranking_result)
-// 		show_rank_attributes(ranking_result)
-// 	}
-// 	if opts.graph_flag && opts.command == 'rank' {
-// 		plot_rank(ranking_result)
-// 	}
-// 	if opts.outputfile_path != '' {
-// 		save_json_file[RankingResult](ranking_result, opts.outputfile_path)
-// 	}
-// 	return ranking_result
-// }
 
 // get_rank_value_for_strings
 fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, opts Options) i64 {
@@ -424,7 +247,7 @@ fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
 
 // rank_continuous_attribute calculates rank values for attribute i over a range of bin values given
 // by opts.bins. It returns the maximum rank value found and the corresponding number of bins.
-fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool) (int, int, []i64) {
+fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool, overfitting_flag bool) (int, int, []i64) {
 	mut result := 0
 
 	mut max_rank_value := 0
@@ -444,6 +267,9 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 			}
 			hits[class_indices_by_case[j]][val] += 1
 		}
+		if overfitting_flag {
+		dump('$i    $hits')
+	}
 		// for each column in hits, sum up the absolute differences between each pair of values
 		result = sum_absolute_differences(pairs(ds.classes.len), hits, weights, weight_ranking_flag)
 		rank_value_array << result
