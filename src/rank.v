@@ -27,7 +27,7 @@ Options:
       continuous attributes [DisplaySettings.graph_flag]
   -l --limit-output, followed by an integer which specifies how many
   		attributes should be included in the console listing [DisplaySettings.limit_output]
-  -ov --overfitting, console output and graph to include information
+  -of --overfitting, console output and graph to include information
   		allowing for an assessment of overfitting likelihood [DisplaySettings.overfitting_flag]
   -exr --explore-rank, followed by eg "2,7", will repeat the ranking
   		exercise over the binning range from 2 through 7 [Options.explore_rank]
@@ -82,8 +82,10 @@ Options:
 //
 // Output options:
 // `show_flag`: print the ranked list to the console;
-// `graph_flag`:generate plots of rank values for each attribute on the
+// `graph_flag`: generate plots of rank values for each attribute on the
 //     y axis, with number of bins on the x axis.
+// `overfitting_flag`: generates metrics/plots to help determine, for continuous
+//     attributes, whether overfitting is occurring.
 // `outputfile_path`: saves the result as json.
 // ```
 pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
@@ -189,8 +191,6 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	return result
 }
 
-
-
 // get_rank_value_for_strings
 fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, opts Options) i64 {
 	// println('values: $values  class_values: $class_values  class_counts: $class_counts')
@@ -268,8 +268,8 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 			hits[class_indices_by_case[j]][val] += 1
 		}
 		if overfitting_flag {
-		dump('$i    $hits')
-	}
+			dump('${i}    ${hits}')
+		}
 		// for each column in hits, sum up the absolute differences between each pair of values
 		result = sum_absolute_differences(pairs(ds.classes.len), hits, weights, weight_ranking_flag)
 		rank_value_array << result
