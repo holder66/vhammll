@@ -199,7 +199,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 	if opts.overfitting_flag && opts.command == 'rank' {
 		for n, attr in result.array_of_ranked_attributes {
 			if n >= opts.limit_output {break}
-			plot_hits(result.Class, attr)
+			plot_hits(result.Class, attr, opts.weighting_flag)
 		}
 	}
 	return result
