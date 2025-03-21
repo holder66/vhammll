@@ -13,10 +13,54 @@ mut:
 	hover_text         []string
 }
 
+// plot-hits generates a series of scatterplots with smoothed lines of the
+// number of hits per bin number,over a range of bin numbers,
+// for a continuous attribute, with separate curves for each class.
+fn plot_hits(classes_info Class, attr RankedAttribute) {
+	mut anno1_text := 'Rank value: ${attr.rank_value: -6.2f} at ${attr.bins} bins'
+	mut annotation1 := plot.Annotation{
+		x: 0
+		text: anno1_text
+		align: 'left'
+	}
+	for hits_array in attr.array_of_hits_arrays {
+		mut plt := plot.Plot.new()
+		for i, class in classes_info.classes {
+			cases := classes_info.class_counts[class]
+			plt.scatter(
+				x:    []int{len: hits_array[i].len, init: index}
+				y:    hits_array[i]
+				mode: 'lines+markers'
+				fill: 'tozeroy'
+				name: '${class} (${cases})'
+			)
+			annotation1.y = array_max(classes_info.class_counts.values())
+		
+		}
+		plt.layout(
+			title:    'Hits per bin, per class, for continuous attribute "${attr.attribute_name}"'
+			autosize: false
+			width:    800
+			xaxis:    plot.Axis{
+				title: plot.AxisTitle{
+					text: 'Bin number (bin 0 is for missing values)'
+				}
+			}
+			yaxis:    plot.Axis{
+				title: plot.AxisTitle{
+					text: 'Number of Hits'
+				}
+				range: [0.0, array_max(classes_info.class_counts.values())]
+			}
+			annotations: [annotation1]
+		)
+		plt.show() or { panic(err) }
+	}
+}
+
 // plot_rank generates a scatterplot of the rank values
 // for continuous attributes, as a function of the number of bins.
 fn plot_rank(result RankingResult) {
-	// println('we are in plot_rank')
 	mut ranked_atts := result.array_of_ranked_attributes.clone()
 	mut traces := []RankTrace{}
 	mut plt := plot.Plot.new()
