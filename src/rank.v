@@ -34,6 +34,7 @@ Options:
   -exr --explore-rank, followed by eg "2,7", will repeat the ranking
   		exercise over the binning range from 2 through 7 [Options.explore_rank]
   -u --uniform, uses uniform binning over all attributes [Parameters.uniform_bins]
+  -w --weight, weights and normalizes the graph of hits per bin per class (see -of option)
   -wr, weight contribution to ranking by considering class 
       prevalences [Parameters.weight_ranking_flag]
 
@@ -88,6 +89,8 @@ Options:
 //     y axis, with number of bins on the x axis.
 // `overfitting_flag`: generates metrics/plots to help determine, for continuous
 //     attributes, whether overfitting is occurring.
+// `weighting_flag`: for the hits per bin graph produced by the overfitting flag,
+//     weights and normalizes the hits.
 // `outputfile_path`: saves the result as json.
 // ```
 pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
@@ -201,7 +204,7 @@ pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
 			if n >= opts.limit_output {
 				break
 			}
-			plot_hits(result.Class, attr)
+			plot_hits(result.Class, attr, opts.weighting_flag)
 		}
 	}
 	return result

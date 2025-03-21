@@ -75,8 +75,8 @@ pub mut:
 // -o --output, followed by the path to a file in which a classifier, a
 //    result, instances used for validation, or a query instance will be
 //    stored;
-// -of --overfitting, console output and graph to include information
-// 	  allowing for an assessment of overfitting likelihood.
+// -of --overfitting, when ranking attributes, the console output and graph will
+//    include information allowing for an assessment of overfitting likelihood.
 // -p --purge, removes instances which after binning are duplicates;
 // -pos, followed by the name of the class to be considered the Positive class;
 // -p#, number of partitions and their relative size (integer multiples of the smallest partition);
