@@ -2,7 +2,6 @@
 module vhammll
 
 import maps
-import vplot
 import os
 
 struct RankValue {
@@ -301,20 +300,6 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 		hits_array << hits
 	}
 	return max_rank_value, bins_for_max_rank_value, rank_value_array, hits_array
-}
-
-fn graph_hits(attr_indx int, hits_array [][]int) {
-	mut bin_numbers := []f64{len: hits_array[0].len, init: f64(index)}
-	mut p1 := vplot.PlotSession{
-		title:   'Hits for Attribute ${attr_indx}'
-		style:   vplot.style_linespoints_smooth
-		label_x: 'Bin number (bin 0 is for missing values)'
-		label_y: 'number of hits'
-		x:       bin_numbers
-		y:       hits_array[0].map(f64(it))
-	}
-	vplot.plotter(p1) or { println('ERROR: ${err.msg()}') }
-	os.input('Press any key to continue...')
 }
 
 // sum_absolute_differences sums up the absolute differences for each pair of entries in the hits list.
