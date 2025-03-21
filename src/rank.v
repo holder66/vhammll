@@ -2,7 +2,6 @@
 module vhammll
 
 import maps
-import os
 
 struct RankValue {
 mut:
