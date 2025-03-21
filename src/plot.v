@@ -17,10 +17,10 @@ mut:
 // number of hits per bin number,over a range of bin numbers,
 // for a continuous attribute, with separate curves for each class.
 fn plot_hits(classes_info Class, attr RankedAttribute) {
-	mut anno1_text := 'Rank value: ${attr.rank_value: -6.2f} at ${attr.bins} bins'
+	mut anno1_text := 'Rank value: ${attr.rank_value:-6.2f} at ${attr.bins} bins'
 	mut annotation1 := plot.Annotation{
-		x: 0
-		text: anno1_text
+		x:     0
+		text:  anno1_text
 		align: 'left'
 	}
 	for hits_array in attr.array_of_hits_arrays {
@@ -35,18 +35,17 @@ fn plot_hits(classes_info Class, attr RankedAttribute) {
 				name: '${class} (${cases})'
 			)
 			annotation1.y = array_max(classes_info.class_counts.values())
-		
 		}
 		plt.layout(
-			title:    'Hits per bin, per class, for continuous attribute "${attr.attribute_name}"'
-			autosize: false
-			width:    800
-			xaxis:    plot.Axis{
+			title:       'Hits per bin, per class, for continuous attribute "${attr.attribute_name}"'
+			autosize:    false
+			width:       800
+			xaxis:       plot.Axis{
 				title: plot.AxisTitle{
 					text: 'Bin number (bin 0 is for missing values)'
 				}
 			}
-			yaxis:    plot.Axis{
+			yaxis:       plot.Axis{
 				title: plot.AxisTitle{
 					text: 'Number of Hits'
 				}
