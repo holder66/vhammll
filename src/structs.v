@@ -59,12 +59,13 @@ mut:
 
 pub struct RankedAttribute {
 pub mut:
-	attribute_index  int
-	attribute_name   string
-	attribute_type   string
-	rank_value       f32
-	rank_value_array []f32
-	bins             int
+	attribute_index      int
+	attribute_name       string
+	attribute_type       string
+	rank_value           f32
+	rank_value_array     []f32
+	bins                 int
+	array_of_hits_arrays [][][]int
 }
 
 pub struct Binning {
@@ -75,6 +76,7 @@ mut:
 }
 
 pub struct RankingResult {
+	Class
 	LoadOptions
 	DisplaySettings
 pub mut:
