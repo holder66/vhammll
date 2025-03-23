@@ -41,10 +41,11 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 
 	// new routine
 	struct Counts {
-		pos int 
-		neg int
+		pos           int
+		neg           int
 		classifier_id int
 	}
+
 	mut uniques_structs_array := []Counts{cap: settings.len}
 	for setting in settings {
 		uniques_structs_array << Counts{setting.correct_counts[1], setting.correct_counts[0], setting.classifier_id}
@@ -52,11 +53,11 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	mut roc_settings := []Counts{cap: settings.len}
 	// filter by unique values of positive counts
 	for val in uniques(uniques_structs_array.map(it.pos)) {
-	mut val_items := uniques_structs_array.filter(it.pos == val)
-	roc_settings << val_items.filter(it.neg == array_max(val_items.map(it.neg)))[0]
-	// filter by maximum value of neg in that set
-}
-	roc_settings.sort(a.pos< b.pos)
+		mut val_items := uniques_structs_array.filter(it.pos == val)
+		roc_settings << val_items.filter(it.neg == array_max(val_items.map(it.neg)))[0]
+		// filter by maximum value of neg in that set
+	}
+	roc_settings.sort(a.pos < b.pos)
 	result.receiver_operating_characteristic_settings = roc_settings.map(it.classifier_id)
 	mut sorted_roc_settings := []ClassifierSettings{cap: roc_settings.len}
 	for classifier_id in roc_settings.map(it.classifier_id) {

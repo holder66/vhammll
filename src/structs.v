@@ -228,7 +228,6 @@ pub mut:
 	multiple_classifier_settings []ClassifierSettings
 }
 
-
 pub struct OptimalsResult {
 pub mut:
 	class_counts                                        []int
