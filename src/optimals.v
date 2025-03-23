@@ -1,6 +1,8 @@
 // optimals.v
 module vhammll
 
+import vsl.plot
+
 // optimals determines which classifiers provide the best balanced accuracy, best Matthews
 // Correlation Coefficient (MCC), highest total for
 // correct inferences, and highest correct inferences per class, for multiple classifiers whose
@@ -91,12 +93,31 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		// println(c_u('Settings for Reversed Receiver Operating Characteristic (ROC) curve:'))
 		// show_multiple_classifier_settings_details(filtered_reversed_settings)
 	}
+
+	if opts.graph_flag {
+		plot_auroc(sorted_roc_settings)
+	}
 	if opts.outputfile_path != '' {
 		for setting in settings {
 			append_json_file(setting, opts.outputfile_path)
 		}
 	}
 	return result
+}
+
+fn plot_auroc(roc_settings []ClassifierSettings) {
+	mut y := roc_settings.map(it.sens) 
+	mut x := roc_settings.map(1 - it.spec)
+	y << [1.0]
+	x << [1.0]
+	mut plt := plot.Plot.new()
+	plt.scatter(
+		x: x 
+		y: y)
+	plt.layout(
+		title: 'Receiver Operating Characteristic')
+	plt.show() or {panic(err)}
+
 }
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
