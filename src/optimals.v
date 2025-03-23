@@ -3,6 +3,24 @@ module vhammll
 
 import vsl.plot
 
+const optimals_help = '
+Description:
+"optimals" determines which classifiers provide the best balanced accuracy, 
+best Matthews Correlation Coefficient (MCC), highest total for
+correct inferences, and highest correct inferences per class, for multiple classifiers whose
+settings are stored in a settings file specified by the last command line argument.
+
+Usage:
+v run main.v optimals -e <path_to_settings_file>
+v run main.v optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
+
+Options:
+-e --expanded: show expanded results on the console
+-g --graph: display a plot of the Receiver Operating Characteristic curve
+-p --purge: remove duplicate settings (ie settings with identical parameters)
+-o --output: followed by the path to a file to save the (purged) settings
+'
+
 // optimals determines which classifiers provide the best balanced accuracy, best Matthews
 // Correlation Coefficient (MCC), highest total for
 // correct inferences, and highest correct inferences per class, for multiple classifiers whose
@@ -13,6 +31,7 @@ import vsl.plot
 // Output options:
 // show_flag: prints a list of classifier settings indices for each category;
 // expanded_flag: for each setting, prints the Parameters, results obtained, and Metrics
+// graph_flag: plots a receiver operating characteristic curve
 // outputfile_path: saves the settings in a file given by the path. Useful if the settings are purged.
 // ```
 pub fn optimals(path string, opts Options) OptimalsResult {
@@ -106,18 +125,17 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 }
 
 fn plot_auroc(roc_settings []ClassifierSettings) {
-	mut y := roc_settings.map(it.sens) 
+	mut y := roc_settings.map(it.sens)
 	mut x := roc_settings.map(1 - it.spec)
 	y << [1.0]
 	x << [1.0]
 	mut plt := plot.Plot.new()
 	plt.scatter(
-		x: x 
-		y: y)
-	plt.layout(
-		title: 'Receiver Operating Characteristic')
-	plt.show() or {panic(err)}
-
+		x: x
+		y: y
+	)
+	plt.layout(title: 'Receiver Operating Characteristic')
+	plt.show() or { panic(err) }
 }
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
