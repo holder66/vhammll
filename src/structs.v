@@ -241,6 +241,7 @@ pub mut:
 	correct_inferences_by_class_max             []int
 	correct_inferences_by_class_max_classifiers [][]int // refers to an array of classsifier ID values
 	receiver_operating_characteristic_settings  []int
+	reversed_receiver_operating_characteristic_settings []int
 }
 
 pub struct ClassifierSettings {

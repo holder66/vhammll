@@ -40,14 +40,23 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << settings.filter(it.correct_counts[i] == array_max(settings.map(it.correct_counts[i]))).map(it.classifier_id)
 	}
+
+	// new routine
 	// to display the settings for ROC, we assume the first entry in correct_counts is the master class
 	// thus the highest value for the entries in this position is
 	max_roc_entry := result.correct_inferences_by_class_max[0]
 	// filter settings to include only those with the same number of correct counts in the master class
-	// filtered_settings := settings.map(it.correct_counts[0]).filter(it == max_roc_entry)
 	mut filtered_settings := settings.filter(it.correct_counts[0] == max_roc_entry)
 	filtered_settings.sort(a.correct_counts[1] < b.correct_counts[1])
 	result.receiver_operating_characteristic_settings = filtered_settings.map(it.classifier_id)
+
+	// to display the settings for reverse ROC, we assume the second entry in correct_counts is the master class
+	// thus the highest value for the entries in this position is
+	max_reverse_roc_entry := result.correct_inferences_by_class_max[1]
+	// filter settings to include only those with the same number of correct counts in the master class
+	mut filtered_reversed_settings := settings.filter(it.correct_counts[1] == max_reverse_roc_entry)
+	filtered_reversed_settings.sort(a.correct_counts[0] < b.correct_counts[0])
+	result.reversed_receiver_operating_characteristic_settings = filtered_reversed_settings.map(it.classifier_id)
 
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
@@ -73,6 +82,8 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		}
 		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
 		show_multiple_classifier_settings_details(filtered_settings)
+		println(c_u('Settings for Reversed Receiver Operating Characteristic (ROC) curve:'))
+		show_multiple_classifier_settings_details(filtered_reversed_settings)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {
