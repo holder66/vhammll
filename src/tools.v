@@ -1,7 +1,6 @@
 // v contains functions used elsewhere in hamnn
 module vhammll
 
-// import arrays
 import math
 // import os
 // import x.json2
@@ -341,9 +340,18 @@ fn array_sum[T](list []T) T {
 	return head
 }
 
-// uniques
+// uniques returns the unique items in a list, without sorting.
 fn uniques[T](list []T) []T {
-	return element_counts(list).keys()
+	if list.len <= 1 {
+		return list
+	}
+	mut result := []T{cap: list.len}
+	for item in list {
+		if item !in result {
+			result << item
+		}
+	}
+	return result
 }
 
 // find the index of b in arr

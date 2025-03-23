@@ -228,19 +228,20 @@ pub mut:
 	multiple_classifier_settings []ClassifierSettings
 }
 
+
 pub struct OptimalsResult {
 pub mut:
-	class_counts                                []int
-	balanced_accuracy_max                       f64
-	balanced_accuracy_max_classifiers           []int // refers to an array of classsifier ID values
-	mcc_max                                     f64
-	mcc_max_classifiers                         []int // refers to an array of classsifier ID values
-	correct_inferences_total_max                int
-	correct_inferences_total_max_classifiers    []int // refers to an array of classsifier ID values
-	classes                                     []string
-	correct_inferences_by_class_max             []int
-	correct_inferences_by_class_max_classifiers [][]int // refers to an array of classsifier ID values
-	receiver_operating_characteristic_settings  []int
+	class_counts                                        []int
+	balanced_accuracy_max                               f64
+	balanced_accuracy_max_classifiers                   []int // refers to an array of classsifier ID values
+	mcc_max                                             f64
+	mcc_max_classifiers                                 []int // refers to an array of classsifier ID values
+	correct_inferences_total_max                        int
+	correct_inferences_total_max_classifiers            []int // refers to an array of classsifier ID values
+	classes                                             []string
+	correct_inferences_by_class_max                     []int
+	correct_inferences_by_class_max_classifiers         [][]int // refers to an array of classsifier ID values
+	receiver_operating_characteristic_settings          []int
 	reversed_receiver_operating_characteristic_settings []int
 }
 

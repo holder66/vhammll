@@ -1,8 +1,6 @@
 // optimals.v
 module vhammll
 
-// import arrays
-
 // optimals determines which classifiers provide the best balanced accuracy, best Matthews
 // Correlation Coefficient (MCC), highest total for
 // correct inferences, and highest correct inferences per class, for multiple classifiers whose
@@ -42,21 +40,28 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 
 	// new routine
-	// to display the settings for ROC, we assume the first entry in correct_counts is the master class
-	// thus the highest value for the entries in this position is
-	max_roc_entry := result.correct_inferences_by_class_max[0]
-	// filter settings to include only those with the same number of correct counts in the master class
-	mut filtered_settings := settings.filter(it.correct_counts[0] == max_roc_entry)
-	filtered_settings.sort(a.correct_counts[1] < b.correct_counts[1])
-	result.receiver_operating_characteristic_settings = filtered_settings.map(it.classifier_id)
-
-	// to display the settings for reverse ROC, we assume the second entry in correct_counts is the master class
-	// thus the highest value for the entries in this position is
-	max_reverse_roc_entry := result.correct_inferences_by_class_max[1]
-	// filter settings to include only those with the same number of correct counts in the master class
-	mut filtered_reversed_settings := settings.filter(it.correct_counts[1] == max_reverse_roc_entry)
-	filtered_reversed_settings.sort(a.correct_counts[0] < b.correct_counts[0])
-	result.reversed_receiver_operating_characteristic_settings = filtered_reversed_settings.map(it.classifier_id)
+	struct Counts {
+		pos int 
+		neg int
+		classifier_id int
+	}
+	mut uniques_structs_array := []Counts{cap: settings.len}
+	for setting in settings {
+		uniques_structs_array << Counts{setting.correct_counts[1], setting.correct_counts[0], setting.classifier_id}
+	}
+	mut roc_settings := []Counts{cap: settings.len}
+	// filter by unique values of positive counts
+	for val in uniques(uniques_structs_array.map(it.pos)) {
+	mut val_items := uniques_structs_array.filter(it.pos == val)
+	roc_settings << val_items.filter(it.neg == array_max(val_items.map(it.neg)))[0]
+	// filter by maximum value of neg in that set
+}
+	roc_settings.sort(a.pos< b.pos)
+	result.receiver_operating_characteristic_settings = roc_settings.map(it.classifier_id)
+	mut sorted_roc_settings := []ClassifierSettings{cap: roc_settings.len}
+	for classifier_id in roc_settings.map(it.classifier_id) {
+		sorted_roc_settings << settings.filter(it.classifier_id == classifier_id)
+	}
 
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
@@ -81,9 +86,9 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 			show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.correct_inferences_by_class_max_classifiers[i]))
 		}
 		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
-		show_multiple_classifier_settings_details(filtered_settings)
-		println(c_u('Settings for Reversed Receiver Operating Characteristic (ROC) curve:'))
-		show_multiple_classifier_settings_details(filtered_reversed_settings)
+		show_multiple_classifier_settings_details(sorted_roc_settings)
+		// println(c_u('Settings for Reversed Receiver Operating Characteristic (ROC) curve:'))
+		// show_multiple_classifier_settings_details(filtered_reversed_settings)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {
