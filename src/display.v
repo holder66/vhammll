@@ -13,8 +13,10 @@ import json
 // Output options:
 // expanded_flag: display additional information on the console, including
 //     a confusion matrix for cross-validation or verification operations;
-// graph_flag: generates plots for display in the default web browser.
-//
+// graph_flag: generates plots for display in the default web browser;
+// Options for displaying classifier settings files (suffix .opts):
+// show_attributes_flag: list the attributes used by each classifier;
+// classifiers: a list of classifier id's to display.
 // ```
 pub fn display_file(path string, in_opts Options) {
 	mut opts := in_opts

@@ -84,6 +84,10 @@ Options:
 -e --expanded: show expanded results on the console 
 -g --graph:    show plots on the default web browser
 -ms:           save multiple classifier parameters to a file
+
+Options when displaying a classifier settings file (suffix .opts):
+-m#: list the classifier id\'s to be displayed
+-ea: show the attributes used for each classifier.
 '
 
 const examples_help = '
