@@ -12,8 +12,9 @@ import json
 // display_file('path_to_saved_results_file', expanded_flag: true)
 // Output options:
 // expanded_flag: display additional information on the console, including
-// 	a confusion matrix for cross-validation or verification operations;
+//     a confusion matrix for cross-validation or verification operations;
 // graph_flag: generates plots for display in the default web browser.
+//
 // ```
 pub fn display_file(path string, in_opts Options) {
 	mut opts := in_opts
@@ -71,17 +72,25 @@ pub fn display_file(path string, in_opts Options) {
 		}
 		// test for a multiple classifier settings file
 		s.contains('{"binning":{"lower":') {
-			multiple_classifier_settings := read_multiple_opts(path) or {
+			mut multiple_classifier_settings := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
 			if multiple_classifier_settings.len > 0 {
+				if opts.classifiers.len > 0 {
+					mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
+					dump(opts.classifiers)
+					for id in opts.classifiers {
+						filtered_settings << multiple_classifier_settings.filter(it.classifier_id == id)
+					}
+					multiple_classifier_settings = filtered_settings.clone()
+				}
 				println(m_u('Multiple Classifier Options file: ${path}'))
 				classifiers := multiple_classifier_settings.map(it.classifier_id)
 				show_multiple_classifier_settings_details(multiple_classifier_settings)
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
 					mut classifiers_array := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),
-						multiple_classifier_settings, classifiers)
+						multiple_classifier_settings, opts.classifiers)
 					for i, idx in classifiers_array {
 						println(g_b('Trained attributes for classifier ${classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
 						show_trained_attributes(idx.trained_attributes)

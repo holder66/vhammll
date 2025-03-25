@@ -14,7 +14,7 @@ fn make_multi_classifiers(ds Dataset, settings_list []ClassifierSettings, classi
 	}
 	for i in idx {
 		opts := Options{
-			Parameters: settings_list[i].Parameters
+			Parameters: settings_list.filter(it.classifier_id == i)[0].Parameters
 		}
 		cl := make_classifier(ds, opts)
 		cll << cl
