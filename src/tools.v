@@ -10,6 +10,80 @@ import chalk
 import math.unsigned
 import arrays
 
+struct Point {
+	fpr  f64 // 1 - specificity
+	sens f64 // sensitivity
+}
+
+// roc_values takes a list of pairs of sensitivity and specificity values,
+// and returns a list of Receiver Operating Characteristic plot points
+// (sensitivity vs 1 - specificity).
+fn roc_values(pairs [][]f64) []Point {
+	mut roc_points := []Point{cap: pairs.len + 1}
+	// Convert to FPR/sens and create points
+	for p in pairs {
+		roc_points << Point{
+			fpr:  1 - p[1] // Convert specificity to FPR
+			sens: p[0]     // Sensitivity = sens
+		}
+	}
+	// Sort points by FPR ascending, then sens ascending
+	custom_sort_fn := fn (a &Point, b &Point) int {
+		if a.fpr == b.fpr {
+			if a.sens < b.sens {
+				return -1
+			}
+			if a.sens > b.sens {
+				return 1
+			}
+			{
+				return 0
+			}
+		}
+		if a.fpr < b.fpr {
+			return -1
+		} else if a.fpr > b.fpr {
+			return 1
+		}
+		return 0
+	}
+	roc_points.sort_with_compare(custom_sort_fn)
+	// if points does not include [1.0,0.0] then tack it on
+	if Point{1.0, 1.0} !in roc_points {
+		roc_points << Point{1, 1}
+	}
+	// filter out points which are below and to the right of other points
+	mut result := []Point{cap: roc_points.len}
+	result << roc_points[0]
+	for point in roc_points {
+		if point.sens > array_max(result.map(it.sens)) {
+			result << point
+		}
+	}
+	return result
+}
+
+// auc_roc returns the area under the Receiver Operating Characteristic
+// curve, for an array of roc points.
+fn auc_roc(points []Point) f64 {
+	// if only the start or end limit points are given
+	if points == [Point{0, 0}] || points == [Point{1, 1}] {
+		return 0.5
+	}
+	mut auc := f64(0)
+	for i in 0 .. points.len - 1 {
+		// Calculate trapezoid area between consecutive points
+		x1 := points[i].fpr
+		y1 := points[i].sens
+		x2 := points[i + 1].fpr
+		y2 := points[i + 1].sens
+		width := x2 - x1
+		avg_height := (y1 + y2) / 2
+		auc += width * avg_height
+	}
+	return auc
+}
+
 // idx_true returns the index of the first true element in boolean array a.
 // Returns -1 if no true element found.
 fn idx_true(a []bool) int {

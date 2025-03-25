@@ -314,8 +314,8 @@ mut:
 	curve_variable_values        []string
 }
 
-// plot_roc generates plots of receiver operating characteristic curves.
-fn plot_roc(result ExploreResult, opts Options) {
+// plot_explore_roc generates plots of receiver operating characteristic curves.
+fn plot_explore_roc(result ExploreResult, opts Options) {
 	println('attempting to plot an ROC')
 	mut roc_results := []ROCResult{}
 	mut traces := []ROCTrace{}

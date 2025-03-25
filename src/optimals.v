@@ -114,7 +114,13 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 
 	if opts.graph_flag {
-		plot_auroc(sorted_roc_settings)
+		mut pairs := [][]f64{cap: sorted_roc_settings.len}
+		for setting in sorted_roc_settings {
+			pairs << [setting.sens, setting.spec]
+		}
+		mut roc_points := roc_values(pairs)
+		mut auc := auc_roc(roc_points)
+		plot_roc(roc_points, auc)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {
@@ -124,17 +130,15 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	return result
 }
 
-fn plot_auroc(roc_settings []ClassifierSettings) {
-	mut y := roc_settings.map(it.sens)
-	mut x := roc_settings.map(1 - it.spec)
-	y << [1.0]
-	x << [1.0]
+fn plot_roc(roc_points []Point, auc f64) {
+	mut y := roc_points.map(it.sens)
+	mut x := roc_points.map(it.fpr)
 	mut plt := plot.Plot.new()
 	plt.scatter(
 		x: x
 		y: y
 	)
-	plt.layout(title: 'Receiver Operating Characteristic')
+	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
 	plt.show() or { panic(err) }
 }
 

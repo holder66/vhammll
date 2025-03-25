@@ -182,7 +182,7 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 		// println('Just after plot_explore')
 		if ds.class_counts.len == 2 {
 			// println('should be printing ROC here')
-			plot_roc(results, opts)
+			plot_explore_roc(results, opts)
 		}
 	}
 	if opts.append_settings_flag {
