@@ -19,9 +19,12 @@ struct Point {
 // and returns a list of Receiver Operating Characteristic plot points
 // (sensitivity vs 1 - specificity).
 fn roc_values(pairs [][]f64) []Point {
-	mut roc_points := []Point{cap: pairs.len + 1}
+	mut big_pairs := pairs.clone()
+	big_pairs << [0.0,1,0]
+	big_pairs << [1.0,0.0]
+	mut roc_points := []Point{cap: big_pairs.len}
 	// Convert to FPR/sens and create points
-	for p in pairs {
+	for p in big_pairs {
 		roc_points << Point{
 			fpr:  1 - p[1] // Convert specificity to FPR
 			sens: p[0]     // Sensitivity = sens
@@ -48,10 +51,6 @@ fn roc_values(pairs [][]f64) []Point {
 		return 0
 	}
 	roc_points.sort_with_compare(custom_sort_fn)
-	// if points does not include [1.0,0.0] then tack it on
-	if Point{1.0, 1.0} !in roc_points {
-		roc_points << Point{1, 1}
-	}
 	// filter out points which are below and to the right of other points
 	mut result := []Point{cap: roc_points.len}
 	result << roc_points[0]
@@ -59,6 +58,10 @@ fn roc_values(pairs [][]f64) []Point {
 		if point.sens > array_max(result.map(it.sens)) {
 			result << point
 		}
+	}
+	// if result does not include [1.0,1.0] then tack it on
+	if Point{1, 1} !in result {
+		result << Point{1, 1}
 	}
 	return result
 }
