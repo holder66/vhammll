@@ -20,8 +20,8 @@ struct Point {
 // (sensitivity vs 1 - specificity).
 fn roc_values(pairs [][]f64) []Point {
 	mut big_pairs := pairs.clone()
-	big_pairs << [0.0,1,0]
-	big_pairs << [1.0,0.0]
+	big_pairs << [0.0, 1, 0]
+	big_pairs << [1.0, 0.0]
 	mut roc_points := []Point{cap: big_pairs.len}
 	// Convert to FPR/sens and create points
 	for p in big_pairs {
@@ -69,9 +69,8 @@ fn roc_values(pairs [][]f64) []Point {
 // auc_roc returns the area under the Receiver Operating Characteristic
 // curve, for an array of roc points.
 fn auc_roc(points []Point) f64 {
-	// if only the start or end limit points are given
-	if points == [Point{0, 0}] || points == [Point{1, 1}] {
-		return 0.5
+	if points.len < 2 {
+		panic('cannot calculate area_roc with fewer than 2 points')
 	}
 	mut auc := f64(0)
 	for i in 0 .. points.len - 1 {
