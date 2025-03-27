@@ -279,8 +279,8 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 	}
 	for i, row in row_data {
 		if row != '' {
-		println('${headers[i]:26}   ${row}')
-	}
+			println('${headers[i]:26}   ${row}')
+		}
 	}
 	return col_width_array
 }

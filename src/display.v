@@ -103,7 +103,7 @@ pub fn display_file(path string, in_opts Options) {
 			}
 			mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
 			if multiple_classifier_settings.len > 0 {
-				// if display for specific classifiers was requested, ie -m#, replace the 
+				// if display for specific classifiers was requested, ie -m#, replace the
 				// settings array with just the requested settings, in the order requested
 				if opts.classifiers.len > 0 {
 					for id in opts.classifiers {
@@ -126,7 +126,8 @@ pub fn display_file(path string, in_opts Options) {
 					}
 				}
 				if opts.expanded_flag {
-					println(m_u('Multiple Classifier Settings: file: ${path}' + if auc != 0.0 {'    AUC = ${auc:.3f}'} else {''}))
+					println(m_u('Multiple Classifier Settings: file: ${path}' +
+						if auc != 0.0 { '    AUC = ${auc:.3f}' } else { '' }))
 					show_multiple_classifier_settings_details(multiple_classifier_settings)
 				} else {
 					println('auc = ${auc:.3f} for classifiers ${opts.classifiers} in settings file ${path}')
