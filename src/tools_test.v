@@ -7,7 +7,8 @@ import math.unsigned
 fn test_roc_values() {
 	assert roc_values([[1.0, 0.0]]) == [Point{0, 0}, Point{1, 1}]
 	assert roc_values([[0.0, 1.0]]) == [Point{0, 0}, Point{1, 1}]
-	assert roc_values([[1.0, 1.0]]) == [Point{0, 0}, Point{0,1},Point{1, 1}]
+	assert roc_values([[1.0, 1.0]]) == [Point{0, 0}, Point{0, 1},
+		Point{1, 1}]
 	mut pairs := [[0.2, 0.9], [0.5, 0.8], [0.7, 0.6]]
 	assert roc_values(pairs) == [Point{0, 0}, Point{0.09999999999999998, 0.2},
 		Point{0.19999999999999996, 0.5}, Point{0.4, 0.7}, Point{1, 1}]
@@ -28,7 +29,8 @@ fn test_roc_values() {
 	assert roc_values([[0.765, 0.931], [0.882, 0.737], [0.941, 0.720],
 		[1.0, 0.6]]) == roc_values([[0.941, 0.720], [0.765, 0.931],
 		[1.0, 0.6], [0.882, 0.737]])
-	assert roc_values([[0.0,0.0]]) == [Point{0, 0}, Point{1, 0}, Point{1, 1}]
+	assert roc_values([[0.0, 0.0]]) == [Point{0, 0}, Point{1, 0},
+		Point{1, 1}]
 }
 
 fn test_auc_roc() {
@@ -39,7 +41,7 @@ fn test_auc_roc() {
 	assert auc_roc(roc_values(pairs)) == 0.675
 	assert auc_roc(roc_values([[0.5, 0.5]])) == 0.5
 	assert auc_roc(roc_values([[1.0, 1.0]])) == 1.0
-	assert auc_roc(roc_values([[0.0,0.0]])) == 0.0
+	assert auc_roc(roc_values([[0.0, 0.0]])) == 0.0
 	pairs = [[0.765, 0.931], [0.882, 0.737], [0.941, 0.720], [1.0, 0.6]]
 	assert auc_roc(roc_values(pairs)) == 0.918107
 	pairs = [[0.941, 0.720], [0.765, 0.931], [1.0, 0.6], [0.882, 0.737]]

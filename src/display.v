@@ -77,10 +77,9 @@ pub fn display_file(path string, in_opts Options) {
 			mut multiple_classifier_settings := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
+			mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
 			if multiple_classifier_settings.len > 0 {
 				if opts.classifiers.len > 0 {
-					mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
-					dump(opts.classifiers)
 					for id in opts.classifiers {
 						filtered_settings << multiple_classifier_settings.filter(it.classifier_id == id)
 					}
@@ -98,6 +97,9 @@ pub fn display_file(path string, in_opts Options) {
 						show_trained_attributes(idx.trained_attributes)
 					}
 				}
+			}
+			if opts.graph_flag {
+				plot_settings_roc(multiple_classifier_settings, opts)
 			}
 		}
 		else {

@@ -87,7 +87,8 @@ Options:
 
 Options when displaying a classifier settings file (suffix .opts):
 -m#: list the classifier id\'s to be displayed
--ea: show the attributes used for each classifier.
+-ea: show the attributes used for each classifier
+-p: displays the Receiver Operating Characteristic curve.
 '
 
 const examples_help = '

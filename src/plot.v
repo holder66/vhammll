@@ -314,6 +314,28 @@ mut:
 	curve_variable_values        []string
 }
 
+fn plot_roc(roc_points []Point, auc f64) {
+	mut y := roc_points.map(it.sens)
+	mut x := roc_points.map(it.fpr)
+	mut plt := plot.Plot.new()
+	plt.scatter(
+		x: x
+		y: y
+	)
+	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
+	plt.show() or { panic(err) }
+}
+
+fn plot_settings_roc(settings []ClassifierSettings, opts Options) {
+	// get sensitivity & specificity pairs from the classifier settings
+	mut pairs := [][]f64{len: settings.len, init: []f64{len: 2}}
+	for i, setting in settings {
+		pairs[i] = [setting.sens, setting.spec]
+	}
+	auc := auc_roc(roc_values(pairs))
+	plot_roc(roc_values(pairs), auc)
+}
+
 // plot_explore_roc generates plots of receiver operating characteristic curves.
 fn plot_explore_roc(result ExploreResult, opts Options) {
 	println('attempting to plot an ROC')
