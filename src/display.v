@@ -5,6 +5,30 @@ import os
 // import x.json2
 import json
 
+const display_help = '
+Description:
+"display" regenerates the console display produced by other commands, from 
+the file saved by those commands when run with the -o or --output flag followed
+by the path to a file. It can also generate the plots produced by certain 
+commands (rank, explore).
+Display can be used to print out a multiple classifier settings file.
+
+Usage:
+first save a results file, eg 
+v run main.v rank -o <path_to_results_file> <path_to_dataset_file>
+Then: v run main.v display <path_to_results_file>
+
+Options:
+-e --expanded: show expanded results on the console 
+-g --graph:    show plots on the default web browser
+-ms:           save multiple classifier parameters to a file
+
+Options when displaying a classifier settings file (suffix .opts):
+-m#: list the classifier id\'s to be displayed
+-ea: show the attributes used for each classifier
+-g: displays a Receiver Operating Characteristic curve.
+'
+
 // display_file displays on the console, a results file as produced by other
 // hamnn functions; a multiple classifier settings file; or graphs for explore,
 // ranking, or crossvalidation results.
@@ -77,24 +101,42 @@ pub fn display_file(path string, in_opts Options) {
 			mut multiple_classifier_settings := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}
+			mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
 			if multiple_classifier_settings.len > 0 {
+				// if display for specific classifiers was requested, ie -m#, replace the 
+				// settings array with just the requested settings, in the order requested
 				if opts.classifiers.len > 0 {
-					mut filtered_settings := []ClassifierSettings{cap: opts.classifiers.len}
-					dump(opts.classifiers)
 					for id in opts.classifiers {
 						filtered_settings << multiple_classifier_settings.filter(it.classifier_id == id)
 					}
 					multiple_classifier_settings = filtered_settings.clone()
+				} else {
+					opts.classifiers = multiple_classifier_settings.map(it.classifier_id)
 				}
-				println(m_u('Multiple Classifier Options file: ${path}'))
-				classifiers := multiple_classifier_settings.map(it.classifier_id)
-				show_multiple_classifier_settings_details(multiple_classifier_settings)
+				// if binary classification, calculate auc
+				mut auc := f64(0)
+				if multiple_classifier_settings[0].class_counts_int.len == 2 {
+					mut pairs := [][]f64{len: multiple_classifier_settings.len, init: []f64{len: 2}}
+					for i, setting in multiple_classifier_settings {
+						pairs[i] = [setting.sens, setting.spec]
+					}
+					auc = auc_roc(roc_values(pairs))
+					if opts.graph_flag {
+						plot_roc(roc_values(pairs), auc)
+					}
+				}
+				if opts.expanded_flag {
+					println(m_u('Multiple Classifier Settings: file: ${path}' + if auc != 0.0 {'    AUC = ${auc:.3f}'} else {''}))
+					show_multiple_classifier_settings_details(multiple_classifier_settings)
+				} else {
+					println('auc = ${auc:.3f} for classifiers ${opts.classifiers} in settings file ${path}')
+				}
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
 					mut classifiers_array := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),
 						multiple_classifier_settings, opts.classifiers)
 					for i, idx in classifiers_array {
-						println(g_b('Trained attributes for classifier ${classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
+						println(g_b('Trained attributes for classifier ${opts.classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
 						show_trained_attributes(idx.trained_attributes)
 					}
 				}

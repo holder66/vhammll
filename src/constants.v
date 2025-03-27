@@ -67,29 +67,6 @@ const vhammll_help = "
     -v --verbose:    display additional information for debugging.      
   "
 
-const display_help = '
-Description:
-"display" regenerates the console display produced by other commands, from 
-the file saved by those commands when run with the -o or --output flag followed
-by the path to a file. It can also generate the plots produced by certain 
-commands (rank, explore).
-Display can be used to print out a multiple classifier settings file.
-
-Usage:
-first save a results file, eg 
-v run main.v rank -o <path_to_results_file> <path_to_dataset_file>
-Then: v run main.v display <path_to_results_file>
-
-Options:
--e --expanded: show expanded results on the console 
--g --graph:    show plots on the default web browser
--ms:           save multiple classifier parameters to a file
-
-Options when displaying a classifier settings file (suffix .opts):
--m#: list the classifier id\'s to be displayed
--ea: show the attributes used for each classifier.
-'
-
 const examples_help = '
 Description:
 "examples" displays information about running the various commands, shows

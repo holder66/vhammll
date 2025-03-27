@@ -314,6 +314,18 @@ mut:
 	curve_variable_values        []string
 }
 
+fn plot_roc(roc_points []Point, auc f64) {
+	mut y := roc_points.map(it.sens)
+	mut x := roc_points.map(it.fpr)
+	mut plt := plot.Plot.new()
+	plt.scatter(
+		x: x
+		y: y
+	)
+	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
+	plt.show() or { panic(err) }
+}
+
 // plot_explore_roc generates plots of receiver operating characteristic curves.
 fn plot_explore_roc(result ExploreResult, opts Options) {
 	println('attempting to plot an ROC')

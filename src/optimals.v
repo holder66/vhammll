@@ -1,8 +1,6 @@
 // optimals.v
 module vhammll
 
-import vsl.plot
-
 const optimals_help = '
 Description:
 "optimals" determines which classifiers provide the best balanced accuracy, 
@@ -128,18 +126,6 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		}
 	}
 	return result
-}
-
-fn plot_roc(roc_points []Point, auc f64) {
-	mut y := roc_points.map(it.sens)
-	mut x := roc_points.map(it.fpr)
-	mut plt := plot.Plot.new()
-	plt.scatter(
-		x: x
-		y: y
-	)
-	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
-	plt.show() or { panic(err) }
 }
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {

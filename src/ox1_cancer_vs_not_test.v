@@ -22,17 +22,17 @@ fn test_note_re_datafile_locations() {
 	println(r_b("\nIt is also assumed that the two files have been prepared according to the \ninstructions in the documentation file 'metabolomics_cancer_oxford.md'."))
 }
 
-fn plot_roc(roc_points []Point, auc f64) {
-	mut y := roc_points.map(it.sens)
-	mut x := roc_points.map(it.fpr)
-	mut plt := plot.Plot.new()
-	plt.scatter(
-		x: x
-		y: y
-	)
-	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
-	plt.show() or { panic(err) }
-}
+// fn plot_roc(roc_points []Point, auc f64) {
+// 	mut y := roc_points.map(it.sens)
+// 	mut x := roc_points.map(it.fpr)
+// 	mut plt := plot.Plot.new()
+// 	plt.scatter(
+// 		x: x
+// 		y: y
+// 	)
+// 	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
+// 	plt.show() or { panic(err) }
+// }
 
 fn test_plot_of_verify() {
 	pairs := [[0.857, 0.612], [0.857, 0.682], [0.857, 0.671],

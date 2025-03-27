@@ -198,7 +198,9 @@ const headers = {
 	10: 'Raw accuracy:'
 	11: 'Balanced accuracy:'
 	12: 'Matthews Correlation Coef:'
-	13: 'Maximum Hamming Distance:'
+	13: 'Sensitivity:'
+	14: 'Specificity:'
+	15: 'Maximum Hamming Distance:'
 }
 
 const attribute_headings = {
@@ -270,11 +272,15 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 			row_data[10] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
 			row_data[11] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
 			row_data[12] += '${b.mcc:-4.3f}        ' + pad(col_width - 13)
+			row_data[13] += '${b.sens:-4.3f}        ' + pad(col_width - 13)
+			row_data[14] += '${b.spec:-4.3f}        ' + pad(col_width - 13)
 		}
-		row_data[13] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
+		row_data[15] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
 	for i, row in row_data {
+		if row != '' {
 		println('${headers[i]:26}   ${row}')
+	}
 	}
 	return col_width_array
 }
