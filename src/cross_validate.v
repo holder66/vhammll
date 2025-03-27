@@ -55,7 +55,7 @@ pub fn cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 					// 	af_opts.class_missing_purge_flag = cmp
 					// dump(af_opts.Parameters)
 					af_result = run_cross_validate(ds, af_opts)
-					println('${af_result.correct_counts}  ${af_result.balanced_accuracy:-6.2f} ${af_result.mcc:-7.3f} ${af_result.sens:-7.3f} ${af_result.spec:-4.3f} ma ${ma} mc ${mc} tnc ${tnc} ${af_opts.classifiers}')
+					println('${af_result.correct_counts}  ${af_result.balanced_accuracy:-6.2f} ${af_result.mcc:-7.3f} ${af_result.sens:-7.3f} ${af_result.spec:-4.3f} ma ${ma} mc ${mc} mt ${tnc} ${af_opts.classifiers}')
 					// }
 				}
 			}

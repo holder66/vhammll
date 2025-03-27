@@ -123,6 +123,7 @@ pub fn display_file(path string, in_opts Options) {
 					auc = auc_roc(roc_values(pairs))
 					if opts.graph_flag {
 						plot_roc(roc_values(pairs), auc)
+						plotly_roc(roc_values(pairs), auc)
 					}
 				}
 				if opts.expanded_flag {
