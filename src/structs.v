@@ -10,6 +10,18 @@ pub mut:
 	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }
 
+pub struct RocPoint {
+	Point
+pub mut:
+	classifiers string
+}
+
+pub struct Point {
+pub mut:
+	fpr  f64 // 1 - specificity
+	sens f64 // sensitivity
+}
+
 pub struct Class {
 pub mut:
 	class_name  string // the attribute which holds the class
@@ -229,7 +241,11 @@ pub mut:
 }
 
 pub struct OptimalsResult {
+	RocData
+	RocFiles
 pub mut:
+	settingsfile_path                                   string
+	datafile_path                                       string
 	class_counts                                        []int
 	balanced_accuracy_max                               f64
 	balanced_accuracy_max_classifiers                   []int // refers to an array of classsifier ID values

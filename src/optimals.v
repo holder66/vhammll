@@ -43,6 +43,8 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		settings = all_settings.clone()
 	}
 	mut result := OptimalsResult{
+		settingsfile_path:                        path
+		datafile_path:                            settings[0].datafile_path
 		class_counts:                             settings[0].class_counts_int
 		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
 		balanced_accuracy_max:                    array_max(settings.map(it.balanced_accuracy))
@@ -82,6 +84,21 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	for classifier_id in roc_settings.map(it.classifier_id) {
 		sorted_roc_settings << settings.filter(it.classifier_id == classifier_id)
 	}
+	mut pairs := [][]f64{cap: sorted_roc_settings.len}
+	mut classifiers := []string{cap: sorted_roc_settings.len}
+	for setting in sorted_roc_settings {
+		pairs << [setting.sens, setting.spec]
+		classifiers << '${setting.classifier_id}'
+	}
+	result.RocData = RocData{
+		pairs:       pairs
+		classifiers: classifiers
+		trace_text:  'Single classifier<br>cross-validations'
+	}
+	result.RocFiles = RocFiles{
+		datafile:     result.datafile_path
+		settingsfile: path
+	}
 
 	if opts.show_flag || opts.expanded_flag {
 		println('result in optimals: ${result}')
@@ -112,13 +129,10 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 
 	if opts.graph_flag {
-		mut pairs := [][]f64{cap: sorted_roc_settings.len}
-		for setting in sorted_roc_settings {
-			pairs << [setting.sens, setting.spec]
-		}
-		mut roc_points := roc_values(pairs)
-		mut auc := auc_roc(roc_points)
-		plot_roc(roc_points, auc)
+		plot_mult_roc([result.RocData], result.RocFiles)
+		// mut roc_points := roc_values(pairs, classifiers)
+		// mut auc := auc_roc(roc_points.map(it.Point))
+		// plot_roc(roc_points, auc)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {

@@ -315,19 +315,21 @@ mut:
 	curve_series_variable_values string
 	curve_variable_values        []string
 }
-fn plotly_roc(roc_points []Point, auc f64) {
+
+fn plotly_roc(roc_points []RocPoint, auc f64) {
 	mut y := roc_points.map(it.sens)
 	mut x := roc_points.map(it.fpr)
 	mut plt := plotly.new_figure()
-	trace := plotly.scatter(plotly.f64_array_to_json(x), plotly.f64_array_to_json(y), 'ROC curve')
+	trace := plotly.scatter(plotly.f64_array_to_json(x), plotly.f64_array_to_json(y),
+		'ROC curve')
 	plt.add_trace(trace)
 	plt.update_layout({
 		'title': json.Any('Receiver Operating Characteristic (AUC: ${auc:.3f})')
-		})
+	})
 	plt.show()
 }
 
-fn plot_roc(roc_points []Point, auc f64) {
+fn plot_roc(roc_points []RocPoint, auc f64) {
 	mut y := roc_points.map(it.sens)
 	mut x := roc_points.map(it.fpr)
 	mut plt := plot.Plot.new()
@@ -336,6 +338,74 @@ fn plot_roc(roc_points []Point, auc f64) {
 		y: y
 	)
 	plt.layout(title: 'Receiver Operating Characteristic (AUC: ${auc:.3f})')
+	plt.show() or { panic(err) }
+}
+
+pub struct RocData {
+pub mut:
+	pairs       [][]f64
+	classifiers []string
+	trace_text  string
+}
+
+pub struct RocFiles {
+pub mut:
+	datafile     string
+	testfile     string
+	settingsfile string
+}
+
+pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
+	annotation1 := plot.Annotation{
+		x:     0.8
+		y:     0.2
+		text:  'Hover your cursor<br>over a marker<br>to view details'
+		align: 'center'
+	}
+	mut plt := plot.Plot.new()
+	for rocdata in rocdata_array {
+		rocpoints := roc_values(rocdata.pairs, rocdata.classifiers)
+		auc := auc_roc(rocpoints.map(it.Point))
+		mut hovertext := []string{cap: rocdata.classifiers.len + 2}
+
+		for ids in rocpoints.map(it.classifiers) {
+			hovertext << 'classifier' + if ids.contains(',') { 's' } else { '' } + ': ' + ids
+		}
+		plt.scatter(
+			x:    rocpoints.map(it.fpr)
+			y:    rocpoints.map(it.sens)
+			text: hovertext
+			mode: 'lines+markers'
+			name: rocdata.trace_text + '<br>auc: ${auc:.3f}'
+		)
+	}
+
+	plt.scatter(
+		x:    [0.0, 1.0]
+		y:    [0.0, 1.0]
+		text: ['text when hovering']
+		mode: 'lines'
+		line: plot.Line{
+			dash: 'dashdot'
+		}
+		name: 'random guess<br>(probability 0.5)'
+	)
+	plt.layout(
+		title:       'Receiver Operating Characteristic curves<br>Training dataset: ${files.datafile}<br>Settings file: ${files.settingsfile} '
+		width:       800
+		height:      600
+		xaxis:       plot.Axis{
+			title: plot.AxisTitle{
+				text: 'False Positive Rate (Specificity - 1)'
+			}
+		}
+		yaxis:       plot.Axis{
+			title: plot.AxisTitle{
+				text: 'True Positive Rate (Sensitivity)'
+			}
+		}
+		annotations: [annotation1]
+	)
 	plt.show() or { panic(err) }
 }
 

@@ -17,9 +17,9 @@ fn testsuite_end() ! {
 
 fn test_display_multiple_classifier_settings() ? {
 	mut opts := Options{
-		classifiers: [3,5,6]
+		classifiers: [3, 5, 6]
 	}
-	
+
 	display_file('src/testdata/bcw_purged.opts', opts)
 	opts.expanded_flag = true
 	opts.show_attributes_flag = true

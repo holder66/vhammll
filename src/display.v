@@ -114,16 +114,20 @@ pub fn display_file(path string, in_opts Options) {
 					opts.classifiers = multiple_classifier_settings.map(it.classifier_id)
 				}
 				// if binary classification, calculate auc
-				mut auc := f64(0)
+				mut auc := 0.0
 				if multiple_classifier_settings[0].class_counts_int.len == 2 {
 					mut pairs := [][]f64{len: multiple_classifier_settings.len, init: []f64{len: 2}}
+					mut classifiers := []string{len: multiple_classifier_settings.len}
 					for i, setting in multiple_classifier_settings {
 						pairs[i] = [setting.sens, setting.spec]
+						classifiers[i] = '${setting.classifier_id}'
 					}
-					auc = auc_roc(roc_values(pairs))
+					roc_points := roc_values(pairs, classifiers)
+					dump(roc_points)
+					auc = auc_roc(roc_points.map(it.Point))
 					if opts.graph_flag {
-						plot_roc(roc_values(pairs), auc)
-						plotly_roc(roc_values(pairs), auc)
+						plot_roc(roc_points, auc)
+						plotly_roc(roc_points, auc)
 					}
 				}
 				if opts.expanded_flag {
