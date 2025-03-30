@@ -67,5 +67,3 @@ fn test_optimals_with_purge() {
 	opts.purge_flag = true
 	assert result_e == optimals(opts.settingsfile_path, opts)
 }
-
-

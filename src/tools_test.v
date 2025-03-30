@@ -5,21 +5,21 @@ module vhammll
 import math.unsigned
 
 fn test_roc_values() {
-	mut pairs :=       [[0.857, 0.671], [0.857, 0.612], [0.857, 0.682],
-			[0.286, 0.824], [0.714, 0.824], [0.286, 0.800], [0.857, 0.706]]
+	mut pairs := [[0.857, 0.671], [0.857, 0.612], [0.857, 0.682],
+		[0.286, 0.824], [0.714, 0.824], [0.286, 0.800], [0.857, 0.706]]
 	mut classifiers := ['5, 113, 118', '120, 113, 118', '120, 113, 118', '70, 5, 120, 14, 113, 118',
-			'70, 118, 113, 135, 14', '70, 5, 120, 14, 113, 118', '120, 113, 118']
+		'70, 118, 113, 135, 14', '70, 5, 120, 14, 113, 118', '120, 113, 118']
 	mut result := roc_values(pairs, classifiers)
-	assert result[6] == vhammll.RocPoint{
-		    Point: vhammll.Point{
-		        fpr: 0.388
-		        sens: 0.857
-		    }
-		    classifiers: '120, 113, 118'
+	assert result[6] == RocPoint{
+		Point:       Point{
+			fpr:  0.388
+			sens: 0.857
 		}
-		assert result[0].Point == Point{}
-		assert result[7].Point == Point{1,1}
-		assert result[7].classifiers == ''
+		classifiers: '120, 113, 118'
+	}
+	assert result[0].Point == Point{}
+	assert result[7].Point == Point{1, 1}
+	assert result[7].classifiers == ''
 }
 
 fn test_auc_roc() {

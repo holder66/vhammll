@@ -96,7 +96,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags. Classifiers 30 and 24 together give the highest specificity of 0.909, with a Matthews Correlation Coefficient of 0.742, while classifiers 20, 6, and 34 together give the highest sensitivity of 1.0, with MCC of 0.783'))
-	for cl_list in [[30, 24], [20,6,34]] {
+	for cl_list in [[30, 24], [20, 6, 34]] {
 		opts.classifiers = cl_list
 		mut result := cross_validate(ds, opts)
 	}
