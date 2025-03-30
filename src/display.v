@@ -127,7 +127,7 @@ pub fn display_file(path string, in_opts Options) {
 					auc = auc_roc(roc_points.map(it.Point))
 					if opts.graph_flag {
 						plot_roc(roc_points, auc)
-						plotly_roc(roc_points, auc)
+						// plotly_roc(roc_points, auc)
 					}
 				}
 				if opts.expanded_flag {
