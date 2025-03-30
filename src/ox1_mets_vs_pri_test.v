@@ -16,71 +16,71 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_ox1_mets')!
 }
 
-// fn test_explore_ox_mets_to_create_settings_file() {
-// 	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
-// 	home_dir := os.home_dir()
-// 	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25.opts'
-// 	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25purged.opts'
-// 	saved_file := 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
-// 	mut opts := Options{
-// 		command: 'explore'
-// 		// concurrency_flag:     true
-// 		datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-// 		number_of_attributes: [2, 25]
-// 		bins:                 [2, 6]
-// 		append_settings_flag: true
-// 		traverse_all_flags:   true
-// 		settingsfile_path:    temp_file
-// 		expanded_flag:        true
-// 		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
-// 	}
-// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-// 	explore(ds, opts)
-// 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
-// 	opts.purge_flag = true
-// 	opts.outputfile_path = temp_purged
-// 	optimals(opts.settingsfile_path, opts)
-// 	println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
-// 	if os.is_file(saved_file) {
-// 		saved := os.read_file(saved_file)!
-// 		temp := os.read_file(temp_purged)!
-// 		// assert saved == temp
-// 	} else {
-// 		os.cp(temp_purged, saved_file)!
-// 	}
-// }
+fn test_explore_ox_mets_to_create_settings_file() {
+	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
+	home_dir := os.home_dir()
+	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25.opts'
+	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25purged.opts'
+	saved_file := 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+	mut opts := Options{
+		command: 'explore'
+		// concurrency_flag:     true
+		datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
+		number_of_attributes: [2, 25]
+		bins:                 [2, 6]
+		append_settings_flag: true
+		traverse_all_flags:   true
+		settingsfile_path:    temp_file
+		expanded_flag:        true
+		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
+	}
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	explore(ds, opts)
+	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
+	opts.purge_flag = true
+	opts.outputfile_path = temp_purged
+	optimals(opts.settingsfile_path, opts)
+	println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
+	if os.is_file(saved_file) {
+		saved := os.read_file(saved_file)!
+		temp := os.read_file(temp_purged)!
+		// assert saved == temp
+	} else {
+		os.cp(temp_purged, saved_file)!
+	}
+}
 
-// fn test_optimal_settings() {
-// 	home_dir := os.home_dir()
-// 	mut opts := Options{
-// 		command:                             'cross'
-// 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-// 		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
-// 		// verbose_flag:         true
-// 		positive_class: 'Met'
-// 		multiple_flag:  true
-// 		expanded_flag:  true
-// 		// show_attributes_flag: true
-// 	}
-// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-// 	result := optimals(opts.multiple_classify_options_file_path, opts)
-// 	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
-// 		panic('read_multiple_opts failed')
-// 	}
-// 	println(r_b('\nVerify that classifiers 20, 30, 85, and 100 correspond to the settings giving best balanced accuracy of 78.79%, best Matthews Correlation Coefficient of 0.604, and highest total correct inferences of 14/17;'))
-// 	assert multiple_classifier_settings.filter(it.classifier_id == 100)[0].mcc == 0.6038596398555418
-// 	assert result.balanced_accuracy_max == 78.7878787878788
-// 	assert result.balanced_accuracy_max_classifiers == [20, 30, 85, 100]
-// 	println(r_b('and verify that classifier 0 gives the highest sensitivity of 0.909, and classifier 24 the highest specificity of 0.833'))
-// 	assert multiple_classifier_settings.filter(it.classifier_id == 0)[0].incorrect_counts == [
-// 		1,
-// 		3,
-// 	]
-// 	assert multiple_classifier_settings.filter(it.classifier_id == 24)[0].correct_counts == [
-// 		8,
-// 		5,
-// 	]
-// }
+fn test_optimal_settings() {
+	home_dir := os.home_dir()
+	mut opts := Options{
+		command:                             'cross'
+		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
+		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+		// verbose_flag:         true
+		positive_class: 'Met'
+		multiple_flag:  true
+		expanded_flag:  true
+		// show_attributes_flag: true
+	}
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	result := optimals(opts.multiple_classify_options_file_path, opts)
+	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
+		panic('read_multiple_opts failed')
+	}
+	println(r_b('\nVerify that classifiers 20, 30, 85, and 100 correspond to the settings giving best balanced accuracy of 78.79%, best Matthews Correlation Coefficient of 0.604, and highest total correct inferences of 14/17;'))
+	assert multiple_classifier_settings.filter(it.classifier_id == 100)[0].mcc == 0.6038596398555418
+	assert result.balanced_accuracy_max == 78.7878787878788
+	assert result.balanced_accuracy_max_classifiers == [20, 30, 85, 100]
+	println(r_b('and verify that classifier 0 gives the highest sensitivity of 0.909, and classifier 24 the highest specificity of 0.833'))
+	assert multiple_classifier_settings.filter(it.classifier_id == 0)[0].incorrect_counts == [
+		1,
+		3,
+	]
+	assert multiple_classifier_settings.filter(it.classifier_id == 24)[0].correct_counts == [
+		8,
+		5,
+	]
+}
 
 fn test_multiple_crossvalidate_of_ox_mets() {
 	home_dir := os.home_dir()
@@ -136,4 +136,71 @@ fn test_ox_mets_multi_verify() {
 	assert result.spec == 0.5
 	println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
 	println(r_b('we get a sensitivity of 0.4, and specificity of 0.4, on the test set'))
+}
+
+fn test_ox1_mets_reverse_test_and_train_datafiles() {
+	println(r_b('\nDo an explore using cross-validation on the ox1_mets-test.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
+	home_dir := os.home_dir()
+	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstestb2-6a2-25.opts'
+	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstestb2-6a2-25purged.opts'
+	saved_file := 'src/testdata/ox1metstestb2-6a2-25purged.opts'
+	mut opts := Options{
+		command:              'explore'
+		datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-test.tab')
+		number_of_attributes: [2, 25]
+		bins:                 [2, 6]
+		append_settings_flag: true
+		traverse_all_flags:   true
+		settingsfile_path:    temp_file
+		expanded_flag:        true
+		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
+	}
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// explore(ds, opts)
+
+	// println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
+	// opts.purge_flag = true
+	// opts.outputfile_path = temp_purged
+	// optimals(opts.settingsfile_path, opts)
+	// println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
+	// if os.is_file(saved_file) {
+	// 	saved := os.read_file(saved_file)!
+	// 	temp := os.read_file(temp_purged)!
+	// 	assert saved == temp
+	// } else {
+	// 	os.cp(temp_purged, saved_file)!
+	// }
+
+	opts.expanded_flag = false
+	opts.multiple_classify_options_file_path = saved_file
+	result := optimals(opts.multiple_classify_options_file_path, opts)
+	multiple_classifier_settings := read_multiple_opts(opts.multiple_classify_options_file_path) or {
+		panic('read_multiple_opts failed')
+	}
+	println(r_b('\nVerify that classifiers 0, 5, 10, etc correspond to the settings giving best balanced accuracy of 100%, best Matthews Correlation Coefficient of 1.0, and highest total correct inferences of 7/7;'))
+	assert multiple_classifier_settings.filter(it.classifier_id == 10)[0].mcc == 1.0
+	assert result.balanced_accuracy_max == 100.0
+	assert result.balanced_accuracy_max_classifiers == [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+		55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150,
+		155]
+
+	opts.command = 'cross'
+	opts.expanded_flag = true
+	opts.multiple_flag = true
+	opts.traverse_all_flags = false
+	opts.classifiers = [0]
+	assert cross_validate(ds, opts).correct_counts == [5, 2]
+
+	println(r_b('\nSince we get 100% accuracy with single classifiers, there is little point in attempting to find which combinations of multiple classifiers give good classification performance. Instead, we will go directly to using both single and multiple classifier verifications of the test set (which in this situation is actually the ox1_mets-train.tab file)'))
+
+	opts.command = 'verify'
+	opts.testfile_path = os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
+	opts.show_attributes_flag = true
+	assert verify(opts).correct_counts == [10, 2]
+	opts.classifiers = [0, 3, 5, 80]
+	assert verify(opts).correct_counts == [11, 2]
+	opts.total_nn_counts_flag = true
+	assert verify(opts).correct_counts == [9, 3]
+
+	println(r_b('\nUnfortunately, these results are in a sense "cheating" as the separate validation dataset was not held back and kept independent.'))
 }
