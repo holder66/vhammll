@@ -73,6 +73,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 // plot_rank generates a scatterplot of the rank values
 // for continuous attributes, as a function of the number of bins.
 fn plot_rank(result RankingResult) {
+	// dump(result)
 	mut ranked_atts := result.array_of_ranked_attributes.clone()
 	mut traces := []RankTrace{}
 	mut plt := plot.Plot.new()
@@ -81,8 +82,9 @@ fn plot_rank(result RankingResult) {
 	for i in result.binning.lower .. result.binning.upper + 1 {
 		x << i
 	}
+	// dump(x)
 	for i, attr in ranked_atts.filter(it.attribute_type == 'C') {
-		if i >= result.limit_output {
+		if result.limit_output > 0 && i >= result.limit_output {
 			break
 		}
 		traces << RankTrace{
@@ -101,27 +103,24 @@ fn plot_rank(result RankingResult) {
 		attributes << value.hover_text
 		y := value.rank_values.map(round_two_decimals(it))
 		plt.scatter(
-			// plt.add_trace(
-			// trace_type: .scatter
 			x:    x
 			y:    y
 			text: value.hover_text
 			mode: 'lines+markers'
 			name: value.label
-			// hovertemplate: 'attribute: ${value.hover_text}<br>bins: ${x}<br>rank: ${y}'
 		)
 	}
-	rank_annotation_string := 'Missing Values ' +
-		if result.exclude_flag { 'excluded' } else { 'included' }
+	rank_annotation_string := 'Missing Values<br>' +
+		if result.exclude_flag { 'excluded' } else { 'included' } + '<br>    '
 	annotation1 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     5
-		text:  'Hover your cursor over a marker to view details.'
+		x:     0.8 * f64(result.binning.upper)
+		y:     1.0
+		text:  'Hover your cursor<br>over a marker<br>to view details'
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     10
+		x:     0.3 * f64(result.binning.upper)
+		y:     1.0
 		text:  rank_annotation_string
 		align: 'center'
 	}
