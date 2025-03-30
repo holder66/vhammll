@@ -4,7 +4,7 @@ module vhammll
 import math
 import vsl.plot
 import time
-import plotly
+// import plotly
 import x.json2 as json
 
 struct RankTrace {
@@ -316,18 +316,18 @@ mut:
 	curve_variable_values        []string
 }
 
-fn plotly_roc(roc_points []RocPoint, auc f64) {
-	mut y := roc_points.map(it.sens)
-	mut x := roc_points.map(it.fpr)
-	mut plt := plotly.new_figure()
-	trace := plotly.scatter(plotly.f64_array_to_json(x), plotly.f64_array_to_json(y),
-		'ROC curve')
-	plt.add_trace(trace)
-	plt.update_layout({
-		'title': json.Any('Receiver Operating Characteristic (AUC: ${auc:.3f})')
-	})
-	plt.show()
-}
+// fn plotly_roc(roc_points []RocPoint, auc f64) {
+// 	mut y := roc_points.map(it.sens)
+// 	mut x := roc_points.map(it.fpr)
+// 	mut plt := plotly.new_figure()
+// 	trace := plotly.scatter(plotly.f64_array_to_json(x), plotly.f64_array_to_json(y),
+// 		'ROC curve')
+// 	plt.add_trace(trace)
+// 	plt.update_layout({
+// 		'title': json.Any('Receiver Operating Characteristic (AUC: ${auc:.3f})')
+// 	})
+// 	plt.show()
+// }
 
 fn plot_roc(roc_points []RocPoint, auc f64) {
 	mut y := roc_points.map(it.sens)
