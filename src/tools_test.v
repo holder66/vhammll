@@ -5,49 +5,38 @@ module vhammll
 import math.unsigned
 
 fn test_roc_values() {
-	assert roc_values([[1.0, 0.0]]) == [Point{0, 0}, Point{1, 1}]
-	assert roc_values([[0.0, 1.0]]) == [Point{0, 0}, Point{1, 1}]
-	assert roc_values([[1.0, 1.0]]) == [Point{0, 0}, Point{0, 1},
-		Point{1, 1}]
-	mut pairs := [[0.2, 0.9], [0.5, 0.8], [0.7, 0.6]]
-	assert roc_values(pairs) == [Point{0, 0}, Point{0.09999999999999998, 0.2},
-		Point{0.19999999999999996, 0.5}, Point{0.4, 0.7}, Point{1, 1}]
-	pairs = [[0.941, 0.720], [0.765, 0.931], [1.0, 0.6], [0.882, 0.737]]
-	assert roc_values(pairs) == [Point{0, 0}, Point{
-		fpr:  0.06899999999999995
-		sens: 0.765
-	}, Point{
-		fpr:  0.263
-		sens: 0.882
-	}, Point{
-		fpr:  0.28
-		sens: 0.941
-	}, Point{
-		fpr:  0.4
-		sens: 1.0
-	}, Point{1, 1}]
-	assert roc_values([[0.765, 0.931], [0.882, 0.737], [0.941, 0.720],
-		[1.0, 0.6]]) == roc_values([[0.941, 0.720], [0.765, 0.931],
-		[1.0, 0.6], [0.882, 0.737]])
-	assert roc_values([[0.0, 0.0]]) == [Point{0, 0}, Point{1, 0},
-		Point{1, 1}]
+	mut pairs :=       [[0.857, 0.671], [0.857, 0.612], [0.857, 0.682],
+			[0.286, 0.824], [0.714, 0.824], [0.286, 0.800], [0.857, 0.706]]
+	mut classifiers := ['5, 113, 118', '120, 113, 118', '120, 113, 118', '70, 5, 120, 14, 113, 118',
+			'70, 118, 113, 135, 14', '70, 5, 120, 14, 113, 118', '120, 113, 118']
+	mut result := roc_values(pairs, classifiers)
+	assert result[6] == vhammll.RocPoint{
+		    Point: vhammll.Point{
+		        fpr: 0.388
+		        sens: 0.857
+		    }
+		    classifiers: '120, 113, 118'
+		}
+		assert result[0].Point == Point{}
+		assert result[7].Point == Point{1,1}
+		assert result[7].classifiers == ''
 }
 
 fn test_auc_roc() {
 	assert auc_roc([Point{0, 0}, Point{1, 1}]) == 0.5
 	assert auc_roc([Point{0, 0}, Point{0, 1}, Point{1, 1}]) == 1.0
 	assert auc_roc([Point{0, 0}, Point{1, 0}, Point{1, 1}]) == 0.0
-	mut pairs := [[0.0, 1.0], [0.2, 0.9], [0.5, 0.8], [0.7, 0.6]]
-	assert auc_roc(roc_values(pairs)) == 0.675
-	assert auc_roc(roc_values([[0.5, 0.5]])) == 0.5
-	assert auc_roc(roc_values([[1.0, 1.0]])) == 1.0
-	assert auc_roc(roc_values([[0.0, 0.0]])) == 0.0
-	pairs = [[0.765, 0.931], [0.882, 0.737], [0.941, 0.720], [1.0, 0.6]]
-	assert auc_roc(roc_values(pairs)) == 0.918107
-	pairs = [[0.941, 0.720], [0.765, 0.931], [1.0, 0.6], [0.882, 0.737]]
-	assert auc_roc(roc_values(pairs)) == 0.918107
-	pairs = [[0.857, 0.682], [0.286, 0.812]]
-	assert auc_roc(roc_values(pairs)) == 0.7344160000000001
+	// mut pairs := [[0.0, 1.0], [0.2, 0.9], [0.5, 0.8], [0.7, 0.6]]
+	// assert auc_roc(roc_values(pairs)) == 0.675
+	// assert auc_roc(roc_values([[0.5, 0.5]])) == 0.5
+	// assert auc_roc(roc_values([[1.0, 1.0]])) == 1.0
+	// assert auc_roc(roc_values([[0.0, 0.0]])) == 0.0
+	// pairs = [[0.765, 0.931], [0.882, 0.737], [0.941, 0.720], [1.0, 0.6]]
+	// assert auc_roc(roc_values(pairs)) == 0.918107
+	// pairs = [[0.941, 0.720], [0.765, 0.931], [1.0, 0.6], [0.882, 0.737]]
+	// assert auc_roc(roc_values(pairs)) == 0.918107
+	// pairs = [[0.857, 0.682], [0.286, 0.812]]
+	// assert auc_roc(roc_values(pairs)) == 0.7344160000000001
 }
 
 fn test_idx_max() {

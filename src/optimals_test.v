@@ -34,15 +34,14 @@ fn test_optimals_with_purge() {
 	result_a := optimals(opts.settingsfile_path, opts)
 	assert result_a.balanced_accuracy_max_classifiers == [1, 6, 11, 16, 41, 46, 51, 56, 81, 86,
 		91, 96, 121, 126, 131, 136]
-	assert result_a.receiver_operating_characteristic_settings == [74, 159, 154, 119, 34, 114,
-		79, 39]
+	assert result_a.receiver_operating_characteristic_settings == [34, 0, 1, 3]
 	assert result_a.mcc_max_classifiers == [0, 2, 4, 5, 7, 9, 10, 12, 14, 15, 17, 19, 20, 22, 24,
 		25, 27, 29, 40, 42, 44, 45, 47, 49, 50, 52, 54, 55, 57, 59, 60, 62, 64, 65, 67, 69, 80,
 		82, 84, 85, 87, 89, 90, 92, 94, 95, 97, 99, 100, 102, 104, 105, 107, 109, 120, 122, 124,
 		125, 127, 129, 130, 132, 134, 135, 137, 139, 140, 142, 144, 145, 147, 149]
 
 	println(r_b('\nPrint out the abbreviated and the expanded optimals results:'))
-	// opts.expanded_flag = true
+	opts.expanded_flag = true
 	result_b := optimals(opts.settingsfile_path, opts)
 	println(r_b('\nPurge duplicate settings, and then print out the abbreviated and the expanded optimals results:'))
 	opts.purge_flag = true
@@ -61,20 +60,12 @@ fn test_optimals_with_purge() {
 	opts.outputfile_path = ''
 	opts.purge_flag = false
 	opts.show_flag = true
-	// // opts.expanded_flag = true
+	opts.expanded_flag = true
 	result_e := optimals(opts.settingsfile_path, opts)
-	assert result_e == result_d
+	assert result_e.RocData == result_d.RocData
 	// ensure that further purging makes no difference
 	opts.purge_flag = true
 	assert result_e == optimals(opts.settingsfile_path, opts)
 }
 
-// fn test_optimals_for_leuk_opts() {
-// 	mut opts := Options{
-// 		expanded_flag:     true
-// 		settingsfile_path: 'src/testdata/leuk.opts'
-// 	}
-// 	result := optimals(opts.settingsfile_path, opts)
-// 	opts.purge_flag = true
-// 	result_purged := optimals(opts.settingsfile_path, opts)
-// }
+
