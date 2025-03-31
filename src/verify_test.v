@@ -119,7 +119,7 @@ fn test_verify() ? {
 
 		// now with a saved classifier
 		opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
-		cl = make_classifier(load_file(opts)
+		cl = make_classifier(opts)
 		opts.classifierfile_path = opts.outputfile_path
 		opts.outputfile_path = ''
 		assert result.correct_count == verify(opts).correct_count
