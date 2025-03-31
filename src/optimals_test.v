@@ -27,7 +27,7 @@ fn test_optimals_with_purge() {
 	}
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 
-	explore(ds, opts)
+	explore(opts)
 	// display_file(opts.settingsfile_path)
 	opts.show_flag = true
 	println(r_b('\nPrint out the abbreviated optimals results:'))

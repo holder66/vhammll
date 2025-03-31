@@ -34,7 +34,7 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	mut er := explore(ds, opts)
+	mut er := explore(opts)
 	assert os.file_size(opts.settingsfile_path) == 5892, 'Settings file too small'
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
@@ -51,22 +51,22 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 	opts.classifiers = [0, 2]
 	opts.command = 'cross'
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3]
 	opts.total_nn_counts_flag = true
 	opts.classifiers = [1]
 	// opts.break_on_all_flag = true
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3], 'for classifier #1'
 	opts.classifiers = [2]
 	cross_validate(ds, opts)
-	assert cross_validate(ds, opts).correct_counts == [9, 2], 'for classifier #2'
+	assert cross_validate(opts).correct_counts == [9, 2], 'for classifier #2'
 	opts.classifiers = [2, 3]
 	opts.command = 'cross'
 	opts.show_flag = true
 	// opts.expanded_flag = true
-	result_mult := cross_validate(ds, opts)
-	assert cross_validate(ds, opts).correct_counts == [8, 3], 'for classifiers 2 & 3'
+	result_mult := cross_validate(opts)
+	assert cross_validate(opts).correct_counts == [8, 3], 'for classifiers 2 & 3'
 }
 
 fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
@@ -86,7 +86,7 @@ fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
 	opts.append_settings_flag = true
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	mut er := explore(ds, opts)
+	mut er := explore(opts)
 	assert os.file_size(opts.settingsfile_path) == 7026, 'Settings file too small'
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
@@ -104,21 +104,21 @@ fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
 	opts.classifiers = [0, 2]
 	opts.command = 'cross'
 	// opts.verbose_flag = true
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3, 2]
 	opts.total_nn_counts_flag = true
 	// opts.break_on_all_flag = true
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3, 2]
 	opts.classifiers = [2]
 	cross_validate(ds, opts)
-	assert cross_validate(ds, opts).correct_counts == [8, 3, 2], 'for classifier #2'
+	assert cross_validate(opts).correct_counts == [8, 3, 2], 'for classifier #2'
 	opts.classifiers = [2, 3]
 	opts.command = 'cross'
 	opts.show_flag = true
 	// opts.expanded_flag = true
-	result_mult := cross_validate(ds, opts)
-	assert cross_validate(ds, opts).correct_counts == [8, 0, 0], 'for classifiers 2 & 3'
+	result_mult := cross_validate(opts)
+	assert cross_validate(opts).correct_counts == [8, 0, 0], 'for classifiers 2 & 3'
 }
 
 fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
@@ -206,7 +206,7 @@ fn test_multiple_classifier_verify_totalnn_discrete_attributes() ? {
 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/bcw.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [3]
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	result0 := verify(opts)
 	assert result0.correct_counts == [133, 37], 'verify with 3 attributes'
 	opts.number_of_attributes = [4]
@@ -257,7 +257,7 @@ fn test_multiple_classifier_verify_totalnn_multiple_classes() ? {
 	opts.testfile_path = 'datasets/develop_test.tab'
 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/develop.opts'
 	opts.append_settings_flag = true
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	result0 := verify(opts)
 	assert result0.correct_counts == [1, 0, 1], 'verify with 13 attributes'
 	opts.number_of_attributes = [4]
@@ -310,7 +310,7 @@ fn test_multiple_classifier_verify_totalnn_discrete_attributes_multiple_classes(
 	opts.settingsfile_path = 'tempfolders/tempfolder_totalnn/soybean.opts'
 	opts.append_settings_flag = true
 	opts.number_of_attributes = [13]
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	result0 := verify(opts)
 	assert result0.correct_counts == [10, 10, 10, 48, 20, 9, 9, 47, 10, 8, 10, 24, 6, 49, 39, 9,
 		8, 15, 4], 'verify with 13 attributes'
@@ -334,31 +334,31 @@ fn test_multiple_classifier_verify_totalnn_discrete_attributes_multiple_classes(
 	opts.show_attributes_flag = false
 	// with classifier 0 only
 	opts.classifiers = [0]
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	// with classifier 1
 	opts.classifiers = [1]
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 	// with both classifiers
 	opts.classifiers = [1, 0]
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.correct_counts == [10, 10, 10, 48, 24, 10, 10, 42, 10, 9, 10, 24, 9, 48, 41,
 		9, 8, 15, 4], 'with both classifiers'
 	// with totalnn flag set, performance deteriorates
 	opts.total_nn_counts_flag = true
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.correct_counts == [10, 10, 10, 48, 20, 9, 9, 47, 10, 8, 10, 24, 6, 49, 39, 9,
 		8, 15, 4]
 	// repeat with break_on_all
 	opts.break_on_all_flag = true
 	opts.total_nn_counts_flag = false
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.correct_counts == [10, 10, 10, 48, 24, 10, 10, 42, 10, 9, 10, 24, 9, 48, 41,
 		9, 8, 15, 4], 'with both classifiers'
 	// with totalnn flag set, performance deteriorates
 	opts.total_nn_counts_flag = true
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.correct_counts == [10, 10, 10, 48, 20, 9, 5, 39, 8, 6, 10, 23, 1, 50, 38, 9,
 		8, 15, 4]
 }

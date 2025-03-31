@@ -37,7 +37,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		positive_class:       'Mets'
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-	explore(ds, opts)
+	explore(opts)
 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purges settings to a temporary file:'))
 	opts.purge_flag = true
 	opts.outputfile_path = temp_purged
@@ -110,7 +110,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 // 	// 				for cmp in ft {
 // 	// 					opts.class_missing_purge_flag = cmp
 // 	// 					opts.expanded_flag = false
-// 	// 					// if cross_validate(ds, opts).correct_counts == [11, 5] {
+// 	// 					// if cross_validate(opts).correct_counts == [11, 5] {
 // 	// 					// 	assert ci == [42, 44, 61]
 // 	// 					dump(cross_validate(ds, opts).correct_counts)
 // 	// 						println('Classifiers: ${ci}; break_on_all_flag: ${ma}     combined_radii_flag: ${mc}      total_nn_counts_flag: ${tnc}     class_missing_purge_flag: ${cmp}')
@@ -130,7 +130,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 
 // 						opts.class_missing_purge_flag = false
 // 						opts.expanded_flag = false
-// 						result = cross_validate(ds, opts)
+// 						result = cross_validate(opts)
 // 						println('${result.sens:-4.3f}   ${(1.0 - result.spec):-4.3f} ')
 
 // 	}

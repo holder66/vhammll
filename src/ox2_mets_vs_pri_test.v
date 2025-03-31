@@ -88,7 +88,7 @@ fn test_optimal_settings() {
 	opts.expanded_flag = false
 	for i in [[45, 50, 129], [45, 50, 124, 129], [40, 151, 156]] {
 		opts.classifiers = i
-		cross_validate(ds, opts)
+		cross_validate(opts)
 	}
 }
 

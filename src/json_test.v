@@ -26,7 +26,7 @@ fn test_load_classifier_file() ! {
 	opts.bins = [2, 4]
 	opts.number_of_attributes = [4]
 	ds = load_file('datasets/developer.tab')
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	tcl = load_classifier_file('tempfolders/tempfolder_json/classifierfile')!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
@@ -40,7 +40,7 @@ fn test_load_classifier_file() ! {
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]
 	ds = load_file('datasets/iris.tab')
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	tcl = load_classifier_file('tempfolders/tempfolder_json/classifierfile')!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
@@ -60,7 +60,7 @@ fn test_load_instances_file() ! {
 	}
 	opts.testfile_path = 'datasets/test_validate.tab'
 	ds = load_file('datasets/test.tab')
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	vr = validate(cl, opts)!
 	tvr = load_instances_file('tempfolders/tempfolder_json/validate_result.json')!
 	// dump(vr)
@@ -71,7 +71,7 @@ fn test_load_instances_file() ! {
 
 	opts.testfile_path = 'datasets/soybean-large-validate.tab'
 	ds = load_file('datasets/soybean-large-train.tab')
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	vr = validate(cl, opts)!
 	tvr = load_instances_file('tempfolders/tempfolder_json/validate_result.json')!
 	assert vr.Class == tvr.Class
@@ -84,7 +84,7 @@ fn test_append() ? {
 	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'
 	opts.number_of_attributes = [9]
 	ds := load_file(opts.datafile_path)
-	result := cross_validate(ds, opts)
+	result := cross_validate(opts)
 	mut c_s := ClassifierSettings{
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
@@ -96,7 +96,7 @@ fn test_append() ? {
 	assert saved[0].correct_counts == c_s.correct_counts
 	opts.number_of_attributes = [3]
 	opts.weighting_flag = true
-	result2 := cross_validate(ds, opts)
+	result2 := cross_validate(opts)
 	mut c_s2 := ClassifierSettings{
 		Parameters:    result2.Parameters
 		BinaryMetrics: result2.BinaryMetrics

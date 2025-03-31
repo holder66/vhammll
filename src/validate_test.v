@@ -48,7 +48,7 @@ fn test_kaggle() ! {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	result = validate(cl, opts)!
 	assert result.inferred_classes == ['f', 'f', 'f', 'm', 'm', 'm', 'f', 'f', 'm', 'f']
 	assert result.counts == [[1, 0], [1, 0], [1, 0], [0, 1], [0, 1],
@@ -84,7 +84,7 @@ fn test_kaggle() ! {
 // 	opts.bins = [2, 3]
 // 	opts.number_of_attributes = [2]
 // 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 // 	// println(validate(cl, opts)!)
 // 	result = validate(cl, opts)!
 
@@ -111,7 +111,7 @@ fn test_validate() ? {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	result = validate(cl, opts)!
 	assert result.inferred_classes == ['f', 'f', 'f', 'm', 'm', 'm', 'f', 'f', 'm', 'f']
 	assert result.counts == [[1, 0], [1, 0], [1, 0], [0, 1], [0, 1],
@@ -125,7 +125,7 @@ fn test_validate() ? {
 	opts.number_of_attributes = [4]
 	opts.bins = [2, 4]
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	result = validate(cl, opts)!
 	assert result.inferred_classes == ['benign', 'benign', 'benign', 'benign', 'benign', 'malignant',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign',
@@ -179,7 +179,7 @@ fn test_validate() ? {
 
 	// repeat with weighting
 	opts.weighting_flag = true
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	result = validate(cl, opts)!
 	assert result.inferred_classes == ['benign', 'benign', 'benign', 'benign', 'benign', 'malignant',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign',
@@ -245,7 +245,7 @@ fn test_validate() ? {
 	opts.weighting_flag = true
 	cl = Classifier{}
 	result = ValidateResult{}
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	cl = Classifier{}
 	opts.classifierfile_path = opts.outputfile_path
 	result = validate(load_classifier_file(opts.classifierfile_path)!, opts)!
@@ -315,7 +315,7 @@ fn test_validate() ? {
 	opts.bins = [2, 16]
 	opts.weighting_flag = true
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	// reset the outputfile_path so that validate won't overwrite the classifier
 	opts.outputfile_path = ''
 	result = validate(cl, opts)!

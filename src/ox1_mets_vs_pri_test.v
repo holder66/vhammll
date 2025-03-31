@@ -35,7 +35,7 @@ fn test_explore_ox_mets_to_create_settings_file() {
 		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-	explore(ds, opts)
+	explore(opts)
 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
 	opts.purge_flag = true
 	opts.outputfile_path = temp_purged
@@ -98,7 +98,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	println(r_b('\nTest using multiple classifiers. We can cycle through all possibilities for the multiple classifier flags. Classifiers 30 and 24 together give the highest specificity of 0.909, with a Matthews Correlation Coefficient of 0.742, while classifiers 20, 6, and 34 together give the highest sensitivity of 1.0, with MCC of 0.783'))
 	for cl_list in [[30, 24], [20, 6, 34]] {
 		opts.classifiers = cl_list
-		mut result := cross_validate(ds, opts)
+		mut result := cross_validate(opts)
 	}
 	opts.traverse_all_flags = false
 	opts.expanded_flag = true
@@ -106,7 +106,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	opts.break_on_all_flag = true
 	opts.combined_radii_flag = false
 	opts.total_nn_counts_flag = true
-	assert cross_validate(ds, opts).correct_counts == [10, 5]
+	assert cross_validate(opts).correct_counts == [10, 5]
 }
 
 fn test_ox_mets_multi_verify() {
@@ -189,7 +189,7 @@ fn test_ox1_mets_reverse_test_and_train_datafiles() {
 	opts.multiple_flag = true
 	opts.traverse_all_flags = false
 	opts.classifiers = [0]
-	assert cross_validate(ds, opts).correct_counts == [5, 2]
+	assert cross_validate(opts).correct_counts == [5, 2]
 
 	println(r_b('\nSince we get 100% accuracy with single classifiers, there is little point in attempting to find which combinations of multiple classifiers give good classification performance. Instead, we will go directly to using both single and multiple classifier verifications of the test set (which in this situation is actually the ox1_mets-train.tab file)'))
 

@@ -28,14 +28,14 @@ fn test_append_cross_verify_settings_to_file() {
 	}
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// opts.show_flag = true
-	cross_validate(ds, opts)
+	cross_validate(opts)
 	assert os.is_file(opts.settingsfile_path.trim_space())
 	assert os.file_size(opts.settingsfile_path.trim_space()) == 1187
 	display_file(opts.settingsfile_path)
 
 	// add another classifier
 	opts.bins = [3, 3]
-	cross_validate(ds, opts)
+	cross_validate(opts)
 	display_file(opts.settingsfile_path)
 	assert os.file_size(opts.settingsfile_path.trim_space()) == 2279
 }
@@ -53,14 +53,14 @@ fn test_append_explore_cross_settings_to_file() {
 	}
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// opts.show_flag = true
-	explore(ds, opts)
+	explore(opts)
 	display_file(opts.settingsfile_path)
 	assert os.is_file(opts.settingsfile_path.trim_space())
 	assert os.file_size(opts.settingsfile_path.trim_space()) == 9976
 
 	// now add another explore
 	opts.uniform_bins = false
-	explore(ds, opts)
+	explore(opts)
 	display_file(opts.settingsfile_path)
 	assert os.file_size(opts.settingsfile_path.trim_space()) == 17678
 }
@@ -75,14 +75,14 @@ fn test_append_explore_verify_settings_to_file() {
 	}
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
-	explore(ds, opts)
+	explore(opts)
 	display_file(opts.settingsfile_path)
 	// assert os.is_file(opts.settingsfile_path.trim_space())
 	// assert os.file_size(opts.settingsfile_path.trim_space()) == 9832
 
 	// now add another explore
 	opts.weight_ranking_flag = true
-	explore(ds, opts)
+	explore(opts)
 	display_file(opts.settingsfile_path)
 	// assert os.file_size(opts.settingsfile_path.trim_space()) == 17422
 }

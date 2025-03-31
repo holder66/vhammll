@@ -19,11 +19,11 @@ fn test_cross_validate() ? {
 	opts.repetitions = 10
 	opts.random_pick = true
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_count >= 878 && result.correct_count <= 883
 
 	opts.weighting_flag = true
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_count >= 870 && result.correct_count <= 883
 	println(r_b('\ndone with anneal.tab'))
 
@@ -35,7 +35,7 @@ fn test_cross_validate() ? {
 	opts.repetitions = 2
 	opts.random_pick = false
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.total_count == 13
 	assert result.correct_counts == [7, 0, 2]
 	println(r_b('\nDone with developer.tab no weighting'))
@@ -48,7 +48,7 @@ fn test_cross_validate() ? {
 	opts.weighting_flag = true
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
 
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_counts == [7, 1, 0]
 
 	println(r_b('\nDone with developer.tab with weighting'))
@@ -58,7 +58,7 @@ fn test_cross_validate() ? {
 	opts.bins = [3, 3]
 	opts.folds = 0
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_count == 147
 	assert result.incorrects_count == 3
 	assert result.wrong_count == 3
@@ -68,7 +68,7 @@ fn test_cross_validate() ? {
 	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'
 	opts.number_of_attributes = [9]
 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	result = cross_validate(ds, opts)
+	result = cross_validate(opts)
 	assert result.correct_count == 672
 	assert result.incorrects_count == 27
 	assert result.wrong_count == 27
@@ -85,7 +85,7 @@ fn test_cross_validate() ? {
 		opts.random_pick = true
 		opts.weighting_flag = false
 		ds = load_file(opts.datafile_path, opts.LoadOptions)
-		result = cross_validate(ds, opts)
+		result = cross_validate(opts)
 		assert result.correct_count > 9400
 	}
 }

@@ -82,7 +82,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 
 	// println('one_vs_rest_cl_array in one_vs_rest_verify: $one_vs_rest_cl_array')
 	// if opts.classifierfile_path == '' {
-	// 	cl = make_classifier(ds, opts, disp)
+	// 	cl = make_classifier(opts, disp)
 	// } else {
 	// 	cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	// }
@@ -181,7 +181,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	// 		mult_opts.Parameters = params
 	// 		verify_result.Parameters = params
 	// 		// println('mult_opts: $mult_opts')
-	// 		classifier_array << make_classifier(ds, mult_opts)
+	// 		classifier_array << make_classifier(mult_opts)
 	// 		instances_to_be_classified << generate_case_array(classifier_array.last(),
 	// 			test_ds)
 	// 	}

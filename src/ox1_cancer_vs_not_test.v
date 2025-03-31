@@ -71,7 +71,7 @@ fn test_summary_roc_plot() {
 // 		expanded_flag: true
 // 	}
 // 	ds := load_file(opts.datafile_path)
-// 	mut result0 := cross_validate(ds, opts)
+// 	mut result0 := cross_validate(opts)
 // 	assert result0.confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 146.0
@@ -86,7 +86,7 @@ fn test_summary_roc_plot() {
 // 	opts.bins = [3, 3]
 // 	opts.weight_ranking_flag = true
 // 	opts.purge_flag = false
-// 	result1 := cross_validate(ds, opts)
+// 	result1 := cross_validate(opts)
 // 	assert result1.confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 120.0
@@ -100,7 +100,7 @@ fn test_summary_roc_plot() {
 // 	opts.number_of_attributes = [3]
 // 	opts.weight_ranking_flag = false
 // 	opts.balance_prevalences_flag = false
-// 	result2 := cross_validate(ds, opts)
+// 	result2 := cross_validate(opts)
 // 	assert result2.confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 52.0
@@ -113,7 +113,7 @@ fn test_summary_roc_plot() {
 // 	}
 // 	opts.number_of_attributes = [9]
 // 	opts.bins = [1, 4]
-// 	result3 := cross_validate(ds, opts)
+// 	result3 := cross_validate(opts)
 // 	assert result3.confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 152.0
@@ -159,8 +159,8 @@ fn test_summary_roc_plot() {
 // 	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
 // 	opts.classifiers = [0]
 // 	println(r_b('\nFor classifier 0:'))
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 146.0
 // 			'Can': 29.0
@@ -173,8 +173,8 @@ fn test_summary_roc_plot() {
 // 	// use a different classifier in a multi-classifier cross-validation
 // 	opts.classifiers = [3]
 // 	println(r_b('\nAnd for classifier 3:'))
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 152.0
 // 			'Can': 23.0
@@ -187,8 +187,8 @@ fn test_summary_roc_plot() {
 // 	println(r_b('\nNext, test using all four classifiers. We expect a balanced accuracy of 86.32%'))
 // 	// with all 4 classifiers, we get the highest balanced accuracy of 86.32%:
 // 	opts.classifiers = []
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 158.0
 // 			'Can': 17.0
@@ -201,8 +201,8 @@ fn test_summary_roc_plot() {
 // 	println(r_b('\nUsing only the first 3 classifiers, we should get maximum sensitivity of 0.882'))
 // 	// with the first 3 classifiers we get the highest sensitivity of 0.882:
 // 	opts.classifiers = [0, 1, 2]
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 124.0
 // 			'Can': 51.0
@@ -215,8 +215,8 @@ fn test_summary_roc_plot() {
 // 	println(r_b('\nAdding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754'))
 // 	// adding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754:
 // 	opts.combined_radii_flag = true
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'Non': {
 // 			'Non': 132.0
 // 			'Can': 43.0

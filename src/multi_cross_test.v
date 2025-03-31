@@ -46,15 +46,15 @@ fn testsuite_end() ? {
 // 	opts.expanded_flag = true
 // 	opts.number_of_attributes = [1]
 // 	opts.bins = [1, 3]
-// 	result = cross_validate(ds, opts)
+// 	result = cross_validate(opts)
 // 	// now do a multiple classifier crossvalidation
 // 	opts.multiple_flag = true
 // 	// opts.show_flag = true
 // 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 // 	display_file(opts.multiple_classify_options_file_path)
 // 	opts.classifiers = [7]
-// 	// cross_validate(ds, opts)
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	// cross_validate(opts)
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'm': {
 // 			'm': 8.0
 // 			'f': 0.0
@@ -72,9 +72,9 @@ fn testsuite_end() ? {
 // 		}
 // 	}
 // 	opts.classifiers = [3]
-// 	assert cross_validate(ds, opts).correct_counts == [8,0,0]
+// 	assert cross_validate(opts).correct_counts == [8,0,0]
 // 	opts.classifiers = [2, 3]
-// 	assert cross_validate(ds, opts).correct_counts == [8,1,0]
+// 	assert cross_validate(opts).correct_counts == [8,1,0]
 // }
 
 @[assert_continues]
@@ -100,7 +100,7 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 			for w in [false, true] {
 				opts.weighting_flag = w
 				dump('${pf} ${wr} ${w}')
-				er := explore(ds, opts)
+				er := explore(opts)
 				// println('er in test_multiple_crossvalidate_mixed_attributes: $er')
 			}
 		}
@@ -133,7 +133,7 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 		bins:                 [1, 7]
 		number_of_attributes: [1]
 	}
-	result0 := cross_validate(ds, opts0)
+	result0 := cross_validate(opts0)
 	for ci in [[0], [3], [15], [16], [0, 3], [0, 3, 15, 16]] {
 		opts.classifiers = ci
 		for ma in ft {
@@ -142,33 +142,32 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 				opts.combined_radii_flag = mc
 				for t in ft {
 					opts.total_nn_counts_flag = t
-					cross_validate(ds, opts)
+					cross_validate(opts)
 					match ci {
 						[0] {
-							assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
-								opts0).confusion_matrix_map
+							assert cross_validate(opts).confusion_matrix_map == cross_validate(opts0).confusion_matrix_map
 						}
 						[3] {
-							// assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+							// assert cross_validate(opts).confusion_matrix_map == cross_validate(ds,
 							// opts3).confusion_matrix_map
 						}
 						[15] {
-							// assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+							// assert cross_validate(opts).confusion_matrix_map == cross_validate(ds,
 							// opts15).confusion_matrix_map
 						}
 						[16] {
-							// assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+							// assert cross_validate(opts).confusion_matrix_map == cross_validate(ds,
 							// opts16).confusion_matrix_map
 						}
 						[0, 3] {
 							// show_crossvalidation(cross_validate(ds, opts), opts)
 							// match true {
 							// 	!opts.combined_radii_flag && !opts.total_nn_counts_flag {
-							// 		assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+							// 		assert cross_validate(opts).confusion_matrix_map == cross_validate(ds,
 							// 			opts15).confusion_matrix_map
 							// 	}
 							// 	else {
-							// 		assert cross_validate(ds, opts).confusion_matrix_map == cross_validate(ds,
+							// 		assert cross_validate(opts).confusion_matrix_map == cross_validate(ds,
 							// 			opts0).confusion_matrix_map
 							// 	}
 							// }
@@ -205,7 +204,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 		expanded_flag:                       true
 		command:                             'cross'
 	}
-	mut result := cross_validate(load_file(datafile), opts)
+	mut result := cross_validate(opts)
 	assert result.correct_counts == [442, 230]
 }
 
@@ -258,11 +257,11 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 // 	opts.command = 'cross'
 // 	ds = load_file(opts.datafile_path)
 // 	opts.number_of_attributes = [7]
-// 	mut result := cross_validate(ds, opts)
+// 	mut result := cross_validate(opts)
 // 	opts.multiple_flag = true
 // 	opts.multiple_classify_options_file_path = opts.settingsfile_path
 // 	opts.classifiers = [2]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'3': {
 // 			'3': 679.0
 // 			'U': 2.0
@@ -300,7 +299,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 // 		}
 // 	}
 // 	opts.classifiers = [3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'3': {
 // 			'3': 679.0
 // 			'U': 2.0
@@ -338,7 +337,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 // 		}
 // 	}
 // 	opts.classifiers = [2, 3]
-// 	assert cross_validate(ds, opts).confusion_matrix_map == {
+// 	assert cross_validate(opts).confusion_matrix_map == {
 // 		'3': {
 // 			'3': 679.0
 // 			'U': 2.0

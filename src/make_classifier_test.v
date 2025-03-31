@@ -19,11 +19,11 @@ fn test_max_ham_dist() {
 		expanded_flag: true
 	}
 	mut ds := load_file('datasets/developer.tab')
-	mut cl := make_classifier(ds, opts)
+	mut cl := make_classifier(opts)
 	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
 	// opts.number_of_attributes = [5]
 	// opts.bins = [3, 3]
-	// mut cl := make_classifier(ds, opts)
+	// mut cl := make_classifier(opts)
 	// assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
 }
 
@@ -38,7 +38,7 @@ fn test_max_ham_dist() {
 // 	}
 // 	mut ds := load_file('datasets/developer.tab')
 // 	mut cl := Classifier{}
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 // 	assert cl.class_counts == {
 // 		'm': 8
 // 		'f': 3
@@ -49,7 +49,7 @@ fn test_max_ham_dist() {
 // 	assert cl.maximum_hamming_distance == 54
 
 // 	ds = load_file('datasets/class_missing_developer.tab')
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 // 	assert cl.class_counts == {
 // 		'm': 8
 // 		'':  1
@@ -63,12 +63,12 @@ fn test_max_ham_dist() {
 
 // 	opts.class_missing_purge_flag = true
 // 	// println(ds.data)
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 
 // 	opts.bins = [5, 5]
 // 	opts.number_of_attributes = [1]
 // 	ds = load_file('datasets/leukemia34test.tab')
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 // 	assert cl.maximum_hamming_distance == 5
 // 	assert cl.class_counts == {
 // 		'ALL': 20
@@ -115,14 +115,14 @@ fn test_max_ham_dist() {
 // 	opts.classifierfile_path = opts.outputfile_path
 
 // 	ds = load_file('datasets/developer.tab')
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 
 // 	tcl = load_classifier_file(opts.classifierfile_path)!
 // 	assert tcl.trained_attributes == cl.trained_attributes
 // 	assert tcl.instances == cl.instances
 
 // 	ds = load_file('datasets/anneal.tab')
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 
 // 	tcl = load_classifier_file(opts.classifierfile_path)!
 // 	assert tcl.trained_attributes == cl.trained_attributes
@@ -130,7 +130,7 @@ fn test_max_ham_dist() {
 // 	assert tcl.maximum_hamming_distance == 32
 
 // 	ds = load_file('datasets/soybean-large-train.tab')
-// 	cl = make_classifier(ds, opts)
+// 	cl = make_classifier(opts)
 
 // 	tcl = load_classifier_file(opts.classifierfile_path)!
 // 	assert tcl.trained_attributes == cl.trained_attributes
@@ -140,7 +140,7 @@ fn test_max_ham_dist() {
 // 	if get_environment().arch_details[0] != '4 cpus' {
 // 		path := 'datasets/mnist_test.tab'
 // 		ds = load_file(path)
-// 		cl = make_classifier(ds, opts)
+// 		cl = make_classifier(opts)
 
 // 		tcl = load_classifier_file(opts.classifierfile_path)!
 // 		assert tcl.trained_attributes == cl.trained_attributes

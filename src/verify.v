@@ -174,7 +174,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// 		mult_opts.Parameters = params
 	// 		verify_result.Parameters = params
 	// 		// println('mult_opts: $mult_opts')
-	// 		classifier_array << make_classifier(ds, mult_opts)
+	// 		classifier_array << make_classifier(mult_opts)
 	// 		instances_to_be_classified << generate_case_array(classifier_array.last(),
 	// 			test_ds)
 	// 	}

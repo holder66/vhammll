@@ -26,42 +26,42 @@ fn test_rank_attributes() {
 		command:             'rank'
 	}
 	mut ds := load_file('datasets/developer.tab')
-	mut rank_value := rank_attributes(ds, opts).array_of_ranked_attributes[1].rank_value
+	mut rank_value := rank_attributes(opts).array_of_ranked_attributes[1].rank_value
 	assert rank_value >= 66.30434
 	assert rank_value <= 66.30435
 	opts.exclude_flag = false
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[2].attribute_name == 'lastname'
+	assert rank_attributes(opts).array_of_ranked_attributes[2].attribute_name == 'lastname'
 	opts.bins = [2, 16]
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[7].attribute_index == 7
+	assert rank_attributes(opts).array_of_ranked_attributes[7].attribute_index == 7
 	opts.exclude_flag = true
-	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[0].rank_value
+	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 95.65217
 	assert rank_value <= 95.65219
 	ds = load_file('datasets/anneal.tab')
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[3].attribute_name == 'formability'
+	assert rank_attributes(opts).array_of_ranked_attributes[3].attribute_name == 'formability'
 	opts.bins = [2, 2]
 	ds = load_file('datasets/mnist_test.tab')
-	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[0].rank_value
+	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 38.08885
 	assert rank_value <= 38.08886
 	opts.weight_ranking_flag = false
 	ds = load_file('datasets/developer.tab')
-	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[1].rank_value
+	rank_value = rank_attributes(opts).array_of_ranked_attributes[1].rank_value
 	assert rank_value >= 69.23077
 	assert rank_value <= 69.23078
 	opts.exclude_flag = false
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[2].attribute_name == 'city'
+	assert rank_attributes(opts).array_of_ranked_attributes[2].attribute_name == 'city'
 	opts.bins = [2, 16]
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[7].attribute_index == 6
+	assert rank_attributes(opts).array_of_ranked_attributes[7].attribute_index == 6
 	opts.exclude_flag = true
-	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[0].rank_value
+	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 92.30769
 	assert rank_value <= 92.30770
 	ds = load_file('datasets/anneal.tab')
-	assert rank_attributes(ds, opts).array_of_ranked_attributes[3].attribute_name == 'strength'
+	assert rank_attributes(opts).array_of_ranked_attributes[3].attribute_name == 'strength'
 	opts.bins = [2, 2]
 	ds = load_file('datasets/mnist_test.tab')
-	rank_value = rank_attributes(ds, opts).array_of_ranked_attributes[0].rank_value
+	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 38.48
 	assert rank_value <= 38.49
 }
@@ -104,7 +104,7 @@ fn test_rank_attribute_sorting() {
 		weight_ranking_flag: true
 	}
 	mut ds := load_file('datasets/developer.tab')
-	mut result := rank_attributes(ds, opts)
+	mut result := rank_attributes(opts)
 	mut atts := []string{}
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
@@ -112,20 +112,20 @@ fn test_rank_attribute_sorting() {
 	assert atts == ['height', 'negative', 'weight', 'number', 'age', 'lastname', 'SEC', 'city']
 	atts = []
 	opts.bins = [3, 3]
-	result = rank_attributes(ds, opts)
+	result = rank_attributes(opts)
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
 	}
 	assert atts == ['height', 'negative', 'lastname', 'number', 'SEC', 'city', 'age', 'weight']
 	atts = []
 	opts.bins = [4, 9]
-	result = rank_attributes(ds, opts)
+	result = rank_attributes(opts)
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
 	}
 	assert atts == ['height', 'number', 'weight', 'negative', 'age', 'lastname', 'SEC', 'city']
 	opts.weight_ranking_flag = false
-	result = rank_attributes(ds, opts)
+	result = rank_attributes(opts)
 	atts = []
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
@@ -133,14 +133,14 @@ fn test_rank_attribute_sorting() {
 	assert atts == ['height', 'weight', 'number', 'negative', 'age', 'lastname', 'city', 'SEC']
 	atts = []
 	opts.bins = [3, 3]
-	result = rank_attributes(ds, opts)
+	result = rank_attributes(opts)
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
 	}
 	assert atts == ['height', 'lastname', 'city', 'SEC', 'age', 'number', 'negative', 'weight']
 	atts = []
 	opts.bins = [4, 9]
-	result = rank_attributes(ds, opts)
+	result = rank_attributes(opts)
 	for att in result.array_of_ranked_attributes {
 		atts << att.attribute_name
 	}

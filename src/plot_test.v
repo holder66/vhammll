@@ -25,14 +25,14 @@ fn test_rank_attributes_plot() {
 		command:       'rank'
 	}
 	opts.graph_flag = true
-	result = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	result = rank_attributes(opts)
 	opts.exclude_flag = true
-	result = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	result = rank_attributes(opts)
 	opts.exclude_flag = false
 	opts.datafile_path = 'datasets/anneal.tab'
-	result = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	result = rank_attributes(opts)
 	opts.exclude_flag = true
-	result = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	result = rank_attributes(opts)
 }
 
 // test_explore_plot
@@ -58,19 +58,19 @@ fn test_explore_plot() ? {
 
 	// test for cross with more than 2 classes
 	opts.datafile_path = 'datasets/iris.tab'
-	results = explore(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	results = explore(opts)
 
 	// verify with 2 classes (generates ROC plots)
 	opts.datafile_path = 'datasets/bcw350train'
 	opts.testfile_path = 'datasets/bcw174test'
 	opts.number_of_attributes = [0]
 
-	results = explore(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	results = explore(opts)
 
 	// verify with more than 2 classes
 	opts.datafile_path = 'datasets/soybean-large-train.tab'
 	opts.testfile_path = 'datasets/soybean-large-test.tab'
 	opts.number_of_attributes = [0]
 
-	results = explore(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	results = explore(opts)
 }

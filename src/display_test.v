@@ -39,7 +39,7 @@ fn test_display_multiple_classifier_settings() ? {
 // 	}
 // 	opts.outputfile_path = 'tempfolders/tempfolder_display/classifierfile'
 // 	mut ds := load_file('datasets/developer.tab')
-// 	mut cl := make_classifier(ds, opts)
+// 	mut cl := make_classifier(opts)
 // 	display_file(opts.outputfile_path, opts)
 // }
 
@@ -73,7 +73,7 @@ fn test_display_multiple_classifier_settings() ? {
 // 	}
 // 	opts.datafile_path = 'datasets/bcw350train'
 // 	mut ds := load_file(opts.datafile_path)
-// 	cl := make_classifier(ds, opts)
+// 	cl := make_classifier(opts)
 // 	opts.outputfile_path = 'tempfolders/tempfolder_display/validate_result'
 // 	opts.testfile_path = 'datasets/bcw174validate'
 // 	_ = validate(cl, opts)!
@@ -95,7 +95,7 @@ fn test_display_multiple_classifier_settings() ? {
 // 		show_flag:            true
 // 	}
 // 	mut ds := load_file(opts.datafile_path)
-// 	cl := make_classifier(ds, opts)
+// 	cl := make_classifier(opts)
 // 	println(r_b('with the expanded_flag not set:'))
 // 	verify(opts)
 // 	opts.expanded_flag = true

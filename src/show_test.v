@@ -19,23 +19,26 @@ fn testsuite_end() ! {
 
 fn test_show_analyze() {
 	println(r_b('test_show_analyze should print out dataset analyses for developer.tab and for iris.tab'))
-	mut opts := Options{}
+	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
+	}
 	mut ar := AnalyzeResult{}
-	mut ds := Dataset{}
-
-	ar = analyze_dataset(load_file('datasets/developer.tab'), opts)
+	ar = analyze_dataset(opts)
 	show_analyze(ar)
-
-	ar = analyze_dataset(load_file('datasets/iris.tab'), opts)
+	opts.datafile_path = 'datasets/iris.tab'
+	ar = analyze_dataset(opts)
 	show_analyze(ar)
 
 	// with purging of instances whose class values are missing
-	ar = analyze_dataset(load_file('datasets/class_missing_developer.tab',
-		class_missing_purge_flag: true
-	), opts)
+	opts.class_missing_purge_flag = true
+	ar = analyze_dataset(opts)
 	show_analyze(ar)
-	ar = analyze_dataset(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
-		opts)
+	opts.datafile_path = 'datasets/class_missing_iris.tab'
+	opts.class_missing_purge_flag = false
+	ar = analyze_dataset(opts)
+	show_analyze(ar)
+	opts.class_missing_purge_flag = true
+	ar = analyze_dataset(opts)
 	show_analyze(ar)
 }
 
@@ -52,8 +55,8 @@ fn test_show_append() ? {
 	// create the classifier file and save it
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
-	mut ds := load_file('datasets/test.tab')
-	cl = make_classifier(ds, opts)
+	// mut ds := load_file('datasets/test.tab')
+	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/test_validate.tab'
@@ -73,7 +76,7 @@ fn test_show_append() ? {
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
 	ds = load_file('datasets/soybean-large-train.tab')
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'
 	opts.testfile_path = 'datasets/soybean-large-validate.tab'
@@ -98,54 +101,62 @@ fn test_show_classifier() {
 		number_of_attributes: [2]
 	}
 	mut ds := load_file('datasets/iris.tab')
-	mut cl := make_classifier(ds, opts)
+	mut cl := make_classifier(opts)
 	ds = load_file('datasets/anneal.tab')
 	opts.show_flag = true
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 
 	// now with purging of instances with missing class values
 
 	ds = load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true)
 	opts.show_flag = true
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 
 	// repeat with developer.tab, which is newer_orange format
 	ds = load_file('datasets/developer.tab')
 	opts.show_flag = true
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	ds = load_file('datasets/class_missing_developer.tab', class_missing_purge_flag: true)
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 }
 
 fn test_show_crossvalidation() ? {
 	println(r_b('test_show_crossvalidation prints out cross-validation results for developer.tab, breast-cancer-wisconsin-disc.tab, and iris.tab'))
 	mut cvr := CrossVerifyResult{}
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		concurrency_flag: true
 		command:          'cross'
 		show_flag:        true
 	}
 	println('\n\ndeveloper.tab')
-	cvr = cross_validate(load_file('datasets/developer.tab'), opts)
+	cvr = cross_validate(opts)
 	println('\ndeveloper.tab with expanded results')
-	cvr = cross_validate(load_file('datasets/developer.tab'), opts)
+	opts.expanded_flag = true
+	cvr = cross_validate(opts)
 
 	println('\n\nbreast-cancer-wisconsin-disc.tab')
+	opts.expanded_flag = false
+	opts.datafile_path = 'datasets/breast-cancer-wisconsin-disc.tab'
 	opts.number_of_attributes = [4]
-	cvr = cross_validate(load_file('datasets/breast-cancer-wisconsin-disc.tab'), opts)
+	cvr = cross_validate(opts)
 	println('\nbreast-cancer-wisconsin-disc.tab with expanded results')
 	opts.expanded_flag = true
-	cvr = cross_validate(load_file('datasets/breast-cancer-wisconsin-disc.tab'), opts)
+	cvr = cross_validate(opts)
 
 	println('\n\niris.tab')
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]
-	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
+	opts.expanded_flag = false
+	opts.datafile_path = 'datasets/iris.tab'
+	cvr = cross_validate(opts)
 	println('\niris.tab with expanded results')
-	cvr = cross_validate(load_file('datasets/iris.tab'), opts)
+	opts.expanded_flag = true
+	cvr = cross_validate(opts)
 	// now with purging for missing classes
-	cvr = cross_validate(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
-		opts)
+	opts.datafile_path = 'datasets/class_missing_iris.tab'
+	opts.class_missing_purge_flag = true
+	cvr = cross_validate(opts)
 }
 
 fn test_show_explore_cross() ? {
@@ -164,15 +175,14 @@ fn test_show_explore_cross() ? {
 		datafile_path:        'datasets/developer.tab'
 		command:              'explore'
 	}
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
-	results = explore(ds, opts)
+	results = explore(opts)
 
 	// repeat for class missing purge
+	opts.class_missing_purge_flag = true
 	opts.datafile_path = 'datasets/class_missing_developer.tab'
-	ds = load_file(opts.datafile_path, class_missing_purge_flag: true)
 	opts.show_flag = true
-	results = explore(ds, opts)
+	results = explore(opts)
 }
 
 fn test_show_explore_verify() ? {
@@ -187,12 +197,11 @@ fn test_show_explore_verify() ? {
 		datafile_path:        'datasets/bcw350train'
 		testfile_path:        'datasets/bcw174test'
 	}
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
-	results = explore(ds, opts)
+	results = explore(opts)
 	opts.weighting_flag = true
 	opts.number_of_attributes = [0]
-	results = explore(ds, opts)
+	results = explore(opts)
 }
 
 fn test_show_rank_attributes() {
@@ -200,25 +209,24 @@ fn test_show_rank_attributes() {
 	mut opts := Options{
 		exclude_flag: true
 		command:      'rank'
+		datafile_path: 'datasets/developer.tab'
 	}
-	mut ds := Dataset{}
 	mut rr := RankingResult{}
-	ds = load_file('datasets/developer.tab')
 	opts.show_flag = true
-	rr = rank_attributes(ds, opts)
-
+	rr = rank_attributes(opts)
 	opts.bins = [3, 3]
-	ds = load_file('datasets/iris.tab')
-	rr = rank_attributes(ds, opts)
+	opts.datafile_path ='datasets/iris.tab'
+	rr = rank_attributes(opts)
+	opts.datafile_path = 'datasets.class_missing_iris.tab'
+	opts.class_missing_purge_flag = true
 	// repeat for class missing purge
-	rr = rank_attributes(load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true),
-		opts)
+	rr = rank_attributes(opts)
 
-	ds = load_file('datasets/anneal.tab')
-	rr = rank_attributes(ds, opts)
+	opts.datafile_path = 'datasets.anneal.tab'
+	rr = rank_attributes(opts)
 
-	opts.exclude_flag = false
-	rr = rank_attributes(ds, opts)
+	opts.exclude_flag = true
+	rr = rank_attributes(opts)
 }
 
 fn test_show_validate() ? {
@@ -236,9 +244,8 @@ fn test_show_validate() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
-	cl = make_classifier(ds, opts)
+	cl = make_classifier(opts)
 	result = validate(cl, opts)!
 }
 
@@ -257,21 +264,20 @@ fn test_show_verify() ? {
 	opts.classifierfile_path = ''
 	opts.number_of_attributes = [4]
 	opts.weighting_flag = false
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	opts.show_flag = true
 	result = verify(opts)
 	opts.weighting_flag = true
 	result = verify(opts)
 }
 
-fn test_show_multiple_classifier_settings_options() ? {
-	println(r_b('\n\ntest_show_multiple_classifier_settings_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
-	mut opts := Options{
-		datafile_path:     'datasets/UCI/leukemia38train'
-		testfile_path:     'datasets/UCI/leukemia34test'
-		settingsfile_path: 'tempfolders/tempfolder_show/leuk.opts'
-	}
-	mut result := CrossVerifyResult{}
-	mut ds := Dataset{}
-	mut cl := Classifier{}
-}
+// fn test_show_multiple_classifier_settings_options() ? {
+// 	println(r_b('\n\ntest_show_multiple_classifier_settings_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
+// 	mut opts := Options{
+// 		datafile_path:     'datasets/UCI/leukemia38train'
+// 		testfile_path:     'datasets/UCI/leukemia34test'
+// 		settingsfile_path: 'tempfolders/tempfolder_show/leuk.opts'
+// 	}
+// 	mut result := CrossVerifyResult{}
+// 	mut ds := Dataset{}
+// 	mut cl := Classifier{}
+// }

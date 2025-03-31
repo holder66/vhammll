@@ -23,7 +23,7 @@ fn test_show_attributes_in_make_classifier() {
 		show_attributes_flag: true
 		command:              'make'
 	}
-	make_classifier(load_file(opts.datafile_path), opts)
+	make_classifier(opts)
 }
 
 fn test_show_attributes_in_verify() {
@@ -98,17 +98,17 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	opts.show_flag = true
 	opts.expanded_flag = true
 	opts.show_attributes_flag = true
-	result = multi_verify(opts)
+	result = verify(opts)
 	// with both classifiers
 	assert result.correct_counts == [20, 9], 'with both classifiers'
 	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
 	// with classifier 0 only
 	opts.classifiers = [0]
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	println(r_b('Do a multi-classifier verification with saved classifier #1 only:'))
 	// with classifier 1
 	opts.classifiers = [1]
-	result = multi_verify(opts)
+	result = verify(opts)
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
