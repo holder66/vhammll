@@ -20,31 +20,31 @@ import time
 // ```
 pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	mut ds := dds
-	if opts.balance_prevalences_flag {
-		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
-		mut transposed_data := transpose(ds.data)
-		mut multipliers := map[string]int{}
-		for class, count in ds.class_counts {
-			multipliers[class] = (ds.class_values.len - count) / count
-		}
-		mut idx := 0
-		for class in ds.class_values {
-			if multipliers[class] > 0 {
-				for _ in 1 .. multipliers[class] {
-					transposed_data.insert(idx, transposed_data[idx])
-					idx += 1
-				}
-			}
-			idx += 1
-		}
-		ds.data = transpose(transposed_data)
-		// update the Class struct items
-		ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
-		ds.class_counts = element_counts(ds.class_values)
-		// redo the useful_attribute maps
-		ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
-		ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
-	}
+	// if opts.balance_prevalences_flag {
+	// 	// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
+	// 	mut transposed_data := transpose(ds.data)
+	// 	mut multipliers := map[string]int{}
+	// 	for class, count in ds.class_counts {
+	// 		multipliers[class] = (ds.class_values.len - count) / count
+	// 	}
+	// 	mut idx := 0
+	// 	for class in ds.class_values {
+	// 		if multipliers[class] > 0 {
+	// 			for _ in 1 .. multipliers[class] {
+	// 				transposed_data.insert(idx, transposed_data[idx])
+	// 				idx += 1
+	// 			}
+	// 		}
+	// 		idx += 1
+	// 	}
+	// 	ds.data = transpose(transposed_data)
+	// 	// update the Class struct items
+	// 	ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
+	// 	ds.class_counts = element_counts(ds.class_values)
+	// 	// redo the useful_attribute maps
+	// 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
+	// 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
+	// }
 
 	mut cl := Classifier{
 		Class:         ds.Class
