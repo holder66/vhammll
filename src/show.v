@@ -140,7 +140,7 @@ fn show_parameters(p Parameters, load_options LoadOptions) {
 	println('${'Purging of duplicate instances: ':55}${p.purge_flag}')
 	println('${'Prevalence weighting for ranking attributes: ':55}${p.weight_ranking_flag}')
 	println('${'Prevalence weighting for nearest neighbor counts: ':55}${p.weighting_flag}')
-	println('${'Add instances to balance class prevalences: ':55}${p.balance_prevalences_flag}')
+	println('${'Add instances to balance class prevalences: ':55}${load_options.balance_prevalences_flag}')
 	println('${'Purging of instances with missing class values: ':55}${load_options.class_missing_purge_flag}')
 }
 
@@ -245,6 +245,7 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 		a := par.Parameters
 		b := par.BinaryMetrics
 		c := par.Metrics
+		d := par.LoadOptions
 		corrects := c.correct_counts.map(it.str()).join(' ')
 		incorrects := c.incorrect_counts.map(it.str()).join(' ')
 		mut col_width := array_max([corrects.len, incorrects.len]) + 2
@@ -259,7 +260,7 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 		row_data[3] += '${a.exclude_flag:-13}' + pad(col_width - 13)
 		row_data[4] += '${a.weight_ranking_flag:-13}' + pad(col_width - 13)
 		row_data[5] += '${a.weighting_flag:-13}' + pad(col_width - 13)
-		row_data[6] += '${a.balance_prevalences_flag:-13}' + pad(col_width - 13)
+		row_data[6] += '${d.balance_prevalences_flag:-13}' + pad(col_width - 13)
 		row_data[7] += '${a.purge_flag:-13}' + pad(col_width - 13)
 		if c.class_counts_int.len > 2 {
 			row_data[8] += corrects + pad(col_width - corrects.len)

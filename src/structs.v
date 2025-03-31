@@ -176,7 +176,7 @@ pub mut:
 	folds                    int
 	repetitions              int
 	random_pick              bool
-	balance_prevalences_flag bool
+	// balance_prevalences_flag bool
 	maximum_hamming_distance int
 }
 
@@ -200,6 +200,7 @@ pub struct LoadOptions {
 pub mut:
 	positive_class           string
 	class_missing_purge_flag bool
+	balance_prevalences_flag bool
 }
 
 // Options struct: can be used as the last parameter in a
