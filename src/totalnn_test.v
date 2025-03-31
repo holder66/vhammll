@@ -59,7 +59,6 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3], 'for classifier #1'
 	opts.classifiers = [2]
-	cross_validate(ds, opts)
 	assert cross_validate(opts).correct_counts == [9, 2], 'for classifier #2'
 	opts.classifiers = [2, 3]
 	opts.command = 'cross'
@@ -111,13 +110,11 @@ fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
 	result = cross_validate(opts)
 	assert result.correct_counts == [8, 3, 2]
 	opts.classifiers = [2]
-	cross_validate(ds, opts)
 	assert cross_validate(opts).correct_counts == [8, 3, 2], 'for classifier #2'
 	opts.classifiers = [2, 3]
 	opts.command = 'cross'
 	opts.show_flag = true
 	// opts.expanded_flag = true
-	result_mult := cross_validate(opts)
 	assert cross_validate(opts).correct_counts == [8, 0, 0], 'for classifiers 2 & 3'
 }
 

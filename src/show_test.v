@@ -75,7 +75,8 @@ fn test_show_append() ? {
 	// repeat with soybean
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
-	ds = load_file('datasets/soybean-large-train.tab')
+
+	opts.datafile_path = 'datasets/soybean-large-train.tab'
 	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'

@@ -29,7 +29,7 @@ fn test_settings_for_roc() {
 		// expanded_flag: true
 	}
 	mut ds := load_file(opts.datafile_path)
-	explore(ds, opts)
+	explore(opts)
 	display_file(opts.roc_settingsfile_path)
 }
 
@@ -52,7 +52,7 @@ fn test_explore_traverse_all_flags() {
 	}
 	saved_file := 'src/testdata/iris_purged.opts'
 	mut ds := load_file(opts.datafile_path)
-	result = explore(ds, opts)
+	result = explore(opts)
 	assert os.is_file(opts.settingsfile_path)
 	assert int(os.file_size(opts.settingsfile_path)) in [253572, 252452]
 	opts.purge_flag = true
@@ -77,7 +77,7 @@ fn test_explore_cross() ? {
 		datafile_path:        'datasets/iris.tab'
 	}
 	mut ds := load_file(opts.datafile_path)
-	result = explore(ds, opts)
+	result = explore(opts)
 	assert result.array_of_results[0].correct_count == 99
 	assert result.array_of_results[0].incorrects_count == 51
 	assert result.array_of_results[0].wrong_count == 51
@@ -87,7 +87,7 @@ fn test_explore_cross() ? {
 
 	opts.uniform_bins = false
 	opts.bins = [10, 12]
-	result = explore(ds, opts)
+	result = explore(opts)
 	assert result.array_of_results.last().correct_count == 140
 	assert result.array_of_results.last().incorrects_count == 10
 	assert result.array_of_results.last().wrong_count == 10
@@ -103,18 +103,18 @@ fn test_explore_cross() ? {
 	opts.datafile_path = 'datasets/anneal.tab'
 	opts.uniform_bins = true
 	ds = load_file(opts.datafile_path)
-	result = explore(ds, opts)
+	result = explore(opts)
 	metrics = get_metrics(result.array_of_results[1])
 	assert metrics.balanced_accuracy >= 0.96
 
 	opts.uniform_bins = false
-	result = explore(ds, opts)
+	result = explore(opts)
 	metrics = get_metrics(result.array_of_results[1])
 	assert metrics.balanced_accuracy >= 0.955
 
 	opts.folds = 5
 	opts.repetitions = 50
-	result = explore(ds, opts)
+	result = explore(opts)
 	metrics = get_metrics(result.array_of_results[1])
 	assert metrics.balanced_accuracy >= 0.945
 	println('Done with anneal.tab')
@@ -129,7 +129,7 @@ fn test_explore_verify() ? {
 		datafile_path:    'datasets/bcw350train'
 	}
 	mut ds := load_file(opts.datafile_path)
-	mut result := explore(ds, opts)
+	mut result := explore(opts)
 	assert result.array_of_results[7].correct_count == 170
 	assert result.array_of_results[7].wrong_count == 4
 	println('done with explore_verify of bcw')
