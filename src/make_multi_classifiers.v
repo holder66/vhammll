@@ -16,7 +16,7 @@ fn make_multi_classifiers(ds Dataset, settings_list []ClassifierSettings, classi
 		opts := Options{
 			Parameters: settings_list.filter(it.classifier_id == i)[0].Parameters
 		}
-		cl := make_classifier(ds, opts)
+		cl := make_classifier_using_ds(ds, opts)
 		cll << cl
 	}
 	return cll

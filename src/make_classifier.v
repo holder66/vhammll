@@ -18,8 +18,9 @@ import time
 //     binning and based on only the attributes to be used;
 // outputfile_path: if specified, saves the classifier to this file.
 // ```
-pub fn make_classifier(dds Dataset, opts Options) Classifier {
-	mut ds := dds
+pub fn make_classifier(opts Options) Classifier {
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	return make_classifier_using_ds(ds, opts)
 	// if opts.balance_prevalences_flag {
 	// 	// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 	// 	mut transposed_data := transpose(ds.data)
@@ -45,7 +46,9 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	// 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	// 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
 	// }
+}
 
+fn make_classifier_using_ds(ds Dataset, opts Options) Classifier {
 	mut cl := Classifier{
 		Class:         ds.Class
 		Parameters:    opts.Parameters
@@ -66,7 +69,7 @@ pub fn make_classifier(dds Dataset, opts Options) Classifier {
 	// number_of_attributes is 0)
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
-	ranking_result := rank_attributes(ds, rank_opts)
+	ranking_result := rank_attributes(rank_opts)
 	// dump(ranking_result.array_of_ranked_attributes[0..10])
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 

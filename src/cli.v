@@ -271,7 +271,7 @@ fn flag(args []string, what []string) bool {
 
 // analyze prints out to the console
 fn analyze(opts Options) {
-	analyze_dataset(load_file(opts.datafile_path, opts.LoadOptions), opts)
+	analyze_dataset(opts)
 }
 
 // do_append appends instances in a file, to a classifier in a file specified
@@ -293,8 +293,7 @@ fn do_display(opts Options) {
 
 fn get_classifier(opts Options) !Classifier {
 	if opts.classifierfile_path == '' {
-		mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-		return make_classifier(ds, opts)
+		return make_classifier(opts)
 	}
 	return load_classifier_file(opts.classifierfile_path)!
 }
@@ -330,13 +329,12 @@ fn do_validate(opts Options) ! {
 fn cross(opts Options) {
 	mut new_opts := opts
 	new_opts.random_pick = if opts.repetitions > 1 { true } else { false }
-	cross_validate(load_file(opts.datafile_path, opts.LoadOptions), new_opts)
+	cross_validate(new_opts)
 }
 
 // do_explore
 fn do_explore(opts Options) {
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	explore(ds, opts)
+	explore(opts)
 }
 
 fn do_optimals(opts Options) {
@@ -354,9 +352,9 @@ fn orange() {
 fn rank(opts Options) {
 	mut ra := RankingResult{}
 	if opts.one_vs_rest_flag {
-		ra = rank_one_vs_rest(load_file(opts.datafile_path, opts.LoadOptions), opts)
+		ra = rank_one_vs_rest(opts)
 	} else {
-		ra = rank_attributes(load_file(opts.datafile_path, opts.LoadOptions), opts)
+		ra = rank_attributes(opts)
 	}
 	if opts.expanded_flag {
 		println(ra)
@@ -367,8 +365,8 @@ fn rank(opts Options) {
 // Optionally (-e flag) it prints out the classifier struct.
 // Optionally (-o flag) it saves the classifier file.
 fn make(opts Options) {
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	cl := make_classifier(ds, opts)
+	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	cl := make_classifier(opts)
 	if opts.expanded_flag {
 		println(cl)
 	}

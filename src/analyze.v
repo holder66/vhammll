@@ -17,8 +17,9 @@ import math.stats
 //
 // outputfile_path: if specified, saves the analysis results.
 // ```
-pub fn analyze_dataset(ds Dataset, opts Options) AnalyzeResult {
+pub fn analyze_dataset(opts Options) AnalyzeResult {
 	// println('ds in analyze_dataset: ${ds}')
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut result := AnalyzeResult{
 		environment:              get_environment()
 		datafile_path:            ds.path

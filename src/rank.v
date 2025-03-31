@@ -91,7 +91,8 @@ Options:
 //     weights and normalizes the hits.
 // `outputfile_path`: saves the result as json.
 // ```
-pub fn rank_attributes(ds Dataset, opts Options) RankingResult {
+pub fn rank_attributes(opts Options) RankingResult {
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut result := RankingResult{
 		Class:           ds.Class
 		LoadOptions:     ds.LoadOptions

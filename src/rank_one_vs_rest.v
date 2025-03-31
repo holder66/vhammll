@@ -48,10 +48,11 @@ module vhammll
 //     y axis, with number of bins on the x axis.
 // `outputfile_path`, saves the result as json.
 // ```
-pub fn rank_one_vs_rest(ds Dataset, opts Options) RankingResult {
+pub fn rank_one_vs_rest(opts Options) RankingResult {
 	// println('opts in rank_attributes: $opts')
 	// to get the denominator for calculating percentages of rank values,
 	// we get the rank value for the class attribute, which should be 100%
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut ranking_result := RankingResult{
 		LoadOptions:         ds.LoadOptions
 		path:                ds.path

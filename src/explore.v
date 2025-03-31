@@ -26,7 +26,8 @@ module vhammll
 //  combinations of the flags uniform_bins, weight_ranking_flag, etc;
 // outputfile_path: saves the result to a file.
 // ```
-pub fn explore(ds Dataset, opts Options) ExploreResult {
+pub fn explore(opts Options) ExploreResult {
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// instantiate a struct for SettingsForROC
 	mut roc_master_class := opts.positive_class
 	if opts.positive_class == '' {
@@ -153,7 +154,7 @@ fn run_explore(ds Dataset, opts Options) ExploreResult {
 				ex_opts.bins = [1, bin]
 			}
 			if ex_opts.testfile_path == '' {
-				result = cross_validate(ds, ex_opts)
+				result = cross_validate(ex_opts)
 			} else {
 				// cl = make_classifier(mut ds, ex_opts)
 				result = verify(ex_opts)
