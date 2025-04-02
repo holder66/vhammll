@@ -53,6 +53,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	for settings in mult_opts.multiple_classifier_settings {
 		mut local_opts := Options{
 			Parameters: settings.Parameters
+			datafile_path: settings.datafile_path
 		}
 		verify_result.classifiers << settings.classifier_id
 		local_opts.Parameters.multiple_flag = false

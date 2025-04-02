@@ -55,7 +55,7 @@ fn test_show_append() ? {
 	// create the classifier file and save it
 	opts.command = 'make'
 	opts.outputfile_path = 'tempfolders/tempfolder_show/classifierfile'
-	// mut ds := load_file('datasets/test.tab')
+	opts.datafile_path = 'datasets/test.tab'
 	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_show/instancesfile'
@@ -97,27 +97,28 @@ fn test_show_append() ? {
 fn test_show_classifier() {
 	println(r_b('test_show_classifier prints out classifiers for iris.tab and for developer.tab'))
 	mut opts := Options{
+		datafile_path: 'datasets/iris.tab'
 		command:              'make'
 		bins:                 [3, 10]
 		number_of_attributes: [2]
 	}
-	mut ds := load_file('datasets/iris.tab')
 	mut cl := make_classifier(opts)
-	ds = load_file('datasets/anneal.tab')
+	opts.datafile_path = 'datasets/anneal.tab'
 	opts.show_flag = true
 	cl = make_classifier(opts)
 
 	// now with purging of instances with missing class values
-
-	ds = load_file('datasets/class_missing_iris.tab', class_missing_purge_flag: true)
+	opts.datafile_path = 'datasets/class_missing_iris.tab'
+	opts.class_missing_purge_flag = true
 	opts.show_flag = true
 	cl = make_classifier(opts)
 
 	// repeat with developer.tab, which is newer_orange format
-	ds = load_file('datasets/developer.tab')
+	opts.datafile_path = 'datasets/developer.tab'
 	opts.show_flag = true
 	cl = make_classifier(opts)
-	ds = load_file('datasets/class_missing_developer.tab', class_missing_purge_flag: true)
+	opts.datafile_path = 'datasets/class_missing_developer.tab'
+	opts.class_missing_purge_flag = true
 	cl = make_classifier(opts)
 }
 
@@ -218,12 +219,12 @@ fn test_show_rank_attributes() {
 	opts.bins = [3, 3]
 	opts.datafile_path ='datasets/iris.tab'
 	rr = rank_attributes(opts)
-	opts.datafile_path = 'datasets.class_missing_iris.tab'
+	opts.datafile_path = 'datasets/class_missing_iris.tab'
 	opts.class_missing_purge_flag = true
 	// repeat for class missing purge
 	rr = rank_attributes(opts)
 
-	opts.datafile_path = 'datasets.anneal.tab'
+	opts.datafile_path = 'datasets/anneal.tab'
 	rr = rank_attributes(opts)
 
 	opts.exclude_flag = true
@@ -271,14 +272,14 @@ fn test_show_verify() ? {
 	result = verify(opts)
 }
 
-// fn test_show_multiple_classifier_settings_options() ? {
-// 	println(r_b('\n\ntest_show_multiple_classifier_settings_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
-// 	mut opts := Options{
-// 		datafile_path:     'datasets/UCI/leukemia38train'
-// 		testfile_path:     'datasets/UCI/leukemia34test'
-// 		settingsfile_path: 'tempfolders/tempfolder_show/leuk.opts'
-// 	}
-// 	mut result := CrossVerifyResult{}
-// 	mut ds := Dataset{}
-// 	mut cl := Classifier{}
-// }
+fn test_show_multiple_classifier_settings_options() ? {
+	println(r_b('\n\ntest_show_multiple_classifier_settings_options prints out a table showing the classifier settings for the chosen classifiers in a multiple classifier cross-validation or verification'))
+	mut opts := Options{
+		datafile_path:     'datasets/UCI/leukemia38train'
+		testfile_path:     'datasets/UCI/leukemia34test'
+		settingsfile_path: 'tempfolders/tempfolder_show/leuk.opts'
+	}
+	mut result := CrossVerifyResult{}
+	mut ds := Dataset{}
+	mut cl := Classifier{}
+}

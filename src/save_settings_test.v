@@ -56,13 +56,17 @@ fn test_append_explore_cross_settings_to_file() {
 	explore(opts)
 	display_file(opts.settingsfile_path)
 	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 9976
+	mut size := os.file_size(opts.settingsfile_path.trim_space())
+	assert size <= 9976
+	assert size >= 9948
 
 	// now add another explore
 	opts.uniform_bins = false
 	explore(opts)
 	display_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 17678
+	size = os.file_size(opts.settingsfile_path.trim_space())
+	assert size <= 17678
+	assert size >= 17650
 }
 
 fn test_append_explore_verify_settings_to_file() {

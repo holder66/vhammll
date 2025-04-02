@@ -29,8 +29,10 @@ fn test_purge_instances_for_missing_class_values() {
 
 	// now for an orange_newer file
 	opts.datafile_path = 'datasets/class_missing_developer.tab'
+	opts.class_missing_purge_flag = false
 	cl = make_classifier(opts)
 	assert cl.instances.len == 15
+	opts.class_missing_purge_flag = true
 	pmcl = make_classifier(opts)
 	assert pmcl.instances.len == 13
 }

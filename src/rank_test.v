@@ -19,13 +19,13 @@ fn test_sum_along_row_weighted() {
 
 fn test_rank_attributes() {
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		bins:                [3, 3]
 		exclude_flag:        true
 		weight_ranking_flag: true
 		show_flag:           false
 		command:             'rank'
 	}
-	mut ds := load_file('datasets/developer.tab')
 	mut rank_value := rank_attributes(opts).array_of_ranked_attributes[1].rank_value
 	assert rank_value >= 66.30434
 	assert rank_value <= 66.30435
@@ -37,15 +37,15 @@ fn test_rank_attributes() {
 	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 95.65217
 	assert rank_value <= 95.65219
-	ds = load_file('datasets/anneal.tab')
+	opts.datafile_path = 'datasets/anneal.tab'
 	assert rank_attributes(opts).array_of_ranked_attributes[3].attribute_name == 'formability'
 	opts.bins = [2, 2]
-	ds = load_file('datasets/mnist_test.tab')
+	opts.datafile_path = 'datasets/mnist_test.tab'
 	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 38.08885
 	assert rank_value <= 38.08886
 	opts.weight_ranking_flag = false
-	ds = load_file('datasets/developer.tab')
+	opts.datafile_path = 'datasets/developer.tab'
 	rank_value = rank_attributes(opts).array_of_ranked_attributes[1].rank_value
 	assert rank_value >= 69.23077
 	assert rank_value <= 69.23078
@@ -57,10 +57,10 @@ fn test_rank_attributes() {
 	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 92.30769
 	assert rank_value <= 92.30770
-	ds = load_file('datasets/anneal.tab')
+	opts.datafile_path = 'datasets/anneal.tab'
 	assert rank_attributes(opts).array_of_ranked_attributes[3].attribute_name == 'strength'
 	opts.bins = [2, 2]
-	ds = load_file('datasets/mnist_test.tab')
+	opts.datafile_path = 'datasets/mnist_test.tab'
 	rank_value = rank_attributes(opts).array_of_ranked_attributes[0].rank_value
 	assert rank_value >= 38.48
 	assert rank_value <= 38.49
@@ -101,9 +101,9 @@ fn test_get_rank_value_for_strings() {
 
 fn test_rank_attribute_sorting() {
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		weight_ranking_flag: true
 	}
-	mut ds := load_file('datasets/developer.tab')
 	mut result := rank_attributes(opts)
 	mut atts := []string{}
 	for att in result.array_of_ranked_attributes {

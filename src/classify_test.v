@@ -3,13 +3,13 @@ module vhammll
 
 fn test_classify_case() {
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		bins:                 [2, 12]
 		exclude_flag:         false
 		command:              'classify'
 		number_of_attributes: [6]
 		weighting_flag:       false
 	}
-	mut ds := load_file('datasets/developer.tab')
 	mut cl := make_classifier(opts)
 	assert classify_case(cl, cl.instances[0], opts).inferred_class == 'm'
 	assert classify_case(cl, cl.instances[0], opts).nearest_neighbors_by_class == [

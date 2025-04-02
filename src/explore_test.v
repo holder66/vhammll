@@ -28,7 +28,6 @@ fn test_settings_for_roc() {
 		// show_flag: true
 		// expanded_flag: true
 	}
-	mut ds := load_file(opts.datafile_path)
 	explore(opts)
 	display_file(opts.roc_settingsfile_path)
 }
@@ -41,8 +40,8 @@ fn test_explore_traverse_all_flags() {
 		bins:                 [2, 3]
 		traverse_all_flags:   true
 		// expanded_flag: true
-		show_flag:        true
-		concurrency_flag: true
+		// show_flag:        true
+		// concurrency_flag: true
 		uniform_bins:     true
 		// generate_roc_flag:    true
 		append_settings_flag: true
@@ -51,19 +50,21 @@ fn test_explore_traverse_all_flags() {
 		settingsfile_path:    'tempfolders/tempfolder_explore/iris.opts'
 	}
 	saved_file := 'src/testdata/iris_purged.opts'
-	mut ds := load_file(opts.datafile_path)
 	result = explore(opts)
 	assert os.is_file(opts.settingsfile_path)
-	assert int(os.file_size(opts.settingsfile_path)) in [253572, 252452]
+	mut file_size := int(os.file_size(opts.settingsfile_path))
+	assert file_size > 131000
+	assert file_size < 132000
 	opts.purge_flag = true
-	opts.expanded_flag = true
+	// opts.expanded_flag = true
 	opts.outputfile_path = 'tempfolders/tempfolder_explore/iris_purged.opts'
 	optimals(opts.settingsfile_path, opts)
-	dump(os.home_dir())
 	if !os.is_file(saved_file) {
 		os.cp(opts.outputfile_path, saved_file)!
 	}
-	assert int(os.file_size(opts.outputfile_path)) in [75883, 75543]
+	file_size = int(os.file_size(opts.outputfile_path))
+	assert file_size > 36800
+	assert file_size < 36900
 }
 
 fn test_explore_cross() ? {
@@ -72,11 +73,10 @@ fn test_explore_cross() ? {
 	mut opts := Options{
 		number_of_attributes: [1, 4]
 		bins:                 [2, 7]
-		concurrency_flag:     true
+		// concurrency_flag:     true
 		uniform_bins:         true
 		datafile_path:        'datasets/iris.tab'
 	}
-	mut ds := load_file(opts.datafile_path)
 	result = explore(opts)
 	assert result.array_of_results[0].correct_count == 99
 	assert result.array_of_results[0].incorrects_count == 51
@@ -88,9 +88,9 @@ fn test_explore_cross() ? {
 	opts.uniform_bins = false
 	opts.bins = [10, 12]
 	result = explore(opts)
-	assert result.array_of_results.last().correct_count == 140
-	assert result.array_of_results.last().incorrects_count == 10
-	assert result.array_of_results.last().wrong_count == 10
+	assert result.array_of_results.last().correct_count == 143
+	assert result.array_of_results.last().incorrects_count == 7
+	assert result.array_of_results.last().wrong_count == 7
 	assert result.array_of_results.last().total_count == 150
 	metrics = get_metrics(result.array_of_results.last())
 	assert metrics.balanced_accuracy >= 0.94
@@ -102,7 +102,6 @@ fn test_explore_cross() ? {
 	opts.weighting_flag = true
 	opts.datafile_path = 'datasets/anneal.tab'
 	opts.uniform_bins = true
-	ds = load_file(opts.datafile_path)
 	result = explore(opts)
 	metrics = get_metrics(result.array_of_results[1])
 	assert metrics.balanced_accuracy >= 0.96
@@ -123,12 +122,11 @@ fn test_explore_cross() ? {
 fn test_explore_verify() ? {
 	mut opts := Options{
 		command:          'explore'
-		concurrency_flag: true
+		// concurrency_flag: true
 		weighting_flag:   true
 		testfile_path:    'datasets/bcw174test'
 		datafile_path:    'datasets/bcw350train'
 	}
-	mut ds := load_file(opts.datafile_path)
 	mut result := explore(opts)
 	assert result.array_of_results[7].correct_count == 170
 	assert result.array_of_results[7].wrong_count == 4

@@ -3,10 +3,10 @@ module vhammll
 
 fn test_analyze_dataset() ? {
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		// show_flag: false
 	}
 	// orange_newer file
-	mut ds := load_file('datasets/developer.tab')
 	mut pr := analyze_dataset(opts)
 	assert pr.datafile_path == 'datasets/developer.tab'
 	assert pr.datafile_type == 'orange_newer'
@@ -21,7 +21,7 @@ fn test_analyze_dataset() ? {
 	assert close(pr.attributes[8].median, 45.0)
 
 	// orange_older file
-	ds = load_file('datasets/iris.tab')
+	opts.datafile_path = 'datasets/iris.tab'
 	pr = analyze_dataset(opts)
 	assert pr.datafile_path == 'datasets/iris.tab'
 	assert pr.datafile_type == 'orange_older'
@@ -39,8 +39,6 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 		// show_flag: false
 		datafile_path: 'datasets/class_missing_developer.tab'
 	}
-	mut ds := Dataset{}
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
 	mut pr := analyze_dataset(opts)
 	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'
@@ -77,7 +75,7 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 
 	// println(pr)
 	// repeat with purging of instances where the class value is missing
-	ds = load_file(opts.datafile_path, class_missing_purge_flag: true)
+	opts.class_missing_purge_flag = true
 	pr = analyze_dataset(opts)
 	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'

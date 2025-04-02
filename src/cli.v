@@ -124,7 +124,7 @@ pub fn cli(cli_options CliOptions) ! {
 			'cross' { cross(opts) }
 			'display' { do_display(opts) }
 			'examples' { examples()! }
-			'explore' { do_explore(opts) }
+			'explore' { explore(opts) }
 			'make' { make(opts) }
 			'optimals' { do_optimals(opts) }
 			'orange' { orange() }
@@ -333,9 +333,9 @@ fn cross(opts Options) {
 }
 
 // do_explore
-fn do_explore(opts Options) {
-	explore(opts)
-}
+// fn do_explore(opts Options) {
+// 	explore(opts)
+// }
 
 fn do_optimals(opts Options) {
 	optimals(opts.datafile_path, opts)

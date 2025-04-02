@@ -29,7 +29,7 @@ fn test_append() ! {
 	mut val_results := ValidateResult{}
 	// create the classifier file and save it
 	opts.outputfile_path = 'tempfolders/tempfolder_append/classifierfile'
-	ds = load_file('datasets/test.tab')
+	opts.datafile_path = 'datasets/test.tab'
 	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_append/instancesfile'
@@ -64,7 +64,7 @@ fn test_append() ! {
 	// test with the soybean files
 	// create the classifier file and save it
 	opts.outputfile_path = 'tempfolders/tempfolder_append/classifierfile'
-	ds = load_file('datasets/soybean-large-train.tab')
+	opts.datafile_path = 'datasets/soybean-large-train.tab'
 	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_append/instancesfile'

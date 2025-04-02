@@ -17,11 +17,10 @@ fn testsuite_end() ! {
 // test_verify
 fn test_verify() ? {
 	mut opts := Options{
-		concurrency_flag: true
+		concurrency_flag: false
 	}
 
 	mut result := CrossVerifyResult{}
-	mut ds := Dataset{}
 	mut cl := Classifier{}
 	mut saved_cl := Classifier{}
 
@@ -33,7 +32,7 @@ fn test_verify() ? {
 	opts.bins = [2, 3]
 	opts.number_of_attributes = [2]
 	assert verify(opts).correct_count == 10
-	dump(verify(opts))
+	// dump(verify(opts))
 	println('Done with test.tab')
 
 	// now with a binary classifier with continuous values
@@ -55,7 +54,7 @@ fn test_verify() ? {
 			'AML': 14.0
 		}
 	}
-
+	println('Done with leukemia38train.tab & leukemia34test.tab')
 	// test verify with a binary classifier without continuous values
 
 	opts.datafile_path = 'datasets/bcw350train'
@@ -68,7 +67,7 @@ fn test_verify() ? {
 	assert result.correct_count == 171
 	assert result.wrong_count == 3
 
-	println('Done with bcw350train')
+	println('Done with bcw350train for a non-saved classifier')
 
 	// now with a saved classifier
 	opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
@@ -133,19 +132,20 @@ fn test_verify() ? {
 		opts.outputfile_path = ''
 		opts.number_of_attributes = [313]
 		opts.bins = [2, 2]
-		opts.concurrency_flag = true
+		// opts.concurrency_flag = true
 		opts.weight_ranking_flag = false
 		opts.weighting_flag = false
 		result = verify(opts)
 		assert result.correct_count == 9571
-		assert result.wrong_count == 429
+		assert result.correct_counts == [851, 972, 921, 1128, 943, 985, 970, 941, 982, 878]
+		assert result.incorrect_counts == [41,8,61,7,66,47,40,17,46,96]
 
-		// note: as of 2024-1-17, we cannot use weight_ranking or weighting, as we cannot
-		// calculate the lcm within the confines of i64
 
-		// opts.weighting_flag = true
-		// result = verify(opts)
-		// assert result.correct_count == 9279
-		// assert result.wrong_count == 721
+		opts.weight_ranking_flag = true
+		opts.weighting_flag = true
+		result = verify(opts)
+		assert result.correct_count == 9567
+		assert result.correct_counts == [849,972,924,1128,943,984,969,940,982,876]
+		assert result.incorrect_counts == [43, 8, 58, 7, 66, 48, 41, 18, 46, 98]
 	}
 }

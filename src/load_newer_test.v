@@ -36,23 +36,10 @@ fn test_combine_raw_and_inferred_types() {
 
 fn test_load_with_purge_instances_for_missing_class_values() {
 	mut ds := load_orange_newer_file('datasets/class_missing_developer.tab')
-	// println(ds)
 	mut dspmc := load_orange_newer_file('datasets/class_missing_developer.tab',
 		class_missing_purge_flag: true
 	)
-	// println(dspmc)
 	assert ds.class_values.len - 2 == dspmc.class_values.len
-	assert analyze_dataset(Options{class_missing_purge_flag: true}).class_counts == {
-		'm': 8
-		'':  1
-		'f': 3
-		'X': 2
-		'?': 1
-	}
-
-	assert analyze_dataset(Options{class_missing_purge_flag: true}).class_counts == {
-		'm': 8
-		'f': 3
-		'X': 2
-	}
+	assert ds.class_counts == {'m': 8, '': 1, 'f': 3, 'X': 2, '?': 1}
+	assert dspmc.class_counts == {'m': 8, 'f': 3, 'X': 2}
 }

@@ -43,7 +43,7 @@ fn test_make_multi_classifiers() {
 			'ALL': 0.0
 			'AML': 14.0
 		}
-	}, 'verify with 1 attribute and binning [5,5]'
+	}, 'test verify with 1 attribute and binning [5,5]'
 	opts.bins = [2, 2]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
@@ -60,7 +60,7 @@ fn test_make_multi_classifiers() {
 			'AML': 9.0
 		}
 	}
-	// verify that the settings file was saved, and
+	// test that the settings file was saved, and
 	// is the right length
 	assert os.file_size(opts.settingsfile_path) >= 929
 	opts.show_attributes_flag = true

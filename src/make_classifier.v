@@ -55,6 +55,7 @@ fn make_classifier_using_ds(ds Dataset, opts Options) Classifier {
 		datafile_path: ds.path
 		LoadOptions:   opts.LoadOptions
 	}
+	// dump(cl)
 	// if binning is specified already in parameters, use it
 	if opts.binning.lower > 0 {
 		cl.binning = opts.binning

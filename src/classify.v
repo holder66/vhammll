@@ -6,7 +6,7 @@ module vhammll
 // to simplify the documentation, we will change "instance to be classified"
 // to "case", and leave "instance" as referring to the classifier data.
 
-// classify_instance takes a trained classifier and a case to be
+// classify_case takes a trained classifier and a case to be
 // classified; it returns the inferred class for the case and the
 // counts of nearest neighbors to all the classes.
 // The classification algorithm calculates Hamming distances between
@@ -65,6 +65,7 @@ fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
 		if !single_array_maximum(radius_row) {
 			continue
 		}
+		// dump(radius_row)
 		result.inferred_class = cl.classes[idx_max(radius_row)]
 		// result.index = index
 		result.nearest_neighbors_by_class = radius_row

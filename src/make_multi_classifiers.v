@@ -10,11 +10,12 @@ fn make_multi_classifiers(ds Dataset, settings_list []ClassifierSettings, classi
 	mut cll := []Classifier{}
 	mut idx := classifier_indices.clone()
 	if idx.len == 0 {
-		idx = []int{len: settings_list.len, init: index}
+		idx = settings_list.map(it.classifier_id)
 	}
 	for i in idx {
 		opts := Options{
 			Parameters: settings_list.filter(it.classifier_id == i)[0].Parameters
+			datafile_path: settings_list.filter(it.classifier_id == i)[0].datafile_path
 		}
 		cl := make_classifier_using_ds(ds, opts)
 		cll << cl

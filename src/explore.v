@@ -44,6 +44,10 @@ pub fn explore(opts Options) ExploreResult {
 		// in a series of nested loops, repeatedly execute the explore
 		// function over both true and false settings for the various
 		// flags in opts.Parameters
+
+		// determine if using the -bp flag is worthwhile
+		balance_prevalences_worthwhile_flag := evaluate_class_prevalence_imbalance(opts)
+
 		mut af_opts := opts
 		mut af_result := ExploreResult{}
 		ft := [false, true]
@@ -56,8 +60,10 @@ pub fn explore(opts Options) ExploreResult {
 					for p in ft {
 						af_opts.purge_flag = p
 						for bp in ft {
+							if bp && !balance_prevalences_worthwhile_flag {break}
 							af_opts.balance_prevalences_flag = bp
-							af_result = run_explore(ds, af_opts)
+
+							af_result = run_explore(af_opts)
 							if af_opts.generate_roc_flag {
 								roc_settings = update_settings_for_roc(roc_settings, af_result)
 							}
@@ -77,8 +83,9 @@ pub fn explore(opts Options) ExploreResult {
 		}
 		return af_result // returns just the last result for multiple explores
 	}
-	return run_explore(ds, opts)
+	return run_explore(opts)
 }
+
 
 fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) SettingsForROC {
 	mut updated := previous
@@ -112,7 +119,8 @@ fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
 	return cleaned
 }
 
-fn run_explore(ds Dataset, opts Options) ExploreResult {
+fn run_explore(opts Options) ExploreResult {
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		LoadOptions:     ds.LoadOptions

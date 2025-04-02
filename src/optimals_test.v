@@ -46,8 +46,8 @@ fn test_optimals_with_purge() {
 	println(r_b('\nPurge duplicate settings, and then print out the abbreviated and the expanded optimals results:'))
 	opts.purge_flag = true
 	result_c := optimals(opts.settingsfile_path, opts)
-	assert result_c.mcc_max_classifiers == [0, 5, 10, 15, 20, 25, 40, 45, 50, 55, 60, 65, 80, 85,
-		90, 95, 100, 105, 120, 125, 130, 135, 140, 145]
+	assert result_c.mcc_max_classifiers == [0, 10, 20, 40, 50, 60, 80, 90, 100, 120, 130, 140]
+	assert result_c.receiver_operating_characteristic_settings == [34, 0, 1, 3]
 	println(r_b('\nSave the purged file, then load it and display:'))
 	opts.show_flag = false
 	opts.expanded_flag = false

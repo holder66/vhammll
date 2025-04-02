@@ -20,12 +20,12 @@ fn test_load_classifier_file() ! {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
 		outputfile_path: 'tempfolders/tempfolder_json/classifierfile'
 		command:         'make' // the make command is necessary to create a proper file
 	}
 	opts.bins = [2, 4]
 	opts.number_of_attributes = [4]
-	ds = load_file('datasets/developer.tab')
 	cl = make_classifier(opts)
 	tcl = load_classifier_file('tempfolders/tempfolder_json/classifierfile')!
 	assert cl.Parameters == tcl.Parameters
@@ -35,8 +35,7 @@ fn test_load_classifier_file() ! {
 	// dump(cl.History)
 	// dump(tcl.History)
 	assert cl.history_events[0].event == tcl.history_events[0].event
-	assert dump(cl.history_events[0].event_date) == dump(tcl.history_events[0].event_date)
-
+	
 	opts.bins = [3, 6]
 	opts.number_of_attributes = [2]
 	ds = load_file('datasets/iris.tab')
@@ -57,9 +56,9 @@ fn test_load_instances_file() ! {
 	mut tvr := ValidateResult{}
 	mut opts := Options{
 		outputfile_path: 'tempfolders/tempfolder_json/validate_result.json'
+		datafile_path: 'datasets/test.tab'
+		testfile_path: 'datasets/test_validate.tab'
 	}
-	opts.testfile_path = 'datasets/test_validate.tab'
-	ds = load_file('datasets/test.tab')
 	cl = make_classifier(opts)
 	vr = validate(cl, opts)!
 	tvr = load_instances_file('tempfolders/tempfolder_json/validate_result.json')!

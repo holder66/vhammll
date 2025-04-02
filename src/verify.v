@@ -93,7 +93,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
-		cl = make_classifier(opts)
+		cl = make_classifier_using_ds(ds, opts)
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}

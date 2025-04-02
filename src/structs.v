@@ -201,6 +201,7 @@ pub mut:
 	positive_class           string
 	class_missing_purge_flag bool
 	balance_prevalences_flag bool
+	balance_prevalences_threshold f64 = 0.9
 }
 
 // Options struct: can be used as the last parameter in a
@@ -219,7 +220,7 @@ pub mut:
 	explore_rank                        []int
 	partition_sizes                     []int
 	concurrency_flag                    bool
-	datafile_path                       string = 'datasets/developer.tab'
+	datafile_path                       string
 	traverse_all_flags                  bool
 	testfile_path                       string
 	outputfile_path                     string

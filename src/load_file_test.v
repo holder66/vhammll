@@ -14,6 +14,30 @@ fn testsuite_end() ! {
 	os.rmdir_all('tempfolders/tempfolder_load_file')!
 }
 
+fn test_evaluate_class_prevalence_imbalance() {
+	mut opts := Options{
+		datafile_path: 'datasets/developer.tab'
+	}
+	assert evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 0.25
+	assert evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 0.2
+	assert !evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 0.0
+	assert !evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 1.0
+	assert evaluate_class_prevalence_imbalance(opts)
+	opts.datafile_path = 'datasets/iris.tab'
+	opts.balance_prevalences_threshold = Options{}.balance_prevalences_threshold
+	assert !evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 0.2
+	assert !evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 0.0
+	assert !evaluate_class_prevalence_imbalance(opts)
+	opts.balance_prevalences_threshold = 1.0
+	assert evaluate_class_prevalence_imbalance(opts)
+}
+
 fn test_file_type() {
 	assert file_type('datasets/developer.tab') == 'orange_newer'
 	assert file_type('datasets/iris.tab') == 'orange_older'

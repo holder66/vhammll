@@ -51,6 +51,16 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 	return ds
 }
 
+// evaluate_class_prevalence_imbalance returns true if the ratio between the
+// minimum and maximum class counts for the dataset specified by `datafile_path`
+// in Options, exceeds the threshold specified by Options.balance_prevalence_threshold.
+fn evaluate_class_prevalence_imbalance(opts Options) bool {
+	ds := load_file(opts.datafile_path)
+	mut class_counts_array := ds.class_counts.values()
+	if f64(array_min(class_counts_array))/array_max(class_counts_array) <= opts.balance_prevalences_threshold { return true }
+	return false
+}
+
 // file_type returns a string identifying how a dataset is structured or
 // formatted, eg 'orange_newer', 'orange_older', 'arff', or 'csv'.
 // On the assumption that an 'orange_older' file will always identify
