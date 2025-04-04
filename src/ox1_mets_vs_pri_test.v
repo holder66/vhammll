@@ -19,15 +19,15 @@ fn testsuite_end() ? {
 fn test_explore_ox_mets_to_create_settings_file() {
 	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 	home_dir := os.home_dir()
-	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25.opts'
-	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-6a2-25purged.opts'
-	saved_file := 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25.opts'
+	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25purged.opts'
+	saved_file := 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
 	mut opts := Options{
 		command: 'explore'
 		// concurrency_flag:     true
 		datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
 		number_of_attributes: [2, 25]
-		bins:                 [2, 6]
+		bins:                 [2, 4]
 		append_settings_flag: true
 		traverse_all_flags:   true
 		settingsfile_path:    temp_file
@@ -55,7 +55,7 @@ fn test_optimal_settings() {
 	mut opts := Options{
 		command:                             'cross'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
 		// verbose_flag:         true
 		positive_class: 'Met'
 		multiple_flag:  true
@@ -87,7 +87,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 	mut opts := Options{
 		command:                             'cross'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
 		positive_class:                      'Met'
 		multiple_flag:                       true
 		traverse_all_flags:                  true
@@ -120,7 +120,7 @@ fn test_ox_mets_multi_verify() {
 		command:                             'verify'
 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-test.tab')
-		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-6a2-25purged.opts'
+		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
 		positive_class:                      'Met'
 		multiple_flag:                       true
 		show_attributes_flag:                true
