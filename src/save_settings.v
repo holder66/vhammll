@@ -48,6 +48,7 @@ fn append_explore_settings_to_file(results ExploreResult, explore_analytics map[
 				Parameters:    results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
 				Metrics:       results.array_of_results[a.idx].Metrics
+				LoadOptions:   results.array_of_results[a.idx].LoadOptions
 				datafile_path: os.abs_path(opts.datafile_path)
 			}
 			append_json_file(u, opts.settingsfile_path)

@@ -138,14 +138,13 @@ fn test_verify() ? {
 		result = verify(opts)
 		assert result.correct_count == 9571
 		assert result.correct_counts == [851, 972, 921, 1128, 943, 985, 970, 941, 982, 878]
-		assert result.incorrect_counts == [41,8,61,7,66,47,40,17,46,96]
-
+		assert result.incorrect_counts == [41, 8, 61, 7, 66, 47, 40, 17, 46, 96]
 
 		opts.weight_ranking_flag = true
 		opts.weighting_flag = true
 		result = verify(opts)
 		assert result.correct_count == 9567
-		assert result.correct_counts == [849,972,924,1128,943,984,969,940,982,876]
+		assert result.correct_counts == [849, 972, 924, 1128, 943, 984, 969, 940, 982, 876]
 		assert result.incorrect_counts == [43, 8, 58, 7, 66, 48, 41, 18, 46, 98]
 	}
 }

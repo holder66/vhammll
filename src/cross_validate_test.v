@@ -35,7 +35,7 @@ fn test_cross_validate() ? {
 
 	result = cross_validate(opts)
 	assert result.total_count == 13
-	assert result.correct_counts == [8,2,2]
+	assert result.correct_counts == [8, 2, 2]
 	println(r_b('\nDone with developer.tab no weighting'))
 	opts.concurrency_flag = false
 
@@ -46,7 +46,7 @@ fn test_cross_validate() ? {
 	opts.weighting_flag = true
 
 	result = cross_validate(opts)
-	assert result.correct_counts == [8,3,0]
+	assert result.correct_counts == [8, 3, 0]
 
 	println(r_b('\nDone with developer.tab with weighting'))
 

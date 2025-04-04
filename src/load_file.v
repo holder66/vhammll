@@ -57,7 +57,9 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 fn evaluate_class_prevalence_imbalance(opts Options) bool {
 	ds := load_file(opts.datafile_path)
 	mut class_counts_array := ds.class_counts.values()
-	if f64(array_min(class_counts_array))/array_max(class_counts_array) <= opts.balance_prevalences_threshold { return true }
+	if f64(array_min(class_counts_array)) / array_max(class_counts_array) <= opts.balance_prevalences_threshold {
+		return true
+	}
 	return false
 }
 

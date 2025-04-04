@@ -19,7 +19,7 @@ fn test_sum_along_row_weighted() {
 
 fn test_rank_attributes() {
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:       'datasets/developer.tab'
 		bins:                [3, 3]
 		exclude_flag:        true
 		weight_ranking_flag: true
@@ -101,7 +101,7 @@ fn test_get_rank_value_for_strings() {
 
 fn test_rank_attribute_sorting() {
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:       'datasets/developer.tab'
 		weight_ranking_flag: true
 	}
 	mut result := rank_attributes(opts)

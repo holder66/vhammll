@@ -97,7 +97,7 @@ fn test_show_append() ? {
 fn test_show_classifier() {
 	println(r_b('test_show_classifier prints out classifiers for iris.tab and for developer.tab'))
 	mut opts := Options{
-		datafile_path: 'datasets/iris.tab'
+		datafile_path:        'datasets/iris.tab'
 		command:              'make'
 		bins:                 [3, 10]
 		number_of_attributes: [2]
@@ -126,7 +126,7 @@ fn test_show_crossvalidation() ? {
 	println(r_b('test_show_crossvalidation prints out cross-validation results for developer.tab, breast-cancer-wisconsin-disc.tab, and iris.tab'))
 	mut cvr := CrossVerifyResult{}
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:    'datasets/developer.tab'
 		concurrency_flag: true
 		command:          'cross'
 		show_flag:        true
@@ -209,15 +209,15 @@ fn test_show_explore_verify() ? {
 fn test_show_rank_attributes() {
 	println(r_b('\n\ntest_show_rank_attributes prints out attribute rankings for developer.tab, iris.tab, and anneal.tab (without and with missing values)'))
 	mut opts := Options{
-		exclude_flag: true
-		command:      'rank'
+		exclude_flag:  true
+		command:       'rank'
 		datafile_path: 'datasets/developer.tab'
 	}
 	mut rr := RankingResult{}
 	opts.show_flag = true
 	rr = rank_attributes(opts)
 	opts.bins = [3, 3]
-	opts.datafile_path ='datasets/iris.tab'
+	opts.datafile_path = 'datasets/iris.tab'
 	rr = rank_attributes(opts)
 	opts.datafile_path = 'datasets/class_missing_iris.tab'
 	opts.class_missing_purge_flag = true

@@ -40,6 +40,16 @@ fn test_load_with_purge_instances_for_missing_class_values() {
 		class_missing_purge_flag: true
 	)
 	assert ds.class_values.len - 2 == dspmc.class_values.len
-	assert ds.class_counts == {'m': 8, '': 1, 'f': 3, 'X': 2, '?': 1}
-	assert dspmc.class_counts == {'m': 8, 'f': 3, 'X': 2}
+	assert ds.class_counts == {
+		'm': 8
+		'':  1
+		'f': 3
+		'X': 2
+		'?': 1
+	}
+	assert dspmc.class_counts == {
+		'm': 8
+		'f': 3
+		'X': 2
+	}
 }

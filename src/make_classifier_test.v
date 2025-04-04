@@ -29,7 +29,7 @@ fn test_max_ham_dist() {
 
 fn test_make_classifier() ? {
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:        'datasets/developer.tab'
 		bins:                 [2, 12]
 		exclude_flag:         false
 		command:              'make'
@@ -102,7 +102,7 @@ fn test_save_classifier() ? {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:        'datasets/developer.tab'
 		bins:                 [2, 12]
 		exclude_flag:         false
 		command:              'make'

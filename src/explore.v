@@ -27,19 +27,19 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(opts Options) ExploreResult {
-	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// instantiate a struct for SettingsForROC
-	mut roc_master_class := opts.positive_class
-	if opts.positive_class == '' {
-		// look for the class with the fewest instances
-		roc_master_class = get_map_key_for_min_value(ds.class_counts)
-	}
+	// mut roc_master_class := opts.positive_class
+	// if opts.positive_class == '' {
+	// 	// look for the class with the fewest instances
+	// 	roc_master_class = get_map_key_for_min_value(ds.class_counts)
+	// }
 	// master_class_index := ds.classes.index(get_map_key_for_min_value(ds.class_counts))
-	mut roc_settings := SettingsForROC{
-		master_class_index:      ds.classes.index(roc_master_class)
-		classifiers_for_roc:     []ClassifierSettings{len: ds.class_counts[roc_master_class] + 1}
-		array_of_correct_counts: [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
-	}
+	// mut roc_settings := SettingsForROC{
+	// 	master_class_index:      ds.classes.index(roc_master_class)
+	// 	classifiers_for_roc:     []ClassifierSettings{len: ds.class_counts[roc_master_class] + 1}
+	// 	array_of_correct_counts: [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
+	// }
 	if opts.traverse_all_flags {
 		// in a series of nested loops, repeatedly execute the explore
 		// function over both true and false settings for the various
@@ -60,24 +60,13 @@ pub fn explore(opts Options) ExploreResult {
 					for p in ft {
 						af_opts.purge_flag = p
 						for bp in ft {
-							if bp && !balance_prevalences_worthwhile_flag {break}
-							af_opts.balance_prevalences_flag = bp
-
-							af_result = run_explore(af_opts)
-							if af_opts.generate_roc_flag {
-								roc_settings = update_settings_for_roc(roc_settings, af_result)
+							if bp && !balance_prevalences_worthwhile_flag {
+								break
 							}
+							af_opts.balance_prevalences_flag = bp
+							af_result = run_explore(af_opts)
 						}
 					}
-				}
-			}
-		}
-		if af_opts.generate_roc_flag {
-			for roc in cleanup_roc_settings(roc_settings).classifiers_for_roc {
-				println('${roc.t_p:5}   ${roc.t_n:5}   ${roc.sens:-5.4f}   ${1 - roc.spec:-5.4f}')
-
-				if af_opts.roc_settingsfile_path != '' {
-					append_roc_settings_to_file(roc, af_opts.roc_settingsfile_path)
 				}
 			}
 		}
@@ -86,44 +75,43 @@ pub fn explore(opts Options) ExploreResult {
 	return run_explore(opts)
 }
 
+// fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) SettingsForROC {
+// 	mut updated := previous
+// 	for i, stored_counts in previous.array_of_correct_counts {
+// 		for j, new_counts in af_result.array_of_results.map(it.correct_counts) {
+// 			if array_sum(stored_counts) < array_sum(new_counts)
+// 				&& new_counts[previous.master_class_index] == i {
+// 				// dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
+// 				updated.array_of_correct_counts[i] = new_counts
+// 				updated.classifiers_for_roc[i] = ClassifierSettings{
+// 					Parameters:    af_result.array_of_results[j].Parameters
+// 					Metrics:       af_result.array_of_results[j].Metrics
+// 					BinaryMetrics: af_result.array_of_results[j].BinaryMetrics
+// 					LoadOptions:   af_result.array_of_results[j].LoadOptions
+// 				}
+// 				break
+// 			}
+// 		}
+// 	}
+// 	return updated
+// }
 
-fn update_settings_for_roc(previous SettingsForROC, af_result ExploreResult) SettingsForROC {
-	mut updated := previous
-	for i, stored_counts in previous.array_of_correct_counts {
-		for j, new_counts in af_result.array_of_results.map(it.correct_counts) {
-			if array_sum(stored_counts) < array_sum(new_counts)
-				&& new_counts[previous.master_class_index] == i {
-				// dump('${i}  ${stored_counts}       ${j}  ${new_counts}')
-				updated.array_of_correct_counts[i] = new_counts
-				updated.classifiers_for_roc[i] = ClassifierSettings{
-					Parameters:    af_result.array_of_results[j].Parameters
-					Metrics:       af_result.array_of_results[j].Metrics
-					BinaryMetrics: af_result.array_of_results[j].BinaryMetrics
-					LoadOptions:   af_result.array_of_results[j].LoadOptions
-				}
-				break
-			}
-		}
-	}
-	return updated
-}
-
-fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
-	// dump(starting)
-	mut cleaned := SettingsForROC{
-		master_class_index:      starting.master_class_index
-		array_of_correct_counts: starting.array_of_correct_counts.filter(array_sum(it) > 0)
-		classifiers_for_roc:     purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
-	}
-	// dump(cleaned)
-	return cleaned
-}
+// fn cleanup_roc_settings(starting SettingsForROC) SettingsForROC {
+// 	// dump(starting)
+// 	mut cleaned := SettingsForROC{
+// 		master_class_index:      starting.master_class_index
+// 		array_of_correct_counts: starting.array_of_correct_counts.filter(array_sum(it) > 0)
+// 		classifiers_for_roc:     purge_array(starting.classifiers_for_roc, idxs_zero(starting.array_of_correct_counts.map(array_sum(it))))
+// 	}
+// 	// dump(cleaned)
+// 	return cleaned
+// }
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut ex_opts := opts
 	mut results := ExploreResult{
-		LoadOptions:     ds.LoadOptions
+		LoadOptions:     opts.LoadOptions
 		path:            opts.datafile_path
 		testfile_path:   opts.testfile_path
 		Parameters:      opts.Parameters

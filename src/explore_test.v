@@ -42,7 +42,7 @@ fn test_explore_traverse_all_flags() {
 		// expanded_flag: true
 		// show_flag:        true
 		// concurrency_flag: true
-		uniform_bins:     true
+		uniform_bins: true
 		// generate_roc_flag:    true
 		append_settings_flag: true
 		command:              'explore'
@@ -74,8 +74,8 @@ fn test_explore_cross() ? {
 		number_of_attributes: [1, 4]
 		bins:                 [2, 7]
 		// concurrency_flag:     true
-		uniform_bins:         true
-		datafile_path:        'datasets/iris.tab'
+		uniform_bins:  true
+		datafile_path: 'datasets/iris.tab'
 	}
 	result = explore(opts)
 	assert result.array_of_results[0].correct_count == 99
@@ -121,11 +121,11 @@ fn test_explore_cross() ? {
 
 fn test_explore_verify() ? {
 	mut opts := Options{
-		command:          'explore'
+		command: 'explore'
 		// concurrency_flag: true
-		weighting_flag:   true
-		testfile_path:    'datasets/bcw174test'
-		datafile_path:    'datasets/bcw350train'
+		weighting_flag: true
+		testfile_path:  'datasets/bcw174test'
+		datafile_path:  'datasets/bcw350train'
 	}
 	mut result := explore(opts)
 	assert result.array_of_results[7].correct_count == 170

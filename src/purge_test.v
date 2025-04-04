@@ -4,7 +4,7 @@ module vhammll
 // test_purge
 fn test_purge() ? {
 	mut opts := Options{
-		datafile_path: 'datasets/iris.tab'
+		datafile_path:        'datasets/iris.tab'
 		bins:                 [3, 3]
 		exclude_flag:         false
 		command:              'make'
@@ -17,7 +17,7 @@ fn test_purge() ? {
 	assert pcl.instances.len == 12
 
 	// now for an orange_newer file
-opts.datafile_path = 'datasets/class_missing_developer.tab'
+	opts.datafile_path = 'datasets/class_missing_developer.tab'
 	cl = make_classifier(opts)
 	assert cl.instances.len == 15
 	pcl = purge(cl)

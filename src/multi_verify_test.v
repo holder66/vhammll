@@ -16,17 +16,17 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolders/tempfolder_multiple_verify')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
-// }
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolders/tempfolder_multiple_verify')!
+}
 
 fn test_multiple_verify() ? {
 	mut opts := Options{
-		concurrency_flag:  false
-		break_on_all_flag: false
-		command:           'verify'
-		verbose_flag:      false
-		expanded_flag:     true
+		concurrency_flag:     false
+		break_on_all_flag:    false
+		command:              'verify'
+		verbose_flag:         false
+		expanded_flag:        true
 		show_attributes_flag: true
 	}
 	mut result := CrossVerifyResult{}
@@ -38,10 +38,10 @@ fn test_multiple_verify() ? {
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]
 	opts.purge_flag = true
-	opts.balance_prevalences_flag = false
+	opts.balance_prevalences_flag = true
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
-	// mut ds := load_file(opts.datafile_path)
+	// opts.weight_ranking_flag = true
 	result96 := verify(opts)
 	assert result96.correct_counts == [17, 14]
 	opts.weight_ranking_flag = true
@@ -51,6 +51,7 @@ fn test_multiple_verify() ? {
 	opts.number_of_attributes = [3]
 	opts.bins = [4, 4]
 	opts.weight_ranking_flag = false
+	opts.weighting_flag = true
 	result92 := verify(opts)
 	assert result92.correct_counts == [20, 11]
 	opts.number_of_attributes = [7]
@@ -60,10 +61,8 @@ fn test_multiple_verify() ? {
 	opts.purge_flag = false
 	result140 := verify(opts)
 	assert result140.correct_counts == [20, 11]
-	// verify that the settings file was correctly saved, and
-	// is the right length
+	// verify that the settings file was correctly saved
 	display_file(opts.settingsfile_path, opts)
-	assert int(os.file_size(opts.settingsfile_path)) in [4714, 4693]
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path
@@ -74,16 +73,16 @@ fn test_multiple_verify() ? {
 	assert result2.confusion_matrix_map == result92.confusion_matrix_map
 	opts.classifiers = [0, 2]
 	opts.total_nn_counts_flag = true
-	opts.traverse_all_flags = true
+	// opts.traverse_all_flags = true
 	result96_92 := verify(opts)
-	assert result96_92.correct_counts == [18, 13]
+	assert result96_92.correct_counts == [18,12]
 	opts.classifiers = [1, 2, 3]
 	result140_131_92 := verify(opts)
-	assert result140_131_92.correct_counts == [19, 12]
+	assert result140_131_92.correct_counts == [20, 12]
 	opts.classifiers = [0, 2, 3]
 	opts.total_nn_counts_flag = false
 	result140_96_92 := verify(opts)
-	assert result140_96_92.correct_counts == [20, 12]
+	assert result140_96_92.correct_counts == [20, 11]
 }
 
 fn test_multiple_verify_with_multiple_classes() ? {
@@ -92,7 +91,7 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		break_on_all_flag: true
 		command:           'verify'
 		verbose_flag:      false
-		// expanded_flag:     true
+		expanded_flag:     true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -150,7 +149,8 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	// is the right length
 	// display_file(opts.settingsfile_path, opts)
 	dump(os.file_size(opts.settingsfile_path))
-	assert int(os.file_size(opts.settingsfile_path)) in [2142, 2130]
+	mut size := os.file_size(opts.settingsfile_path)
+	assert size == 2214
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path

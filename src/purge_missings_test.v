@@ -19,7 +19,7 @@ fn test_purge_instances_for_missing_class_values() {
 		command:              'make'
 		number_of_attributes: [2]
 		weighting_flag:       false
-		datafile_path: 'datasets/class_missing_iris.tab'
+		datafile_path:        'datasets/class_missing_iris.tab'
 	}
 	mut cl := make_classifier(opts)
 	assert cl.instances.len == 150

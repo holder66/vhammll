@@ -164,18 +164,18 @@ pub mut:
 
 struct Parameters {
 pub mut:
-	binning                  Binning
-	number_of_attributes     []int = [0]
-	uniform_bins             bool
-	exclude_flag             bool
-	purge_flag               bool
-	weighting_flag           bool
-	weight_ranking_flag      bool
-	one_vs_rest_flag         bool
-	multiple_flag            bool
-	folds                    int
-	repetitions              int
-	random_pick              bool
+	binning              Binning
+	number_of_attributes []int = [0]
+	uniform_bins         bool
+	exclude_flag         bool
+	purge_flag           bool
+	weighting_flag       bool
+	weight_ranking_flag  bool
+	one_vs_rest_flag     bool
+	multiple_flag        bool
+	folds                int
+	repetitions          int
+	random_pick          bool
 	// balance_prevalences_flag bool
 	maximum_hamming_distance int
 }
@@ -198,9 +198,9 @@ pub mut:
 pub struct LoadOptions {
 	DefaultVals
 pub mut:
-	positive_class           string
-	class_missing_purge_flag bool
-	balance_prevalences_flag bool
+	positive_class                string
+	class_missing_purge_flag      bool
+	balance_prevalences_flag      bool
 	balance_prevalences_threshold f64 = 0.9
 }
 

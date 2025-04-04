@@ -32,7 +32,7 @@ fn test_display_multiple_classifier_settings() ? {
 fn test_display_saved_classifier() ? {
 	// make a classifier, show it, then save it, then display the saved classifier file
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path:        'datasets/developer.tab'
 		command:              'make'
 		bins:                 [3, 10]
 		number_of_attributes: [8]
@@ -47,7 +47,7 @@ fn test_display_saved_classifier() ? {
 fn test_display_saved_analyze_result() ? {
 	// analyze a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
-		datafile_path: 'datasets/UCI/anneal.arff'
+		datafile_path:   'datasets/UCI/anneal.arff'
 		command:         'analyze'
 		outputfile_path: 'tempfolders/tempfolder_display/analyze_result'
 		show_flag:       true
@@ -60,7 +60,7 @@ fn test_display_saved_analyze_result() ? {
 fn test_display_saved_ranking_result() ? {
 	// rank a dataset file and show the result; save the result, then display the saved file
 	mut opts := Options{
-		datafile_path: 'datasets/UCI/anneal.arff'
+		datafile_path:   'datasets/UCI/anneal.arff'
 		command:         'rank'
 		outputfile_path: 'tempfolders/tempfolder_display/rank_result'
 		show_flag:       true
@@ -132,7 +132,7 @@ fn test_display_cross_result() ? {
 	// cross-validate a dataset file and display the result; save the result, then display
 	// the saved result file
 	mut opts := Options{
-		datafile_path: 'datasets/UCI/segment.arff'
+		datafile_path:        'datasets/UCI/segment.arff'
 		command:              'cross'
 		number_of_attributes: [4]
 		bins:                 [12]

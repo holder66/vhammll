@@ -52,7 +52,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	verify_result.classifiers = []int{}
 	for settings in mult_opts.multiple_classifier_settings {
 		mut local_opts := Options{
-			Parameters: settings.Parameters
+			Parameters:    settings.Parameters
 			datafile_path: settings.datafile_path
 		}
 		verify_result.classifiers << settings.classifier_id
