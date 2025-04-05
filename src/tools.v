@@ -117,6 +117,24 @@ pub fn transpose[T](matrix [][]T) [][]T {
 	return matrix_t
 }
 
+// element_counts returns a map with the counts for each element in an array of strings
+// fn element_counts(array []string) map[string]int {
+// 	mut counts := map[string]int{}
+// 	for word in array {
+// 		counts[word]++
+// 	}
+// 	return counts
+// }
+
+// element_counts returns a map with the counts for each element in an array of integers
+// fn element_counts(array []int) map[int]int {
+// 	mut counts := map[int]int{}
+// 	for word in array {
+// 		counts[word]++
+// 	}
+// 	return counts
+// }
+
 fn element_counts[T](array []T) map[T]int {
 	mut counts := map[T]int{}
 	for element in array {
@@ -228,7 +246,7 @@ fn hamming_distance(a []u32, b []u32) int {
 }
 
 // Euclidean algorithm to calculate gcd, used for getting lcm
-fn gcd_i64(a i64, b i64) i64 {
+fn gcd(a i64, b i64) i64 {
 	if b == 0 || a == b {
 		return a
 	}
@@ -243,7 +261,7 @@ fn gcd_i64(a i64, b i64) i64 {
 }
 
 // Euclidean algorithm to calculate gcd, using Uint128
-fn gcd(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
+fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 	mut zero := unsigned.Uint128{}
 	if a == b || b == zero {
 		return zero
@@ -260,12 +278,12 @@ fn gcd(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 
 // least common multiple, using gcd; returns 0 if the lcd
 // cannot be calculated because of overflow. This version uses Uint128
-fn lcm(arr []int) unsigned.Uint128 {
+fn lcm_u128(arr []int) unsigned.Uint128 {
 	mut res := unsigned.Uint128{1, 0}
 	for a in arr {
 		au128 := unsigned.Uint128{u64(a), 0}
 		// println(au128)
-		res = res * au128 / gcd(res, au128)
+		res = res * au128 / gcd_u128(res, au128)
 	}
 	// test for overflow
 	for a in arr {
@@ -278,10 +296,10 @@ fn lcm(arr []int) unsigned.Uint128 {
 
 // least common multiple, using gcd; returns 0 if the lcd
 // cannot be calculated because of overflow
-fn lcm_i64(arr []int) i64 {
+fn lcm(arr []int) i64 {
 	mut res := i64(1)
 	for a in arr {
-		res *= i64(a) / gcd_i64(res, i64(a))
+		res *= i64(a) / gcd(res, i64(a))
 	}
 	// since for large or many arguments, overflow may occur, test
 	for a in arr {
@@ -291,6 +309,35 @@ fn lcm_i64(arr []int) i64 {
 	}
 	return res
 }
+
+// // lcm returns the least common multiple of an array of integers
+// fn lcm(arr []int) i64 {
+// 	mut numbers := arr.clone()
+// 	mut res := i64(1)
+// 	mut x := 2
+// 	mut indexes := []int{}
+// 	for x <= array_max(numbers) {
+// 		indexes = []
+// 		for i, val in numbers {
+// 			if val % x == 0 {
+// 				indexes << i
+// 			}
+// 		}
+// 		if indexes.len >= 2 {
+// 			for index in indexes {
+// 				numbers[index] = numbers[index] / x
+// 			}
+// 			res *= x
+// 		} else {
+// 			x += 1
+// 		}
+// 	}
+// 	for val in numbers {
+// 		res *= val
+// 	}
+// 	// println('res in lcm: $res')
+// 	return res
+// }
 
 // the five functions below were suggested by @spytheman as a way to implement
 // NaN for both f64 and f32 types.

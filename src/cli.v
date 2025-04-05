@@ -105,15 +105,15 @@ pub fn cli(cli_options CliOptions) ! {
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
-	mut opts := get_options(match true {
-		cli_options.astr != '' { cli_options.astr.split(' ') }
-		cli_options.args != [] { cli_options.args }
-		else { os.args[1..] }
-	})
-	// opts.missings = cli_options.missings
-	// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
-	// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
-
+	mut opts := get_options( match true {
+		cli_options.astr != '' {cli_options.astr.split(' ')}
+		cli_options.args != [] {cli_options.args}
+		else {os.args[1..]}
+		})
+		// opts.missings = cli_options.missings
+		// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
+		// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
+	
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
