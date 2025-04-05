@@ -195,7 +195,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// assert verify_result.correct_counts.len == verify_result.classes.len
 
 	// verify_result.command = 'verify'
-	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command != 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_verify(verify_result, opts)
 	}
 	if opts.outputfile_path != '' {

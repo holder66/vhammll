@@ -12,6 +12,7 @@ pub struct CliOptions {
 	LoadOptions
 pub mut:
 	args []string
+	astr string
 }
 
 // cli() is the command line interface app for the holder66.vhamml ML library.
@@ -104,15 +105,15 @@ pub fn cli(cli_options CliOptions) ! {
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
-	mut opts := Options{}
-	if cli_options.args == [] {
-		opts = get_options(os.args[1..])
-	} else {
-		opts = get_options(cli_options.args)
-		opts.missings = cli_options.missings
-		opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
+	mut opts := get_options( match true {
+		cli_options.astr != '' {cli_options.astr.split(' ')}
+		cli_options.args != [] {cli_options.args}
+		else {os.args[1..]}
+		})
+		// opts.missings = cli_options.missings
+		// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
 		// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
-	}
+	
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
@@ -142,6 +143,12 @@ pub fn cli(cli_options CliOptions) ! {
 		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
 }
 
+// opts takes a string of command line arguments and returns an Options struct
+// corresponding to the command line arguments.
+pub fn opts(s string) Options {
+	return get_options(s.split(' '))
+}
+
 // get_options fills an Options struct with values from the command line
 fn get_options(args []string) Options {
 	mut opts := Options{
@@ -153,8 +160,10 @@ fn get_options(args []string) Options {
 	}
 	opts.non_options = oscmdline.only_non_options(args)
 	if opts.non_options.len > 0 {
-		opts.command = opts.non_options[0]
 		opts.datafile_path = opts.non_options.last()
+		if opts.non_options[0] == args[0] {
+			opts.command = opts.non_options[0]
+		}
 	}
 
 	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
@@ -356,7 +365,7 @@ fn rank(opts Options) {
 	} else {
 		ra = rank_attributes(opts)
 	}
-	if opts.expanded_flag {
+	if opts.verbose_flag {
 		println(ra)
 	}
 }

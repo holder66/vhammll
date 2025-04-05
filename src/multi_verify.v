@@ -111,7 +111,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	if verify_result.pos_neg_classes.len == 2 {
 		verify_result.BinaryMetrics = get_binary_stats(verify_result)
 	}
-	if opts.command == 'verify' && (opts.show_flag || opts.expanded_flag) {
+	if opts.command != 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_verify(verify_result, mult_opts)
 	}
 	if opts.outputfile_path != '' {
