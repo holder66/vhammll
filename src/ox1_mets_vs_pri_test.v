@@ -59,6 +59,7 @@ fn test_binning_for_overfitting() {
 fn test_optimal_settings() {
 	// do_optimals(opts('-g -e -b 2,7 -pos Met src/testdata/ox1metstrainb2-4a2-25purged.opts'))
 }
+
 // 	home_dir := os.home_dir()
 // 	mut opts := Options{
 // 		command:                             'cross'
@@ -123,32 +124,32 @@ fn test_ox_mets_multi_verify() {
 	// result = verify(opts('-e -pos Met -a 4 -b 1,4 -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
 	result = verify(opts(' -pos Met -m src/testdata/ox1metstrainb2-4a2-25purged.opts -m# 150,134,154 -af -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
 	println(result.mcc)
-// 	mut result := CrossVerifyResult{}
-// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
-// 	println(r_b('the entire mets-train dataset of 17 cases, and then classify the 7 cases in the'))
-// 	println(r_b('independent mets-test dataset:'))
-// 	home_dir := os.home_dir()
-// 	ft := [false, true]
-// 	mut opts := Options{
-// 		command:                             'verify'
-// 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-// 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-test.tab')
-// 		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
-// 		positive_class:                      'Met'
-// 		multiple_flag:                       true
-// 		show_attributes_flag:                true
-// 		expanded_flag:                       true
-// 		classifiers:                         [30, 24]
-// 		break_on_all_flag:                   true
-// 		combined_radii_flag:                 false
-// 		total_nn_counts_flag:                true
-// 	}
+	// 	mut result := CrossVerifyResult{}
+	// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
+	// 	println(r_b('the entire mets-train dataset of 17 cases, and then classify the 7 cases in the'))
+	// 	println(r_b('independent mets-test dataset:'))
+	// 	home_dir := os.home_dir()
+	// 	ft := [false, true]
+	// 	mut opts := Options{
+	// 		command:                             'verify'
+	// 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
+	// 		testfile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_mets-test.tab')
+	// 		multiple_classify_options_file_path: 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
+	// 		positive_class:                      'Met'
+	// 		multiple_flag:                       true
+	// 		show_attributes_flag:                true
+	// 		expanded_flag:                       true
+	// 		classifiers:                         [30, 24]
+	// 		break_on_all_flag:                   true
+	// 		combined_radii_flag:                 false
+	// 		total_nn_counts_flag:                true
+	// 	}
 
-// 	result = verify(opts)
-// 	assert result.sens == 0.4
-// 	assert result.spec == 0.5
-// 	println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
-// 	println(r_b('we get a sensitivity of 0.4, and specificity of 0.4, on the test set'))
+	// 	result = verify(opts)
+	// 	assert result.sens == 0.4
+	// 	assert result.spec == 0.5
+	// 	println(r_b('\nFor the classifier giving the best balanced accuracy on the training set,'))
+	// 	println(r_b('we get a sensitivity of 0.4, and specificity of 0.4, on the test set'))
 }
 
 // fn test_ox1_mets_reverse_test_and_train_datafiles() {

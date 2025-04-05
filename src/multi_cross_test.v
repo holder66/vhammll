@@ -115,12 +115,17 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	cli(args: 'cross -a 2 -w -wr -ms ${settingsfile} ${expanded_flag} ${datafile}'.split(' '))!
 	cli(args: 'cross -a 6 -w -bp -p -ms ${settingsfile} ${expanded_flag} ${datafile}'.split(' '))!
 	// cli(args: 'cross -m# 0,1,2,3 -m ${settingsfile} ${expanded_flag} ${datafile}'.split(' '))!
-	assert cross_validate(multiple_flag: true, multiple_classify_options_file_path: settingsfile, classifiers: [
-		0,
-		1,
-		2,
-		3,
-	], datafile_path: datafile).correct_counts == [442, 230]
+	assert cross_validate(
+		multiple_flag:                       true
+		multiple_classify_options_file_path: settingsfile
+		classifiers:                         [
+			0,
+			1,
+			2,
+			3,
+		]
+		datafile_path:                       datafile
+	).correct_counts == [442, 230]
 }
 
 fn test_multiple_crossvalidate_mixed_attributes() ? {
