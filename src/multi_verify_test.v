@@ -75,7 +75,7 @@ fn test_multiple_verify() ? {
 	opts.total_nn_counts_flag = true
 	// opts.traverse_all_flags = true
 	result96_92 := verify(opts)
-	assert result96_92.correct_counts == [18,12]
+	assert result96_92.correct_counts == [18, 12]
 	opts.classifiers = [1, 2, 3]
 	result140_131_92 := verify(opts)
 	assert result140_131_92.correct_counts == [20, 12]

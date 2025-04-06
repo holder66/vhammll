@@ -203,7 +203,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 		save_json_file[CrossVerifyResult](verify_result, opts.outputfile_path)
 	}
 	// println(opts)
-	if opts.append_settings_flag && opts.command == 'verify' {
+	if opts.append_settings_flag && opts.command != 'explore' {
 		append_cross_verify_settings_to_file(verify_result, opts)
 	}
 	return verify_result

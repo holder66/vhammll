@@ -105,15 +105,15 @@ pub fn cli(cli_options CliOptions) ! {
 	sw := time.new_stopwatch()
 	// get the command line string and use it to create an Options struct
 	// println('nr_cpus: $runtime.nr_cpus() nr_jobs: $runtime.nr_jobs()')
-	mut opts := get_options( match true {
-		cli_options.astr != '' {cli_options.astr.split(' ')}
-		cli_options.args != [] {cli_options.args}
-		else {os.args[1..]}
-		})
-		// opts.missings = cli_options.missings
-		// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
-		// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
-	
+	mut opts := get_options(match true {
+		cli_options.astr != '' { cli_options.astr.split(' ') }
+		cli_options.args != [] { cli_options.args }
+		else { os.args[1..] }
+	})
+	// opts.missings = cli_options.missings
+	// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
+	// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
+
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
@@ -143,10 +143,18 @@ pub fn cli(cli_options CliOptions) ! {
 		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
 }
 
+@[params]
+pub struct Cmd {
+pub mut:
+	cmd string
+}
+
 // opts takes a string of command line arguments and returns an Options struct
 // corresponding to the command line arguments.
-pub fn opts(s string) Options {
-	return get_options(s.split(' '))
+pub fn opts(s string, c Cmd) Options {
+	mut result := get_options(s.split(' '))
+	result.command = c.cmd
+	return result
 }
 
 // get_options fills an Options struct with values from the command line
@@ -338,6 +346,7 @@ fn do_validate(opts Options) ! {
 fn cross(opts Options) {
 	mut new_opts := opts
 	new_opts.random_pick = if opts.repetitions > 1 { true } else { false }
+	new_opts.command = 'cross'
 	cross_validate(new_opts)
 }
 

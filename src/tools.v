@@ -278,6 +278,9 @@ fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 
 // least common multiple, using gcd; returns 0 if the lcd
 // cannot be calculated because of overflow. This version uses Uint128
+// The places where it's needed, ie the mnist datasets, we can't use
+// it (2025-4-5) because it would require wideranging changes to the structs
+// that contain lcm, as well as all the code that uses lcm.
 fn lcm_u128(arr []int) unsigned.Uint128 {
 	mut res := unsigned.Uint128{1, 0}
 	for a in arr {
@@ -309,35 +312,6 @@ fn lcm(arr []int) i64 {
 	}
 	return res
 }
-
-// // lcm returns the least common multiple of an array of integers
-// fn lcm(arr []int) i64 {
-// 	mut numbers := arr.clone()
-// 	mut res := i64(1)
-// 	mut x := 2
-// 	mut indexes := []int{}
-// 	for x <= array_max(numbers) {
-// 		indexes = []
-// 		for i, val in numbers {
-// 			if val % x == 0 {
-// 				indexes << i
-// 			}
-// 		}
-// 		if indexes.len >= 2 {
-// 			for index in indexes {
-// 				numbers[index] = numbers[index] / x
-// 			}
-// 			res *= x
-// 		} else {
-// 			x += 1
-// 		}
-// 	}
-// 	for val in numbers {
-// 		res *= val
-// 	}
-// 	// println('res in lcm: $res')
-// 	return res
-// }
 
 // the five functions below were suggested by @spytheman as a way to implement
 // NaN for both f64 and f32 types.

@@ -1,6 +1,8 @@
 // cli_tools_test.v
 module vhammll
 
+import os
+
 fn test_flag() {
 	mut args := ['rank', '-h']
 	assert flag(args, ['-h', '--help', 'help']) == true
@@ -35,6 +37,47 @@ fn test_get_options() ? {
 	assert opts.expanded_flag
 	assert !opts.graph_flag
 	assert !opts.show_flag
+}
+
+fn test_opts_function() {
+	assert opts('').args == ['']
+	assert opts('cross').command == 'cross'
+	mut result := Options{}
+	result = opts('-g -e -b 2,7 -pos Met src/testdata/ox1metstrainb2-4a2-25purged.opts')
+	assert result.args == ['-g', '-e', '-b', '2,7', '-pos', 'Met',
+		'src/testdata/ox1metstrainb2-4a2-25purged.opts']
+	assert result.graph_flag && result.expanded_flag && result.bins == [2, 7]
+		&& result.positive_class == 'Met'
+		&& result.datafile_path == 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
+	assert result.command == ''
+	result = opts('-e -pos Met -m src/testdata/ox1metstrainb2-4a2-25purged.opts -m# 0,20,40 ${os.home_dir()}/metabolomics/ox1_mets-train.tab')
+	assert result.args == ['-e', '-pos', 'Met', '-m', 'src/testdata/ox1metstrainb2-4a2-25purged.opts',
+		'-m#', '0,20,40', '${os.home_dir()}/metabolomics/ox1_mets-train.tab']
+	assert result.command == ''
+	assert result.expanded_flag && result.positive_class == 'Met'
+		&& result.multiple_classify_options_file_path == 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
+		&& result.classifiers == [0, 20, 40]
+		&& result.datafile_path == '${os.home_dir()}/metabolomics/ox1_mets-train.tab'
+
+	assert opts('-e -pos Met -a 4 -b 1,4 -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab').args == [
+		'-e',
+		'-pos',
+		'Met',
+		'-a',
+		'4',
+		'-b',
+		'1,4',
+		'-t',
+		'${os.home_dir()}/metabolomics/ox1_mets-test.tab',
+		'${os.home_dir()}/metabolomics/ox1_mets-train.tab',
+	]
+
+	result = opts('-e -pos Met -m src/testdata/ox1metstrainb2-4a2-25purged.opts -m# 0,10 -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab')
+	assert result.args == ['-e', '-pos', 'Met', '-m', 'src/testdata/ox1metstrainb2-4a2-25purged.opts',
+		'-m#', '0,10', '-t', '${os.home_dir()}/metabolomics/ox1_mets-test.tab',
+		'${os.home_dir()}/metabolomics/ox1_mets-train.tab']
+	assert result.expanded_flag && result.positive_class == 'Met' && result.classifiers == [0, 10]
+		&& result.testfile_path == '${os.home_dir()}/metabolomics/ox1_mets-test.tab'
 }
 
 fn test_show_help() ? {

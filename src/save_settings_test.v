@@ -15,78 +15,58 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_save_settings')!
 }
 
-fn test_append_cross_verify_settings_to_file() {
-	mut opts := Options{
-		number_of_attributes: [2]
-		bins:                 [2, 2]
-		concurrency_flag:     true
-		uniform_bins:         true
-		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:    'tempfolders/tempfolder_save_settings/iris.opts'
-		command:              'cross'
-		append_settings_flag: true
-	}
-	ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// opts.show_flag = true
-	cross_validate(opts)
-	assert os.is_file(opts.settingsfile_path.trim_space())
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 1187
-	display_file(opts.settingsfile_path)
+fn test_append_cross_validate_settings_to_file() {
+	datafile := 'datasets/iris.tab'
+	settingsfile := 'tempfolders/tempfolder_save_settings/iris1.opts'
+	cross_validate(opts(' -a 2 -b 2,2 -ms ${settingsfile} ${datafile}'))
+	assert os.is_file('tempfolders/tempfolder_save_settings/iris1.opts')
+	mut r := read_multiple_opts('${settingsfile}')!
+	// // add another classifier
+	cross_validate(opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}'))
+	r = read_multiple_opts('${settingsfile}')!
+	assert r.len == 2
+	assert r.map(it.classifier_id) == [0, 1]
+	assert r[0].correct_counts == [50, 18, 50]
+	assert r[1].incorrect_counts == [0, 3, 0]
+}
 
-	// add another classifier
-	opts.bins = [3, 3]
-	cross_validate(opts)
-	display_file(opts.settingsfile_path)
-	assert os.file_size(opts.settingsfile_path.trim_space()) == 2279
+fn test_append_verify_settings_to_file() {
+	datafile := 'datasets/bcw350train'
+	testfile := 'datasets/bcw174test'
+	settingsfile := 'tempfolders/tempfolder_save_settings/bcw1.opts'
+	verify(opts('-ms ${settingsfile} -t ${testfile} ${datafile}'))
+	assert os.is_file('${settingsfile}')
+	mut r := read_multiple_opts('${settingsfile}')!
+	assert r.len == 1
+	verify(opts('-a 5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	r = read_multiple_opts('${settingsfile}')!
+	assert r.len == 2
+	assert r[1].correct_counts == [135, 36]
 }
 
 fn test_append_explore_cross_settings_to_file() {
-	mut opts := Options{
-		number_of_attributes: [1, 4]
-		bins:                 [2, 7]
-		concurrency_flag:     true
-		uniform_bins:         true
-		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:    'tempfolders/tempfolder_save_settings/iris.opts'
-		command:              'explore'
-		append_settings_flag: true
-	}
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// opts.show_flag = true
-	explore(opts)
-	display_file(opts.settingsfile_path)
-	assert os.is_file(opts.settingsfile_path.trim_space())
-	mut size := os.file_size(opts.settingsfile_path.trim_space())
-	assert size <= 9976
-	assert size >= 9948
-
+	datafile := 'datasets/iris.tab'
+	settingsfile := 'tempfolders/tempfolder_save_settings/iris2.opts'
+	explore(opts('-a 1,4 -b 2,7 -u -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	assert os.is_file('${settingsfile}')
+	mut r := read_multiple_opts('${settingsfile}')!
+	assert r.len == 7
 	// now add another explore
-	opts.uniform_bins = false
-	explore(opts)
-	display_file(opts.settingsfile_path)
-	size = os.file_size(opts.settingsfile_path.trim_space())
-	assert size <= 17678
-	assert size >= 17650
+	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	r = read_multiple_opts('${settingsfile}')!
+	assert r.len == 14
 }
 
 fn test_append_explore_verify_settings_to_file() {
-	mut opts := Options{
-		datafile_path:        'datasets/bcw350train'
-		testfile_path:        'datasets/bcw174test'
-		settingsfile_path:    'tempfolders/tempfolder_save_settings/bcw.opts'
-		command:              'explore'
-		append_settings_flag: true
-	}
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	opts.show_flag = true
-	explore(opts)
-	display_file(opts.settingsfile_path)
-	// assert os.is_file(opts.settingsfile_path.trim_space())
-	// assert os.file_size(opts.settingsfile_path.trim_space()) == 9832
-
+	datafile := 'datasets/bcw350train'
+	testfile := 'datasets/bcw174test'
+	settingsfile := 'tempfolders/tempfolder_save_settings/bcw.opts'
+	explore(opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'explore'))
+	assert os.is_file('${settingsfile}')
+	mut r := read_multiple_opts('${settingsfile}')!
+	assert r.len == 5
 	// now add another explore
-	opts.weight_ranking_flag = true
-	explore(opts)
-	display_file(opts.settingsfile_path)
-	// assert os.file_size(opts.settingsfile_path.trim_space()) == 17422
+	explore(opts('-w -a 2,4 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'explore'))
+	r = read_multiple_opts('${settingsfile}')!
+	assert r.len == 10
 }

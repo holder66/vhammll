@@ -170,7 +170,7 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		cross_result.command = 'cross'
 		save_json_file[CrossVerifyResult](cross_result, opts.outputfile_path)
 	}
-	if opts.append_settings_flag && opts.command == 'cross' {
+	if opts.append_settings_flag && opts.command != 'explore' {
 		append_cross_verify_settings_to_file(cross_result, opts)
 	}
 	return cross_result
