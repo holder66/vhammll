@@ -17,7 +17,7 @@ fn testsuite_begin() ? {
 	f.write_string(main_text)!
 	f.close()
 
-	os.execute_or_panic('v -keepc run temp.v')
+	os.execute_or_panic('v -prod temp.v')
 	if os.is_dir('tempfolders/tempfolder_cli') {
 		os.rmdir_all('tempfolders/tempfolder_cli')!
 	}
@@ -43,17 +43,17 @@ fn test_explore() {
 	opts := CliOptions{}
 	println(os.execute_or_panic('./temp explore --help'))
 	println(os.execute_or_panic('./temp explore  vhammll/datasets/iris.tab'))
-	println(os.execute_or_panic('./temp explore  -a 2 -b 6  -c vhammll/datasets/leukemia34test.tab'))
-	println(os.execute_or_panic('./temp explore  -e -c -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
-	println(os.execute_or_panic('./temp cross -c -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
+	println(os.execute_or_panic('./temp explore  -a 2 -b 6  vhammll/datasets/leukemia34test.tab'))
+	println(os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab'))
+	println(os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
 }
 
 fn test_verify() {
 	println(os.execute_or_panic('./temp verify -h'))
-	println(os.execute_or_panic('./temp verify -c -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train'))
+	println(os.execute_or_panic('./temp verify  -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train'))
 	// save a classifier to a file
 	println(os.execute_or_panic('./temp make -a 33 -b 2,16 -w -o tempfolders/tempfolder_cli/soybean.cl vhammll/datasets/soybean-large-train.tab'))
-	println(os.execute_or_panic('./temp verify -c -w -s -k tempfolders/tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab'))
+	println(os.execute_or_panic('./temp verify  -w -s -k tempfolders/tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab'))
 }
 
 fn test_analyze() {
@@ -71,11 +71,11 @@ fn test_make() {
 
 fn test_cross() {
 	println(os.execute_or_panic('./temp cross --help'))
-	println(os.execute_or_panic('./temp cross -c vhammll/datasets/iris.tab'))
-	println(os.execute_or_panic('./temp cross -c -e -a 2 -b 3,6 vhammll/datasets/iris.tab'))
-	println(os.execute_or_panic('./temp cross -c -e -a 2 -b 3,6 -f 10 -w vhammll/datasets/iris.tab'))
-	println(os.execute_or_panic('./temp cross -c -e -a 6 -b 3,6 -f 20 -w vhammll/datasets/prostata.tab'))
-	println(os.execute_or_panic('./temp cross -c -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
+	println(os.execute_or_panic('./temp cross vhammll/datasets/iris.tab'))
+	println(os.execute_or_panic('./temp cross -e -a 2 -b 3,6 vhammll/datasets/iris.tab'))
+	println(os.execute_or_panic('./temp cross -e -a 2 -b 3,6 -f 10 -w vhammll/datasets/iris.tab'))
+	println(os.execute_or_panic('./temp cross -e -a 6 -b 3,6 -f 20 -w vhammll/datasets/prostata.tab'))
+	println(os.execute_or_panic('./temp cross -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
 }
 
 fn test_append() ? {
@@ -91,7 +91,7 @@ fn test_rank_attributes() {
 	mut r := os.execute_or_panic('./temp rank')
 	// println(r.output)
 	assert r.output.contains('"rank" rank orders a dataset\'s attributes')
-	r = os.execute_or_panic('./temp rank vhammll/datasets/developer.tab')
+	r = os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
 	// println(r.output)
 	assert r.output.contains('5   age                              2  C           84.62     12')
 	r = os.execute_or_panic('./temp rank -x -b 3,3 vhammll/datasets/iris.tab')
@@ -109,7 +109,7 @@ fn test_display() {
 	println(os.execute_or_panic('./temp cross -c -b 2,4 -a 4 -o tempfolders/tempfolder_cli/cross_result.txt vhammll/datasets/developer.tab'))
 	println(os.execute_or_panic('./temp display -e tempfolders/tempfolder_cli/cross_result.txt'))
 	println(os.execute_or_panic('./temp rank -o tempfolders/tempfolder_cli/rank_result.txt vhammll/datasets/UCI/segment.arff'))
-	// println(os.execute_or_panic('./temp display -g tempfolders/tempfolder_cli/rank_result.txt'))
+	// println(os.execute_or_panic('./temp display tempfolders/tempfolder_cli/rank_result.txt'))
 }
 
 fn test_purge_for_missing_class_values() {
