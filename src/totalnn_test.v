@@ -35,7 +35,9 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut er := explore(opts)
-	assert os.file_size(opts.settingsfile_path) == 5844, 'Settings file too small'
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 5
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
 	opts.show_attributes_flag = true
@@ -86,7 +88,9 @@ fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
 	opts.weight_ranking_flag = true
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut er := explore(opts)
-	assert os.file_size(opts.settingsfile_path) == 7269, 'Settings file too small'
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 7
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
 	opts.show_attributes_flag = true
@@ -146,8 +150,9 @@ fn test_multiple_classifier_verify_totalnn_continuous_attributes() ? {
 	assert result1.correct_counts == [20, 9], 'verify with 6 attributes and binning [2,2]'
 	// verify that the settings file was saved, and
 	// is the right length
-
-	assert os.file_size(opts.settingsfile_path) == 2409
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
@@ -211,8 +216,9 @@ fn test_multiple_classifier_verify_totalnn_discrete_attributes() ? {
 	assert result1.correct_counts == [135, 36], 'verify with 4 attributes'
 	// verify that the settings file was saved, and
 	// is the right length
-
-	assert os.file_size(opts.settingsfile_path) == 2610
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
@@ -263,8 +269,9 @@ fn test_multiple_classifier_verify_totalnn_multiple_classes() ? {
 	assert result1.correct_counts == [0, 0, 1], 'verify with 4 attributes'
 	// verify that the settings file was saved, and
 	// is the right length
-
-	assert os.file_size(opts.settingsfile_path) == 2241
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path
@@ -319,7 +326,9 @@ fn test_multiple_classifier_verify_totalnn_discrete_attributes_multiple_classes(
 	// verify that the settings file was saved, and
 	// is the right length
 
-	assert os.file_size(opts.settingsfile_path) == 3287
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path

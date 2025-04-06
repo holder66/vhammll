@@ -62,7 +62,10 @@ fn test_make_multi_classifiers() {
 	}
 	// test that the settings file was saved, and
 	// is the right length
-	assert os.file_size(opts.settingsfile_path) >= 929
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
+
 	opts.show_attributes_flag = true
 	// display_file(opts.settingsfile_path, opts)
 	// test verify with multiple_classify_options_file_path

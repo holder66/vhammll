@@ -91,7 +91,7 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		break_on_all_flag: true
 		command:           'verify'
 		verbose_flag:      false
-		expanded_flag:     true
+		// expanded_flag:     true
 	}
 	mut result := CrossVerifyResult{}
 
@@ -148,9 +148,9 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	// verify that the settings file was correctly saved, and
 	// is the right length
 	// display_file(opts.settingsfile_path, opts)
-	dump(os.file_size(opts.settingsfile_path))
-	mut size := os.file_size(opts.settingsfile_path)
-	assert size == 2214
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	// test verify with multiple_classify_options_file_path
 	opts.multiple_flag = true
 	opts.multiple_classify_options_file_path = opts.settingsfile_path

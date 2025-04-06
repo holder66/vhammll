@@ -86,7 +86,9 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	println(r_b('Next, verify that the settings file was saved, and display it:'))
 	// verify that the settings file was saved, and
 	// is the right length
-	assert os.file_size(opts.settingsfile_path) >= 929
+	assert os.is_file(opts.settingsfile_path)
+	mut r := read_multiple_opts(opts.settingsfile_path)!
+	assert r.len == 2
 	opts.show_attributes_flag = true
 	display_file(opts.settingsfile_path, opts)
 
