@@ -28,8 +28,6 @@ fn test_get_options() ? {
 	assert !opts.graph_flag
 	assert !opts.verbose_flag
 
-	opts = get_options(['explore', '-h'])
-	assert opts.command == 'explore'
 	opts = get_options(['--bins', '4,6'])
 	assert opts.bins == [4, 6]
 	opts = get_options(['-v', '-e'])
@@ -41,7 +39,7 @@ fn test_get_options() ? {
 
 fn test_opts_function() {
 	assert opts('').args == ['']
-	assert opts('cross').command == 'cross'
+	assert opts('', cmd: 'cross').command == 'cross'
 	mut result := Options{}
 	result = opts('-g -e -b 2,7 -pos Met src/testdata/ox1metstrainb2-4a2-25purged.opts')
 	assert result.args == ['-g', '-e', '-b', '2,7', '-pos', 'Met',

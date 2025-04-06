@@ -169,11 +169,7 @@ fn get_options(args []string) Options {
 	opts.non_options = oscmdline.only_non_options(args)
 	if opts.non_options.len > 0 {
 		opts.datafile_path = opts.non_options.last()
-		if opts.non_options[0] == args[0] {
-			opts.command = opts.non_options[0]
-		}
 	}
-
 	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
 	opts.concurrency_flag = flag(args, ['-c', '--concurrent'])
 	opts.exclude_flag = flag(args, ['-x', '--exclude'])
