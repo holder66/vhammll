@@ -33,38 +33,21 @@ fn test_settings_for_roc() {
 }
 
 fn test_explore_traverse_all_flags() {
+	mut datafile := 'datasets/iris.tab'
+	mut settingsfile := 'tempfolders/tempfolder_explore/iris.opts'
+	mut purgedfile := 'tempfolders/tempfolder_explore/iris_purged.opts'
+	savedfile := 'src/testdata/iris_purged.opts'
+
 	mut result := ExploreResult{}
-	mut metrics := Metrics{}
-	mut opts := Options{
-		number_of_attributes: [2, 4]
-		bins:                 [2, 3]
-		traverse_all_flags:   true
-		// expanded_flag: true
-		// show_flag:        true
-		// concurrency_flag: true
-		uniform_bins: true
-		// generate_roc_flag:    true
-		append_settings_flag: true
-		command:              'explore'
-		datafile_path:        'datasets/iris.tab'
-		settingsfile_path:    'tempfolders/tempfolder_explore/iris.opts'
-	}
-	saved_file := 'src/testdata/iris_purged.opts'
-	result = explore(opts)
-	assert os.is_file(opts.settingsfile_path)
-	mut file_size := int(os.file_size(opts.settingsfile_path))
-	assert file_size > 131000
-	assert file_size < 132000
-	opts.purge_flag = true
-	// opts.expanded_flag = true
-	opts.outputfile_path = 'tempfolders/tempfolder_explore/iris_purged.opts'
-	optimals(opts.settingsfile_path, opts)
-	if !os.is_file(saved_file) {
-		os.cp(opts.outputfile_path, saved_file)!
-	}
-	file_size = int(os.file_size(opts.outputfile_path))
-	assert file_size > 36800
-	assert file_size < 36900
+	result = explore(opts('-a 2,4 -b 2,3 -u -af -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	assert os.is_file(settingsfile)
+	mut r := read_multiple_opts(settingsfile)!
+	assert r.len == 112
+	assert r[1].correct_counts == [50, 47, 50]
+	optimals(settingsfile, opts('-p -o ${purgedfile}'))
+	r = read_multiple_opts(purgedfile)!
+	assert r.len == 32
+	assert r.filter(it.classifier_id == 11)[0].incorrect_counts == [50, 0, 50]
 }
 
 fn test_explore_cross() ? {
