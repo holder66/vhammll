@@ -20,10 +20,10 @@ fn testsuite_begin() ? {
 	f.close()
 
 	os.execute_or_panic('v -keepc run temp.v')
-	if os.is_dir('tempfolders/tempfolder_cli') {
-		os.rmdir_all('tempfolders/tempfolder_cli')!
+	if os.is_dir('tempfolders/tempfolder_plot') {
+		os.rmdir_all('tempfolders/tempfolder_plot')!
 	}
-	os.mkdir_all('tempfolders/tempfolder_cli')!
+	os.mkdir_all('tempfolders/tempfolder_plot')!
 }
 
 fn testsuite_end() ? {
@@ -33,23 +33,35 @@ fn testsuite_end() ? {
 	if os.exists('temp.v') {
 		os.rm('temp.v')!
 	}
-	os.rmdir_all('tempfolders/tempfolder_cli')!
+	os.rmdir_all('tempfolders/tempfolder_plot')!
 }
 
-fn plot_hits_test() {}
+fn test_plot_hits() {
+	mut r := os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
+	r = os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
+	r = os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
+	r = os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
+}
 
 
-fn plot_rank_test() {
+fn test_plot_rank() {
 	mut r := os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
-	r = os.execute_or_panic('./temp rank -g -x -b 3,3 vhammll/datasets/iris.tab')
+	r = os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
 	r = os.execute_or_panic('./temp rank -g vhammll/datasets/anneal.tab')
+	r = os.execute_or_panic('./temp rank -g -l 3 vhammll/datasets/anneal.tab')
 }
 
-fn plot_explore_test() {}
+fn test_plot_explore() {
+assert true
+}
 
-fn plot_roc_test() {}
+fn test_plot_roc() {
+assert true
+}
 
-fn plot_multi_roc_test() {}
+fn test_plot_multi_roc() {
+	assert true
+}
 
 // fn test_area_under_curve() {
 // 	mut x := []f64{}

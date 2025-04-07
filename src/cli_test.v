@@ -17,7 +17,7 @@ fn testsuite_begin() ? {
 	f.write_string(main_text)!
 	f.close()
 
-	os.execute_or_panic('v -prod temp.v')
+	os.execute_or_panic('v -keepc run temp.v')
 	if os.is_dir('tempfolders/tempfolder_cli') {
 		os.rmdir_all('tempfolders/tempfolder_cli')!
 	}
