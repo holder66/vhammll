@@ -3,6 +3,7 @@
 // It seems using the vhamm CLI is the only way to have plots actually show up.
 
 module vhammll
+
 import os
 
 const main_text = '// temp.v
@@ -43,7 +44,6 @@ fn test_plot_hits() {
 	r = os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
 }
 
-
 fn test_plot_rank() {
 	mut r := os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
 	r = os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
@@ -52,11 +52,11 @@ fn test_plot_rank() {
 }
 
 fn test_plot_explore() {
-assert true
+	assert true
 }
 
 fn test_plot_roc() {
-assert true
+	assert true
 }
 
 fn test_plot_multi_roc() {
