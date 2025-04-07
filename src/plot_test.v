@@ -38,21 +38,23 @@ fn testsuite_end() ? {
 }
 
 fn test_plot_hits() {
-	mut r := os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
-	r = os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
-	r = os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
-	r = os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
+	os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
+	os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
+	os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
+	os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
 }
 
 fn test_plot_rank() {
-	mut r := os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
-	r = os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
-	r = os.execute_or_panic('./temp rank -g vhammll/datasets/anneal.tab')
-	r = os.execute_or_panic('./temp rank -g -l 3 vhammll/datasets/anneal.tab')
+	os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
+	os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
+	os.execute_or_panic('./temp rank -g vhammll/datasets/anneal.tab')
+	os.execute_or_panic('./temp rank -g -l 3 vhammll/datasets/anneal.tab')
 }
 
 fn test_plot_explore() {
-	assert true
+	os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab')
+	os.execute_or_panic('./temp explore -g -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
+	os.execute_or_panic('./temp explore -g -o tempfolders/tempfolder_plot/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
 }
 
 fn test_plot_roc() {
