@@ -365,7 +365,7 @@ fn abs_diff[T](a T, b T) T {
 	return b - a
 }
 
-// pairs generates a list of permutations of the digits from 0 up to and including n, taken two at a time.
+// pairs generates a list of combinations of the digits from 0 up to and including n, taken two at a time.
 // Example: assert pairs(3) == [[0, 1], [0, 2], [1, 2]]
 fn pairs(n int) [][]int {
 	mut pair_list := [][]int{cap: n}

@@ -142,6 +142,58 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	return result
 }
 
+struct AucClassifiers {
+mut:
+	classifier_ids []int
+	auc            f64
+}
+
+fn max_auc_combinations(settings_array []ClassifierSettings) []AucClassifiers {
+	// probably good to start with a purged set
+	mut settings := purge_duplicate_settings(settings_array)
+	mut pairs := [][]f64{cap: settings.len}
+	mut classifiers := []int{cap: settings.len}
+	for setting in settings {
+		pairs << [setting.sens, setting.spec]
+		classifiers << setting.classifier_id
+	}
+	// generate pairs of classifiers
+	dump(generate_combinations(classifiers, 2))
+	mut combinations := []AucClassifiers{}
+	for i, cl_id in classifiers {
+		combi := AucClassifiers{
+
+		}
+		combinations << combi
+	}
+	return combinations
+}
+
+fn generate_combinations(arr []int, n int) [][]int {
+    if n == 0 {
+        return [][]int{}
+    }
+    dump(arr)
+    mut combinations := [][]int{}
+    for i := 0; i < arr.len; i++ {
+        // Skip if n is larger than remaining elements
+        if arr.len - i < n {
+            break
+        }
+        // Create a new array without the current element
+        new_arr := arr[i + 1 ..]
+        // Generate combinations of length n-1 from the new array
+        for c in generate_combinations(new_arr, n - 1) {
+            // Add the current element to each combination
+            mut new_combination := []int{}
+            new_combination << c
+            dump(new_combination)
+            combinations << new_combination
+        }
+    }
+    return combinations
+}
+
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
 	// reverse the array, then purge
 	mut result := settings.reverse()
