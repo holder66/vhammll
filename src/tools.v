@@ -95,6 +95,61 @@ pub fn auc_roc(points []Point) f64 {
 	return auc
 }
 
+// fn combinations[T](arr []T) [][]T
+// Generates all possible combinations of elements in an array.
+pub fn combinations[T](arr []T) [][]T {
+	if arr == [] {
+		panic("no classifier id's provided")
+	}
+	mut combos := [][]T{}
+	for size in 2 .. arr.len + 1 {
+		for start in 0 .. arr.len - size + 1 {
+			combos << n_combinations(arr[start..], size)
+		}
+	}
+	return combos
+}
+
+// fn combination[T](arr []T, first int, next int, n int) []T
+// Creates a single combination starting from a specific index.
+fn combination[T](arr []T, first int, next int, n int) []T {
+	mut combo := []T{}
+	combo << arr[first]
+	return combo_util(arr[next..next + n - 1], mut combo)
+}
+
+// fn combo_util[T](arr []T, mut combo []T) []T
+// Appends elements to a combination recursively.
+fn combo_util[T](arr []T, mut combo []T) []T {
+	if arr.len == 0 {
+		return combo
+	}
+	combo << arr[0]
+	return combo_util(arr[1..], mut combo)
+}
+
+// fn n_combo_util[T](arr []T, start int, next int, mut n_combo [][]T, n int) [][]T
+// Generates all combinations of a specific size recursively.
+fn n_combo_util[T](arr []T, start int, next int, mut n_combo [][]T, n int) [][]T {
+	if n_combo != [] {
+		if n_combo.last().last() == arr.last() {
+			return n_combo
+		}
+	}
+	n_combo << combination(arr, start, next, n)
+	return n_combo_util(arr[0..], start, next + 1, mut n_combo, n)
+}
+
+// fn n_combinations[T](arr []T, n int) [][]T
+// Generates all combinations of a specific size.
+fn n_combinations[T](arr []T, n int) [][]T {
+	if n < 2 || n > arr.len {
+		panic('combination length is out of range')
+	}
+	mut n_combo := [][]T{}
+	return n_combo_util(arr, 0, 1, mut n_combo, n)
+}
+
 // idx_true returns the index of the first true element in boolean array a.
 // Returns -1 if no true element found.
 fn idx_true(a []bool) int {
