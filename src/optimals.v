@@ -148,7 +148,7 @@ mut:
 	auc            f64
 }
 
-fn max_auc_combinations(settings_array []ClassifierSettings) []AucClassifiers {
+fn max_auc_combinations(settings_array []ClassifierSettings) {
 	// probably good to start with a purged set
 	mut settings := purge_duplicate_settings(settings_array)
 	mut pairs := [][]f64{cap: settings.len}
@@ -157,41 +157,11 @@ fn max_auc_combinations(settings_array []ClassifierSettings) []AucClassifiers {
 		pairs << [setting.sens, setting.spec]
 		classifiers << setting.classifier_id
 	}
-	// generate pairs of classifiers
-	dump(generate_combinations(classifiers, 2))
-	mut combinations := []AucClassifiers{}
-	for i, cl_id in classifiers {
-		combi := AucClassifiers{
-
-		}
-		combinations << combi
+	// classifier_combos := combinations(classifiers)
+	pairs_combos := combinations(pairs)
+	for pair_sets in pairs_combos {
+		dump(pair_sets)
 	}
-	return combinations
-}
-
-fn generate_combinations(arr []int, n int) [][]int {
-    if n == 0 {
-        return [][]int{}
-    }
-    dump(arr)
-    mut combinations := [][]int{}
-    for i := 0; i < arr.len; i++ {
-        // Skip if n is larger than remaining elements
-        if arr.len - i < n {
-            break
-        }
-        // Create a new array without the current element
-        new_arr := arr[i + 1 ..]
-        // Generate combinations of length n-1 from the new array
-        for c in generate_combinations(new_arr, n - 1) {
-            // Add the current element to each combination
-            mut new_combination := []int{}
-            new_combination << c
-            dump(new_combination)
-            combinations << new_combination
-        }
-    }
-    return combinations
 }
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
