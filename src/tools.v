@@ -14,15 +14,15 @@ import arrays
 // along with the corresponding list of classifier ID's,
 // and returns a list of Receiver Operating Characteristic plot points
 // (sensitivity vs 1 - specificity).
-pub fn roc_values(pairs [][]f64, classifiers []string) []RocPoint {
+pub fn roc_values(pairs [][]f64, classifier_ids []int) []RocPoint {
 	if pairs.len < 1 {
 		panic('no sensitivity/specificity pairs provided to roc_values()')
 	}
-	if pairs.len != classifiers.len {
+	if pairs.len != classifier_ids.len {
 		panic('mismatch between pairs and classifiers')
 	}
 	mut big_pairs := pairs.clone()
-	mut big_classifiers := classifiers.clone()
+	mut big_classifiers := classifier_ids.map('${it}')
 	if [0.0, 1.0] !in pairs {
 		big_pairs << [0.0, 1.0]
 		big_classifiers << ''
@@ -70,13 +70,13 @@ pub fn roc_values(pairs [][]f64, classifiers []string) []RocPoint {
 	points := result.map(it.Point)
 	// if result does not include [1.0,1.0] then tack it on
 	if Point{1, 1} !in points {
-		result << RocPoint{Point{1, 1}, ''}
+		result << RocPoint{Point{1, 1}, '', []}
 	}
 	return result
 }
 
 // auc_roc returns the area under the Receiver Operating Characteristic
-// curve, for an array of roc points.
+// curve, for an array of points.
 pub fn auc_roc(points []Point) f64 {
 	if points.len < 2 {
 		panic('cannot calculate area_roc with fewer than 2 points')
@@ -97,13 +97,15 @@ pub fn auc_roc(points []Point) f64 {
 
 // fn combinations[T](arr []T) [][]T
 // Generates all possible combinations of elements in an array.
-pub fn combinations[T](arr []T) [][]T {
+// Optionally, specify lower and/or upper limits for combination length.
+pub fn combinations[T](arr []T, limits CombinationSizeLimits) [][]T {
 	if arr == [] {
-		panic("no classifier id's provided")
+		panic("can't make combinations from an empty array!")
 	}
+	max := if limits.max == 0 { arr.len } else { limits.max }
 	mut combos := [][]T{}
-	for size in 2 .. arr.len + 1 {
-		for start in 0 .. arr.len - size + 1 {
+	for size in limits.min .. max + 1 {
+		for start in 0 .. max - size + 1 {
 			combos << n_combinations(arr[start..], size)
 		}
 	}

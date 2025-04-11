@@ -117,10 +117,11 @@ pub fn display_file(path string, in_opts Options) {
 				mut auc := 0.0
 				if multiple_classifier_settings[0].class_counts_int.len == 2 {
 					mut pairs := [][]f64{len: multiple_classifier_settings.len, init: []f64{len: 2}}
-					mut classifiers := []string{len: multiple_classifier_settings.len}
+					// mut classifiers := []string{len: multiple_classifier_settings.len}
+					mut classifiers := []int{len: multiple_classifier_settings.len}
 					for i, setting in multiple_classifier_settings {
 						pairs[i] = [setting.sens, setting.spec]
-						classifiers[i] = '${setting.classifier_id}'
+						classifiers[i] = setting.classifier_id
 					}
 					roc_points := roc_values(pairs, classifiers)
 					auc = auc_roc(roc_points.map(it.Point))

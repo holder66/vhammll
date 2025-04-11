@@ -342,9 +342,10 @@ fn plot_roc(roc_points []RocPoint, auc f64) {
 
 pub struct RocData {
 pub mut:
-	pairs       [][]f64
-	classifiers []string
-	trace_text  string
+	pairs          [][]f64
+	classifiers    []string
+	classifier_ids []int
+	trace_text     string
 }
 
 pub struct RocFiles {
@@ -363,7 +364,7 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	}
 	mut plt := plot.Plot.new()
 	for rocdata in rocdata_array {
-		rocpoints := roc_values(rocdata.pairs, rocdata.classifiers)
+		rocpoints := roc_values(rocdata.pairs, rocdata.classifier_ids)
 		auc := auc_roc(rocpoints.map(it.Point))
 		mut hovertext := []string{cap: rocdata.classifiers.len + 2}
 

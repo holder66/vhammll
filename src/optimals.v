@@ -139,16 +139,12 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 			append_json_file(setting, opts.outputfile_path)
 		}
 	}
+	dump(opts)
+	result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, opts.DisplaySettings.CombinationSizeLimits)
 	return result
 }
 
-struct AucClassifiers {
-mut:
-	classifier_ids []int
-	auc            f64
-}
-
-fn max_auc_combinations(settings_array []ClassifierSettings) {
+fn max_auc_combinations(settings_array []ClassifierSettings, limits CombinationSizeLimits) []AucClassifiers {
 	// probably good to start with a purged set
 	mut settings := purge_duplicate_settings(settings_array)
 	mut pairs := [][]f64{cap: settings.len}
@@ -157,11 +153,28 @@ fn max_auc_combinations(settings_array []ClassifierSettings) {
 		pairs << [setting.sens, setting.spec]
 		classifiers << setting.classifier_id
 	}
-	// classifier_combos := combinations(classifiers)
-	pairs_combos := combinations(pairs)
+	classifier_combos := combinations(classifiers, limits)
+	dump(classifier_combos)
+	pairs_combos := combinations(pairs, limits)
 	for pair_sets in pairs_combos {
 		dump(pair_sets)
 	}
+	mut points_array := [][]RocPoint{cap: classifier_combos.len + 2}
+	// now convert the pair sets into points, for each combo
+	for i, pair_sets in pairs_combos {
+		dump(classifier_combos[i])
+		dump(pair_sets)
+		points_array << roc_values(pair_sets, classifier_combos[i])
+	}
+	// calculate auc values
+	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
+	for i, points in points_array {
+		auc_classifiers << AucClassifiers{
+			classifier_ids: classifier_combos[i]
+			auc:            auc_roc(points.map(it.Point))
+		}
+	}
+	return auc_classifiers
 }
 
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {

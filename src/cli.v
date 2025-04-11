@@ -40,6 +40,8 @@ pub mut:
 //    for the interval to be used over the explore range;
 // -bp, --balanced-prevalences: Parameters.balance_prevalences_flag
 // -c --concurrent, permit parallel processing to use multiple cores: Options.concurrency_flag
+// -cl --combination-limits: sets minimum and maximum lengths for combinations
+//    of multiple classifiers: Options.DisplaySettings.CombinationSizeLimits
 // -e --expanded, expanded results on the console: DisplaySettings.expanded_flag
 // -ea display information re trained attributes on the console, for
 //    classification operations; DisplaySettings.show_attributes_flag
@@ -199,6 +201,8 @@ fn get_options(args []string) Options {
 	if option(args, ['-a', '--attributes']) != '' {
 		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
 	}
+	if option(args, ['-cl', '--combination-limits']) != '' {
+		opts.DisplaySettings.CombinationSizeLimits = parse_range(option(args, ['-cl', '--combination-limits']))
 	if option(args, ['-f', '--folds']) != '' {
 		opts.folds = option(args, ['-f', '--folds']).int()
 	}

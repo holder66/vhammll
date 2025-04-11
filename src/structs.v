@@ -13,7 +13,8 @@ pub mut:
 pub struct RocPoint {
 	Point
 pub mut:
-	classifiers string
+	classifiers    string
+	classifier_ids []int
 }
 
 pub struct Point {
@@ -181,7 +182,15 @@ pub mut:
 }
 
 @[params]
+pub struct CombinationSizeLimits {
+pub mut:
+	min int = 2
+	max int
+}
+
+@[params]
 pub struct DisplaySettings {
+	CombinationSizeLimits
 pub mut:
 	show_flag            bool
 	expanded_flag        bool
@@ -242,6 +251,12 @@ pub mut:
 	multiple_classifier_settings []ClassifierSettings
 }
 
+pub struct AucClassifiers {
+pub mut:
+	classifier_ids []int
+	auc            f64
+}
+
 pub struct OptimalsResult {
 	RocData
 	RocFiles
@@ -260,6 +275,7 @@ pub mut:
 	correct_inferences_by_class_max_classifiers         [][]int // refers to an array of classsifier ID values
 	receiver_operating_characteristic_settings          []int
 	reversed_receiver_operating_characteristic_settings []int
+	multi_classifier_combinations_for_auc               []AucClassifiers
 }
 
 pub struct ClassifierSettings {
