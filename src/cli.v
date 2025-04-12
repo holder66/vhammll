@@ -202,7 +202,12 @@ fn get_options(args []string) Options {
 		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
 	}
 	if option(args, ['-cl', '--combination-limits']) != '' {
-		opts.DisplaySettings.CombinationSizeLimits = parse_range(option(args, ['-cl', '--combination-limits']))
+		limits := parse_range(option(args, ['-cl', '--combination-limits']))
+		opts.DisplaySettings.CombinationSizeLimits = CombinationSizeLimits{
+			min: limits.first()
+			max: limits.last()
+		}
+	}
 	if option(args, ['-f', '--folds']) != '' {
 		opts.folds = option(args, ['-f', '--folds']).int()
 	}
