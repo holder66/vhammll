@@ -67,7 +67,7 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	if !opts.show_flag && !opts.expanded_flag && opts.command == 'cross' {
 		println('corrects: ${result.correct_counts} balanced_accuracy: ${result.balanced_accuracy:-6.2f} MCC: ${result.mcc:-7.3f} sens: ${result.sens:-7.3f} spec: ${result.spec:-4.3f} ma ${result.break_on_all_flag} mc ${result.combined_radii_flag} mt ${result.total_nn_counts_flag} ${opts.classifiers}')
 	}
-	return run_cross_validate(ds, opts)
+	return result
 }
 
 pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {

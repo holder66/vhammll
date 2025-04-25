@@ -18,11 +18,11 @@ fn testsuite_end() ? {
 fn test_append_cross_validate_settings_to_file() {
 	datafile := 'datasets/iris.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/iris1.opts'
-	cross_validate(opts(' -a 2 -b 2,2 -ms ${settingsfile} ${datafile}'))
+	cross_validate(opts('-a 2 -b 2,2 -ms ${settingsfile} ${datafile}', cmd: 'cross'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	// // add another classifier
-	cross_validate(opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}'))
+	cross_validate(opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}', cmd: 'cross'))
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 2
 	assert r.map(it.classifier_id) == [0, 1]

@@ -17,7 +17,7 @@ fn testsuite_end() ? {
 
 fn test_max_auc_combinations() {
 	settings := read_multiple_opts('src/testdata/oxford_settings.opts')!
-	mut r := max_auc_combinations(settings, [1,2], min: 2)
+	mut r := max_auc_combinations(settings, [[1,2]], min: 2)
 	dump(r)
 }
 

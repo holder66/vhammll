@@ -176,23 +176,25 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]
 	for id in classifier_ids {
 		settings << settings_array.filter(it.classifier_id == id[0])
 	}
+	// dump(settings.len)
 	mut pairs := [][]f64{}
 	mut classifiers := []int{}
 	for setting in settings {
 		pairs << [setting.sens, setting.spec]
 		classifiers << setting.classifier_id
 	}
+	// dump(classifiers)
 	classifier_combos := combinations(classifiers, limits)
 	pairs_combos := combinations(pairs, limits)
-	// for pair_sets in pairs_combos {
-	// 	dump(pair_sets)
+	// for i, pair_sets in pairs_combos {
+	// 	dump('$pair_sets ${classifier_combos[i]}')
 	// }
 	mut points_array := [][]RocPoint{cap: classifier_combos.len + 2}
 	// now convert the pair sets into points, for each combo
 	for i, pair_sets in pairs_combos {
 		// dump(classifier_combos[i])
 		// dump(pair_sets)
-		points_array << roc_values(pair_sets, [classifier_combos[i]])
+		points_array << roc_values(pair_sets, classifier_combos[i].map([it]))
 	}
 	// calculate auc values
 	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
