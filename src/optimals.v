@@ -97,10 +97,10 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		classifiers << '${setting.classifier_id}'
 	}
 	result.RocData = RocData{
-		pairs:       pairs
-		classifiers: classifiers
+		pairs:          pairs
+		classifiers:    classifiers
 		classifier_ids: classifier_ids
-		trace_text:  'Single classifier<br>cross-validations'
+		trace_text:     'Single classifier<br>cross-validations'
 	}
 	result.RocFiles = RocFiles{
 		datafile:     result.datafile_path
@@ -118,16 +118,16 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	all_optimals = uniques(all_optimals)
 	result.all_optimals = all_optimals
 	if opts.generate_combinations_flag {
-		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, result.all_optimals.map([it]),
-			opts.DisplaySettings.CombinationSizeLimits)
+		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
+			result.all_optimals.map([it]), opts.DisplaySettings.CombinationSizeLimits)
 		// sort by auc in ascending order (makes it easier to see the important ones)
 		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
 	}
 	if opts.show_flag || opts.expanded_flag {
 		mut print_result := result
 		if opts.generate_combinations_flag {
-		print_result.multi_classifier_combinations_for_auc = result.multi_classifier_combinations_for_auc[0..7]
-	}
+			print_result.multi_classifier_combinations_for_auc = result.multi_classifier_combinations_for_auc[0..7]
+		}
 		println('result in optimals: ${print_result}')
 	}
 	if opts.expanded_flag {
@@ -171,7 +171,6 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 }
 
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
-	
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
 	for id in classifier_ids {
 		settings << settings_array.filter(it.classifier_id == id[0])

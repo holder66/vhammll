@@ -152,5 +152,5 @@ fn testsuite_end() ! {
 fn test_mnist_train() {
 	datafile := os.join_path(os.home_dir(), 'mnist_train.tab')
 	testfile := 'datasets/mnist_test.tab'
-	result := verify(opts('-e -a 288 -b 2,2 -t $testfile $datafile', cmd: 'verify'))
+	result := verify(opts('-e -a 288 -b 2,2 -t ${testfile} ${datafile}', cmd: 'verify'))
 }
