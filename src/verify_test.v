@@ -14,7 +14,6 @@ fn testsuite_end() ! {
 	os.rmdir_all('tempfolders/tempfolder_verify')!
 }
 
-test_verify
 fn test_verify() ? {
 	mut opts := Options{
 		concurrency_flag: false
