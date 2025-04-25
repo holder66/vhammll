@@ -13,6 +13,10 @@ v run main.v optimals -e <path_to_settings_file>
 v run main.v optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
 
 Options:
+-cl --combination-limits: generates combinations of classifiers and calculates 
+       the area under the Receiver Operating Characteristic curve for each combination;
+       if -cl is followed by a pair of integers, those values are used as the lower 
+       and upper limits of combination length.
 -e --expanded: show expanded results on the console
 -g --graph: display a plot of the Receiver Operating Characteristic curve
 -p --purge: remove duplicate settings (ie settings with identical parameters)
@@ -99,9 +103,26 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		datafile:     result.datafile_path
 		settingsfile: path
 	}
-
+	// collect all the optimal classifiers
+	result.all_optimals << result.balanced_accuracy_max_classifiers
+	result.all_optimals << result.mcc_max_classifiers
+	result.all_optimals << result.correct_inferences_total_max_classifiers
+	for ids in result.correct_inferences_by_class_max_classifiers {
+		result.all_optimals << ids
+	}
+	result.all_optimals = uniques(result.all_optimals)
+	if opts.generate_combinations_flag {
+		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, result.all_optimals,
+			opts.DisplaySettings.CombinationSizeLimits)
+		// sort by auc in ascending order (makes it easier to see the important ones)
+		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
+	}
 	if opts.show_flag || opts.expanded_flag {
-		println('result in optimals: ${result}')
+		mut print_result := result
+		if opts.generate_combinations_flag {
+		print_result.multi_classifier_combinations_for_auc = result.multi_classifier_combinations_for_auc[0..7]
+	}
+		println('result in optimals: ${print_result}')
 	}
 	if opts.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
@@ -139,31 +160,32 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 			append_json_file(setting, opts.outputfile_path)
 		}
 	}
-	dump(opts)
-	result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, opts.DisplaySettings.CombinationSizeLimits)
+
 	return result
 }
 
-fn max_auc_combinations(settings_array []ClassifierSettings, limits CombinationSizeLimits) []AucClassifiers {
-	// probably good to start with a purged set
-	mut settings := purge_duplicate_settings(settings_array)
-	mut pairs := [][]f64{cap: settings.len}
-	mut classifiers := []int{cap: settings.len}
+fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
+	
+	mut settings := []ClassifierSettings{cap: classifier_ids.len}
+	for id in classifier_ids {
+		settings << settings_array.filter(it.classifier_id == id)
+	}
+	mut pairs := [][]f64{}
+	mut classifiers := []int{}
 	for setting in settings {
 		pairs << [setting.sens, setting.spec]
 		classifiers << setting.classifier_id
 	}
 	classifier_combos := combinations(classifiers, limits)
-	dump(classifier_combos)
 	pairs_combos := combinations(pairs, limits)
-	for pair_sets in pairs_combos {
-		dump(pair_sets)
-	}
+	// for pair_sets in pairs_combos {
+	// 	dump(pair_sets)
+	// }
 	mut points_array := [][]RocPoint{cap: classifier_combos.len + 2}
 	// now convert the pair sets into points, for each combo
 	for i, pair_sets in pairs_combos {
-		dump(classifier_combos[i])
-		dump(pair_sets)
+		// dump(classifier_combos[i])
+		// dump(pair_sets)
 		points_array << roc_values(pair_sets, classifier_combos[i])
 	}
 	// calculate auc values

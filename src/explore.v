@@ -5,6 +5,8 @@ module vhammll
 // over a range of attributes and a range of binning values.
 // ```sh
 // Options (also see the Options struct):
+// append_settings_flag: if true, appends classifier settings to an
+//  opts file;
 // bins: range for binning or slicing of continuous attributes;
 // uniform_bins: same number of bins for all continuous attributes;
 // number_of_attributes: range for attributes to include;

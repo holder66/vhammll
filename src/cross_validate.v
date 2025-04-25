@@ -63,6 +63,10 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 		}
 		return af_result // returns just the last result for multiple cross_validates
 	}
+	result := run_cross_validate(ds, opts)
+	if !opts.show_flag && !opts.expanded_flag && opts.command == 'cross' {
+		println('corrects: ${result.correct_counts} balanced_accuracy: ${result.balanced_accuracy:-6.2f} MCC: ${result.mcc:-7.3f} sens: ${result.sens:-7.3f} spec: ${result.spec:-4.3f} ma ${result.break_on_all_flag} mc ${result.combined_radii_flag} mt ${result.total_nn_counts_flag} ${opts.classifiers}')
+	}
 	return run_cross_validate(ds, opts)
 }
 
@@ -162,7 +166,6 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	if cross_result.pos_neg_classes.len == 2 {
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
-
 	if opts.command != 'explore' && (opts.show_flag || opts.expanded_flag) {
 		show_crossvalidation(cross_result, cross_opts)
 	}
@@ -170,7 +173,7 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		cross_result.command = 'cross'
 		save_json_file[CrossVerifyResult](cross_result, opts.outputfile_path)
 	}
-	if opts.append_settings_flag && opts.command != 'explore' {
+	if opts.append_settings_flag && opts.command == 'cross' {
 		append_cross_verify_settings_to_file(cross_result, opts)
 	}
 	return cross_result

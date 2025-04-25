@@ -41,7 +41,9 @@ pub mut:
 // -bp, --balanced-prevalences: Parameters.balance_prevalences_flag
 // -c --concurrent, permit parallel processing to use multiple cores: Options.concurrency_flag
 // -cl --combination-limits: sets minimum and maximum lengths for combinations
-//    of multiple classifiers: Options.DisplaySettings.CombinationSizeLimits
+//    of multiple classifiers: Options.DisplaySettings.CombinationSizeLimits;
+//    entering values for limits also sets the generate_combinations_flag so
+//    that classifier combinations will be generated.
 // -e --expanded, expanded results on the console: DisplaySettings.expanded_flag
 // -ea display information re trained attributes on the console, for
 //    classification operations; DisplaySettings.show_attributes_flag
@@ -117,7 +119,6 @@ pub fn cli(cli_options CliOptions) ! {
 	// opts.missings = cli_options.missings
 	// opts.integer_range_for_discrete = cli_options.integer_range_for_discrete
 	// opts.class_missing_purge_flag = cli_options.class_missing_purge_flag
-
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
@@ -204,8 +205,9 @@ fn get_options(args []string) Options {
 	if option(args, ['-cl', '--combination-limits']) != '' {
 		limits := parse_range(option(args, ['-cl', '--combination-limits']))
 		opts.DisplaySettings.CombinationSizeLimits = CombinationSizeLimits{
-			min: limits.first()
-			max: limits.last()
+			generate_combinations_flag: true
+			min:                        limits.first()
+			max:                        limits.last()
 		}
 	}
 	if option(args, ['-f', '--folds']) != '' {

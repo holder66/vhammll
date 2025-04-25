@@ -44,7 +44,7 @@ fn test_explore_traverse_all_flags() {
 	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 112
 	assert r[1].correct_counts == [50, 47, 50]
-	optimals(settingsfile, opts('-p -o ${purgedfile}'))
+	optimals(settingsfile, opts('-p -o ${purgedfile} -cl 2,4'))
 	r = read_multiple_opts(purgedfile)!
 	assert r.len == 32
 	assert r.filter(it.classifier_id == 11)[0].incorrect_counts == [50, 0, 50]

@@ -95,61 +95,39 @@ pub fn auc_roc(points []Point) f64 {
 	return auc
 }
 
-// fn combinations[T](arr []T) [][]T
-// Generates all possible combinations of elements in an array.
-// Optionally, specify lower and/or upper limits for combination length.
-pub fn combinations[T](arr []T, limits CombinationSizeLimits) [][]T {
+fn combinations[T](arr []T, limits CombinationSizeLimits) [][]T {
 	if arr == [] {
 		panic("can't make combinations from an empty array!")
 	}
+
 	max := if limits.max == 0 { arr.len } else { limits.max }
-	mut combos := [][]T{}
+	mut result := [][]T{}
+	n := arr.len
 	for size in limits.min .. max + 1 {
-		for start in 0 .. max - size + 1 {
-			combos << n_combinations(arr[start..], size)
+		mut indices := []int{len: size}
+		for i in 0 .. size {
+			indices[i] = i
+		}
+		for {
+			mut combo := []T{len: size}
+			for i, idx in indices {
+				combo[i] = arr[idx]
+			}
+			result << combo
+			mut i := size - 1
+			for i >= 0 && indices[i] == n - size + i {
+				i--
+			}
+			if i < 0 {
+				break
+			}
+			indices[i]++
+			for j in i + 1 .. size {
+				indices[j] = indices[j - 1] + 1
+			}
 		}
 	}
-	return combos
-}
-
-// fn combination[T](arr []T, first int, next int, n int) []T
-// Creates a single combination starting from a specific index.
-fn combination[T](arr []T, first int, next int, n int) []T {
-	mut combo := []T{}
-	combo << arr[first]
-	return combo_util(arr[next..next + n - 1], mut combo)
-}
-
-// fn combo_util[T](arr []T, mut combo []T) []T
-// Appends elements to a combination recursively.
-fn combo_util[T](arr []T, mut combo []T) []T {
-	if arr.len == 0 {
-		return combo
-	}
-	combo << arr[0]
-	return combo_util(arr[1..], mut combo)
-}
-
-// fn n_combo_util[T](arr []T, start int, next int, mut n_combo [][]T, n int) [][]T
-// Generates all combinations of a specific size recursively.
-fn n_combo_util[T](arr []T, start int, next int, mut n_combo [][]T, n int) [][]T {
-	if n_combo != [] {
-		if n_combo.last().last() == arr.last() {
-			return n_combo
-		}
-	}
-	n_combo << combination(arr, start, next, n)
-	return n_combo_util(arr[0..], start, next + 1, mut n_combo, n)
-}
-
-// fn n_combinations[T](arr []T, n int) [][]T
-// Generates all combinations of a specific size.
-fn n_combinations[T](arr []T, n int) [][]T {
-	if n < 2 || n > arr.len {
-		panic('combination length is out of range')
-	}
-	mut n_combo := [][]T{}
-	return n_combo_util(arr, 0, 1, mut n_combo, n)
+	return result
 }
 
 // idx_true returns the index of the first true element in boolean array a.
