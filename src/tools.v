@@ -14,7 +14,9 @@ import arrays
 // along with the corresponding list of classifier ID's,
 // and returns a list of Receiver Operating Characteristic plot points
 // (sensitivity vs 1 - specificity).
-pub fn roc_values(pairs [][]f64, classifier_ids []int) []RocPoint {
+pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
+	dump(pairs)
+	dump(classifier_ids)
 	if pairs.len < 1 {
 		panic('no sensitivity/specificity pairs provided to roc_values()')
 	}
@@ -72,6 +74,7 @@ pub fn roc_values(pairs [][]f64, classifier_ids []int) []RocPoint {
 	if Point{1, 1} !in points {
 		result << RocPoint{Point{1, 1}, '', []}
 	}
+	dump(result)
 	return result
 }
 

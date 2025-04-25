@@ -344,7 +344,7 @@ pub struct RocData {
 pub mut:
 	pairs          [][]f64
 	classifiers    []string
-	classifier_ids []int
+	classifier_ids [][]int
 	trace_text     string
 }
 

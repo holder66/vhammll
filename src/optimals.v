@@ -90,13 +90,16 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 	mut pairs := [][]f64{cap: sorted_roc_settings.len}
 	mut classifiers := []string{cap: sorted_roc_settings.len}
+	mut classifier_ids := [][]int{cap: sorted_roc_settings.len}
 	for setting in sorted_roc_settings {
 		pairs << [setting.sens, setting.spec]
+		classifier_ids << [setting.classifier_id]
 		classifiers << '${setting.classifier_id}'
 	}
 	result.RocData = RocData{
 		pairs:       pairs
 		classifiers: classifiers
+		classifier_ids: classifier_ids
 		trace_text:  'Single classifier<br>cross-validations'
 	}
 	result.RocFiles = RocFiles{
@@ -104,15 +107,18 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		settingsfile: path
 	}
 	// collect all the optimal classifiers
-	result.all_optimals << result.balanced_accuracy_max_classifiers
-	result.all_optimals << result.mcc_max_classifiers
-	result.all_optimals << result.correct_inferences_total_max_classifiers
+	mut all_optimals := []int{}
+	all_optimals << result.balanced_accuracy_max_classifiers
+	all_optimals << result.balanced_accuracy_max_classifiers
+	all_optimals << result.mcc_max_classifiers
+	all_optimals << result.correct_inferences_total_max_classifiers
 	for ids in result.correct_inferences_by_class_max_classifiers {
-		result.all_optimals << ids
+		all_optimals << ids
 	}
-	result.all_optimals = uniques(result.all_optimals)
+	all_optimals = uniques(all_optimals)
+	result.all_optimals = all_optimals
 	if opts.generate_combinations_flag {
-		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, result.all_optimals,
+		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, result.all_optimals.map([it]),
 			opts.DisplaySettings.CombinationSizeLimits)
 		// sort by auc in ascending order (makes it easier to see the important ones)
 		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
@@ -164,11 +170,11 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	return result
 }
 
-fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
+fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
 	
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
 	for id in classifier_ids {
-		settings << settings_array.filter(it.classifier_id == id)
+		settings << settings_array.filter(it.classifier_id == id[0])
 	}
 	mut pairs := [][]f64{}
 	mut classifiers := []int{}
@@ -186,7 +192,7 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []in
 	for i, pair_sets in pairs_combos {
 		// dump(classifier_combos[i])
 		// dump(pair_sets)
-		points_array << roc_values(pair_sets, classifier_combos[i])
+		points_array << roc_values(pair_sets, [classifier_combos[i]])
 	}
 	// calculate auc values
 	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
