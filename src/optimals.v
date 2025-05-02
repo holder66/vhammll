@@ -116,6 +116,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		all_optimals << ids
 	}
 	all_optimals = uniques(all_optimals)
+	all_optimals.sort(a < b)
 	result.all_optimals = all_optimals
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,

@@ -132,6 +132,5 @@ fn test_mnist_train() {
 		testfile := 'datasets/mnist_test.tab'
 		result := verify(opts('-e -a 288 -b 2,2 -t ${testfile} ${datafile}', cmd: 'verify'))
 		assert result.correct_count == 9597
-
 	}
 }

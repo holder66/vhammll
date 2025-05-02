@@ -2,7 +2,11 @@
 
 module vhammll
 
-fn explore_analytics2(expr ExploreResult) map[string]Analytics {
+// explore_analytics identifies the sets of classifier settings which provide the
+// maximum values for raw accuracy, balanced accuracy, maximum correct inferences for each
+// class, maximum incorrect inferences, and for datasets with two classes, maximum
+// Matthews Correlation Coefficient (MCC), true positives, and true negatives.
+fn explore_analytics(expr ExploreResult) map[string]Analytics {
 	mut m := map[string]Analytics{}
 	m['raw accuracy'] = Analytics{
 		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
@@ -39,7 +43,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 			idx:    idx_max(expr.array_of_results.map(it.mcc))
 			valeur: expr.array_of_results.map(it.mcc)[idx_max(expr.array_of_results.map(it.mcc))]
 		}
-		// println('in explore_analytics2: $expr.array_of_results[0]')
+		// println('in explore_analytics: $expr.array_of_results[0]')
 		m['true positives'] = Analytics{
 			idx:    idx_max(expr.array_of_results.map(it.t_p))
 			valeur: expr.array_of_results.map(it.t_p)[idx_max(expr.array_of_results.map(it.t_p))]
@@ -49,6 +53,7 @@ fn explore_analytics2(expr ExploreResult) map[string]Analytics {
 			valeur: expr.array_of_results.map(it.t_n)[idx_max(expr.array_of_results.map(it.t_n))]
 		}
 	}
+	// dump(m)
 	for _, mut s in m {
 		cvr := expr.array_of_results[s.idx]
 		s.settings = analytics_settings(cvr)

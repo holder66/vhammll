@@ -34,14 +34,14 @@ fn get_next_classifier_index(settingsfile_path string) int {
 }
 
 // append_explore_settings_to_file
-fn append_explore_settings_to_file(results ExploreResult, explore_analytics map[string]Analytics, opts Options) {
+fn append_explore_settings_to_file(results ExploreResult, explore_analytics_values map[string]Analytics, opts Options) {
 	next_classifier_index := get_next_classifier_index(opts.settingsfile_path)
 	mut indices := opts.classifiers.clone()
 	if indices == [] {
-		indices = []int{len: explore_analytics.len, init: index}
+		indices = []int{len: explore_analytics_values.len, init: index}
 	}
 	mut i := 0
-	for _, a in explore_analytics {
+	for _, a in explore_analytics_values {
 		if i in indices {
 			mut u := ClassifierSettings{
 				classifier_id: next_classifier_index + i

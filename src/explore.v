@@ -171,9 +171,9 @@ fn run_explore(opts Options) ExploreResult {
 	if opts.outputfile_path != '' {
 		save_json_file[ExploreResult](results, opts.outputfile_path)
 	}
-	mut explore_analytics := explore_analytics2(results)
+	mut explore_analytics_values := explore_analytics(results)
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
-		show_explore_trailer(results, explore_analytics, opts)
+		show_explore_trailer(results, explore_analytics_values, opts)
 	}
 	if opts.graph_flag {
 		// println('Just prior to plot_explore')
@@ -189,7 +189,7 @@ fn run_explore(opts Options) ExploreResult {
 		// highest balanced accuracy, true positives, and true
 		// negatives
 		// append_explore_settings_to_file(results, opts)
-		append_explore_settings_to_file(results, explore_analytics, opts)
+		append_explore_settings_to_file(results, explore_analytics_values, opts)
 	}
 	return results
 }

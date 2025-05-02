@@ -46,6 +46,7 @@ fn test_heart_statlog() ? {
 		arguments.args = ['cross', '-m#', '${mc}', '-m', '${saved_settings}', '-af', '${datafile}']
 		cli(arguments)!
 	}
+
 	// opts := Options{
 	// 	datafile_path: datafile
 	// 	multiple_classify_options_file_path: settingsfile

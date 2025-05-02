@@ -61,14 +61,25 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 	// home_dir := os.home_dir()
 	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_train.tab')
 	settingsfile := 'tempfolders/tempfolder_oxford/ox1-cancer.opts'
-	result0 := cross_validate(opts('-e -a 9 -b 2,2 -p -wr -ms $settingsfile $datafile', cmd: 'cross'))
-	
-	result1 := cross_validate(opts('-e -a 7 -b 2,2 -wr -w -p -ms $settingsfile $datafile', cmd: 'cross'))
+	result0 := cross_validate(opts('-e -a 9 -b 2,2 -p -wr -ms ${settingsfile} ${datafile}',
+		cmd: 'cross'
+	))
+
+	result1 := cross_validate(opts('-e -a 7 -b 2,2 -wr -w -p -ms ${settingsfile} ${datafile}',
+		cmd: 'cross'
+	))
 	// assert result1.correct_counts == []
-	result2 := cross_validate(opts('-e -a 4 -b 2,2 -bp -ms $settingsfile $datafile', cmd: 'cross'))
-	result3 := cross_validate(opts('-e -a 7 -b 2,2 -bp -ms $settingsfile $datafile', cmd: 'cross'))
-	result4 := cross_validate(opts('-e -a 8 -b 2,2 -wr -w -ms $settingsfile $datafile', cmd: 'cross'))
+	result2 := cross_validate(opts('-e -a 4 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
+		cmd: 'cross'
+	))
+	result3 := cross_validate(opts('-e -a 7 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
+		cmd: 'cross'
+	))
+	result4 := cross_validate(opts('-e -a 8 -b 2,2 -wr -w -ms ${settingsfile} ${datafile}',
+		cmd: 'cross'
+	))
 }
+
 // 	opts.number_of_attributes = [1]
 // 	opts.bins = [3, 3]
 // 	opts.weight_ranking_flag = true

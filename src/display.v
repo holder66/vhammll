@@ -53,7 +53,7 @@ pub fn display_file(path string, in_opts Options) {
 			for mut result in saved_er.array_of_results {
 				show_explore_line(result, opts.DisplaySettings)
 			}
-			analytics := explore_analytics2(saved_er)
+			analytics := explore_analytics(saved_er)
 			show_explore_trailer(saved_er, analytics, opts)
 			if opts.append_settings_flag {
 				// save the settings for the explore results with the
