@@ -2,6 +2,13 @@
 
 module vhammll
 
+struct BalAcc {
+	MaxSettings
+mut:
+	idx              int
+	accuracy_percent f64
+}
+
 // explore_analytics identifies the sets of classifier settings which provide the
 // maximum values for raw accuracy, balanced accuracy, maximum correct inferences for each
 // class, maximum incorrect inferences, and for datasets with two classes, maximum
@@ -12,11 +19,25 @@ fn explore_analytics(expr ExploreResult) map[string]Analytics {
 		valeur: expr.array_of_results.map(it.raw_acc)[idx_max(expr.array_of_results.map(it.raw_acc))]
 		idx:    idx_max(expr.array_of_results.map(it.raw_acc))
 	}
-	m['balanced accuracy'] = Analytics{
-		idx:    idx_max(expr.array_of_results.map(it.balanced_accuracy))
-		valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
+	// m['balanced accuracy'] = Analytics{
+	// 	idx:    idx_max(expr.array_of_results.map(it.balanced_accuracy))
+	// 	valeur: expr.array_of_results.map(it.balanced_accuracy)[idx_max(expr.array_of_results.map(it.balanced_accuracy))]
+	// }
+	mut bal_acc := []BalAcc{}
+	for i, value in expr.array_of_results {
+		bal_acc << BalAcc{
+			MaxSettings:      analytics_settings(value)
+			accuracy_percent: value.balanced_accuracy
+			idx:              i
+		}
 	}
-
+	bal_acc.sort(a.accuracy_percent > b.accuracy_percent)
+	for i, value in bal_acc[..3] {
+		m['balanced accuracy ${i}'] = Analytics{
+			idx:    value.idx
+			valeur: value.accuracy_percent
+		}
+	}
 	if expr.array_of_results[0].classes.len > 2 {
 		// println('expr.array_of_results[0].correct_inferences: ${expr.array_of_results[0].correct_inferences}')
 		m['correct inferences total'] = Analytics{
