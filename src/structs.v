@@ -262,11 +262,13 @@ pub struct OptimalsResult {
 	RocData
 	RocFiles
 pub mut:
+	settings_length int 
+	purged_settings_count int 
 	settingsfile_path                                   string
 	datafile_path                                       string
 	class_counts                                        []int
-	balanced_accuracy_max                               f64
-	balanced_accuracy_max_classifiers                   []int // refers to an array of classsifier ID values
+	best_balanced_accuracies                               []f64
+	best_balanced_accuracies_classifiers                   [][]int // refers to an array of classsifier ID values
 	mcc_max                                             f64
 	mcc_max_classifiers                                 []int // refers to an array of classsifier ID values
 	correct_inferences_total_max                        int

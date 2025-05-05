@@ -46,19 +46,25 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	} else {
 		settings = all_settings.clone()
 	}
+	mut balanced_accuracy_values := uniques(settings.map(it.balanced_accuracy))
+	balanced_accuracy_values.sort(a > b)
 	mut result := OptimalsResult{
 		settingsfile_path:                        path
 		datafile_path:                            settings[0].datafile_path
+		settings_length: all_settings.len  
+		purged_settings_count: settings.len
 		class_counts:                             settings[0].class_counts_int
 		classes:                                  []string{len: settings[0].class_counts_int.len, init: '${index}'}
-		balanced_accuracy_max:                    array_max(settings.map(it.balanced_accuracy))
-		balanced_accuracy_max_classifiers:        settings.filter(it.balanced_accuracy == array_max(settings.map(it.balanced_accuracy))).map(it.classifier_id)
+
+		best_balanced_accuracies:                    balanced_accuracy_values
 		mcc_max:                                  array_max(settings.map(it.mcc))
 		mcc_max_classifiers:                      settings.filter(it.mcc == array_max(settings.map(it.mcc))).map(it.classifier_id)
 		correct_inferences_total_max:             array_max(settings.map(array_sum(it.correct_counts)))
 		correct_inferences_total_max_classifiers: settings.filter(array_sum(it.correct_counts) == array_max(settings.map(array_sum(it.correct_counts)))).map(it.classifier_id)
 	}
-
+	for value in balanced_accuracy_values {
+		result.best_balanced_accuracies_classifiers << settings.filter(it.balanced_accuracy == value).map(it.classifier_id)
+	}
 	for i, _ in result.classes {
 		result.correct_inferences_by_class_max << array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max_classifiers << settings.filter(it.correct_counts[i] == array_max(settings.map(it.correct_counts[i]))).map(it.classifier_id)
@@ -108,8 +114,9 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 	// collect all the optimal classifiers
 	mut all_optimals := []int{}
-	all_optimals << result.balanced_accuracy_max_classifiers
-	all_optimals << result.balanced_accuracy_max_classifiers
+	for ids in result.best_balanced_accuracies_classifiers {
+		all_optimals << ids
+	}
 	all_optimals << result.mcc_max_classifiers
 	all_optimals << result.correct_inferences_total_max_classifiers
 	for ids in result.correct_inferences_by_class_max_classifiers {
@@ -137,8 +144,15 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		if opts.purge_flag {
 			println(lg('Duplicates purged: ${all_settings.len - settings.len}'))
 		}
-		println(c_u('Best balanced accuracy: ') + g('${result.balanced_accuracy_max:6.2f}%'))
-		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.balanced_accuracy_max_classifiers))
+		print(c_u('Highest balanced accuracy values (%): '))
+		println(g(result.best_balanced_accuracies.map('${it:6.2f}').join(', ')))
+		for i, setting in result.best_balanced_accuracies_classifiers {
+			println(g_b('For balanced accuracy: ${result.best_balanced_accuracies[i]:6.2f}%'))
+			show_multiple_classifier_settings_details(settings.filter(it.classifier_id in setting))
+		}
+		// dump(result.best_balanced_accuracies.map('${it:6.2f}').join(', '))
+		 // + g('${result.best_balanced_accuracies:6.2f}%'))
+		// show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.best_balanced_accuracies_classifiers))
 		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g('${result.mcc_max:7.3f}'))
 		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.mcc_max_classifiers))
 		println(c_u('Highest value for total correct inferences: ') +
