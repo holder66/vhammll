@@ -1,5 +1,6 @@
 // optimals.v
 module vhammll
+import arrays
 
 const optimals_help = '
 Description:
@@ -181,8 +182,52 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 			append_json_file(setting, opts.outputfile_path)
 		}
 	}
+	if opts.show_flag {
+		dump(limit_to_unique_attribute_number(settings, result.all_optimals).map(it.classifier_id))
 
+		println(m_u('Optimal classifiers in settings file: ${path}'))
+		println(lg('Total number of settings: ${all_settings.len}'))
+		if opts.purge_flag {
+			println(lg('Duplicates purged: ${all_settings.len - settings.len}'))
+		}
+		print(c_u('Highest balanced accuracy values (%): '))
+		println(g(result.best_balanced_accuracies.map('${it:6.2f}').join(', ')))
+		for i, setting in result.best_balanced_accuracies_classifiers {
+			println(g_b('For balanced accuracy: ${result.best_balanced_accuracies[i]:6.2f}%'))
+			show_multiple_classifier_settings_details(limit_to_unique_attribute_number(settings, setting))
+		}
+		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g('${result.mcc_max:7.3f}'))
+		// show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.mcc_max_classifiers))
+		show_multiple_classifier_settings_details(limit_to_unique_attribute_number(settings, result.mcc_max_classifiers))
+		println(c_u('Highest value for total correct inferences: ') +
+			g('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
+		show_multiple_classifier_settings_details(limit_to_unique_attribute_number(settings, result.correct_inferences_total_max_classifiers))
+		println(c_u('Best correct inferences by class:'))
+		for i, class in result.classes {
+			println(g_b('For class: ${class}') +
+				g('  ${result.correct_inferences_by_class_max[i]} / ${result.class_counts[i]}'))
+			show_multiple_classifier_settings_details(limit_to_unique_attribute_number(settings, result.correct_inferences_by_class_max_classifiers[i]))
+		}
+		println(c_u('All optimals settings:'))
+		show_multiple_classifier_settings_details(limit_to_unique_attribute_number(settings, result.all_optimals))
+		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
+		show_multiple_classifier_settings_details(sorted_roc_settings)
+	
+}
 	return result
+}
+
+fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classifier_ids []int) []ClassifierSettings {
+	mut uniques_attributes := uniques(arrays.flatten(settings_array.filter(it.classifier_id in classifier_ids).map(it.number_of_attributes)))
+	mut uniques_attributes_settings := []ClassifierSettings{}
+	for attribute_number in uniques_attributes {
+		for setting in settings_array {
+			if setting.number_of_attributes[0] != attribute_number { continue }
+				uniques_attributes_settings << setting
+				break
+		}
+	}
+	return uniques_attributes_settings
 }
 
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
