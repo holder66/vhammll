@@ -37,7 +37,7 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	mut er := explore(opts)
 	assert os.is_file(opts.settingsfile_path)
 	mut r := read_multiple_opts(opts.settingsfile_path)!
-	assert r.len == 5
+	assert r.len == 7
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
 	opts.show_attributes_flag = true
@@ -67,7 +67,7 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	opts.show_flag = true
 	// opts.expanded_flag = true
 	result_mult := cross_validate(opts)
-	assert cross_validate(opts).correct_counts == [8, 3], 'for classifiers 2 & 3'
+	assert cross_validate(opts).correct_counts == [9, 3], 'for classifiers 2 & 3'
 }
 
 fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
@@ -90,7 +90,7 @@ fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {
 	mut er := explore(opts)
 	assert os.is_file(opts.settingsfile_path)
 	mut r := read_multiple_opts(opts.settingsfile_path)!
-	assert r.len == 7
+	assert r.len == 9
 	display_file(opts.settingsfile_path, opts)
 	// repeat display with show attributes
 	opts.show_attributes_flag = true

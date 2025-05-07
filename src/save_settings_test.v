@@ -50,11 +50,11 @@ fn test_append_explore_cross_settings_to_file() {
 	explore(opts('-a 1,4 -b 2,7 -u -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
-	assert r.len == 7
+	assert r.len == 9
 	// now add another explore
 	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	r = read_multiple_opts(settingsfile)!
-	assert r.len == 14
+	assert r.len == 18
 }
 
 fn test_append_explore_verify_settings_to_file() {
@@ -64,9 +64,9 @@ fn test_append_explore_verify_settings_to_file() {
 	explore(opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'explore'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
-	assert r.len == 5
+	assert r.len == 7
 	// now add another explore
 	explore(opts('-w -a 2,4 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'explore'))
 	r = read_multiple_opts(settingsfile)!
-	assert r.len == 10
+	assert r.len == 14
 }

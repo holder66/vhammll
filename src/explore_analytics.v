@@ -32,7 +32,10 @@ fn explore_analytics(expr ExploreResult) map[string]Analytics {
 		}
 	}
 	bal_acc.sort(a.accuracy_percent > b.accuracy_percent)
-	for i, value in bal_acc[..3] {
+	if bal_acc.len > 3 {
+		bal_acc = bal_acc[..3].clone()
+	}
+	for i, value in bal_acc {
 		m['balanced accuracy ${i}'] = Analytics{
 			idx:    value.idx
 			valeur: value.accuracy_percent

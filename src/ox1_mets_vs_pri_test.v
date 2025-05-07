@@ -18,43 +18,38 @@ fn testsuite_end() ? {
 
 fn test_binning_for_overfitting() {
 	println(r_b('\nTo limit the possibility of overfitting, look for the binning number that gives the first peak in rank values:'))
-	cli(astr: 'rank -g -e -l 5 -b 2,7 ${os.home_dir()}/metabolomics/ox1_mets-train.tab')!
+	datafile := '${os.home_dir()}/metabolomics/ox1_mets-train.tab'
+	rank_attributes(opts('-g -e -l 5 -b 2,7 $datafile', cmd: 'rank'))
 	println(r_b('\nThe graph (when visible) shows that limiting binning to 4 will likely limit overfitting.'))
 }
 
-// fn test_explore_ox_mets_to_create_settings_file() {
-// 	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
-// 	home_dir := os.home_dir()
-// 	temp_file := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25.opts'
-// 	temp_purged := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25purged.opts'
-// 	saved_file := 'src/testdata/ox1metstrainb2-4a2-25purged.opts'
-// 	mut opts := Options{
-// 		command: 'explore'
-// 		// concurrency_flag:     true
-// 		datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
-// 		number_of_attributes: [2, 25]
-// 		bins:                 [2, 4]
-// 		append_settings_flag: true
-// 		traverse_all_flags:   true
-// 		settingsfile_path:    temp_file
-// 		expanded_flag:        true
-// 		positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
-// 	}
-// 	ds := load_file(opts.datafile_path, opts.LoadOptions)
-// 	explore(opts)
-// 	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
-// 	opts.purge_flag = true
-// 	opts.outputfile_path = temp_purged
-// 	optimals(opts.settingsfile_path, opts)
-// 	println(r_b('\nVerify that the temporary purged settings file is identical to settings file ${saved_file}. If the latter file does not exist, copy the temporary file to that path.'))
-// 	if os.is_file(saved_file) {
-// 		saved := os.read_file(saved_file)!
-// 		temp := os.read_file(temp_purged)!
-// 		// assert saved == temp
-// 	} else {
-// 		os.cp(temp_purged, saved_file)!
-// 	}
-// }
+fn test_explore_ox_mets_to_create_settings_file() {
+	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
+	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_mets-train.tab')
+	settingsfile := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25_expanded.opts'
+	savedsettings := 'src/testdata/ox1metstrainb2-4a2-25_expanded.opts'
+	// mut opts := Options{
+	// 	command: 'explore'
+	// 	// concurrency_flag:     true
+	// 	datafile_path:        os.join_path(home_dir, 'metabolomics', 'ox1_mets-train.tab')
+	// 	number_of_attributes: [2, 25]
+	// 	bins:                 [2, 4]
+	// 	append_settings_flag: true
+	// 	traverse_all_flags:   true
+	// 	settingsfile_path:    temp_file
+	// 	expanded_flag:        true
+	// 	positive_class:       'Met' // because this class has a higher prevalence than 'Pri' in this dataset
+	// }
+	explore(opts('-e -af -pos Met -ms $settingsfile -b 2,4 -a 2,25 $datafile', cmd: 'explore'))
+	println(r_b('\nShow the optimal settings (after purging for duplicate settings), and save the purged settings to a temporary file:'))
+	// opts.purge_flag = true
+	// opts.outputfile_path = temp_purged
+	optimals(settingsfile, opts('-p -s'))
+	println(r_b('\nIf the saved settings file ${savedsettings} does not exist, copy the temporary file to that path.'))
+	if !os.is_file(savedsettings) {
+		os.cp(settingsfile, savedsettings)!
+	}
+}
 
 fn test_optimal_settings() {
 	// do_optimals(opts('-g -e -b 2,7 -pos Met src/testdata/ox1metstrainb2-4a2-25purged.opts'))
@@ -78,8 +73,8 @@ fn test_optimal_settings() {
 // 	}
 // 	println(r_b('\nVerify that classifiers 20, 30, 85, and 100 correspond to the settings giving best balanced accuracy of 78.79%, best Matthews Correlation Coefficient of 0.604, and highest total correct inferences of 14/17;'))
 // 	assert multiple_classifier_settings.filter(it.classifier_id == 100)[0].mcc == 0.6038596398555418
-// 	assert result.balanced_accuracy_max == 78.7878787878788
-// 	assert result.balanced_accuracy_max_classifiers == [20, 30, 85, 100]
+// 	assert result.best_balanced_accuracies == 78.7878787878788
+// 	assert result.best_balanced_accuracies_classifiers == [20, 30, 85, 100]
 // 	println(r_b('and verify that classifier 0 gives the highest sensitivity of 0.909, and classifier 24 the highest specificity of 0.833'))
 // 	assert multiple_classifier_settings.filter(it.classifier_id == 0)[0].incorrect_counts == [
 // 		1,
@@ -122,7 +117,7 @@ fn test_multiple_crossvalidate_of_ox_mets() {
 fn test_ox_mets_multi_verify() {
 	mut result := CrossVerifyResult{}
 	// result = verify(opts('-e -pos Met -a 4 -b 1,4 -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
-	result = verify(opts(' -pos Met -m src/testdata/ox1metstrainb2-4a2-25purged.opts -m# 150,134,154 -af -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
+	result = verify(opts(' -pos Met -m src/testdata/ox1met_expanded.opts -m# 150,134,154 -af -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
 	println(result.mcc)
 	// 	mut result := CrossVerifyResult{}
 	// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
@@ -193,8 +188,8 @@ fn test_ox_mets_multi_verify() {
 // 	}
 // 	println(r_b('\nVerify that classifiers 0, 5, 10, etc correspond to the settings giving best balanced accuracy of 100%, best Matthews Correlation Coefficient of 1.0, and highest total correct inferences of 7/7;'))
 // 	assert multiple_classifier_settings.filter(it.classifier_id == 10)[0].mcc == 1.0
-// 	assert result.balanced_accuracy_max == 100.0
-// 	assert result.balanced_accuracy_max_classifiers == [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+// 	assert result.best_balanced_accuracies == 100.0
+// 	assert result.best_balanced_accuracies_classifiers == [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
 // 		55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150,
 // 		155]
 
