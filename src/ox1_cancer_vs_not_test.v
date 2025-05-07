@@ -55,30 +55,30 @@ fn test_note_re_datafile_locations() {
 // 	plot_mult_roc([optimals_result.RocData, rocdata2, rocdata3], files)
 // }
 
-fn test_oxford_crossvalidate_to_create_settings_file() {
-	println(r_b('\nStart by creating a settings file for the four sets of classifier settings,'))
-	println(r_b('by doing four cross-validations with the append_settings_flag set:'))
-	// home_dir := os.home_dir()
-	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_train.tab')
-	settingsfile := 'tempfolders/tempfolder_oxford/ox1-cancer.opts'
-	result0 := cross_validate(opts('-e -a 9 -b 2,2 -p -wr -ms ${settingsfile} ${datafile}',
-		cmd: 'cross'
-	))
+// fn test_oxford_crossvalidate_to_create_settings_file() {
+// 	println(r_b('\nStart by creating a settings file for the four sets of classifier settings,'))
+// 	println(r_b('by doing four cross-validations with the append_settings_flag set:'))
+// 	// home_dir := os.home_dir()
+// 	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_train.tab')
+// 	settingsfile := 'tempfolders/tempfolder_oxford/ox1-cancer.opts'
+// 	result0 := cross_validate(opts('-e -a 9 -b 2,2 -p -wr -ms ${settingsfile} ${datafile}',
+// 		cmd: 'cross'
+// 	))
 
-	result1 := cross_validate(opts('-e -a 7 -b 2,2 -wr -w -p -ms ${settingsfile} ${datafile}',
-		cmd: 'cross'
-	))
-	// assert result1.correct_counts == []
-	result2 := cross_validate(opts('-e -a 4 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
-		cmd: 'cross'
-	))
-	result3 := cross_validate(opts('-e -a 7 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
-		cmd: 'cross'
-	))
-	result4 := cross_validate(opts('-e -a 8 -b 2,2 -wr -w -ms ${settingsfile} ${datafile}',
-		cmd: 'cross'
-	))
-}
+// 	result1 := cross_validate(opts('-e -a 7 -b 2,2 -wr -w -p -ms ${settingsfile} ${datafile}',
+// 		cmd: 'cross'
+// 	))
+// 	// assert result1.correct_counts == []
+// 	result2 := cross_validate(opts('-e -a 4 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
+// 		cmd: 'cross'
+// 	))
+// 	result3 := cross_validate(opts('-e -a 7 -b 2,2 -bp -ms ${settingsfile} ${datafile}',
+// 		cmd: 'cross'
+// 	))
+// 	result4 := cross_validate(opts('-e -a 8 -b 2,2 -wr -w -ms ${settingsfile} ${datafile}',
+// 		cmd: 'cross'
+// 	))
+// }
 
 // 	opts.number_of_attributes = [1]
 // 	opts.bins = [3, 3]
@@ -124,107 +124,90 @@ fn test_oxford_crossvalidate_to_create_settings_file() {
 // 	}
 // }
 
-// fn test_oxford_settings_file() {
-// 	println(r_b('\nConfirm that a settings file was successfully created by displaying it, along with'))
-// 	println(r_b('the attributes on which each of the four classifiers was trained:'))
-// 	home_dir := os.home_dir()
-// 	opts := Options{
-// 		expanded_flag:        true
-// 		show_attributes_flag: true
-// 	}
-// 	if os.is_file('tempfolders/tempfolder_oxford/oxford_settings.opts') {
-// 		display_file('tempfolders/tempfolder_oxford/oxford_settings.opts', opts)
-// 	} else {
-// 		println(r_b('\nWhen a settings file was not created, display the saved settings file instead:'))
-// 		display_file(os.join_path('testdata/oxford_settings.opts'), opts)
-// 	}
-// }
+fn test_oxford_settings_file() {
+	println(r_b('\nConfirm that a settings file was successfully created by displaying it, along with'))
+	println(r_b('the attributes on which each of the four classifiers was trained:'))
+	savedsettings := 'src/testdata/ox1trainb2-6a2-15expanded.opts'
+	settingsfile := 'tempfolders/tempfolder_oxford/oxford_settings.opts'
+	if os.is_file(settingsfile) {
+		optimals(settingsfile, opts('-p -s'))
+	} else {
+		println(r_b('\nWhen a settings file was not created, display the saved settings file instead:'))
+		optimals(savedsettings, opts('-p -s -cl 2,6'))
+	}
+}
 
-// fn test_oxford_multi_crossvalidate() {
-// 	println(r_b('\nConfirm that the saved settings file can be successfully used in a multiple classifier paradigm.'))
-// 	home_dir := os.home_dir()
-// 	mut opts := Options{
-// 		command:                             'cross'
-// 		datafile_path:                       os.join_path(home_dir, 'metabolomics', 'ox1_train.tab')
-// 		multiple_classify_options_file_path: 'tempfolders/tempfolder_oxford/oxford_settings.opts'
-// 		// verbose_flag:         true
-// 		multiple_flag: true
-// 		expanded_flag: true
-// 		// show_attributes_flag: true
-// 	}
-// 	ds := load_file(opts.datafile_path)
-// 	// use a single classifier in a multi-classifier cross-validation
-// 	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
-// 	opts.classifiers = [0]
-// 	println(r_b('\nFor classifier 0:'))
-// 	// cross_validate(opts)
-// 	assert cross_validate(opts).confusion_matrix_map == {
-// 		'Non': {
-// 			'Non': 146.0
-// 			'Can': 29.0
-// 		}
-// 		'Can': {
-// 			'Non': 4.0
-// 			'Can': 13.0
-// 		}
-// 	}
-// 	// use a different classifier in a multi-classifier cross-validation
-// 	opts.classifiers = [3]
-// 	println(r_b('\nAnd for classifier 3:'))
-// 	// cross_validate(opts)
-// 	assert cross_validate(opts).confusion_matrix_map == {
-// 		'Non': {
-// 			'Non': 152.0
-// 			'Can': 23.0
-// 		}
-// 		'Can': {
-// 			'Non': 4.0
-// 			'Can': 13.0
-// 		}
-// 	}
-// 	println(r_b('\nNext, test using all four classifiers. We expect a balanced accuracy of 86.32%'))
-// 	// with all 4 classifiers, we get the highest balanced accuracy of 86.32%:
-// 	opts.classifiers = []
-// 	// cross_validate(opts)
-// 	assert cross_validate(opts).confusion_matrix_map == {
-// 		'Non': {
-// 			'Non': 158.0
-// 			'Can': 17.0
-// 		}
-// 		'Can': {
-// 			'Non': 3.0
-// 			'Can': 14.0
-// 		}
-// 	}
-// 	println(r_b('\nUsing only the first 3 classifiers, we should get maximum sensitivity of 0.882'))
-// 	// with the first 3 classifiers we get the highest sensitivity of 0.882:
-// 	opts.classifiers = [0, 1, 2]
-// 	// cross_validate(opts)
-// 	assert cross_validate(opts).confusion_matrix_map == {
-// 		'Non': {
-// 			'Non': 124.0
-// 			'Can': 51.0
-// 		}
-// 		'Can': {
-// 			'Non': 2.0
-// 			'Can': 15.0
-// 		}
-// 	}
-// 	println(r_b('\nAdding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754'))
-// 	// adding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754:
-// 	opts.combined_radii_flag = true
-// 	// cross_validate(opts)
-// 	assert cross_validate(opts).confusion_matrix_map == {
-// 		'Non': {
-// 			'Non': 132.0
-// 			'Can': 43.0
-// 		}
-// 		'Can': {
-// 			'Non': 2.0
-// 			'Can': 15.0
-// 		}
-// 	}
-// }
+fn test_oxford_multi_crossvalidate() {
+	println(r_b('\nConfirm that the saved settings file can be successfully used in a multiple classifier paradigm.'))
+
+	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_train.tab')
+	savedsettings := 'src/testdata/ox1trainb2-6a2-15expanded.opts'
+
+	// use a single classifier in a multi-classifier cross-validation
+	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
+	println(r_b('\nFor classifier 2:'))
+	assert cross_validate(opts('-e -m# 2 -m ${savedsettings} ${datafile}', cmd: 'cross')).correct_counts == [
+		174,
+		7,
+	]
+	// use a different classifier in a multi-classifier cross-validation
+	// opts.classifiers = [3]
+	println(r_b('\nAnd for classifiers 0,9,45,87,189:'))
+	cross_validate(opts('-e -m# 0,9,45,87,189 -m ${savedsettings} ${datafile}', cmd: 'cross'))
+	// cross_validate(opts)
+	// assert cross_validate(opts).confusion_matrix_map == {
+	// 	'Non': {
+	// 		'Non': 152.0
+	// 		'Can': 23.0
+	// 	}
+	// 	'Can': {
+	// 		'Non': 4.0
+	// 		'Can': 13.0
+	// 	}
+	// }
+	println(r_b('\nNext, test using all four classifiers. We expect a balanced accuracy of 86.32%'))
+	// with all 4 classifiers, we get the highest balanced accuracy of 86.32%:
+	// opts.classifiers = []
+	// // cross_validate(opts)
+	// assert cross_validate(opts).confusion_matrix_map == {
+	// 	'Non': {
+	// 		'Non': 158.0
+	// 		'Can': 17.0
+	// 	}
+	// 	'Can': {
+	// 		'Non': 3.0
+	// 		'Can': 14.0
+	// 	}
+	// }
+	println(r_b('\nUsing only the first 3 classifiers, we should get maximum sensitivity of 0.882'))
+	// with the first 3 classifiers we get the highest sensitivity of 0.882:
+	// opts.classifiers = [0, 1, 2]
+	// cross_validate(opts)
+	// assert cross_validate(opts).confusion_matrix_map == {
+	// 	'Non': {
+	// 		'Non': 124.0
+	// 		'Can': 51.0
+	// 	}
+	// 	'Can': {
+	// 		'Non': 2.0
+	// 		'Can': 15.0
+	// 	}
+	// }
+	println(r_b('\nAdding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754'))
+	// adding the combined radius flag -mc maintains sensitivity but increases specificity to 0.754:
+	// opts.combined_radii_flag = true
+	// cross_validate(opts)
+	// assert cross_validate(opts).confusion_matrix_map == {
+	// 	'Non': {
+	// 		'Non': 132.0
+	// 		'Can': 43.0
+	// 	}
+	// 	'Can': {
+	// 		'Non': 2.0
+	// 		'Can': 15.0
+	// 	}
+	// }
+}
 
 // fn test_oxford_multi_verify() {
 // 	println(r_b('\nWe can apply the 4 classifier settings from previous to train classifiers on'))

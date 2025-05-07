@@ -202,6 +202,7 @@ pub mut:
 	generate_roc_flag    bool
 	limit_output         int
 	overfitting_flag     bool
+	all_attributes_flag  bool
 }
 
 @[params]
@@ -262,23 +263,29 @@ pub struct OptimalsResult {
 	RocData
 	RocFiles
 pub mut:
-	settings_length int 
-	purged_settings_count int 
+	settings_length                                     int
+	settings_purged                                     int
+	all_attributes_flag                                 bool
 	settingsfile_path                                   string
 	datafile_path                                       string
 	class_counts                                        []int
-	best_balanced_accuracies                               []f64
-	best_balanced_accuracies_classifiers                   [][]int // refers to an array of classsifier ID values
+	best_balanced_accuracies                            []f64
+	best_balanced_accuracies_classifiers_all            [][]int // refers to an array of classsifier ID values
+	best_balanced_accuracies_classifiers                [][]int
 	mcc_max                                             f64
-	mcc_max_classifiers                                 []int // refers to an array of classsifier ID values
+	mcc_max_classifiers_all                             []int // refers to an array of classsifier ID values
+	mcc_max_classifiers                                 []int
 	correct_inferences_total_max                        int
-	correct_inferences_total_max_classifiers            []int // refers to an array of classsifier ID values
+	correct_inferences_total_max_classifiers_all        []int // refers to an array of classsifier ID values
+	correct_inferences_total_max_classifiers            []int
 	classes                                             []string
 	correct_inferences_by_class_max                     []int
-	correct_inferences_by_class_max_classifiers         [][]int // refers to an array of classsifier ID values
+	correct_inferences_by_class_max_classifiers_all     [][]int // refers to an array of classsifier ID values
+	correct_inferences_by_class_max_classifiers         [][]int
 	receiver_operating_characteristic_settings          []int
 	reversed_receiver_operating_characteristic_settings []int
 	all_optimals                                        []int
+	all_optimals_unique_attributes                      []int
 	multi_classifier_combinations_for_auc               []AucClassifiers
 }
 

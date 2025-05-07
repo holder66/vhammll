@@ -41,7 +41,7 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	assert opt_res.RocData.classifiers == ['6', '0', '43', '22']
 	assert opt_res.mcc_max_classifiers == [22, 23, 24, 78, 79, 134, 135, 136, 190, 191, 192]
 	result := cross_validate(opts('-m# 22,23,9 -m ${settingsfile} -af ${datafile}'))
-	assert result.correct_counts == [9,2]
+	assert result.correct_counts == [9, 2]
 }
 
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {

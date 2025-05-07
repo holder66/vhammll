@@ -25,6 +25,8 @@ pub mut:
 //
 // Flags and options (note that most are specific to commands):
 // -a --attributes, followed by one, two, or 3 integers: Parameters.number_of_attributes
+// -aa --all-attributes: for each category of optimals, retain all settings (the
+//    default is to retain only settings with unique attribute numbers in each category);
 // -af --all-flags: Options.traverse_all_flags
 // -b --bins, followed by one, two, or 3 integers: Binning
 //    A single value will be used for all attributes; two integers for a range of bin
@@ -198,6 +200,7 @@ fn get_options(args []string) Options {
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])
 	opts.random_pick = flag(args, ['-rand'])
 	opts.generate_roc_flag = flag(args, ['-roc'])
+	opts.all_attributes_flag = flag(args, ['-aa', '--all_attributes'])
 
 	if option(args, ['-a', '--attributes']) != '' {
 		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
