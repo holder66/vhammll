@@ -17,7 +17,7 @@ fn testsuite_end() ! {
 
 fn test_display_multiple_classifier_settings() ? {
 	displayfile := 'src/testdata/bcw.opts'
-	mut opts := Options{
+	mut optsvar := Options{
 		classifiers: [3, 5, 6]
 	}
 

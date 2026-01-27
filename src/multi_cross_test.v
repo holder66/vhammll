@@ -39,7 +39,8 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	er := explore(opts('-af -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	opt_res := optimals(settingsfile, opts('-s -p -cl 3,4'))
 	assert opt_res.RocData.classifiers == ['6', '0', '43', '22']
-	assert opt_res.mcc_max_classifiers == [22, 23, 24, 78, 79, 134, 135, 136, 190, 191, 192]
+	assert opt_res.mcc_max_classifiers_all == [22, 23, 24, 78, 79, 134, 135, 136, 190, 191, 192]
+	assert opt_res.mcc_max_classifiers == [22, 23, 24]
 	result := cross_validate(opts('-m# 22,23,9 -m ${settingsfile} -af ${datafile}'))
 	assert result.correct_counts == [9, 2]
 }
@@ -66,8 +67,8 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 	datafile := 'datasets/UCI/heart-statlog.arff'
 	settingsfile := 'tempfolders/tempfolder_multi_cross/heart-statlog.opts'
 	savedsettings := 'src/testdata/heart-statlog.opts'
-	mut result := optimals(savedsettings, opts('-p -cl 2,2'))
-	assert result.multi_classifier_combinations_for_auc.first().auc == 0.8500000000000001
+	mut result := optimals(savedsettings, opts('-s -p -cl 2,7'))
+	assert result.multi_classifier_combinations_for_auc.first().auc == 0.8484166666666667
 	// assert result.multi_classifier_combinations_for_auc.first().classifier_ids == [40, 120]
 	mut res := cross_validate(opts('-m ${savedsettings} -m# 80 ${datafile}'))
 	assert res.correct_counts == [96, 135]

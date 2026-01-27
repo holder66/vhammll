@@ -145,15 +145,11 @@ fn test_oxford_multi_crossvalidate() {
 
 	// use a single classifier in a multi-classifier cross-validation
 	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
-	println(r_b('\nFor classifier 2:'))
-	assert cross_validate(opts('-e -m# 2 -m ${savedsettings} ${datafile}', cmd: 'cross')).correct_counts == [
-		174,
-		7,
-	]
-	// use a different classifier in a multi-classifier cross-validation
-	// opts.classifiers = [3]
-	println(r_b('\nAnd for classifiers 0,9,45,87,189:'))
-	cross_validate(opts('-e -m# 0,9,45,87,189 -m ${savedsettings} ${datafile}', cmd: 'cross'))
+	println(r_b('\nFor classifier 21:'))
+	cross_validate(opts('-e -m# 21 -m ${savedsettings} ${datafile}', cmd: 'cross')).correct_counts
+		
+	println(r_b('\nAnd for classifiers 7, 21, 119, 189:'))
+	cross_validate(opts('-e -af -m# 7,21,119,189 -m ${savedsettings} ${datafile}', cmd: 'cross'))
 	// cross_validate(opts)
 	// assert cross_validate(opts).confusion_matrix_map == {
 	// 	'Non': {

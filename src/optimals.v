@@ -151,7 +151,8 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	if opts.show_flag || opts.expanded_flag {
 		mut print_result := result
 		if opts.generate_combinations_flag {
-			print_result.multi_classifier_combinations_for_auc = result.multi_classifier_combinations_for_auc[0..7]
+			slice_size := if result.multi_classifier_combinations_for_auc.len >= 7 {7} else {result.multi_classifier_combinations_for_auc.len}
+			print_result.multi_classifier_combinations_for_auc = result.multi_classifier_combinations_for_auc[0..slice_size]
 		}
 		println('result in optimals: ${print_result}')
 	}
@@ -249,8 +250,12 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 }
 
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
-	if limits.min > classifier_ids.len || limits.max > classifier_ids.len {
+	mut new_limits := limits
+	if limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
+	}
+	if limits.max > classifier_ids.len {
+		new_limits.max = classifier_ids.len
 	}
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
 	for id in classifier_ids {
@@ -264,8 +269,8 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]
 		classifiers << setting.classifier_id
 	}
 	// dump(classifiers)
-	classifier_combos := combinations(classifiers, limits)
-	pairs_combos := combinations(pairs, limits)
+	classifier_combos := combinations(classifiers, new_limits)
+	pairs_combos := combinations(pairs, new_limits)
 	// for i, pair_sets in pairs_combos {
 	// 	dump('$pair_sets ${classifier_combos[i]}')
 	// }

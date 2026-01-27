@@ -27,14 +27,22 @@ fn testsuite_end() ? {
 // 	println(r_b('\nDo an explore using cross-validation on the ox1_mets-train.tab dataset, over all combinations of settings (with the traverse_all_flags flag set to true). Save the settings in a temporary settings file.'))
 // 	datafile := os.join_path(os.home_dir(), 'metabolomics', 'ox1_mets-train.tab')
 // 	settingsfile := 'tempfolders/tempfolder_ox1_mets/ox1metstrainb2-4a2-25_expanded.opts'
-// 	savedsettings := 'src/testdata/ox1metstrainb2-4a2-25_expanded.opts'
-// 	explore(opts('-e -af -pos Met -ms $settingsfile -b 2,4 -a 2,25 $datafile', cmd: 'explore'))
+// 	mut savedsettings := 'src/testdata/ox1metstrainb2-4a2-25_expanded.opts'
+// 	// explore(opts('-e -af -pos Met -ms $settingsfile -b 2,4 -a 2,25 $datafile', cmd: 'explore'))
+// 	// println(r_b('\nShow the optimal settings after purging for duplicate settings'))
+// 	// optimals(settingsfile, opts('-p -s'))
+// 	// println(r_b('\nIf the saved settings file ${savedsettings} does not exist, copy the temporary file to that path.'))
+// 	// if !os.is_file(savedsettings) {
+// 	// 	os.cp(settingsfile, savedsettings)!
+// 	// }
+// 	savedsettings = 'src/testdata/ox1metstrainb2-5a2-25_expanded.opts'
+// 	explore(opts('-e -af -pos Met -ms $savedsettings -b 2,5 -a 2,25 $datafile', cmd: 'explore'))
 // 	println(r_b('\nShow the optimal settings after purging for duplicate settings'))
-// 	optimals(settingsfile, opts('-p -s'))
-// 	println(r_b('\nIf the saved settings file ${savedsettings} does not exist, copy the temporary file to that path.'))
-// 	if !os.is_file(savedsettings) {
-// 		os.cp(settingsfile, savedsettings)!
-// 	}
+// 	optimals(savedsettings, opts('-p -s'))
+// 	// println(r_b('\nIf the saved settings file ${savedsettings} does not exist, copy the temporary file to that path.'))
+// 	// if !os.is_file(savedsettings) {
+// 	// 	os.cp(settingsfile, savedsettings)!
+// 	// }
 // }
 
 // fn test_optimal_settings() {
@@ -104,11 +112,15 @@ fn test_ox_mets_multi_verify() {
 	mut result := CrossVerifyResult{}
 	datafile := '${os.home_dir()}/metabolomics/ox1_mets-train.tab'
 	testfile := '${os.home_dir()}/metabolomics/ox1_mets-test.tab'
-	savedsettings := 'src/testdata/ox1met_expanded.opts'
-	optimals(savedsettings, opts('-s -p'))
-	// result = verify(opts('-e -pos Met -a 4 -b 1,4 -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
-	// result = verify(opts(' -pos Met -m src/testdata/ox1met_expanded.opts -m# 150,134,154 -af -t ${os.home_dir()}/metabolomics/ox1_mets-test.tab ${os.home_dir()}/metabolomics/ox1_mets-train.tab'))
-	// println(result.mcc)
+	savedsettings := 'src/testdata/ox1metstrainb2-5a2-25_expanded.opts'
+	opt_result := optimals(savedsettings, opts('-s -p -cl 3,5'))
+	result = verify(opts('-e -ea -pos Met -a 4 -b 1,4 -t $testfile $datafile'))
+// 	for combo in opt_result.multi_classifier_combinations_for_auc.filter(it.auc == 1.0).map(it.classifier_ids) {
+// 		str_combo := combo.map('${it}').join(',')
+// 	result = verify(opts(' -pos Met -m $savedsettings -m# $str_combo -af -t $testfile $datafile'))
+// 	if result.correct_counts == [5, 1] {break}
+// }
+	result = verify(opts('-e -ea -pos Met -m $savedsettings -m# 0,5,142,168,170 -ma -mt -t $testfile $datafile', cmd: 'verify'))
 	// 	mut result := CrossVerifyResult{}
 	// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
 	// 	println(r_b('the entire mets-train dataset of 17 cases, and then classify the 7 cases in the'))
