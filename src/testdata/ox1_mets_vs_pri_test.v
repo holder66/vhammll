@@ -114,13 +114,15 @@ fn test_ox_mets_multi_verify() {
 	testfile := '${os.home_dir()}/metabolomics/ox1_mets-test.tab'
 	savedsettings := 'src/testdata/ox1metstrainb2-5a2-25_expanded.opts'
 	opt_result := optimals(savedsettings, opts('-s -p -cl 3,5'))
-	result = verify(opts('-e -ea -pos Met -a 4 -b 1,4 -t $testfile $datafile'))
-// 	for combo in opt_result.multi_classifier_combinations_for_auc.filter(it.auc == 1.0).map(it.classifier_ids) {
-// 		str_combo := combo.map('${it}').join(',')
-// 	result = verify(opts(' -pos Met -m $savedsettings -m# $str_combo -af -t $testfile $datafile'))
-// 	if result.correct_counts == [5, 1] {break}
-// }
-	result = verify(opts('-e -ea -pos Met -m $savedsettings -m# 0,5,142,168,170 -ma -mt -t $testfile $datafile', cmd: 'verify'))
+	result = verify(opts('-e -ea -pos Met -a 4 -b 1,4 -t ${testfile} ${datafile}'))
+	// 	for combo in opt_result.multi_classifier_combinations_for_auc.filter(it.auc == 1.0).map(it.classifier_ids) {
+	// 		str_combo := combo.map('${it}').join(',')
+	// 	result = verify(opts(' -pos Met -m $savedsettings -m# $str_combo -af -t $testfile $datafile'))
+	// 	if result.correct_counts == [5, 1] {break}
+	// }
+	result = verify(opts('-e -ea -pos Met -m ${savedsettings} -m# 0,5,142,168,170 -ma -mt -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	// 	mut result := CrossVerifyResult{}
 	// 	println(r_b('\nWe can apply the classifier settings from previous to train classifiers on'))
 	// 	println(r_b('the entire mets-train dataset of 17 cases, and then classify the 7 cases in the'))

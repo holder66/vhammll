@@ -11,9 +11,9 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolders/tempfolder_oxford')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_oxford')!
-}
+// fn testsuite_end() ? {
+// 	os.rmdir_all('tempfolders/tempfolder_oxford')!
+// }
 
 fn test_note_re_datafile_locations() {
 	println(r_b("\nThis test file assumes that the Oxford dataset train and test files are in\na folder named 'metabolomics', and that this folder is itself in the user's home directory."))
@@ -147,7 +147,7 @@ fn test_oxford_multi_crossvalidate() {
 	println(r_b('\nFirst, test that when using only one classifier in a multiple classifier paradigm, we get the same\nas in single classifier paradigm.'))
 	println(r_b('\nFor classifier 21:'))
 	cross_validate(opts('-e -m# 21 -m ${savedsettings} ${datafile}', cmd: 'cross')).correct_counts
-		
+
 	println(r_b('\nAnd for classifiers 7, 21, 119, 189:'))
 	cross_validate(opts('-e -af -m# 7,21,119,189 -m ${savedsettings} ${datafile}', cmd: 'cross'))
 	// cross_validate(opts)

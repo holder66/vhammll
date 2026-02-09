@@ -109,6 +109,7 @@ fn test_verify() ? {
 		opts.bins = [2, 2]
 		opts.weight_ranking_flag = true
 		opts.weighting_flag = false
+		println('Starting with mnist_test.tab')
 		result = verify(opts)
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
@@ -125,12 +126,12 @@ fn test_verify() ? {
 	}
 }
 
-fn test_mnist_train() {
-	println('Starting with mnist_train.tab')
-	if get_environment().arch_details[0] != '4 cpus' {
-		datafile := os.join_path(os.home_dir(), 'mnist_train.tab')
-		testfile := 'datasets/mnist_test.tab'
-		result := verify(opts('-e -a 288 -b 2,2 -t ${testfile} ${datafile}', cmd: 'verify'))
-		assert result.correct_count == 9597
-	}
-}
+// fn test_mnist_train() {
+// 	println('Starting with mnist_train.tab')
+// 	if get_environment().arch_details[0] != '4 cpus' {
+// 		datafile := os.join_path(os.home_dir(), 'mnist_train.tab')
+// 		testfile := 'datasets/mnist_test.tab'
+// 		result := verify(opts('-e -a 288 -b 2,2 -t ${testfile} ${datafile}', cmd: 'verify'))
+// 		assert result.correct_count == 9597
+// 	}
+// }

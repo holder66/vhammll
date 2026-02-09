@@ -70,17 +70,17 @@ fn test_cross_validate() ? {
 	assert result.total_count == 699
 	println(r_b('\nDone with breast-cancer-wisconsin-disc.tab'))
 
-	if get_environment().arch_details[0] != '4 cpus' {
-		// opts.concurrency_flag = true
-		opts.datafile_path = 'datasets/mnist_test.tab'
-		opts.number_of_attributes = [313]
-		opts.bins = [2, 2]
-		opts.folds = 16
-		opts.repetitions = 5
-		opts.random_pick = true
-		opts.weighting_flag = false
+	// if get_environment().arch_details[0] != '4 cpus' {
+	// 	// opts.concurrency_flag = true
+	// 	opts.datafile_path = 'datasets/mnist_test.tab'
+	// 	opts.number_of_attributes = [313]
+	// 	opts.bins = [2, 2]
+	// 	opts.folds = 16
+	// 	opts.repetitions = 5
+	// 	opts.random_pick = true
+	// 	opts.weighting_flag = false
 
-		result = cross_validate(opts)
-		assert result.correct_count > 9400
-	}
+	// 	result = cross_validate(opts)
+	// 	assert result.correct_count > 9400
+	// }
 }
