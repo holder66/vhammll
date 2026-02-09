@@ -71,7 +71,6 @@ fn make_classifier_using_ds(ds Dataset, opts Options) Classifier {
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
 	ranking_result := rank_attributes(rank_opts)
-	// dump(ranking_result.array_of_ranked_attributes[0..10])
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {

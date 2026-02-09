@@ -1,8 +1,6 @@
 // classify.v
 module vhammll
 
-// import math
-
 // to simplify the documentation, we will change "instance to be classified"
 // to "case", and leave "instance" as referring to the classifier data.
 
@@ -29,7 +27,6 @@ fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
 	// giving the lowest Hamming distance.
 	mut hamming_dist_array := []int{cap: cl.instances.len}
 	mut hamming_dist := 0
-	// classes := cl.class_counts.keys()
 	// get the hamming distance for each of the corresponding byte_values
 	// in each classifier instance and the case to be classified
 	for instance in cl.instances {
@@ -50,37 +47,27 @@ fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
 	for sphere_index, radius in radii {
 		// populate the counts by class for this radius
 		for class_index, class in cl.classes {
+			class_count := cl.class_counts[cl.classes[class_index]]
+			weight := if !opts.weighting_flag || cl.lcm_class_counts == 0 || class_count == 0 {
+				1
+			} else {
+				int(cl.lcm_class_counts / class_count)
+			}
 			for instance, distance in hamming_dist_array {
 				if distance <= radius && class == cl.class_values[instance] {
-					// if the weighting flag is not set OR lcm_class_counts is nonvalid (ie zero)
-					// radius_row[class_index] += (if !opts.weighting_flag && cl.lcm_class_counts != 0 {
-					radius_row[class_index] += (if !opts.weighting_flag || cl.lcm_class_counts == 0 {
-						1
-					} else {
-						int(cl.lcm_class_counts / cl.class_counts[cl.classes[class_index]])
-					})
+					radius_row[class_index] += weight
 				}
 			}
 		}
 		if !single_array_maximum(radius_row) {
 			continue
 		}
-		// dump(radius_row)
 		result.inferred_class = cl.classes[idx_max(radius_row)]
-		// result.index = index
 		result.nearest_neighbors_by_class = radius_row
-		// result.classes = cl.classes
-		// result.weighting_flag = cl.weighting_flag
 		result.hamming_distance = radii[sphere_index]
 		result.sphere_index = sphere_index
 		break
 	}
-	// if disp.verbose_flag && opts.command == 'classify' {
-	// 	println('ClassifyResult in classify.v: ${result}')
-	// }
-	// if disp.verbose_flag {
-	// 	verbose_result(99, cl, result)
-	// }
 	return result
 }
 
