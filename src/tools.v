@@ -301,8 +301,8 @@ fn gcd(a i64, b i64) i64 {
 // Euclidean algorithm to calculate gcd, using Uint128
 fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 	mut zero := unsigned.Uint128{}
-	if a == b || b == zero {
-		return zero
+	if b == zero || a == b {
+		return a
 	}
 	mut a1 := a
 	mut b1 := b
@@ -451,14 +451,14 @@ fn uniques[T](list []T) []T {
 	return result
 }
 
-// find the index of b in arr
+// find the index of b in arr. Returns -1 if not found.
 fn find[T](arr []T, b T) int {
 	for i, a in arr {
 		if a == b {
 			return i
 		}
 	}
-	return 0
+	return -1
 }
 
 // idx_max
