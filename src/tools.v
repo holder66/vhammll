@@ -2,11 +2,7 @@
 module vhammll
 
 import math
-// import os
-// import x.json2
 import chalk
-// import math.bits
-// import encoding.binary
 import math.unsigned
 import arrays
 
@@ -15,8 +11,6 @@ import arrays
 // and returns a list of Receiver Operating Characteristic plot points
 // (sensitivity vs 1 - specificity).
 pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
-	// dump(pairs)
-	// dump(classifier_ids)
 	if pairs.len < 1 {
 		panic('no sensitivity/specificity pairs provided to roc_values()')
 	}
@@ -38,7 +32,6 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 			classifiers: big_classifiers[i]
 		}
 	}
-	// dump(roc_points)
 	// Sort points by FPR ascending, then sens ascending
 	custom_sort_fn := fn (a &RocPoint, b &RocPoint) int {
 		if a.fpr == b.fpr {
@@ -60,7 +53,6 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 		return 0
 	}
 	roc_points.sort_with_compare(custom_sort_fn)
-	// dump(roc_points)
 	// filter out points which are below and to the right of other points
 	mut result := []RocPoint{cap: roc_points.len}
 	result << roc_points[0]
@@ -74,7 +66,6 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 	if Point{1, 1} !in points {
 		result << RocPoint{Point{1, 1}, '', []}
 	}
-	// dump(result)
 	return result
 }
 
@@ -154,24 +145,6 @@ pub fn transpose[T](matrix [][]T) [][]T {
 	}
 	return matrix_t
 }
-
-// element_counts returns a map with the counts for each element in an array of strings
-// fn element_counts(array []string) map[string]int {
-// 	mut counts := map[string]int{}
-// 	for word in array {
-// 		counts[word]++
-// 	}
-// 	return counts
-// }
-
-// element_counts returns a map with the counts for each element in an array of integers
-// fn element_counts(array []int) map[int]int {
-// 	mut counts := map[int]int{}
-// 	for word in array {
-// 		counts[word]++
-// 	}
-// 	return counts
-// }
 
 fn element_counts[T](array []T) map[T]int {
 	mut counts := map[T]int{}
@@ -323,7 +296,6 @@ fn lcm_u128(arr []int) unsigned.Uint128 {
 	mut res := unsigned.Uint128{1, 0}
 	for a in arr {
 		au128 := unsigned.Uint128{u64(a), 0}
-		// println(au128)
 		res = res * au128 / gcd_u128(res, au128)
 	}
 	// test for overflow
@@ -406,33 +378,14 @@ fn array_max[T](array []T) T {
 	return arrays.max(array) or { panic('array is empty') }
 }
 
-// array_max returns the maximum value in the array
-// fn array_max[T](a []T) T {
-// 	if a.len == 0 {
-// 		panic('.max called on an empty array')
-// 	}
-// 	mut val := a[0]
-// 	for e in a {
-// 		if e > val {
-// 			val = e
-// 		}
-// 	}
-// 	return val
-// }
-
 // array_sum returns the sum of an array's numeric values
 fn array_sum[T](list []T) T {
 	if list.len == 0 {
 		panic('array_sum called on an empty array')
 	}
 	mut head := list[0]
-
-	for i, e in list {
-		if i == 0 {
-			continue
-		} else {
-			head += e
-		}
+	for e in list[1..] {
+		head += e
 	}
 	return head
 }
@@ -502,7 +455,7 @@ fn idxs_max[T](a []T) []int {
 // of the original array which are zero
 fn idxs_zero[T](a []T) []int {
 	if a == [] {
-		panic('idxs_max was called on an empty array')
+		panic('idxs_zero was called on an empty array')
 	}
 	mut idxs := []int{cap: a.len}
 	for i, val in a {
@@ -569,12 +522,12 @@ fn plurality_vote(arr []string) string {
 	if arr == [] {
 		return ''
 	}
-	// get the counts
-	counts := element_counts(arr).values()
+	ec := element_counts(arr)
+	counts := ec.values()
 	max := array_max(counts)
 	// there should only be one maximum value
 	if counts.filter(it == max).len == 1 {
-		return get_map_key_for_max_value(element_counts(arr))
+		return get_map_key_for_max_value(ec)
 	}
 	return ''
 }
@@ -585,9 +538,11 @@ fn majority_vote(arr []string) string {
 	if arr == [] {
 		return ''
 	}
-	max := array_max(element_counts(arr).values())
-	if max * 2 > array_sum(element_counts(arr).values()) {
-		return get_map_key_for_max_value(element_counts(arr))
+	ec := element_counts(arr)
+	vals := ec.values()
+	max := array_max(vals)
+	if max * 2 > array_sum(vals) {
+		return get_map_key_for_max_value(ec)
 	}
 	return ''
 }
