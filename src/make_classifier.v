@@ -20,7 +20,7 @@ import time
 // ```
 pub fn make_classifier(opts Options) Classifier {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	return make_classifier_using_ds(ds, opts)
+	
 	// if opts.balance_prevalences_flag {
 	// 	// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
 	// 	mut transposed_data := transpose(ds.data)
@@ -46,9 +46,12 @@ pub fn make_classifier(opts Options) Classifier {
 	// 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	// 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
 	// }
+	return make_classifier_using_ds(mut ds, opts)
 }
 
-fn make_classifier_using_ds(ds Dataset, opts Options) Classifier {
+fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
+	
+	
 	mut cl := Classifier{
 		Class:         ds.Class
 		Parameters:    opts.Parameters
@@ -148,6 +151,37 @@ fn make_classifier_using_ds(ds Dataset, opts Options) Classifier {
 		save_json_file[Classifier](cl, opts.outputfile_path)
 	}
 	return cl
+}
+
+// evaluate_class_prevalence_imbalance returns true if the ratio between the
+// minimum and maximum class counts for the dataset exceeds the threshold specified by 
+// Options.balance_prevalence_threshold.
+fn evaluate_class_prevalence_imbalance(ds Dataset, opts Options) bool {
+	class_counts_array := ds.class_counts.values()
+	if f64(array_min(class_counts_array)) / array_max(class_counts_array) <= opts.balance_prevalences_threshold {
+		return true
+	}
+	return false
+}
+
+fn balance_prevalences(mut ds Dataset, opts Options) Dataset {
+	if opts.balance_prevalences_flag {
+		mut transposed_data := transpose(ds.data)
+		max_count := array_max(ds.class_counts.values())
+		mut balanced_data := [][]string{cap: transposed_data.len * 2}
+		for i, class in ds.class_values {
+			copies := max_count / ds.class_counts[class]
+			for _ in 0 .. copies {
+				balanced_data << transposed_data[i]
+			}
+		}
+		ds.data = transpose(balanced_data)
+		ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
+		ds.class_counts = element_counts(ds.class_values)
+		ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
+		ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
+	}
+	return ds
 }
 
 // make_translation_table returns a map with the integer for each element in

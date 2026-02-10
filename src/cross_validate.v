@@ -30,7 +30,12 @@ import rand
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(opts Options) CrossVerifyResult {
-	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// if the balance_prevalences flag is set, then we need to possibly add the extra cases
+	// at this stage, prior to partitioning
+	if opts.balance_prevalences_flag {
+		ds = balance_prevalences(mut ds, opts)
+	}
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
 	// dump(ds.class_counts)
@@ -318,7 +323,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	}
 	// if not a multiple classifier situation
 	if !cross_opts.multiple_flag {
-		part_cl := make_classifier_using_ds(part_ds, cross_opts)
+		part_cl := make_classifier_using_ds(mut part_ds, cross_opts)
 		fold_result.binning = part_cl.binning
 		fold_result.maximum_hamming_distance = part_cl.maximum_hamming_distance
 
@@ -362,7 +367,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		for setting_params in mult_opts.multiple_classifier_settings.map(it.Parameters) {
 			mult_opts.Parameters = setting_params
 			fold_result.Parameters = setting_params
-			part_cl := make_classifier_using_ds(part_ds, mult_opts)
+			part_cl := make_classifier_using_ds(mut part_ds, mult_opts)
 			classifier_array << part_cl
 			byte_values_array = [][]u8{}
 			// mult_byte_values_array := [][]u8{}
