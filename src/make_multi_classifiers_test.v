@@ -74,13 +74,13 @@ fn test_make_multi_classifiers() {
 	opts.append_settings_flag = false
 	mut settings := read_multiple_opts(opts.settingsfile_path)!
 	mut cll := []Classifier{}
-	ds := load_file(opts.datafile_path)
-	cll = make_multi_classifiers(ds, settings, []int{})
+	mut ds := load_file(opts.datafile_path)
+	cll = make_multi_classifiers(mut ds, settings, []int{})
 	assert cll.len == 2
 	// assert cll[0].attribute_ordering == ['APLP2']
 	assert cll[1].trained_attributes['CST3'].rank_value == 94.73684
 	// now try for just one classifier
-	cll = make_multi_classifiers(ds, settings, [1])
+	cll = make_multi_classifiers(mut ds, settings, [1])
 	assert cll.len == 1
 	assert cll[0].trained_attributes['CST3'].rank_value == 94.73684
 }

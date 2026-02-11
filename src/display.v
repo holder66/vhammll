@@ -139,8 +139,9 @@ pub fn display_file(path string, in_opts Options) {
 				}
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
-					mut classifiers_array := make_multi_classifiers(load_file(multiple_classifier_settings[0].datafile_path),
-						multiple_classifier_settings, opts.classifiers)
+					mut ds := load_file(multiple_classifier_settings[0].datafile_path)
+					mut classifiers_array := make_multi_classifiers(mut ds, multiple_classifier_settings,
+						opts.classifiers)
 					for i, idx in classifiers_array {
 						println(g_b('Trained attributes for classifier ${opts.classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
 						show_trained_attributes(idx.trained_attributes)

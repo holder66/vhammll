@@ -33,8 +33,8 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// if the balance_prevalences flag is set, then we need to possibly add the extra cases
 	// at this stage, prior to partitioning
-	if opts.balance_prevalences_flag {
-		ds = balance_prevalences(mut ds, opts)
+	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances

@@ -23,44 +23,32 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 		'csv' { load_csv_file(path) }
 		else { panic('unrecognized file type') }
 	}
-	if opts.balance_prevalences_flag {
-		// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
-		mut transposed_data := transpose(ds.data)
-		mut multipliers := map[string]int{}
-		for class, count in ds.class_counts {
-			multipliers[class] = (ds.class_values.len - count) / count
-		}
-		mut idx := 0
-		for class in ds.class_values {
-			if multipliers[class] > 0 {
-				for _ in 1 .. multipliers[class] {
-					transposed_data.insert(idx, transposed_data[idx])
-					idx += 1
-				}
-			}
-			idx += 1
-		}
-		ds.data = transpose(transposed_data)
-		// update the Class struct items
-		ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
-		ds.class_counts = element_counts(ds.class_values)
-		// redo the useful_attribute maps
-		ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
-		ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
-	}
+	// if opts.balance_prevalences_flag {
+	// 	// multiply the instances in each class to approximately balance the prevalences. Approximately, because one can only multiply by an integer value.
+	// 	mut transposed_data := transpose(ds.data)
+	// 	mut multipliers := map[string]int{}
+	// 	for class, count in ds.class_counts {
+	// 		multipliers[class] = (ds.class_values.len - count) / count
+	// 	}
+	// 	mut idx := 0
+	// 	for class in ds.class_values {
+	// 		if multipliers[class] > 0 {
+	// 			for _ in 1 .. multipliers[class] {
+	// 				transposed_data.insert(idx, transposed_data[idx])
+	// 				idx += 1
+	// 			}
+	// 		}
+	// 		idx += 1
+	// 	}
+	// 	ds.data = transpose(transposed_data)
+	// 	// update the Class struct items
+	// 	ds.class_values = ds.data[ds.attribute_names.index(ds.class_name)]
+	// 	ds.class_counts = element_counts(ds.class_values)
+	// 	// redo the useful_attribute maps
+	// 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
+	// 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
+	// }
 	return ds
-}
-
-// evaluate_class_prevalence_imbalance returns true if the ratio between the
-// minimum and maximum class counts for the dataset specified by `datafile_path`
-// in Options, exceeds the threshold specified by Options.balance_prevalence_threshold.
-fn evaluate_class_prevalence_imbalance(opts Options) bool {
-	ds := load_file(opts.datafile_path)
-	mut class_counts_array := ds.class_counts.values()
-	if f64(array_min(class_counts_array)) / array_max(class_counts_array) <= opts.balance_prevalences_threshold {
-		return true
-	}
-	return false
 }
 
 // file_type returns a string identifying how a dataset is structured or

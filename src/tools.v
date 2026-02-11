@@ -288,6 +288,22 @@ fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 }
 
 // least common multiple, using gcd; returns 0 if the lcd
+// cannot be calculated because of overflow
+fn lcm(arr []int) i64 {
+	mut res := i64(1)
+	for a in arr {
+		res *= i64(a) / gcd(res, i64(a))
+	}
+	// since for large or many arguments, overflow may occur, test
+	for a in arr {
+		if res % a != 0 {
+			return 0
+		}
+	}
+	return res
+}
+
+// least common multiple, using gcd; returns 0 if the lcd
 // cannot be calculated because of overflow. This version uses Uint128
 // The places where it's needed, ie the mnist datasets, we can't use
 // it (2025-4-5) because it would require wideranging changes to the structs
@@ -302,22 +318,6 @@ fn lcm_u128(arr []int) unsigned.Uint128 {
 	for a in arr {
 		if res.mod(unsigned.Uint128{u64(a), 0}) != unsigned.Uint128{} {
 			return unsigned.Uint128{}
-		}
-	}
-	return res
-}
-
-// least common multiple, using gcd; returns 0 if the lcd
-// cannot be calculated because of overflow
-fn lcm(arr []int) i64 {
-	mut res := i64(1)
-	for a in arr {
-		res *= i64(a) / gcd(res, i64(a))
-	}
-	// since for large or many arguments, overflow may occur, test
-	for a in arr {
-		if res % a != 0 {
-			return 0
 		}
 	}
 	return res
@@ -390,6 +390,18 @@ fn array_sum[T](list []T) T {
 	return head
 }
 
+// array_multiply performs a scalar multiply of two equal length arrays, returning an array.
+fn array_multiply[T](a []T, b []T) []T {
+	if a.len != b.len {
+		panic('array_multiply called on arrays with different lengths')
+	}
+	mut product := []T{len: a.len}
+	for i in 0 .. a.len {
+		product[i] = a[i] * b[i]
+	}
+	return product
+}
+
 // uniques returns the unique items in a list, without sorting.
 fn uniques[T](list []T) []T {
 	if list.len <= 1 {
@@ -460,6 +472,21 @@ fn idxs_zero[T](a []T) []int {
 	mut idxs := []int{cap: a.len}
 	for i, val in a {
 		if val == 0 {
+			idxs << i
+		}
+	}
+	return idxs
+}
+
+fn idxs_match[T](a []T, val T) []int {
+	if a == [] {
+		panic('idxs_zero was called on an empty array')
+	}
+	mut idxs := [int{
+		cap: a.len
+	}]
+	for i, value in a {
+		if value == val {
 			idxs << i
 		}
 	}

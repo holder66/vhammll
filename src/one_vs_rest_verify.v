@@ -75,7 +75,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 		one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
 		// one_vs_rest_ds.data = purge_array(ds.data, class_cases)
 		// println('one_vs_rest_ds in one_vs_rest_verify: $one_vs_rest_ds')
-		mut one_vs_rest_cl := make_classifier_using_ds(one_vs_rest_ds, opts)
+		mut one_vs_rest_cl := make_classifier_using_ds(mut one_vs_rest_ds, opts)
 		// println('one_vs_rest_cl in one_vs_rest_verify: $one_vs_rest_cl')
 		one_vs_rest_cl_array << one_vs_rest_cl
 	}

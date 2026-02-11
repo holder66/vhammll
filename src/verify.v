@@ -54,7 +54,6 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// load the testfile as a Dataset struct, but reset
 	mut testfile_load_opts := opts.LoadOptions
 	{}
-	testfile_load_opts.balance_prevalences_flag = false
 	mut test_ds := load_file(opts.testfile_path, testfile_load_opts)
 	mut confusion_matrix_map := map[string]StringFloatMap{}
 	// for each class, instantiate an entry in the confusion matrix map
@@ -94,7 +93,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut cl := Classifier{}
 	if opts.classifierfile_path == '' {
-		cl = make_classifier_using_ds(ds, opts)
+		cl = make_classifier_using_ds(mut ds, opts)
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}

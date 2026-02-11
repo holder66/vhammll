@@ -72,22 +72,26 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		best_balanced_accuracies:                     balanced_accuracy_values
 		mcc_max:                                      mcc_max
 		mcc_max_classifiers_all:                      mcc_max_ids
-		mcc_max_classifiers:                          limit_to_unique_attribute_number(settings, mcc_max_ids)
+		mcc_max_classifiers:                          limit_to_unique_attribute_number(settings,
+			mcc_max_ids)
 		correct_inferences_total_max:                 corrects_max
 		correct_inferences_total_max_classifiers_all: corrects_max_ids
-		correct_inferences_total_max_classifiers:     limit_to_unique_attribute_number(settings, corrects_max_ids)
+		correct_inferences_total_max_classifiers:     limit_to_unique_attribute_number(settings,
+			corrects_max_ids)
 	}
 	for value in balanced_accuracy_values {
 		matching_ids := settings.filter(it.balanced_accuracy == value).map(it.classifier_id)
 		result.best_balanced_accuracies_classifiers_all << matching_ids
-		result.best_balanced_accuracies_classifiers << limit_to_unique_attribute_number(settings, matching_ids)
+		result.best_balanced_accuracies_classifiers << limit_to_unique_attribute_number(settings,
+			matching_ids)
 	}
 	for i, _ in result.classes {
 		max_correct := array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max << max_correct
 		matching_ids := settings.filter(it.correct_counts[i] == max_correct).map(it.classifier_id)
 		result.correct_inferences_by_class_max_classifiers_all << matching_ids
-		result.correct_inferences_by_class_max_classifiers << limit_to_unique_attribute_number(settings, matching_ids)
+		result.correct_inferences_by_class_max_classifiers << limit_to_unique_attribute_number(settings,
+			matching_ids)
 	}
 
 	struct Counts {

@@ -36,10 +36,12 @@ fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
 		}
 		hamming_dist_array << hamming_dist
 	}
+
 	// get unique values in hamming_dist_array; these are the radii
 	// of the nearest-neighbor "spheres"
 	mut radii := element_counts(hamming_dist_array).keys()
 	radii.sort()
+
 	if opts.verbose_flag {
 		println('radii: ${radii}')
 	}

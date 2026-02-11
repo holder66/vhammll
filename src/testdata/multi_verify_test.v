@@ -38,7 +38,7 @@ fn test_multiple_verify() ? {
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]
 	opts.purge_flag = true
-	opts.balance_prevalences_flag = true
+
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
 	// opts.weight_ranking_flag = true

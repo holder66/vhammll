@@ -29,7 +29,7 @@ module vhammll
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(opts Options) ExploreResult {
-	// ds := load_file(opts.datafile_path, opts.LoadOptions)
+	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// instantiate a struct for SettingsForROC
 	// mut roc_master_class := opts.positive_class
 	// if opts.positive_class == '' {
@@ -48,7 +48,8 @@ pub fn explore(opts Options) ExploreResult {
 		// flags in opts.Parameters
 
 		// determine if using the -bp flag is worthwhile
-		balance_prevalences_worthwhile_flag := evaluate_class_prevalence_imbalance(opts)
+		balance_prevalences_worthwhile_flag := evaluate_class_prevalence_imbalance(ds,
+			opts)
 
 		mut af_opts := opts
 		mut af_result := ExploreResult{}

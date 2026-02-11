@@ -61,7 +61,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		// params.multiple_flag = true
 		// mult_opts.Parameters = params
 		// verify_result.Parameters = params
-		classifier := make_classifier_using_ds(ds, local_opts)
+		classifier := make_classifier_using_ds(mut ds, local_opts)
 		classifier_array << classifier
 		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
 		array_of_case_arrays << generate_case_array(classifier, test_ds)
