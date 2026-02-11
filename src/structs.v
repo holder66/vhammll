@@ -29,13 +29,14 @@ pub mut:
 	class_index int
 	classes     []string // to ensure that the ordering remains the same
 	// positive_class string
-	class_values               []string
-	missing_class_values       []int // these are the indices of the original class values array
-	class_counts               map[string]int
-	lcm_class_counts           i64
-	prepurge_class_values_len  int
-	postpurge_class_counts     map[string]int
-	postpurge_lcm_class_counts i64
+	class_values                         []string
+	missing_class_values                 []int // these are the indices of the original class values array
+	class_counts                         map[string]int
+	pre_balance_prevalences_class_counts map[string]int
+	lcm_class_counts                     i64
+	prepurge_class_values_len            int
+	postpurge_class_counts               map[string]int
+	postpurge_lcm_class_counts           i64
 }
 
 struct ContinuousAttribute {
@@ -425,27 +426,29 @@ pub struct CrossVerifyResult {
 	BinaryMetrics
 	MultipleOptions // MultipleClassifierSettingsArray
 pub mut:
-	struct_type                         string = '.CrossVerifyResult'
-	command                             string
-	datafile_path                       string
-	testfile_path                       string
-	multiple_classify_options_file_path string
-	multiple_classifier_settings        []ClassifierSettings
-	labeled_classes                     []string
-	actual_classes                      []string
-	inferred_classes                    []string
-	nearest_neighbors_by_class          [][]int
-	instance_indices                    []int
-	classes                             []string
-	class_counts                        map[string]int
-	labeled_instances                   map[string]int
-	correct_inferences                  map[string]int
-	incorrect_inferences                map[string]int
-	wrong_inferences                    map[string]int
-	true_positives                      map[string]int
-	false_positives                     map[string]int
-	true_negatives                      map[string]int
-	false_negatives                     map[string]int
+	struct_type                          string = '.CrossVerifyResult'
+	command                              string
+	datafile_path                        string
+	testfile_path                        string
+	multiple_classify_options_file_path  string
+	multiple_classifier_settings         []ClassifierSettings
+	labeled_classes                      []string
+	actual_classes                       []string
+	inferred_classes                     []string
+	nearest_neighbors_by_class           [][]int
+	instance_indices                     []int
+	classes                              []string
+	class_counts                         map[string]int
+	pre_balance_prevalences_class_counts map[string]int
+	train_dataset_class_counts           map[string]int
+	labeled_instances                    map[string]int
+	correct_inferences                   map[string]int
+	incorrect_inferences                 map[string]int
+	wrong_inferences                     map[string]int
+	true_positives                       map[string]int
+	false_positives                      map[string]int
+	true_negatives                       map[string]int
+	false_negatives                      map[string]int
 	// outer key: actual class; inner key: predicted class
 	confusion_matrix_map            map[string]StringFloatMap
 	pos_neg_classes                 []string

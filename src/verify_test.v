@@ -32,7 +32,7 @@ fn test_verify() ? {
 	opts.number_of_attributes = [2]
 	assert verify(opts).correct_count == 10
 	// dump(verify(opts))
-	println('Done with test.tab')
+	println(r_b('Done with test.tab'))
 
 	// now with a binary classifier with continuous values
 
@@ -53,7 +53,7 @@ fn test_verify() ? {
 			'AML': 14.0
 		}
 	}
-	println('Done with leukemia38train.tab & leukemia34test.tab')
+	println(r_b('Done with leukemia38train.tab & leukemia34test.tab'))
 	// test verify with a binary classifier without continuous values
 
 	opts.datafile_path = 'datasets/bcw350train'
@@ -66,7 +66,7 @@ fn test_verify() ? {
 	assert result.correct_count == 171
 	assert result.wrong_count == 3
 
-	println('Done with bcw350train for a non-saved classifier')
+	println(r_b('Done with bcw350train for a non-saved classifier'))
 
 	// now with a saved classifier
 	opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
@@ -75,7 +75,7 @@ fn test_verify() ? {
 	opts.outputfile_path = ''
 	assert result.BinaryMetrics == verify(opts).BinaryMetrics
 
-	println('Done with bcw350train using saved classifier')
+	println(r_b('Done with bcw350train using saved classifier'))
 
 	opts.datafile_path = 'datasets/soybean-large-train.tab'
 	opts.testfile_path = 'datasets/soybean-large-test.tab'
@@ -89,7 +89,7 @@ fn test_verify() ? {
 	assert result.correct_count == 340
 	assert result.wrong_count == 36
 
-	println('Done with soybean-large-train.tab')
+	println(r_b('Done with soybean-large-train.tab'))
 
 	// now with a saved classifier
 	opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
@@ -98,7 +98,7 @@ fn test_verify() ? {
 	opts.outputfile_path = ''
 	assert result.Metrics == verify(opts).Metrics
 
-	println('Done with soybean-large-train.tab using saved classifier')
+	println(r_b('Done with soybean-large-train.tab using saved classifier'))
 
 	if get_environment().arch_details[0] != '4 cpus' {
 		opts.datafile_path = 'datasets/mnist_test.tab'
@@ -114,7 +114,7 @@ fn test_verify() ? {
 		assert result.correct_count >= 9982
 		assert result.wrong_count <= 18
 
-		println('Done with mnist_test.tab')
+		println(r_b('Done with mnist_test.tab'))
 
 		// now with a saved classifier
 		opts.outputfile_path = 'tempfolders/tempfolder_verify/classifierfile'
@@ -122,7 +122,7 @@ fn test_verify() ? {
 		opts.classifierfile_path = opts.outputfile_path
 		opts.outputfile_path = ''
 		assert result.correct_count == verify(opts).correct_count
-		println('Done with mnist_test.tab using saved classifier')
+		println(r_b('Done with mnist_test.tab using saved classifier'))
 	}
 }
 

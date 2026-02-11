@@ -55,25 +55,49 @@ fn test_balance_prevalences() {
 	mut opts := Options{}
 	mut ds := load_file('datasets/developer.tab')
 	mut threshold := 0.8
-	assert ds.class_counts == {
+	mut counts := ds.class_counts.clone()
+	assert counts == {
 		'm': 8
 		'f': 3
 		'X': 2
 	}
 	// dump(ds)
 	mut ds_balanced := balance_prevalences(mut ds, threshold)
+	assert ds.pre_balance_prevalences_class_counts == counts
 	assert ds.class_counts == {
 		'm': 8
 		'f': 9
 		'X': 10
 	}
+	threshold = 0.7
+	ds = load_file('datasets/leukemia38train.tab')
+	counts = ds.class_counts.clone()
+	assert counts == {
+		'ALL': 27
+		'AML': 11
+	}
+	ds_balanced = balance_prevalences(mut ds, threshold)
+	assert ds.pre_balance_prevalences_class_counts == counts
+	assert ds_balanced.class_counts == {
+		'ALL': 27
+		'AML': 22
+	}
 	threshold = 0.9
+	ds = load_file('datasets/leukemia38train.tab')
+	ds_balanced = balance_prevalences(mut ds, threshold)
+	assert ds.pre_balance_prevalences_class_counts == counts
+	assert ds_balanced.class_counts == {
+		'ALL': 54
+		'AML': 55
+	}
 	ds = load_file('datasets/UCI/diabetes.arff')
-	assert ds.class_counts == {
+	counts = ds.class_counts.clone()
+	assert counts == {
 		'tested_positive': 268
 		'tested_negative': 500
 	}
 	ds_balanced = balance_prevalences(mut ds, threshold)
+	assert ds.pre_balance_prevalences_class_counts == counts
 	assert ds_balanced.class_counts == {
 		'tested_positive': 536
 		'tested_negative': 500
@@ -83,6 +107,7 @@ fn test_balance_prevalences() {
 fn test_verify() ? {
 	mut opts := Options{
 		concurrency_flag: false
+		// expanded_flag: true
 	}
 
 	mut result := CrossVerifyResult{}
@@ -116,8 +141,8 @@ fn test_verify() ? {
 			'AML': 3.0
 		}
 		'AML': {
-			'ALL': 1.0
-			'AML': 13.0
+			'ALL': 0.0
+			'AML': 14.0
 		}
 	}
 	println(r_b('Done with leukemia38train.tab & leukemia34test.tab'))
@@ -137,7 +162,7 @@ fn test_cross_validate() ? {
 		exclude_flag:             false
 		verbose_flag:             false
 		balance_prevalences_flag: true
-		expanded_flag:            true
+		// expanded_flag:            true
 	}
 	mut result := CrossVerifyResult{}
 

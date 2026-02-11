@@ -11,9 +11,9 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolders/tempfolder_optimals')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolders/tempfolder_optimals')!
-// }
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolders/tempfolder_optimals')!
+}
 
 // fn test_max_auc_combinations() {
 // 	settings := read_multiple_opts('src/testdata/ox1trainb2-6a2-15newbp.opts')!
@@ -51,29 +51,22 @@ fn test_optimals_with_purge() {
 	result_a := optimals(settingsfile)
 	dump(optimals(settingsfile))
 	assert result_a.best_balanced_accuracies_classifiers == [
-		[1],
-		[2, 16],
-		[30],
-		[0, 3, 28],
-		[42],
-		[44, 45],
-		[48],
-	]
+		[1], [2, 16], [9], [0, 3, 7], [42], [44, 45], [48]]
 	assert result_a.receiver_operating_characteristic_settings == [48, 44, 0, 1, 2]
-	assert result_a.mcc_max_classifiers == [0, 3, 28]
+	assert result_a.mcc_max_classifiers == [0, 3, 7]
 
 	println(r_b('\nDump the optimals result struct after purging'))
 	result_b := optimals(settingsfile, opts('-p'))
 	dump(result_b)
-	assert result_b.settings_length - result_b.settings_purged == 224 - 164
-	assert result_b.correct_inferences_total_max_classifiers_all == [0, 3, 14, 28, 56, 59, 70,
-		84, 112, 115, 126, 140, 168, 171, 182, 196]
+	assert result_b.settings_length - result_b.settings_purged == 224 - 160
+	assert result_b.correct_inferences_total_max_classifiers_all == [0, 3, 7, 14, 28, 56, 59, 63,
+		70, 84, 112, 115, 119, 126, 140, 168, 171, 175, 182, 196]
 	println(r_b('\nDump the optimals struct result after purging and with auc combinations from 2 through 4:'))
 	result_c := optimals(settingsfile, opts('-p -cl 2,4'))
 	dump(result_c)
 	assert result_c.multi_classifier_combinations_for_auc.len == 91
 	assert result_c.multi_classifier_combinations_for_auc[7].auc == 0.9982585139318886
-	assert result_c.multi_classifier_combinations_for_auc.last().classifier_ids == [0, 28]
+	assert result_c.multi_classifier_combinations_for_auc.last().classifier_ids == [0, 3, 7]
 	println(r_b('\nPrint out the abbreviated and the expanded optimals results after purging:'))
 	result_d := optimals(settingsfile, opts('-p -cl 2,4 -s'))
 	assert result_c == result_d

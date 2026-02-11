@@ -67,6 +67,9 @@ pub fn explore(opts Options) ExploreResult {
 								break
 							}
 							af_opts.balance_prevalences_flag = bp
+							if bp {
+								af_opts.purge_flag = false
+							}
 							af_result = run_explore(af_opts)
 						}
 					}

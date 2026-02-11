@@ -51,6 +51,11 @@ pub fn verify(opts Options) CrossVerifyResult {
 
 fn run_verify(opts Options) CrossVerifyResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// if the balance_prevalences flag is set, then we need to possibly add
+	// the extra cases at this stage
+	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	}
 	// load the testfile as a Dataset struct, but reset
 	mut testfile_load_opts := opts.LoadOptions
 	{}
@@ -68,26 +73,27 @@ fn run_verify(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		datafile_path:                       opts.datafile_path
-		testfile_path:                       opts.testfile_path
-		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings:        opts.multiple_classifier_settings
-		labeled_classes:                     test_ds.class_values
-		class_counts:                        test_ds.class_counts
-		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds)
-		confusion_matrix_map:                confusion_matrix_map
-		correct_inferences:                  inferences_map.clone()
-		incorrect_inferences:                inferences_map.clone()
-		wrong_inferences:                    inferences_map.clone()
-		true_positives:                      inferences_map.clone()
-		true_negatives:                      inferences_map.clone()
-		false_positives:                     inferences_map.clone()
-		false_negatives:                     inferences_map.clone()
+		LoadOptions:                          opts.LoadOptions
+		Parameters:                           opts.Parameters
+		DisplaySettings:                      opts.DisplaySettings
+		MultipleOptions:                      opts.MultipleOptions
+		datafile_path:                        opts.datafile_path
+		testfile_path:                        opts.testfile_path
+		multiple_classify_options_file_path:  opts.multiple_classify_options_file_path
+		multiple_classifier_settings:         opts.multiple_classifier_settings
+		labeled_classes:                      test_ds.class_values
+		class_counts:                         test_ds.class_counts
+		pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
+		classes:                              test_ds.classes
+		pos_neg_classes:                      get_pos_neg_classes(test_ds)
+		confusion_matrix_map:                 confusion_matrix_map
+		correct_inferences:                   inferences_map.clone()
+		incorrect_inferences:                 inferences_map.clone()
+		wrong_inferences:                     inferences_map.clone()
+		true_positives:                       inferences_map.clone()
+		true_negatives:                       inferences_map.clone()
+		false_positives:                      inferences_map.clone()
+		false_negatives:                      inferences_map.clone()
 	}
 	verify_result.binning = get_binning(opts.bins)
 	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
@@ -205,6 +211,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	if opts.append_settings_flag && opts.command != 'explore' {
 		append_cross_verify_settings_to_file(verify_result, opts)
 	}
+	verify_result.train_dataset_class_counts = ds.class_counts.clone()
 	return verify_result
 }
 
