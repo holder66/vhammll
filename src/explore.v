@@ -26,10 +26,12 @@ module vhammll
 //	used.
 // traverse_all_flags: repeat the explore operation for all possible
 //  combinations of the flags uniform_bins, weight_ranking_flag, etc;
+//  note that if -bp is also set, then -af will only traverse the settings
+//  which make sense in the context of balancing prevalences;
 // outputfile_path: saves the result to a file.
 // ```
 pub fn explore(opts Options) ExploreResult {
-	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// instantiate a struct for SettingsForROC
 	// mut roc_master_class := opts.positive_class
 	// if opts.positive_class == '' {
@@ -42,37 +44,35 @@ pub fn explore(opts Options) ExploreResult {
 	// 	classifiers_for_roc:     []ClassifierSettings{len: ds.class_counts[roc_master_class] + 1}
 	// 	array_of_correct_counts: [][]int{len: ds.class_counts[roc_master_class] + 1, init: []int{len: ds.classes.len}}
 	// }
+	mut af_opts := opts
+	mut af_result := ExploreResult{}
+	ft := [false, true]
 	if opts.traverse_all_flags {
-		// in a series of nested loops, repeatedly execute the explore
-		// function over both true and false settings for the various
-		// flags in opts.Parameters
-
-		// determine if using the -bp flag is worthwhile
-		balance_prevalences_worthwhile_flag := evaluate_class_prevalence_imbalance(ds,
-			opts)
-
-		mut af_opts := opts
-		mut af_result := ExploreResult{}
-		ft := [false, true]
-		for ub in ft {
-			af_opts.uniform_bins = ub
-			for wr in ft {
-				af_opts.weight_ranking_flag = wr
-				for w in ft {
-					af_opts.weighting_flag = w
-					for p in ft {
-						af_opts.purge_flag = p
-						for bp in ft {
-							if bp && !balance_prevalences_worthwhile_flag {
-								break
-							}
-							af_opts.balance_prevalences_flag = bp
-							if bp {
-								af_opts.purge_flag = false
-							}
+		if !opts.balance_prevalences_flag {
+			// in a series of nested loops, repeatedly execute the explore
+			// function over both true and false settings for the various
+			// flags in opts.Parameters
+			for ub in ft {
+				af_opts.uniform_bins = ub
+				for wr in ft {
+					af_opts.weight_ranking_flag = wr
+					for w in ft {
+						af_opts.weighting_flag = w
+						for p in ft {
+							af_opts.purge_flag = p
 							af_result = run_explore(af_opts)
 						}
 					}
+				}
+			}
+		} else {
+			af_opts.balance_prevalences_flag = true
+			af_opts.balance_prevalences_threshold = opts.balance_prevalences_threshold
+			for ub in ft {
+				af_opts.uniform_bins = ub 
+				for wr in ft {
+					af_opts.weight_ranking_flag = wr
+					af_result = run_explore(af_opts)
 				}
 			}
 		}
@@ -115,13 +115,20 @@ pub fn explore(opts Options) ExploreResult {
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// if the balance_prevalences flag is set, then we need to possibly add the extra cases
+	// at this stage, prior to partitioning
+	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	}
 	mut ex_opts := opts
 	mut results := ExploreResult{
-		LoadOptions:     opts.LoadOptions
-		path:            opts.datafile_path
-		testfile_path:   opts.testfile_path
-		Parameters:      opts.Parameters
+		Parameters:		opts.Parameters
+		LoadOptions:     ds.LoadOptions
 		DisplaySettings: opts.DisplaySettings
+		// MultipleOptions: opts.MultipleOptions
+		Class:			ds.Class
+		path:            ds.path
+		testfile_path:   opts.testfile_path
 		AttributeRange:  get_attribute_range(opts.number_of_attributes,
 			ds.useful_continuous_attributes.len + ds.useful_discrete_attributes.len)
 		pos_neg_classes: get_pos_neg_classes(ds)

@@ -21,15 +21,15 @@ fn test_multiple_crossvalidate() ? {
 	datafile := 'datasets/developer.tab'
 	savedsettings := 'src/testdata/3_class.opts'
 	if !os.is_file(savedsettings) {
-		explore(opts('-wr -ms ${savedsettings} ${datafile}', cmd: 'explore'))
+		explore(opts('-e -wr -ms ${savedsettings} ${datafile}', cmd: 'explore'))
 	}
-	result = cross_validate(opts('-a 1 -b 1,3 ${datafile}', cmd: 'cross'))
+	result = cross_validate(opts('-e -a 1 -b 1,3 ${datafile}', cmd: 'cross'))
 	assert result.correct_counts == [8, 3, 2]
-	result = cross_validate(opts('-m ${savedsettings} -m# 6 ${datafile}'))
+	result = cross_validate(opts('-e -m ${savedsettings} -m# 6 ${datafile}'))
 	assert result.correct_counts == [7, 0, 0]
-	result = cross_validate(opts('-m ${savedsettings} -m# 3 ${datafile}'))
+	result = cross_validate(opts('-e -m ${savedsettings} -m# 3 ${datafile}'))
 	assert result.correct_counts == [8, 0, 0]
-	result = cross_validate(opts('-af -m ${savedsettings} -m# 0,1,2 ${datafile}'))
+	result = cross_validate(opts('-e -af -m ${savedsettings} -m# 0,1,2 ${datafile}'))
 	assert result.correct_counts == [8, 3, 2]
 }
 

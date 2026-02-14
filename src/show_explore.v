@@ -27,7 +27,6 @@ fn show_expanded_explore_result(result CrossVerifyResult, opts Options) {
 
 // show_explore_header
 fn show_explore_header(results ExploreResult, settings DisplaySettings) {
-	// println(results)
 	mut binary := false
 	if results.pos_neg_classes[0] != '' {
 		binary = true
@@ -41,7 +40,12 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 		explore_type_string = 'verification of "${results.testfile_path}"'
 	}
 	println(m_u('\nExplore ${explore_type_string} using classifiers from "${results.path}"'))
-	show_parameters(results.Parameters, results.LoadOptions)
+	mut parameters_for_show := ParametersForShow{
+		Parameters: results.Parameters
+		LoadOptions: results.LoadOptions
+		Class: results.Class
+	}
+	show_parameters(parameters_for_show)
 	println('Over attribute range from ${results.start} to ${results.end} by interval ${results.att_interval}')
 	if !settings.expanded_flag {
 		println(b_u('Attributes     Bins' +

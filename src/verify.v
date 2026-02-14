@@ -33,7 +33,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 				af_opts.combined_radii_flag = mc
 				for mt in ft {
 					af_opts.total_nn_counts_flag = mt
-					af_result = multi_verify(af_opts)
+					af_result = run_verify(af_opts)
 					println('corrects: ${af_result.correct_counts} balanced accuracy: ${af_result.balanced_accuracy:-6.2f} MCC: ${af_result.mcc:-7.3f} sens: ${af_result.sens:-7.3f} spec: ${af_result.spec:-4.3f} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
 				}
 			}
@@ -56,6 +56,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}
+	// dump(ds)
 	// load the testfile as a Dataset struct, but reset
 	mut testfile_load_opts := opts.LoadOptions
 	{}
@@ -77,14 +78,15 @@ fn run_verify(opts Options) CrossVerifyResult {
 		Parameters:                           opts.Parameters
 		DisplaySettings:                      opts.DisplaySettings
 		MultipleOptions:                      opts.MultipleOptions
+		Class:								ds.Class
 		datafile_path:                        opts.datafile_path
 		testfile_path:                        opts.testfile_path
 		multiple_classify_options_file_path:  opts.multiple_classify_options_file_path
 		multiple_classifier_settings:         opts.multiple_classifier_settings
 		labeled_classes:                      test_ds.class_values
-		class_counts:                         test_ds.class_counts
-		pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
-		classes:                              test_ds.classes
+		// class_counts:                         test_ds.class_counts
+		// pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
+		// classes:                              test_ds.classes
 		pos_neg_classes:                      get_pos_neg_classes(test_ds)
 		confusion_matrix_map:                 confusion_matrix_map
 		correct_inferences:                   inferences_map.clone()

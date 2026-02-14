@@ -35,6 +35,11 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 		datafile_path: ds.path
 		LoadOptions:   opts.LoadOptions
 	}
+	// // if the balance_prevalences flag is set, then we need to possibly add
+	// // the extra cases at this stage
+	// if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+	// 	ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	// }
 	// dump(cl)
 	// if binning is specified already in parameters, use it
 	if opts.binning.lower > 0 {
@@ -44,7 +49,9 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	}
 	// calculate the least common multiple for class_counts, for use
 	// when the weighting_flag is set
-	cl.lcm_class_counts = i64(lcm(ds.class_counts.values()))
+	if opts.weighting_flag {
+		cl.lcm_class_counts = i64(lcm(ds.class_counts.values()))
+	}
 	// first, rank the attributes using the bins and exclude params, and take
 	// the highest-ranked number_of_attributes (all the usable attributes if
 	// number_of_attributes is 0)

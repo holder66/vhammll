@@ -112,8 +112,13 @@ pub fn show_rank_attributes(result RankingResult) {
 
 // show_classifier outputs to the console information about a classifier
 pub fn show_classifier(cl Classifier) {
+	mut parameters_for_show := ParametersForShow{
+		Parameters: cl.Parameters
+		LoadOptions: cl.LoadOptions
+		Class: cl.Class
+	}
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
-	show_parameters(cl.Parameters, cl.LoadOptions)
+	show_parameters(parameters_for_show)
 	println(g_b('Trained attributes sorted by rank value:'))
 	show_trained_attributes(cl.trained_attributes)
 	println(g_b('\nClassifier History:'))
@@ -129,25 +134,38 @@ pub fn show_classifier(cl Classifier) {
 }
 
 // show_parameters
-fn show_parameters(p Parameters, load_options LoadOptions) {
-	if p.number_of_attributes.len == 1 {
+fn show_parameters(r ParametersForShow) {
+	if r.number_of_attributes.len == 1 {
 		println('${'Number of attributes: ':55}' +
-			if p.number_of_attributes[0] == 0 { 'all' } else { '${p.number_of_attributes[0]}' })
+			if r.number_of_attributes[0] == 0 { 'all' } else { '${r.number_of_attributes[0]}' })
 	}
 	println('${'Binning range for continuous attributes: ':55}' +
-		if p.binning.lower == 0 { 'not applicable (no continuous attributes used)' } else { 'from ${p.binning.lower} to ${p.binning.upper} with interval ${p.binning.interval}' })
-	println('${'Missing values: ':55}' + if p.exclude_flag { 'excluded' } else { 'included' })
-	println('${'Purging of duplicate instances: ':55}${p.purge_flag}')
-	println('${'Prevalence weighting for ranking attributes: ':55}${p.weight_ranking_flag}')
-	println('${'Prevalence weighting for nearest neighbor counts: ':55}${p.weighting_flag}')
-	println('${'Add instances to balance class prevalences: ':55}${load_options.balance_prevalences_flag}')
-	println('${'Purging of instances with missing class values: ':55}${load_options.class_missing_purge_flag}')
+		if r.binning.lower == 0 { 'not applicable (no continuous attributes used)' } else { 'from ${r.binning.lower} to ${r.binning.upper} with interval ${r.binning.interval}' })
+	println('${'Missing values: ':55}' + if r.exclude_flag { 'excluded' } else { 'included' })
+	println('${'Purging of duplicate instances: ':55}${r.purge_flag}')
+	println('${'Prevalence weighting for ranking attributes: ':55}${r.weight_ranking_flag}')
+	println('${'Prevalence weighting for nearest neighbor counts: ':55}${r.weighting_flag}')
+	println('${'Add instances to balance class prevalences: ':55}${r.balance_prevalences_flag}')
+	if r.balance_prevalences_flag {
+		println('${'Threshold: ':60}${r.balance_prevalences_threshold}')
+		println('${'class counts: ':60}${r.class_counts}   ratio: ${ratio(r.class_counts.values())}')
+		println('${'pre_balance_prevalences_class_counts: ':60}${r.pre_balance_prevalences_class_counts}   ratio: ${ratio(r.pre_balance_prevalences_class_counts.values())}')
+		// println('${'train_dataset_class_counts: ':60}${r.train_dataset_class_counts}   ratio: ${ratio(r.train_dataset_class_counts.values())}')
+	}
+	println('${'Purging of instances with missing class values: ':55}${r.class_missing_purge_flag}')
 }
+
+fn show_balanced_prevalences(load_options LoadOptions) {}
 
 // show_validate
 pub fn show_validate(result ValidateResult) {
+	mut parameters_for_show := ParametersForShow{
+		Parameters: result.Parameters
+		LoadOptions: result.LoadOptions
+		Class: result.Class
+	}
 	println(m_u('\nValidation of "${result.validate_file_path}" using a classifier from "${result.datafile_path}"'))
-	show_parameters(result.Parameters, result.LoadOptions)
+	show_parameters(parameters_for_show)
 	if result.purge_flag {
 		total_count := result.prepurge_instances_counts_array[0]
 		purged_count := total_count - result.classifier_instances_counts[0]
@@ -170,7 +188,12 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifier_settings(result, opts)
 	} else {
-		show_parameters(result.Parameters, result.LoadOptions)
+		mut parameters_for_show := ParametersForShow{
+		Parameters: result.Parameters
+		LoadOptions: result.LoadOptions
+		Class: result.Class
+	}
+		show_parameters(parameters_for_show)
 	}
 	if result.purge_flag {
 		total_count := result.prepurge_instances_counts_array[0]
@@ -298,7 +321,12 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifier_settings(result, opts)
 	} else {
-		show_parameters(result.Parameters, result.LoadOptions)
+		mut parameters_for_show := ParametersForShow{
+		Parameters: result.Parameters
+		LoadOptions: result.LoadOptions
+		Class: result.Class
+	}
+		show_parameters(parameters_for_show)
 	}
 	// if result.purge_flag {
 	// 	total_count_avg := array_sum(result.prepurge_instances_counts_array) / f64(result.prepurge_instances_counts_array.len)

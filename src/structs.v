@@ -130,6 +130,12 @@ pub mut:
 	// history   []HistoryEvent
 }
 
+pub struct ParametersForShow {
+	Parameters
+	LoadOptions
+	Class
+}
+
 pub struct History {
 pub mut:
 	history_events []HistoryEvent
@@ -425,6 +431,7 @@ pub struct CrossVerifyResult {
 	Metrics
 	BinaryMetrics
 	MultipleOptions // MultipleClassifierSettingsArray
+	Class
 pub mut:
 	struct_type                          string = '.CrossVerifyResult'
 	command                              string
@@ -437,9 +444,9 @@ pub mut:
 	inferred_classes                     []string
 	nearest_neighbors_by_class           [][]int
 	instance_indices                     []int
-	classes                              []string
-	class_counts                         map[string]int
-	pre_balance_prevalences_class_counts map[string]int
+	// classes                              []string
+	// class_counts                         map[string]int
+	// pre_balance_prevalences_class_counts map[string]int
 	train_dataset_class_counts           map[string]int
 	labeled_instances                    map[string]int
 	correct_inferences                   map[string]int
