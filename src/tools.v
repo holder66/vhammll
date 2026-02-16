@@ -403,7 +403,9 @@ fn array_multiply[T](a []T, b []T) []T {
 }
 
 fn ratio[T](a []T) f64 {
-	if a.len < 2 {panic('array too short to calculate a ratio')}
+	if a.len < 2 {
+		panic('array too short to calculate a ratio')
+	}
 	return round_two_decimals(f64(array_min(a)) / f64(array_max(a)))
 }
 

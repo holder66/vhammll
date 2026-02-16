@@ -356,6 +356,8 @@ Options:
   -f --folds: number of cross-validation folds (default is leave-one-out);
   -g --graph: generates plots of accuracy vs number of attributes used; for 
       binary classifiers (ie only 2 classes) also generates AUC plots;
+  -ms: save the classifier parameters to an .opts file, using the file path
+      following this option;
   -o --output: followed by the path to a file in which the ExploreResult
       struct will be saved;
   -p --purge: remove instances which are duplicates after binning;

@@ -10,6 +10,8 @@ fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) 
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
 		Metrics:       result.Metrics
+		LoadOptions:   result.LoadOptions
+
 		datafile_path: os.abs_path(result.datafile_path)
 	}
 	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)

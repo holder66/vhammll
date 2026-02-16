@@ -113,9 +113,9 @@ pub fn show_rank_attributes(result RankingResult) {
 // show_classifier outputs to the console information about a classifier
 pub fn show_classifier(cl Classifier) {
 	mut parameters_for_show := ParametersForShow{
-		Parameters: cl.Parameters
+		Parameters:  cl.Parameters
 		LoadOptions: cl.LoadOptions
-		Class: cl.Class
+		Class:       cl.Class
 	}
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
 	show_parameters(parameters_for_show)
@@ -160,9 +160,9 @@ fn show_balanced_prevalences(load_options LoadOptions) {}
 // show_validate
 pub fn show_validate(result ValidateResult) {
 	mut parameters_for_show := ParametersForShow{
-		Parameters: result.Parameters
+		Parameters:  result.Parameters
 		LoadOptions: result.LoadOptions
-		Class: result.Class
+		Class:       result.Class
 	}
 	println(m_u('\nValidation of "${result.validate_file_path}" using a classifier from "${result.datafile_path}"'))
 	show_parameters(parameters_for_show)
@@ -189,10 +189,10 @@ pub fn show_verify(result CrossVerifyResult, opts Options) {
 		show_multiple_classifier_settings(result, opts)
 	} else {
 		mut parameters_for_show := ParametersForShow{
-		Parameters: result.Parameters
-		LoadOptions: result.LoadOptions
-		Class: result.Class
-	}
+			Parameters:  result.Parameters
+			LoadOptions: result.LoadOptions
+			Class:       result.Class
+		}
 		show_parameters(parameters_for_show)
 	}
 	if result.purge_flag {
@@ -322,10 +322,10 @@ pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 		show_multiple_classifier_settings(result, opts)
 	} else {
 		mut parameters_for_show := ParametersForShow{
-		Parameters: result.Parameters
-		LoadOptions: result.LoadOptions
-		Class: result.Class
-	}
+			Parameters:  result.Parameters
+			LoadOptions: result.LoadOptions
+			Class:       result.Class
+		}
 		show_parameters(parameters_for_show)
 	}
 	// if result.purge_flag {

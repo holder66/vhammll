@@ -41,9 +41,9 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 	}
 	println(m_u('\nExplore ${explore_type_string} using classifiers from "${results.path}"'))
 	mut parameters_for_show := ParametersForShow{
-		Parameters: results.Parameters
+		Parameters:  results.Parameters
 		LoadOptions: results.LoadOptions
-		Class: results.Class
+		Class:       results.Class
 	}
 	show_parameters(parameters_for_show)
 	println('Over attribute range from ${results.start} to ${results.end} by interval ${results.att_interval}')

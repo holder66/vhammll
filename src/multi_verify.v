@@ -24,21 +24,21 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		Parameters:                          mult_opts.Parameters
 		DisplaySettings:                     mult_opts.DisplaySettings
 		MultipleOptions:                     mult_opts.MultipleOptions
+		Class:                               ds.Class
 		datafile_path:                       mult_opts.datafile_path
 		testfile_path:                       mult_opts.testfile_path
 		multiple_classify_options_file_path: mult_opts.multiple_classify_options_file_path
 		labeled_classes:                     test_ds.class_values
-		class_counts:                        test_ds.class_counts
-		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds)
-		confusion_matrix_map:                confusion_matrix_map
-		correct_inferences:                  inferences_map.clone()
-		incorrect_inferences:                inferences_map.clone()
-		wrong_inferences:                    inferences_map.clone()
-		true_positives:                      inferences_map.clone()
-		true_negatives:                      inferences_map.clone()
-		false_positives:                     inferences_map.clone()
-		false_negatives:                     inferences_map.clone()
+		// classes:                             test_ds.classes
+		pos_neg_classes:      get_pos_neg_classes(test_ds)
+		confusion_matrix_map: confusion_matrix_map
+		correct_inferences:   inferences_map.clone()
+		incorrect_inferences: inferences_map.clone()
+		wrong_inferences:     inferences_map.clone()
+		true_positives:       inferences_map.clone()
+		true_negatives:       inferences_map.clone()
+		false_positives:      inferences_map.clone()
+		false_negatives:      inferences_map.clone()
 	}
 	verify_result.binning = get_binning(mult_opts.bins)
 
@@ -53,7 +53,15 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	for settings in mult_opts.multiple_classifier_settings {
 		mut local_opts := Options{
 			Parameters:    settings.Parameters
+			LoadOptions:   settings.LoadOptions
 			datafile_path: settings.datafile_path
+		}
+		mut local_ds := ds
+		// if the balance_prevalences flag is set, then we need to possibly add
+		// the extra cases at this stage
+		if local_opts.balance_prevalences_flag
+			&& evaluate_class_prevalence_imbalance(local_ds, local_opts) {
+			local_ds = balance_prevalences(mut local_ds, local_opts.balance_prevalences_threshold)
 		}
 		verify_result.classifiers << settings.classifier_id
 		local_opts.Parameters.multiple_flag = false
@@ -61,7 +69,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		// params.multiple_flag = true
 		// mult_opts.Parameters = params
 		// verify_result.Parameters = params
-		classifier := make_classifier_using_ds(mut ds, local_opts)
+		classifier := make_classifier_using_ds(mut local_ds, local_opts)
 		classifier_array << classifier
 		verify_result.trained_attribute_maps_array << [classifier.trained_attributes]
 		array_of_case_arrays << generate_case_array(classifier, test_ds)

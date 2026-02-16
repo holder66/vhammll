@@ -69,7 +69,7 @@ pub fn explore(opts Options) ExploreResult {
 			af_opts.balance_prevalences_flag = true
 			af_opts.balance_prevalences_threshold = opts.balance_prevalences_threshold
 			for ub in ft {
-				af_opts.uniform_bins = ub 
+				af_opts.uniform_bins = ub
 				for wr in ft {
 					af_opts.weight_ranking_flag = wr
 					af_result = run_explore(af_opts)
@@ -122,11 +122,11 @@ fn run_explore(opts Options) ExploreResult {
 	}
 	mut ex_opts := opts
 	mut results := ExploreResult{
-		Parameters:		opts.Parameters
+		Parameters:      opts.Parameters
 		LoadOptions:     ds.LoadOptions
 		DisplaySettings: opts.DisplaySettings
 		// MultipleOptions: opts.MultipleOptions
-		Class:			ds.Class
+		Class:           ds.Class
 		path:            ds.path
 		testfile_path:   opts.testfile_path
 		AttributeRange:  get_attribute_range(opts.number_of_attributes,

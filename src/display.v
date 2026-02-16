@@ -97,7 +97,7 @@ pub fn display_file(path string, in_opts Options) {
 			// }
 		}
 		// test for a multiple classifier settings file
-		s.contains('{"binning":{"lower":') {
+		s.contains('"binning":{"lower":') {
 			mut multiple_classifier_settings := read_multiple_opts(path) or {
 				panic('read_multiple_opts failed')
 			}

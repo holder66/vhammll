@@ -11,9 +11,9 @@ fn testsuite_begin() ! {
 	os.mkdir_all('tempfolders/tempfolder_balance_prevalences')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_balance_prevalences')!
-}
+// fn testsuite_end() ! {
+// 	os.rmdir_all('tempfolders/tempfolder_balance_prevalences')!
+// }
 
 // fn test_evaluate_class_prevalence_imbalance() {
 // 	mut opts := Options{
@@ -230,6 +230,7 @@ fn test_multiple_verify() {
 	opts.number_of_attributes = [1]
 	opts.bins = [5, 5]
 	opts.weight_ranking_flag = true
+	opts.purge_flag = true
 
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
@@ -237,12 +238,14 @@ fn test_multiple_verify() {
 	result96 := verify(opts)
 	assert result96.correct_counts == [17, 14]
 	opts.weight_ranking_flag = true
+	opts.purge_flag = false
 	opts.balance_prevalences_flag = false
 	result131 := verify(opts)
 	assert result131.correct_counts == [17, 13]
 	opts.number_of_attributes = [3]
 	opts.bins = [4, 4]
 	opts.weight_ranking_flag = false
+	opts.purge_flag = true
 	opts.weighting_flag = true
 	result92 := verify(opts)
 	assert result92.correct_counts == [20, 11]
@@ -267,14 +270,51 @@ fn test_multiple_verify() {
 	opts.total_nn_counts_flag = true
 	// opts.traverse_all_flags = true
 	result96_92 := verify(opts)
-	assert result96_92.correct_counts == [18, 12]
+	assert result96_92.correct_counts == [20, 12]
 	opts.classifiers = [1, 2, 3]
 	result140_131_92 := verify(opts)
-	assert result140_131_92.correct_counts == [20, 12]
+	assert result140_131_92.correct_counts == [18, 12]
 	opts.classifiers = [0, 2, 3]
 	opts.total_nn_counts_flag = false
 	result140_96_92 := verify(opts)
-	assert result140_96_92.correct_counts == [20, 11]
+	assert result140_96_92.correct_counts == [20, 12]
+
+	// now, do similarly with balance_prevalences_flag set
+	opts.multiple_flag = false
+	opts.multiple_classify_options_file_path = ''
+	opts.append_settings_flag = true
+	opts.balance_prevalences_flag = true
+	opts.balance_prevalences_threshold = 0.9
+	opts.number_of_attributes = [1]
+	opts.bins = [1, 5]
+	opts.weight_ranking_flag = false
+	opts.weighting_flag = false
+
+	assert verify(opts).correct_counts == [18, 13]
+
+	opts.bins = [5, 5]
+	opts.weight_ranking_flag = true
+	assert verify(opts).correct_counts == [17, 14]
+
+	opts.bins = [4, 4]
+	opts.number_of_attributes = [2]
+	opts.weight_ranking_flag = false
+	assert verify(opts).correct_counts == [20, 6]
+
+	// now, multiple classifiers
+	opts.classifiers = []
+	display_file(opts.settingsfile_path, opts)
+
+	opts.multiple_flag = true
+	opts.multiple_classify_options_file_path = opts.settingsfile_path
+	opts.append_settings_flag = false
+
+	opts.classifiers = [5]
+	verify(opts)
+	opts.classifiers = [4, 5]
+	verify(opts)
+	opts.classifiers = [4, 5, 6]
+	verify(opts)
+	opts.classifiers = [0, 4, 5, 6]
+	verify(opts)
 }
-
-
