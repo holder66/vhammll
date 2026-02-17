@@ -17,238 +17,141 @@ fn testsuite_end() ! {
 
 fn test_display_multiple_classifier_settings() ? {
 	displayfile := 'src/testdata/bcw.opts'
-	mut optsvar := Options{
-		classifiers: [3, 5, 6]
-	}
-
 	display_file(displayfile, opts('-m# 3,5,6'))
-	// opts.expanded_flag = true
-	// opts.show_attributes_flag = true
-	// display_file('src/testdata/bcw_purged.opts', opts)
-
-	// opts.graph_flag = true
-	// display_file('src/testdata/bcw_purged.opts', opts)
 }
 
 fn test_display_saved_classifier() ? {
 	// make a classifier, show it, then save it, then display the saved classifier file
-	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
-		command:              'make'
-		bins:                 [3, 10]
-		number_of_attributes: [8]
-		show_flag:            true
-	}
-	opts.outputfile_path = 'tempfolders/tempfolder_display/classifierfile'
-	// mut ds := load_file('datasets/developer.tab')
-	mut cl := make_classifier(opts)
-	display_file(opts.outputfile_path, opts)
+	outputfile := 'tempfolders/tempfolder_display/classifierfile'
+	cl := make_classifier(opts('-s -a 8 -b 3,10 -o ${outputfile} datasets/developer.tab',
+		cmd: 'make'
+	))
+	display_file(outputfile, opts('-s datasets/developer.tab'))
 }
 
 fn test_display_saved_analyze_result() ? {
 	// analyze a dataset file and show the result; save the result, then display the saved file
-	mut opts := Options{
-		datafile_path:   'datasets/UCI/anneal.arff'
-		command:         'analyze'
-		outputfile_path: 'tempfolders/tempfolder_display/analyze_result'
-		show_flag:       true
-	}
-	// _ = analyze_dataset(load_file('datasets/UCI/anneal.arff'), opts)
-	_ = analyze_dataset(opts)
-	display_file(opts.outputfile_path, opts)
+	outputfile := 'tempfolders/tempfolder_display/analyze_result'
+	_ = analyze_dataset(opts('-s -o ${outputfile} datasets/UCI/anneal.arff', cmd: 'analyze'))
+	display_file(outputfile, opts('-s datasets/UCI/anneal.arff'))
 }
 
 fn test_display_saved_ranking_result() ? {
 	// rank a dataset file and show the result; save the result, then display the saved file
-	mut opts := Options{
-		datafile_path:   'datasets/UCI/anneal.arff'
-		command:         'rank'
-		outputfile_path: 'tempfolders/tempfolder_display/rank_result'
-		show_flag:       true
-	}
-	// _ = rank_attributes(load_file('datasets/UCI/anneal.arff'), opts)
-	_ = rank_attributes(opts)
-	display_file(opts.outputfile_path, opts)
+	outputfile := 'tempfolders/tempfolder_display/rank_result'
+	_ = rank_attributes(opts('-s -o ${outputfile} datasets/UCI/anneal.arff', cmd: 'rank'))
+	display_file(outputfile, opts('-s datasets/UCI/anneal.arff'))
 }
 
 fn test_display_saved_validate_result() ? {
 	// validate a dataset file and show the result; save the result, then display the saved file
-	mut opts := Options{
-		command:   'validate'
-		show_flag: true
-	}
-	opts.datafile_path = 'datasets/bcw350train'
-	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(opts)
-	opts.outputfile_path = 'tempfolders/tempfolder_display/validate_result'
-	opts.testfile_path = 'datasets/bcw174validate'
-	_ = validate(cl, opts)!
-	display_file(opts.outputfile_path, opts)
+	outputfile := 'tempfolders/tempfolder_display/validate_result'
+	cl := make_classifier(opts('-s -t datasets/bcw174validate datasets/bcw350train', cmd: 'make'))
+	_ = validate(cl, opts('-s -o ${outputfile} -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'validate'
+	))!
+	display_file(outputfile, opts('-s datasets/bcw350train'))
 }
 
 fn test_display_saved_verify_result() ? {
 	// verify a dataset file and show the result, with and without the expanded and
 	// show_attributes flags; save the result, then display the saved result, again with
 	// and without those flags
+	datafile := 'datasets/bcw350train'
+	testfile := 'datasets/bcw174test'
+	outputfile := 'tempfolders/tempfolder_display/verify_result'
+
 	println(r_b('\nTrain a classifier on bcw350train, use it to verify bcw174test'))
-	mut opts := Options{
-		datafile_path:        'datasets/bcw350train'
-		testfile_path:        'datasets/bcw174test'
-		outputfile_path:      'tempfolders/tempfolder_display/verify_result'
-		command:              'verify'
-		number_of_attributes: [5]
-		concurrency_flag:     false
-		show_flag:            true
-	}
-	mut ds := load_file(opts.datafile_path)
-	cl := make_classifier(opts)
 	println(r_b('with the expanded_flag not set:'))
-	verify(opts)
-	opts.expanded_flag = true
+	verify(opts('-s -a 5 -o ${outputfile} -t ${testfile} ${datafile}', cmd: 'verify'))
 	println(r_b('\nAnd with the expanded_flag set:'))
-	verify(opts)
+	verify(opts('-s -e -a 5 -o ${outputfile} -t ${testfile} ${datafile}', cmd: 'verify'))
 	println(r_b('\nAnd now with the show_attributes_flag set:'))
-	opts.show_attributes_flag = true
-	verify(opts)
+	verify(opts('-s -e -ea -a 5 -o ${outputfile} -t ${testfile} ${datafile}', cmd: 'verify'))
 	println(r_b('\nRepeat the above three, but displaying the saved result file:'))
-	opts.expanded_flag = false
-	opts.show_attributes_flag = false
 	println(r_b('with the expanded_flag not set:'))
-	display_file(opts.outputfile_path, opts)
-	// repeat with expanded flag set
-	opts.expanded_flag = true
+	display_file(outputfile, opts('-s ${datafile}'))
 	println(r_b('\nAnd with the expanded_flag set:'))
-	display_file(opts.outputfile_path, opts)
-	// repeat with show_attributes flag set
-	opts.show_attributes_flag = true
+	display_file(outputfile, opts('-s -e ${datafile}'))
 	println(r_b('\nAnd now with the show_attributes_flag set:'))
-	display_file(opts.outputfile_path, opts)
-	// finally, show_attributes but without expanded result
-	opts.expanded_flag = false
+	display_file(outputfile, opts('-s -e -ea ${datafile}'))
 	println(r_b('\nAnd finally with the show_attributes_flag set and the expanded_flag not set:'))
-	display_file(opts.outputfile_path, opts)
+	display_file(outputfile, opts('-s -ea ${datafile}'))
 }
 
 fn test_display_cross_result() ? {
 	// cross-validate a dataset file and display the result; save the result, then display
 	// the saved result file
-	mut opts := Options{
-		datafile_path:        'datasets/UCI/segment.arff'
-		command:              'cross'
-		number_of_attributes: [4]
-		bins:                 [12]
-		folds:                5
-		repetitions:          0
-		random_pick:          false
-		// concurrency_flag:     true
-		show_flag: true
-	}
-	// ds := load_file('datasets/UCI/segment.arff')
-	opts.outputfile_path = 'tempfolders/tempfolder_display/cross_result'
-	cross_validate(opts)
-	opts.expanded_flag = true
-	cross_validate(opts)
-	opts.expanded_flag = false
-	display_file(opts.outputfile_path, opts)
-	opts.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
-	opts.folds = 10
-	opts.repetitions = 10
-	opts.random_pick = true
-	cross_validate(opts)
-	display_file(opts.outputfile_path, opts)
+	datafile := 'datasets/UCI/segment.arff'
+	outputfile := 'tempfolders/tempfolder_display/cross_result'
+
+	cross_validate(opts('-s -a 4 -b 12 -f 5 -o ${outputfile} ${datafile}', cmd: 'cross'))
+	cross_validate(opts('-s -e -a 4 -b 12 -f 5 -o ${outputfile} ${datafile}', cmd: 'cross'))
+	display_file(outputfile, opts('-s ${datafile}'))
+	display_file(outputfile, opts('-s -e ${datafile}'))
+	cross_validate(opts('-s -e -a 4 -b 12 -f 10 -r 10 -rand -o ${outputfile} ${datafile}',
+		cmd: 'cross'
+	))
+	display_file(outputfile, opts('-s -e ${datafile}'))
 	println(r_b('\nDone for test_display_cross_result'))
 }
 
 fn test_display_explore_result_cross() ? {
-	mut opts := Options{
-		command:              'explore'
-		datafile_path:        'datasets/UCI/iris.arff'
-		bins:                 [2, 3]
-		number_of_attributes: [2, 3]
-		concurrency_flag:     true
-		outputfile_path:      'tempfolders/tempfolder_display/explore_result'
-		show_flag:            true
-	}
-	// mut ds := load_file(opts.datafile_path)
-	explore(opts)
-	opts.expanded_flag = true
-	explore(opts)
-	opts.expanded_flag = false
-	display_file(opts.outputfile_path, opts)
-	// repeat with expanded flag set
-	opts.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	datafile := 'datasets/UCI/iris.arff'
+	outputfile := 'tempfolders/tempfolder_display/explore_result'
+
+	explore(opts('-s -c -a 2,3 -b 2,3 -o ${outputfile} ${datafile}', cmd: 'explore'))
+	explore(opts('-s -c -e -a 2,3 -b 2,3 -o ${outputfile} ${datafile}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile}'))
+	display_file(outputfile, opts('-s -e ${datafile}'))
 
 	// repeat with purge flag set
-	opts.purge_flag = true
-	opts.expanded_flag = false
-	explore(opts)
-	opts.expanded_flag = true
-	explore(opts)
-	opts.expanded_flag = false
-	display_file(opts.outputfile_path, opts)
-	opts.expanded_flag = true
-	display_file(opts.outputfile_path, opts)
+	explore(opts('-s -c -p -a 2,3 -b 2,3 -o ${outputfile} ${datafile}', cmd: 'explore'))
+	explore(opts('-s -c -p -e -a 2,3 -b 2,3 -o ${outputfile} ${datafile}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile}'))
+	display_file(outputfile, opts('-s -e ${datafile}'))
 
 	// repeat for a binary class dataset
-	opts.number_of_attributes = [0]
-	opts.datafile_path = 'datasets/bcw174test'
-	opts.purge_flag = false
-	opts.expanded_flag = false
-	opts.graph_flag = true
-	// ds = load_file(opts.datafile_path)
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
-	opts.expanded_flag = true
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
+	datafile2 := 'datasets/bcw174test'
+	explore(opts('-s -c -g -a 0 -b 2,3 -o ${outputfile} ${datafile2}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile2}'))
+	explore(opts('-s -c -g -e -a 0 -b 2,3 -o ${outputfile} ${datafile2}', cmd: 'explore'))
+	display_file(outputfile, opts('-s -e ${datafile2}'))
 
 	// repeat with purge flag set
-	opts.purge_flag = true
-	// ds = load_file(opts.datafile_path)
-	opts.expanded_flag = false
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
-	opts.expanded_flag = true
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
+	explore(opts('-s -c -g -p -a 0 -b 2,3 -o ${outputfile} ${datafile2}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile2}'))
+	explore(opts('-s -c -g -p -e -a 0 -b 2,3 -o ${outputfile} ${datafile2}', cmd: 'explore'))
+	display_file(outputfile, opts('-s -e ${datafile2}'))
 }
 
 fn test_display_explore_result_verify() ? {
-	mut opts := Options{
-		command:              'explore'
-		datafile_path:        'datasets/soybean-large-train.tab'
-		testfile_path:        'datasets/soybean-large-test.tab'
-		bins:                 [2, 6]
-		number_of_attributes: [12, 15]
-		concurrency_flag:     true
-		outputfile_path:      'tempfolders/tempfolder_display/explore_result'
-		show_flag:            true
-	}
-	// mut ds := load_file(opts.datafile_path)
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
-	opts.expanded_flag = true
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
+	datafile := 'datasets/soybean-large-train.tab'
+	testfile := 'datasets/soybean-large-test.tab'
+	outputfile := 'tempfolders/tempfolder_display/explore_result'
+
+	explore(opts('-s -c -a 12,15 -b 2,6 -o ${outputfile} -t ${testfile} ${datafile}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile}'))
+	explore(opts('-s -c -e -a 12,15 -b 2,6 -o ${outputfile} -t ${testfile} ${datafile}',
+		cmd: 'explore'
+	))
+	display_file(outputfile, opts('-s -e ${datafile}'))
 
 	// repeat with purge flag set
-	opts.purge_flag = true
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
+	explore(opts('-s -c -p -e -a 12,15 -b 2,6 -o ${outputfile} -t ${testfile} ${datafile}',
+		cmd: 'explore'
+	))
+	display_file(outputfile, opts('-s -p ${datafile}'))
 
 	// repeat for a binary class dataset
-	opts.datafile_path = 'datasets/bcw350train'
-	opts.testfile_path = 'datasets/bcw174test'
-	opts.purge_flag = false
-	opts.number_of_attributes = [0]
-	// ds = load_file(opts.datafile_path)
-	explore(opts)
-	display_file(opts.outputfile_path, opts)
+	datafile2 := 'datasets/bcw350train'
+	testfile2 := 'datasets/bcw174test'
+	explore(opts('-s -c -a 0 -b 2,6 -o ${outputfile} -t ${testfile2} ${datafile2}', cmd: 'explore'))
+	display_file(outputfile, opts('-s ${datafile2}'))
 
 	// repeat with purge flag set
-	opts.purge_flag = true
-	_ = explore(opts)
-	display_file(opts.outputfile_path, opts)
+	_ = explore(opts('-s -c -p -a 0 -b 2,6 -o ${outputfile} -t ${testfile2} ${datafile2}',
+		cmd: 'explore'
+	))
+	display_file(outputfile, opts('-s -p ${datafile2}'))
 }

@@ -17,46 +17,26 @@ fn testsuite_end() ? {
 }
 
 fn test_show_attributes_in_make_classifier() {
-	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
-		show_flag:            true
-		show_attributes_flag: true
-		command:              'make'
-	}
-	make_classifier(opts)
+	make_classifier(opts('-s -ea datasets/developer.tab', cmd: 'make'))
 }
 
 fn test_show_attributes_in_verify() {
-	mut opts := Options{
-		datafile_path:        'datasets/mobile_price_classification_train.csv'
-		testfile_path:        'datasets/mobile_price_classification_test.csv'
-		show_flag:            true
-		expanded_flag:        true
-		show_attributes_flag: true
-		command:              'verify'
-	}
-	verify(opts)
+	verify(opts('-s -e -ea -t datasets/mobile_price_classification_test.csv datasets/mobile_price_classification_train.csv',
+		cmd: 'verify'
+	))
 }
 
 fn test_multiple_classifier_verify_totalnn() ? {
-	println(r_b('Do two verfications to populate a settings file:'))
-	mut opts := Options{
-		concurrency_flag:  false
-		break_on_all_flag: true
-		// total_nn_counts_flag: true
-		command: 'verify'
-	}
-	// populate a settings file, doing individual verifications
+	datafile := 'datasets/leukemia38train.tab'
+	testfile := 'datasets/leukemia34test.tab'
+	settingsfile := 'tempfolders/tempfolder_show_attr/leuk.opts'
 	mut result := CrossVerifyResult{}
-	opts.datafile_path = 'datasets/leukemia38train.tab'
-	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolders/tempfolder_show_attr/leuk.opts'
-	opts.append_settings_flag = true
-	opts.number_of_attributes = [1]
-	opts.bins = [5, 5]
-	opts.purge_flag = true
-	opts.weight_ranking_flag = true
-	result0 := verify(opts)
+
+	println(r_b('Do two verifications to populate a settings file:'))
+	// populate a settings file, doing individual verifications
+	result0 := verify(opts('-ma -p -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -67,12 +47,9 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 14.0
 		}
 	}, 'verify with 1 attribute and binning [5,5]'
-	opts.bins = [2, 2]
-	opts.purge_flag = false
-	opts.weight_ranking_flag = false
-	opts.number_of_attributes = [6]
-	opts.bins = [1, 10]
-	result1 := verify(opts)
+	result1 := verify(opts('-ma -a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 20.0
@@ -84,33 +61,26 @@ fn test_multiple_classifier_verify_totalnn() ? {
 		}
 	}
 	println(r_b('Next, verify that the settings file was saved, and display it:'))
-	// verify that the settings file was saved, and
-	// is the right length
-	assert os.is_file(opts.settingsfile_path)
-	mut r := read_multiple_opts(opts.settingsfile_path)!
+	// verify that the settings file was saved, and is the right length
+	assert os.is_file(settingsfile)
+	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 2
-	opts.show_attributes_flag = true
-	display_file(opts.settingsfile_path, opts)
+	display_file(settingsfile, opts('-ea ${datafile}'))
 
 	println(r_b('Do a multi-classifier verification with both saved classifiers:'))
-	// test verify with multiple_classify_options_file_path
-	opts.multiple_flag = true
-	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	opts.append_settings_flag = false
-	opts.show_flag = true
-	opts.expanded_flag = true
-	opts.show_attributes_flag = true
-	result = verify(opts)
+	result = verify(opts('-s -e -ea -m ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	// with both classifiers
 	assert result.correct_counts == [20, 9], 'with both classifiers'
 	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
-	// with classifier 0 only
-	opts.classifiers = [0]
-	result = verify(opts)
+	result = verify(opts('-s -e -ea -m ${settingsfile} -m# 0 -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	println(r_b('Do a multi-classifier verification with saved classifier #1 only:'))
-	// with classifier 1
-	opts.classifiers = [1]
-	result = verify(opts)
+	result = verify(opts('-s -e -ea -m ${settingsfile} -m# 1 -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }

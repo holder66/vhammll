@@ -20,37 +20,18 @@ fn testsuite_end() ? {
 
 // test_one_vs_rest_verify
 fn test_one_vs_rest_verify() ? {
-	mut opts := Options{
-		concurrency_flag:  false
-		break_on_all_flag: false
-		command:           'verify'
-		verbose_flag:      false
-		expanded_flag:     true
-	}
+	settingsfile := 'tempfolders/tempfolder_one_vs_rest_verify/onevsrest.opts'
 	mut result := CrossVerifyResult{}
 
-	opts.datafile_path = 'datasets/onevsrest_train.tab'
-	opts.testfile_path = 'datasets/onevsrest_test.tab'
-	opts.settingsfile_path = 'tempfolders/tempfolder_one_vs_rest_verify/onevsrest.opts'
-	opts.append_settings_flag = true
-	opts.number_of_attributes = [0]
-	opts.bins = [5, 5]
-	opts.purge_flag = false
-	opts.weight_ranking_flag = false
-	// check that the non-multiple verify works OK, and that the
-	// settings file is getting appended
-	// mut ds := load_file(opts.datafile_path)
-	result0 := one_vs_rest_verify(opts)
+	result0 := one_vs_rest_verify(opts('-e -a 0 -b 5,5 -ms ${settingsfile} -t datasets/onevsrest_test.tab datasets/onevsrest_train.tab',
+		cmd: 'verify'
+	))
 
-	opts.datafile_path = 'datasets/soybean-large-train.tab'
-	opts.testfile_path = 'datasets/soybean-large-test.tab'
-	opts.number_of_attributes = [25]
-	opts.bins = [1, 16]
-	opts.weight_ranking_flag = true
-	opts.weighting_flag = false
-	result1 := one_vs_rest_verify(opts)
+	result1 := one_vs_rest_verify(opts('-e -wr -a 25 -b 1,16 -ms ${settingsfile} -t datasets/soybean-large-test.tab datasets/soybean-large-train.tab',
+		cmd: 'verify'
+	))
 
-	opts.testfile_path = 'datasets/mnist_test.tab'
+	// opts.testfile_path = 'datasets/mnist_test.tab'
 	// opts.number_of_attributes = [313]
 	// opts.bins = [2, 2]
 	// opts.weight_ranking_flag = true

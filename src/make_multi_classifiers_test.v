@@ -16,23 +16,14 @@ fn testsuite_end() ! {
 }
 
 fn test_make_multi_classifiers() {
-	mut opts := Options{
-		concurrency_flag:     false
-		break_on_all_flag:    true
-		total_nn_counts_flag: true
-		// expanded_flag: true
-		command: 'verify'
-	}
+	datafile := 'datasets/leukemia38train.tab'
+	testfile := 'datasets/leukemia34test.tab'
+	settingsfile := 'tempfolders/tempfolder_make_multi_classifiers/leuk.opts'
+
 	// populate a settings file, doing individual verifications
-	opts.datafile_path = 'datasets/leukemia38train.tab'
-	opts.testfile_path = 'datasets/leukemia34test.tab'
-	opts.settingsfile_path = 'tempfolders/tempfolder_make_multi_classifiers/leuk.opts'
-	opts.append_settings_flag = true
-	opts.number_of_attributes = [1]
-	opts.bins = [5, 5]
-	opts.purge_flag = true
-	opts.weight_ranking_flag = true
-	result0 := verify(opts)
+	result0 := verify(opts('-e -ma -mt -p -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -43,11 +34,9 @@ fn test_make_multi_classifiers() {
 			'AML': 14.0
 		}
 	}, 'test verify with 1 attribute and binning [5,5]'
-	opts.purge_flag = false
-	opts.weight_ranking_flag = false
-	opts.number_of_attributes = [6]
-	opts.bins = [1, 10]
-	result1 := verify(opts)
+	result1 := verify(opts('-e -ma -mt -a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify'
+	))
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 20.0
@@ -58,24 +47,16 @@ fn test_make_multi_classifiers() {
 			'AML': 9.0
 		}
 	}
-	// test that the settings file was saved, and
-	// is the right length
-	assert os.is_file(opts.settingsfile_path)
-	mut r := read_multiple_opts(opts.settingsfile_path)!
+	// test that the settings file was saved, and is the right length
+	assert os.is_file(settingsfile)
+	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 2
 
-	opts.show_attributes_flag = true
-	// display_file(opts.settingsfile_path, opts)
-	// test verify with multiple_classify_options_file_path
-	opts.multiple_flag = true
-	opts.multiple_classify_options_file_path = opts.settingsfile_path
-	opts.append_settings_flag = false
-	mut settings := read_multiple_opts(opts.settingsfile_path)!
-	mut cll := []Classifier{}
-	mut ds := load_file(opts.datafile_path)
-	cll = make_multi_classifiers(mut ds, settings, []int{})
+	// test make_multi_classifiers
+	mut settings := read_multiple_opts(settingsfile)!
+	mut ds := load_file(datafile)
+	mut cll := make_multi_classifiers(mut ds, settings, []int{})
 	assert cll.len == 2
-	// assert cll[0].attribute_ordering == ['APLP2']
 	assert cll[0].trained_attributes.len > 0
 	assert cll[0].attribute_ordering.len == 1
 	assert cll[1].trained_attributes['CST3'].rank_value == 94.73684

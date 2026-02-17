@@ -15,30 +15,14 @@ fn testsuite_end() ? {
 }
 
 fn test_max_ham_dist() {
-	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
-		expanded_flag: true
-	}
-	mut cl := make_classifier(opts)
+	mut cl := make_classifier(opts('-e datasets/developer.tab', cmd: 'make'))
 	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
-	opts.number_of_attributes = [5]
-	opts.bins = [3, 3]
-	cl = make_classifier(opts)
+	cl = make_classifier(opts('-e -a 5 -b 3,3 datasets/developer.tab', cmd: 'make'))
 	assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
 }
 
 fn test_make_classifier() ? {
-	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
-		bins:                 [2, 12]
-		exclude_flag:         false
-		command:              'make'
-		number_of_attributes: [6]
-		weighting_flag:       true
-		weight_ranking_flag:  true
-	}
-	mut cl := Classifier{}
-	cl = make_classifier(opts)
+	mut cl := make_classifier(opts('-w -wr -a 6 -b 2,12 datasets/developer.tab', cmd: 'make'))
 	assert cl.class_counts == {
 		'm': 8
 		'f': 3
@@ -47,8 +31,9 @@ fn test_make_classifier() ? {
 	assert cl.lcm_class_counts == 24
 	assert cl.attribute_ordering == ['height', 'negative', 'weight', 'number', 'age', 'lastname']
 	assert cl.maximum_hamming_distance == 54
-	opts.datafile_path = 'datasets/class_missing_developer.tab'
-	cl = make_classifier(opts)
+	cl = make_classifier(opts('-w -wr -a 6 -b 2,12 datasets/class_missing_developer.tab',
+		cmd: 'make'
+	))
 	assert cl.class_counts == {
 		'm': 8
 		'':  1
@@ -60,14 +45,11 @@ fn test_make_classifier() ? {
 	assert cl.attribute_ordering == ['negative', 'height', 'number', 'weight', 'age', 'lastname']
 	assert cl.maximum_hamming_distance == 59
 
-	opts.class_missing_purge_flag = true
-	// println(ds.data)
-	cl = make_classifier(opts)
+	cl = make_classifier(opts('-pmc -w -wr -a 6 -b 2,12 datasets/class_missing_developer.tab',
+		cmd: 'make'
+	))
 
-	opts.bins = [5, 5]
-	opts.number_of_attributes = [1]
-	opts.datafile_path = 'datasets/leukemia34test.tab'
-	cl = make_classifier(opts)
+	cl = make_classifier(opts('-w -wr -a 1 -b 5,5 datasets/leukemia34test.tab', cmd: 'make'))
 	assert cl.maximum_hamming_distance == 5
 	assert cl.class_counts == {
 		'ALL': 20
@@ -99,45 +81,38 @@ fn test_make_translation_table() {
 }
 
 fn test_save_classifier() ? {
+	outputfile := 'tempfolders/tempfolder_make_classifier/classifierfile'
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
-	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
-		bins:                 [2, 12]
-		exclude_flag:         false
-		command:              'make'
-		number_of_attributes: [6]
-		weighting_flag:       true
-		weight_ranking_flag:  true
-		outputfile_path:      'tempfolders/tempfolder_make_classifier/classifierfile'
-	}
-	opts.classifierfile_path = opts.outputfile_path
 
-	cl = make_classifier(opts)
-
-	tcl = load_classifier_file(opts.classifierfile_path)!
+	cl = make_classifier(opts('-w -wr -a 6 -b 2,12 -o ${outputfile} datasets/developer.tab',
+		cmd: 'make'
+	))
+	tcl = load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances
-	opts.datafile_path = 'datasets/anneal.tab'
-	cl = make_classifier(opts)
 
-	tcl = load_classifier_file(opts.classifierfile_path)!
+	cl = make_classifier(opts('-w -wr -a 6 -b 2,12 -o ${outputfile} datasets/anneal.tab',
+		cmd: 'make'
+	))
+	tcl = load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances
 	assert tcl.maximum_hamming_distance == 32
-	opts.datafile_path = 'datasets/soybean-large-train.tab'
-	cl = make_classifier(opts)
 
-	tcl = load_classifier_file(opts.classifierfile_path)!
+	cl = make_classifier(opts('-w -wr -a 6 -b 2,12 -o ${outputfile} datasets/soybean-large-train.tab',
+		cmd: 'make'
+	))
+	tcl = load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances
 	assert tcl.maximum_hamming_distance == 27
 
 	if get_environment().arch_details[0] != '4 cpus' {
-		opts.datafile_path = 'datasets/mnist_test.tab'
-		cl = make_classifier(opts)
-
-		tcl = load_classifier_file(opts.classifierfile_path)!
+		cl = make_classifier(opts('-w -wr -a 6 -b 2,12 -o ${outputfile} datasets/mnist_test.tab',
+			cmd: 'make'
+		))
+		tcl = load_classifier_file(outputfile)!
 		assert tcl.trained_attributes == cl.trained_attributes
 		assert tcl.instances == cl.instances
 		assert tcl.maximum_hamming_distance == 72

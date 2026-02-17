@@ -15,118 +15,54 @@ fn testsuite_end() ? {
 }
 
 fn test_validate_save_result() ? {
-	mut opts := Options{
-		command:          'validate'
-		concurrency_flag: true
-		outputfile_path:  'tempfolder3/instancesfile'
-	}
-
 	mut result := ValidateResult{}
 	mut test_result := ValidateResult{}
-	mut ds := Dataset{}
 	mut cl := Classifier{}
-	mut saved_cl := Classifier{}
 }
 
 fn test_kaggle() ! {
-	mut opts := Options{
-		kagglefile_path:  'tempfolder3/kagglefile'
-		concurrency_flag: true
-	}
-	mut result := ValidateResult{}
-	mut test_result := ValidateResult{}
-	mut ds := Dataset{}
-	mut cl := Classifier{}
-	mut saved_cl := Classifier{}
-	mut content := []string{}
+	kagglefile := 'tempfolder3/kagglefile'
+	datafile := 'datasets/test.tab'
+	testfile := 'datasets/test_validate.tab'
 
-	// test validate with a non-saved classifier
-	opts.command = 'validate'
-	opts.datafile_path = 'datasets/test.tab'
-	opts.testfile_path = 'datasets/test_validate.tab'
-	opts.classifierfile_path = ''
-	opts.bins = [2, 3]
-	opts.number_of_attributes = [2]
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(opts)
-	result = validate(cl, opts)!
+	cl := make_classifier(opts('-c -a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}',
+		cmd: 'make'
+	))
+	result := validate(cl, opts('-c -a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}',
+		cmd: 'validate'
+	))!
 	assert result.inferred_classes == ['f', 'f', 'f', 'm', 'm', 'm', 'f', 'f', 'm', 'f']
 	assert result.counts == [[1, 0], [1, 0], [1, 0], [0, 1], [0, 1],
 		[0, 1], [1, 0], [1, 0], [0, 1], [3, 0]]
-	content = os.read_lines(opts.kagglefile_path) or {
-		panic('failed to open ${opts.kagglefile_path}')
-	}
+	content := os.read_lines(kagglefile) or { panic('failed to open ${kagglefile}') }
 	assert content == ['id,gender', '10,f', '11,f', '12,f', '13,m', '14,m', '15,m', '16,f', '17,f',
 		'18,m', '19,f']
 	println('Done kaggle test')
 }
 
-// test_kaggle_fail attempts to use a file without a metadata attribute in the first column
-// fn test_kaggle_fail() ! {
-// 	mut opts := Options{
-// 		kagglefile_path: 'tempfolder3/kagglefile'
-// 		verbose_flag: false
-// 		show_flag: false
-// 		concurrency_flag: true
-// 	}
-// 	mut result := ValidateResult{}
-// 	mut test_result := ValidateResult{}
-// 	mut ds := Dataset{}
-// 	mut cl := Classifier{}
-// 	mut saved_cl := Classifier{}
-// 	mut content := []string{}
-
-// 	// test validate with a non-saved classifier
-// 	opts.command = 'validate'
-// 	opts.datafile_path = 'datasets/test.tab'
-// 	opts.testfile_path = 'datasets/test_verify.tab'
-// 	opts.classifierfile_path = ''
-// 	opts.bins = [2, 3]
-// 	opts.number_of_attributes = [2]
-// 	ds = load_file(opts.datafile_path, opts.LoadOptions)
-// 	cl = make_classifier(opts)
-// 	// println(validate(cl, opts)!)
-// 	result = validate(cl, opts)!
-
-// 	println('Done kaggle fail test')
-// }
-
 // test_validate
 fn test_validate() ? {
-	mut opts := Options{
-		concurrency_flag: true
-	}
-
 	mut result := ValidateResult{}
-	mut test_result := ValidateResult{}
-	mut ds := Dataset{}
 	mut cl := Classifier{}
-	mut saved_cl := Classifier{}
 
 	// test validate with a non-saved classifier
-	opts.command = 'validate'
-	opts.datafile_path = 'datasets/test.tab'
-	opts.testfile_path = 'datasets/test_validate.tab'
-	opts.classifierfile_path = ''
-	opts.bins = [2, 3]
-	opts.number_of_attributes = [2]
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(opts)
-	result = validate(cl, opts)!
+	cl = make_classifier(opts('-c -a 2 -b 2,3 -t datasets/test_validate.tab datasets/test.tab',
+		cmd: 'make'
+	))
+	result = validate(cl, opts('-c -a 2 -b 2,3 -t datasets/test_validate.tab datasets/test.tab',
+		cmd: 'validate'
+	))!
 	assert result.inferred_classes == ['f', 'f', 'f', 'm', 'm', 'm', 'f', 'f', 'm', 'f']
 	assert result.counts == [[1, 0], [1, 0], [1, 0], [0, 1], [0, 1],
 		[0, 1], [1, 0], [1, 0], [0, 1], [3, 0]]
-
 	println('Done test.tab')
 
-	opts.datafile_path = 'datasets/bcw350train'
-	opts.testfile_path = 'datasets/bcw174validate'
-	opts.classifierfile_path = ''
-	opts.number_of_attributes = [4]
-	opts.bins = [2, 4]
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(opts)
-	result = validate(cl, opts)!
+	cl = make_classifier(opts('-c -a 4 -b 2,4 -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'make'
+	))
+	result = validate(cl, opts('-c -a 4 -b 2,4 -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'validate'
+	))!
 	assert result.inferred_classes == ['benign', 'benign', 'benign', 'benign', 'benign', 'malignant',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'malignant', 'benign', 'benign',
@@ -174,13 +110,15 @@ fn test_validate() ? {
 		[0, 16], [99, 0], [99, 0], [99, 0], [99, 0], [99, 0],
 		[99, 0], [99, 0], [99, 0], [99, 0], [0, 1], [99, 0], [99, 0],
 		[1, 0], [99, 0], [0, 2], [3, 8], [0, 1]]
-
 	println('Done with bcw350train')
 
 	// repeat with weighting
-	opts.weighting_flag = true
-	cl = make_classifier(opts)
-	result = validate(cl, opts)!
+	cl = make_classifier(opts('-c -w -a 4 -b 2,4 -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'make'
+	))
+	result = validate(cl, opts('-c -w -a 4 -b 2,4 -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'validate'
+	))!
 	assert result.inferred_classes == ['benign', 'benign', 'benign', 'benign', 'benign', 'malignant',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'malignant', 'benign', 'benign',
@@ -237,18 +175,16 @@ fn test_validate() ? {
 		[15741, 0], [15741, 0], [15741, 0], [15741, 0], [0, 191],
 		[15741, 0], [15741, 0], [159, 0], [15741, 0], [0, 382],
 		[159, 191], [0, 191]]
-
 	println('Done with bcw350train and weighting')
 
 	// now with a saved classifier
-	opts.outputfile_path = 'tempfolder3/classifierfile'
-	opts.weighting_flag = true
-	cl = Classifier{}
-	result = ValidateResult{}
-	cl = make_classifier(opts)
-	cl = Classifier{}
-	opts.classifierfile_path = opts.outputfile_path
-	result = validate(load_classifier_file(opts.classifierfile_path)!, opts)!
+	outputfile := 'tempfolder3/classifierfile'
+	cl = make_classifier(opts('-c -w -a 4 -b 2,4 -o ${outputfile} -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'make'
+	))
+	result = validate(load_classifier_file(outputfile)!, opts('-c -w -a 4 -b 2,4 -t datasets/bcw174validate datasets/bcw350train',
+		cmd: 'validate'
+	))!
 	assert result.inferred_classes == ['benign', 'benign', 'benign', 'benign', 'benign', 'malignant',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'benign',
 		'benign', 'benign', 'benign', 'benign', 'benign', 'benign', 'malignant', 'benign', 'benign',
@@ -305,26 +241,22 @@ fn test_validate() ? {
 		[15741, 0], [15741, 0], [15741, 0], [15741, 0], [0, 191],
 		[15741, 0], [15741, 0], [159, 0], [15741, 0], [0, 382],
 		[159, 191], [0, 191]]
-
 	println('Done with bcw350train saved classifier')
 
-	opts.datafile_path = 'datasets/soybean-large-train.tab'
-	opts.testfile_path = 'datasets/soybean-large-validate.tab'
-	opts.outputfile_path = 'tempfolder3/classifierfile'
-	opts.number_of_attributes = [33]
-	opts.bins = [2, 16]
-	opts.weighting_flag = true
-	ds = load_file(opts.datafile_path, opts.LoadOptions)
-	cl = make_classifier(opts)
-	// reset the outputfile_path so that validate won't overwrite the classifier
-	opts.outputfile_path = ''
-	result = validate(cl, opts)!
+	cl = make_classifier(opts('-c -w -a 33 -b 2,16 -o ${outputfile} -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab',
+		cmd: 'make'
+	))
+	result = validate(cl, opts('-c -w -a 33 -b 2,16 -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab',
+		cmd: 'validate'
+	))!
 	assert result.counts[0] == [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	s := result.inferred_classes[0..4]
 	assert s == ['diaporthe-stem-canker', 'diaporthe-stem-canker', 'diaporthe-stem-canker',
 		'diaporthe-stem-canker']
-	tcl := load_classifier_file('tempfolder3/classifierfile')!
-	test_result = validate(tcl, opts)!
+	tcl := load_classifier_file(outputfile)!
+	test_result := validate(tcl, opts('-c -w -a 33 -b 2,16 -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab',
+		cmd: 'validate'
+	))!
 
 	assert result.inferred_classes == test_result.inferred_classes
 	assert result.counts == test_result.counts

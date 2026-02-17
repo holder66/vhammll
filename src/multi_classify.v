@@ -61,11 +61,8 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 		mut hamming_distances := []int{}
 		for instance in cl.instances {
 			mut hamming_dist := 0
-			// for j, byte_value in case[i] {
-			// 	hamming_dist += int(get_hamming_distance(byte_value, instance[j]) * mcr.lcm_attributes / mcr.number_of_attributes[i])
-			// }
 			for j, byte_value in case[i] {
-				hamming_dist += get_hamming_distance(byte_value, instance[j])
+				hamming_dist += int(get_hamming_distance(byte_value, instance[j]) * mcr.lcm_attributes / mcr.number_of_attributes[i])
 			}
 			hamming_distances << hamming_dist
 		}
@@ -266,15 +263,15 @@ fn resolve_conflict(mcr MultipleClassifierResults, opts Options) string {
 	if opts.verbose_flag {
 		println('Majority vote fell through')
 	}
-	// pick the result with the greatest number of nearest neighbors
-	// sums := mcr.results_by_classifier.map(it.results_by_radius.last()).map(it.nearest_neighbors_by_class).map(array_sum(it))
-	// return mcr.results_by_classifier[idx_max(sums)].inferred_class
-
+	if mcr.total_nn_counts_flag {
+		// pick the result with the greatest number of nearest neighbors
+		sums := mcr.results_by_classifier.map(it.results_by_radius.last()).map(it.nearest_neighbors_by_class).map(array_sum(it))
+		return mcr.results_by_classifier[idx_max(sums)].inferred_class
+	}
 	// pick the result with the biggest ratio between classes
 	// to avoid dividing by zero, if one of the nearest neighbors values
 	// is zero, just use the other one as the ratio
 	ratios := mcr.results_by_classifier.map(it.results_by_radius.last()).map(it.nearest_neighbors_by_class).map(get_ratio(it))
-	// println(ratios)
 	return mcr.results_by_classifier[idx_max(ratios)].inferred_class
 
 	// if mcr.results_by_classifier.len == 2 {
