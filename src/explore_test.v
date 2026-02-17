@@ -24,11 +24,12 @@ fn testsuite_end() ? {
 // }
 
 fn test_explore_traverse_all_flags() {
+	// first, with a dataset with balanced prevalences
 	mut datafile := 'datasets/iris.tab'
 	mut settingsfile := 'tempfolders/tempfolder_explore/iris.opts'
 	mut purgedfile := 'tempfolders/tempfolder_explore/iris_purged.opts'
 	mut result := ExploreResult{}
-	result = explore(opts('-a 2,4 -b 2,3 -u -af -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	result = explore(opts('-a 2,4 -b 2,3 -af -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	// display_file(settingsfile, expanded_flag: true)
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
@@ -40,6 +41,47 @@ fn test_explore_traverse_all_flags() {
 	dump(r.len)
 	assert r.len == 64
 	assert r.filter(it.classifier_id == 11)[0].incorrect_counts == [0, 3, 1]
+	// now with the balance_prevalences flag set
+	settingsfile = 'tempfolders/tempfolder_explore/iris_bp.opts'
+	result = explore(opts('-e -bp -a 2,4 -b 2,3 -af -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	// display_file(settingsfile, expanded_flag: true)
+	assert !os.is_file(settingsfile)
+
+	// repeat for a dataset with unbalanced prevalences
+	datafile = 'datasets/leukemia38train.tab'
+	mut testfile := 'datasets/leukemia34test.tab'
+	settingsfile = 'tempfolders/tempfolder_explore/leuk.opts'
+	purgedfile = 'tempfolders/tempfolder_explore/leuk_purged.opts'
+	result = explore(opts('-a 1,2 -b 2,5 -af -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'explore'
+	))
+	assert os.is_file(settingsfile)
+	r = read_multiple_opts(settingsfile)!
+	assert r.len == 140
+	assert r[139].correct_counts == [20, 6]
+	optimals(settingsfile, opts('-p -o ${purgedfile}'))
+	assert os.is_file(purgedfile)
+	r = read_multiple_opts(purgedfile)!
+	assert r.len == 64
+	assert r[3].classifier_id == 7
+	assert r[3].correct_counts == [18, 13]
+	// display_file(purgedfile, expanded_flag: true)
+	// limit the -af to -bp
+	settingsfile = 'tempfolders/tempfolder_explore/leuk_bp.opts'
+	purgedfile = 'tempfolders/tempfolder_explore/leuk_bp_purged'
+	result = explore(opts('-bp -a 1,2 -b 2,5 -af -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'explore'
+	))
+	assert os.is_file(settingsfile)
+	r = read_multiple_opts(settingsfile)!
+	assert r.len == 28
+	optimals(settingsfile, opts('-p -o ${purgedfile}'))
+	assert os.is_file(purgedfile)
+	r = read_multiple_opts(purgedfile)!
+	assert r.len == 16
+	assert r[13].classifier_id == 22
+	assert r[13].incorrect_counts == [3, 0]
+	// display_file(purgedfile, expanded_flag: true)
 }
 
 fn test_explore_cross() ? {

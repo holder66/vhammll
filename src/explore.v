@@ -65,7 +65,14 @@ pub fn explore(opts Options) ExploreResult {
 					}
 				}
 			}
-		} else {
+		}
+		// to do the explore over balancing prevalences, first check that the prevalende
+		// imbalance exceeds the threshold
+		if evaluate_class_prevalence_imbalance(load_file(af_opts.datafile_path), opts) {
+			af_opts.uniform_bins = false
+			af_opts.weight_ranking_flag = false
+			af_opts.weighting_flag = false
+			af_opts.purge_flag = false
 			af_opts.balance_prevalences_flag = true
 			af_opts.balance_prevalences_threshold = opts.balance_prevalences_threshold
 			for ub in ft {
@@ -76,6 +83,7 @@ pub fn explore(opts Options) ExploreResult {
 				}
 			}
 		}
+
 		return af_result // returns just the last result for multiple explores
 	}
 	return run_explore(opts)

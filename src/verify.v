@@ -33,7 +33,6 @@ pub fn verify(opts Options) CrossVerifyResult {
 				af_opts.combined_radii_flag = mc
 				for mt in ft {
 					af_opts.total_nn_counts_flag = mt
-					dump(af_opts)
 					af_result = run_verify(af_opts)
 					println('corrects: ${af_result.correct_counts} balanced accuracy: ${af_result.balanced_accuracy:-6.2f} MCC: ${af_result.mcc:-7.3f} sens: ${af_result.sens:-7.3f} spec: ${af_result.spec:-4.3f} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
 				}

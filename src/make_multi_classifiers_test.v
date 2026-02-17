@@ -4,14 +4,14 @@ module vhammll
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() ! {
 	if os.is_dir('tempfolders/tempfolder_make_multi_classifiers') {
 		os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 	}
 	os.mkdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 }
 
-fn testsuite_end() ? {
+fn testsuite_end() ! {
 	os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 }
 
@@ -24,7 +24,6 @@ fn test_make_multi_classifiers() {
 		command: 'verify'
 	}
 	// populate a settings file, doing individual verifications
-	mut result := CrossVerifyResult{}
 	opts.datafile_path = 'datasets/leukemia38train.tab'
 	opts.testfile_path = 'datasets/leukemia34test.tab'
 	opts.settingsfile_path = 'tempfolders/tempfolder_make_multi_classifiers/leuk.opts'
@@ -44,7 +43,6 @@ fn test_make_multi_classifiers() {
 			'AML': 14.0
 		}
 	}, 'test verify with 1 attribute and binning [5,5]'
-	opts.bins = [2, 2]
 	opts.purge_flag = false
 	opts.weight_ranking_flag = false
 	opts.number_of_attributes = [6]
@@ -78,9 +76,16 @@ fn test_make_multi_classifiers() {
 	cll = make_multi_classifiers(mut ds, settings, []int{})
 	assert cll.len == 2
 	// assert cll[0].attribute_ordering == ['APLP2']
+	assert cll[0].trained_attributes.len > 0
+	assert cll[0].attribute_ordering.len == 1
 	assert cll[1].trained_attributes['CST3'].rank_value == 94.73684
-	// now try for just one classifier
+	assert cll[1].attribute_ordering.len == 6
+	// now try for just one classifier (index 1, which has 6 attributes)
 	cll = make_multi_classifiers(mut ds, settings, [1])
 	assert cll.len == 1
 	assert cll[0].trained_attributes['CST3'].rank_value == 94.73684
+	assert cll[0].attribute_ordering.len == 6
+	// non-existent classifier_id should be skipped, returning empty
+	cll = make_multi_classifiers(mut ds, settings, [99])
+	assert cll.len == 0
 }

@@ -50,13 +50,14 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	}
 	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
 	verify_result.classifiers = []int{}
+	mut local_opts := Options{
+		datafile_path: opts.datafile_path
+	}
+	mut local_ds := ds
 	for settings in mult_opts.multiple_classifier_settings {
-		mut local_opts := Options{
-			Parameters:    settings.Parameters
-			LoadOptions:   settings.LoadOptions
-			datafile_path: settings.datafile_path
-		}
-		mut local_ds := ds
+		local_opts.Parameters = settings.Parameters
+		local_opts.LoadOptions = settings.LoadOptions
+		local_ds = ds
 		// if the balance_prevalences flag is set, then we need to possibly add
 		// the extra cases at this stage
 		if local_opts.balance_prevalences_flag
