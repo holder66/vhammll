@@ -317,6 +317,8 @@ Options:
        matches have been found for all classifiers;
   -mc: when multiple classifiers are used, combine the possible 
        hamming distances for each classifier into a single list;
+  -ms: when followed by a file path, appends the classifier settings
+       to that settings file (for use in multiple classifier operations);
   -mt: when multiple classifiers are used, add the nearest
        neighbors from each classifier, weight by class
        prevalences, and then infer from the totals;

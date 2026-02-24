@@ -170,7 +170,7 @@ pub mut:
 	file_path string
 }
 
-struct Parameters {
+pub struct Parameters {
 pub mut:
 	binning              Binning
 	number_of_attributes []int = [0]
@@ -531,8 +531,8 @@ pub mut:
 	classifier_instances_counts     []int
 }
 
-struct Metrics {
-mut:
+pub struct Metrics {
+pub mut:
 	precision         []f64
 	recall            []f64
 	f1_score          []f64
@@ -546,8 +546,8 @@ mut:
 	incorrect_counts  []int
 }
 
-struct BinaryMetrics {
-mut:
+pub struct BinaryMetrics {
+pub mut:
 	t_p             int
 	f_n             int
 	t_n             int
@@ -562,8 +562,8 @@ mut:
 	mcc             f64 // Matthews Correlation Coefficient
 }
 
-struct BinaryCounts {
-mut:
+pub struct BinaryCounts {
+pub mut:
 	t_p int
 	f_n int
 	t_n int

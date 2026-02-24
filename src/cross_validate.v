@@ -4,6 +4,16 @@ module vhammll
 import strconv
 import runtime
 import rand
+import os
+
+fn multi_classify_balance_prevalence(opts Options) bool {
+	path := opts.multiple_classify_options_file_path
+	if path != '' && os.is_file(path) {
+		s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
+		if s.contains('"balance_prevalences_flag":true') { return true }
+	}
+	return false
+}
 
 // cross_validate performs n-fold cross-validation on a dataset: it
 // partitions the instances in a dataset into a fold, trains
@@ -33,9 +43,13 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
 	// if the balance_prevalences flag is set, then we need to possibly add the extra cases
 	// at this stage, prior to partitioning
-	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+	// or, if multiple classifiers, then if any of the classifiers in the settings file
+	// has balanced_prevalences_flag set to true, then we must also do it here
+	dump(multi_classify_balance_prevalence(opts))
+	if (opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts)) || multi_classify_balance_prevalence(opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}
+	dump(ds.class_counts)
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
 	// dump(ds.class_counts)
@@ -79,7 +93,7 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path
 	mut total_instances := ds.Class.class_values.len
-
+	dump(ds.class_counts)
 	repeats := if opts.repetitions == 0 { 1 } else { opts.repetitions }
 	// for each class, instantiate an entry in the confusion matrix map
 	mut confusion_matrix_map := map[string]StringFloatMap{}
