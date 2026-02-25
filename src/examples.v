@@ -130,37 +130,7 @@ Let's look at cross-validation first:"
 	cmd = 'v run . explore   -c -u -w -t ~/.vmodules/holder66/vhammll/datasets/vowel-test.tab ~/.vmodules/holder66/vhammll/datasets/vowel-train.tab'
 	run_example(before, after, cmd)!
 
-	// multiple classifiers and optimals
-	before = 'VHamMLL can combine several classifiers trained with different settings to improve accuracy. The -ms flag saves each classifier\'s settings to a file as explore runs. Here we save settings for the breast-cancer-wisconsin dataset:'
-	cmd = 'v run . explore -s -c -w -ms ~/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
-	after = 'Each row in the output corresponds to one classifier. Its settings have been appended to ~/bcw.opts.'
-	run_example(before, after, cmd)!
-
-	before = 'The optimals command searches all pairs, triples, etc. of classifiers in a settings file and reports which combinations give the best balanced accuracy, highest Matthews Correlation Coefficient (MCC), and highest correct-inference count per class:'
-	cmd = 'v run . optimals -e ~/bcw.opts'
-	after = 'Note the classifier IDs listed for each category — you can pass those IDs to -m# in a subsequent cross or verify run.'
-	run_example(before, after, cmd)!
-
-	before = 'Settings files can accumulate duplicate entries (same parameters, different IDs). The -p flag purges duplicates, and -o saves the cleaned file for later use:'
-	cmd = 'v run . optimals -p -o ~/bcw-purged.opts ~/bcw.opts'
-	after = 'The purged file ~/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
-	run_example(before, after, cmd)!
-
-	before = 'The -s flag makes optimals show only classifier IDs for each category, which makes it easy to pick IDs to pass to -m#:'
-	cmd = 'v run . optimals -s ~/bcw-purged.opts'
-	after = 'Note the four IDs listed under "Best balanced accuracy" — use them in the -m# flag below.'
-	run_example(before, after, cmd)!
-
-	before = 'Cross-validate using the four classifiers with the highest balanced accuracy from the previous step. Replace 0,1,2,3 with the actual IDs shown above:'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,1,2,3 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
-	after = ''
-	run_example(before, after, cmd)!
-
-	before = 'Use -af (all-flags) to run all strategy combinations for those four classifiers and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,1,2,3 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
-	after = 'Pick the strategy that gives the best result and use it with -mc or -mt in a final cross or verify run.'
-	run_example(before, after, cmd)!
-
+	
 	// make
 	before = 'Once you have settled on parameter values that will be optimal for your use case, you can generate a classifier and save it to a file, which you specify with the -o or --output option:'
 	cmd = 'v run . make --output ~/bcw.cl -a 4 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
@@ -208,5 +178,36 @@ Let's look at cross-validation first:"
 	before = "Let's test the extended classifier with a test file:"
 	cmd = 'v run . verify -k ~/soybean.ext.cl -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-test.tab'
 	after = "That's it! Now try it on your own datasets!"
+	run_example(before, after, cmd)!
+
+	// multiple classifiers and optimals
+	before = 'VHamMLL can combine several classifiers trained with different settings to improve accuracy. The -ms flag saves each classifier\'s settings to a file as explore runs. Here we save settings for the breast-cancer-wisconsin dataset:'
+	cmd = 'v run . explore -s -c -w -ms ~/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	after = 'Each row in the output corresponds to one classifier. Its settings have been appended to ~/bcw.opts.'
+	run_example(before, after, cmd)!
+
+	before = 'The optimals command searches through classifiers in a settings file and reports which classifiers give the best balanced accuracy, highest Matthews Correlation Coefficient (MCC), and highest correct-inference count per class:'
+	cmd = 'v run . optimals -e ~/bcw.opts'
+	after = 'Note the classifier IDs listed for each category — you can pass those IDs to -m# in a subsequent cross or verify run.'
+	run_example(before, after, cmd)!
+
+	before = 'Settings files can accumulate duplicate entries (same parameters, different IDs). The -p flag purges duplicates, and -o saves the cleaned file for later use:'
+	cmd = 'v run . optimals -p -o ~/bcw-purged.opts ~/bcw.opts'
+	after = 'The purged file ~/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
+	run_example(before, after, cmd)!
+
+	before = 'The -s flag makes optimals show only classifier IDs for each category, which makes it easy to pick IDs to pass to -m#:'
+	cmd = 'v run . optimals -s ~/bcw-purged.opts'
+	after = 'Note the four IDs listed under "Best balanced accuracy" — an example will use them in the -m# flag below.'
+	run_example(before, after, cmd)!
+
+	before = 'Cross-validate using the four classifiers with the highest balanced accuracy from the previous step.'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,21,40,61 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	after = ''
+	run_example(before, after, cmd)!
+
+	before = 'Use -af (all-flags) to run all strategy combinations for those four classifiers and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,21,40,61 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	after = 'Pick the strategy that gives the best result and use it with -mc or -mt in a final cross or verify run.'
 	run_example(before, after, cmd)!
 }
