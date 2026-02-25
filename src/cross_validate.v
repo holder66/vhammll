@@ -45,7 +45,6 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	// at this stage, prior to partitioning
 	// or, if multiple classifiers, then if any of the classifiers in the settings file
 	// has balanced_prevalences_flag set to true, then we must also do it here
-	dump(multi_classify_balance_prevalence(opts))
 	if (opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts)) || multi_classify_balance_prevalence(opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}

@@ -100,21 +100,19 @@ For bug reports, feature requests, etc., please raise an issue on [github](https
 Use the `-c` (`--concurrent`) flag to make use of available CPU cores for
 some vhammll functions; this may speed things up (timings are on a MacBook Pro 2019).
 
-For repeated runs it is faster to compile a binary first (`v .` produces `./vhamml`
-in the current directory) rather than using `v run .`, which recompiles every time:
 ```sh
 v .
-./vhamml explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     # 10.157 sec
-./vhamml explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  #  4.910 sec
+./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     # 9.931 sec
+./main explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 8.656 sec
 ```
 A large additional speedup comes from compiling with the `-prod` (production) flag.
 The compilation itself takes longer, but the resulting binary is highly optimised:
 ```sh
 v -prod .
-./vhamml explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     #  3.899 sec
-./vhamml explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  #  4.849 sec
+./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     #  4.844 sec
+./main explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  #  6.136 sec
 ```
-Note: `-prod` does not speed things up further when `-c` is also used.
+Note: `-c` may increase timings when `-prod` has been used to generate a binary.
 
 
 ## Examples showing use of the Command Line Interface
