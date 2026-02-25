@@ -105,7 +105,7 @@ v .
 ./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     # 9.931 sec
 ./main explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 8.656 sec
 ```
-A large additional speedup comes from compiling with the `-prod` (production) flag.
+A larger speedup comes from compiling with the `-prod` (production) flag.
 The compilation itself takes longer, but the resulting binary is highly optimised:
 ```sh
 v -prod .

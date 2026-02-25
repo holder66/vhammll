@@ -8,10 +8,10 @@ In your terminal, navigate to the directory/folder containing the `main.v` file
 % v -prod main.v
 ```
 
-Now you can run the app with command line entries starting with `% ./main`, 
-as in `% ./main analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`.
-Sometimes, it may be more convenient and quicker to start with `% v run main.v`, as in
-`% v run main.v verify -c -t ~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/datasets/bcw350train`.
+Now you can run the app with command line entries starting with `% ./main`,  
+as in `% ./main analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`.  
+Sometimes, it may be more convenient and quicker to start with `% v run main.v`, as in  
+% v run main.v verify -c -t ~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/datasets/bcw350train`.
 
 ## Getting help
 `% v run main.v --help` or
@@ -51,7 +51,9 @@ To exclude missing values from the rank value calculations:
 `% ./main rank -s -g -e ~/.vmodules/holder66/vhammll/datasets/anneal.tab`
 
 ## Working with large datasets
-Doing a leave-one-out cross-validation on a large dataset can be time-consuming. Save time by doing fewer folds, eg 10-fold (`-f 10`). Repeat the exercise 5 times (`-r 5`); results are averaged over the 5 repetitions, since random selection of instances for folding means that results will be different for one repetition to another:
+Doing a leave-one-out cross-validation on a large dataset can be time-consuming.  
+Save time by doing fewer folds, eg 10-fold (`-f 10`).  
+Repeat the exercise 5 times (`-r 5`); results are averaged over the 5 repetitions, since random selection of instances for folding means that results will be different for one repetition to another:
 
 `% ./main analyze ~/.vmodules/holder66/vhammll/datasets/mnist_test.tab`
 

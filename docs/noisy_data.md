@@ -1,14 +1,15 @@
 ## Finding useful data in the noise
-Much real-world data consists of mostly noise, and only a small amount of information. The HamNN algorithm can be helpful in extracting the useful information.
+Much real-world data consists of mostly noise, and only a small amount of information. The VHamMLL algorithm can be helpful in extracting the useful information.
 
 An example is genomics data. The prostata dataset consists of genomic
 microarray data from 102 subjects. Fifty of the 102 subjects were normal,
-while the other 52 had a prostate tumor. For each case, there 
+while the other 52 had a prostate tumor.  
+For each case, there 
 are 12534 data points, of which one is the class attribute. Can this
 mass of data be used to predict whether a person has a tumor or is normal?
 
-To try the example on your own installation, start by compiling an optimized version.
-In your terminal, navigate to the directory/folder containing the `main.v` file
+To try the example on your own installation, start by compiling an optimized version.  
+In your terminal, navigate to the directory/folder containing the `main.v` file  
 (see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
 % cd <directory containing your main.v file>
