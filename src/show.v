@@ -87,7 +87,10 @@ pub fn show_analyze(result AnalyzeResult) {
 	print_array(show)
 }
 
-// show_rank_attributes
+// show_rank_attributes prints to the console the ranked list of
+// attributes in result, showing each attribute's name, index, type,
+// rank value, and bin count. Output is limited to result.limit_output
+// entries when that field is non-zero.
 pub fn show_rank_attributes(result RankingResult) {
 	mut exclude_phrase := 'included'
 	if result.exclude_flag {
@@ -157,7 +160,10 @@ fn show_parameters(r ParametersForShow) {
 
 fn show_balanced_prevalences(load_options LoadOptions) {}
 
-// show_validate
+// show_validate prints to the console the results of a validate()
+// run: the classifier parameters, the number of instances validated,
+// and for each instance its index, inferred class, and nearest-
+// neighbor counts by class.
 pub fn show_validate(result ValidateResult) {
 	mut parameters_for_show := ParametersForShow{
 		Parameters:  result.Parameters
@@ -179,7 +185,10 @@ pub fn show_validate(result ValidateResult) {
 	}
 }
 
-// show_verify
+// show_verify prints to the console the results of a verify() run:
+// the classifier parameters (or multiple-classifier settings),
+// instance counts, per-class accuracy, confusion matrix (when
+// expanded), and binary metrics for two-class problems.
 pub fn show_verify(result CrossVerifyResult, opts Options) {
 	println(m_u('\nVerification of "${result.testfile_path}" using ' +
 		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
@@ -309,7 +318,11 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 	return col_width_array
 }
 
-// show_crossvalidation
+// show_crossvalidation prints to the console the results of a
+// cross_validate() run: the partitioning scheme, classifier
+// parameters (or multiple-classifier settings), instance counts,
+// per-class accuracy, confusion matrix (when expanded), and binary
+// metrics for two-class problems.
 pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
 	println(m_u('\nCross-validation of "${result.datafile_path}"' +
 		if opts.multiple_flag { ' using multiple classifiers' } else { '' }))

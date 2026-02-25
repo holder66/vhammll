@@ -341,7 +341,9 @@ fn f32_bits(b f32) u32 {
 	return *unsafe { &u32(&b) }
 }
 
-pub fn nan[T]() T {
+// nan returns the IEEE 754 Not-a-Number value for f32 or f64.
+// Returns 0 for any other type T.
+fn nan[T]() T {
 	$if T is f64 {
 		return f64_from_bits(u64(0x7FF8000000000001))
 	}
@@ -351,7 +353,8 @@ pub fn nan[T]() T {
 	return 0
 }
 
-pub fn is_nan[T](f T) bool {
+// is_nan reports whether the f32 or f64 value f is Not-a-Number.
+fn is_nan[T](f T) bool {
 	$if fast_math {
 		if f64_bits(f) == u64(0x7FF8000000000001) || f32_bits(f) == u32(0x7FF80001) {
 			return true
@@ -581,7 +584,9 @@ fn majority_vote(arr []string) string {
 	return ''
 }
 
-pub fn close[T](a T, b T) bool {
+// close reports whether a and b are approximately equal within a
+// tolerance suited to their type: 1e-6 for f32, 1e-14 for f64.
+fn close[T](a T, b T) bool {
 	if typeof(a).name == 'f32' {
 		return math.tolerance(a, b, 1e-6)
 	}

@@ -7,6 +7,9 @@ import time
 import math
 // import runtime
 
+// CliOptions allows the cli() function to be driven programmatically:
+// pass either a pre-split args slice or a single space-separated
+// string (astr). If both are empty, os.args is used.
 @[params]
 pub struct CliOptions {
 	LoadOptions
@@ -150,6 +153,8 @@ pub fn cli(cli_options CliOptions) ! {
 		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
 }
 
+// Cmd carries the command name used by opts() to set Options.command
+// when constructing an Options struct from a string.
 @[params]
 pub struct Cmd {
 pub mut:

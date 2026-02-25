@@ -4,12 +4,17 @@ module vhammll
 // pub const missings = ['?', '', 'NA', ' ']
 // pub const integer_range_for_discrete = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
+// DefaultVals holds configurable default values used during dataset loading:
+// the string tokens recognised as missing values, and the integer range
+// treated as discrete rather than continuous.
 pub struct DefaultVals {
 pub mut:
 	missings                   []string = ['?', '', 'NA', ' ']
 	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }
 
+// RocPoint is a point on a Receiver Operating Characteristic curve,
+// extending Point with the classifier identifier string that produced it.
 pub struct RocPoint {
 	Point
 pub mut:
@@ -17,12 +22,17 @@ pub mut:
 	classifier_ids []int
 }
 
+// Point is a 2D coordinate used for ROC plots:
+// fpr is 1 − specificity (false positive rate); sens is sensitivity.
 pub struct Point {
 pub mut:
 	fpr  f64 // 1 - specificity
 	sens f64 // sensitivity
 }
 
+// Class holds all class-attribute metadata for a dataset:
+// the class attribute name and index, the unique class labels,
+// per-class instance counts, and pre/post-purge statistics.
 pub struct Class {
 pub mut:
 	class_name  string // the attribute which holds the class
@@ -45,6 +55,10 @@ struct ContinuousAttribute {
 	maximum f32
 }
 
+// Dataset is the primary data structure produced by load_file().
+// It holds all attribute data and types, class information, and
+// pre-computed maps of useful continuous and discrete attributes
+// ready for training a classifier.
 pub struct Dataset {
 	Class // DataDict
 	LoadOptions
@@ -71,6 +85,8 @@ mut:
 	data            [][]string
 }
 
+// RankedAttribute represents a single attribute together with its
+// computed rank value, optimal bin count, and supporting hit arrays.
 pub struct RankedAttribute {
 pub mut:
 	attribute_index      int
@@ -82,6 +98,8 @@ pub mut:
 	array_of_hits_arrays [][][]int
 }
 
+// Binning specifies the lower bound, upper bound, and step interval
+// for binning (discretising) continuous attribute values.
 pub struct Binning {
 mut:
 	lower    int
@@ -89,6 +107,9 @@ mut:
 	interval int
 }
 
+// RankingResult is returned by rank_attributes() and rank_one_vs_rest();
+// it contains the ordered list of ranked attributes and the options
+// used to produce the ranking.
 pub struct RankingResult {
 	Class
 	LoadOptions
@@ -102,6 +123,9 @@ pub mut:
 	array_of_ranked_attributes []RankedAttribute
 }
 
+// TrainedAttribute holds the training-time representation of a single
+// attribute: its type, the value-to-integer translation table (discrete)
+// or range and bin count (continuous), rank value, and fold-usage counter.
 pub struct TrainedAttribute {
 pub mut:
 	attribute_type    string
@@ -114,6 +138,10 @@ pub mut:
 	folds_count       int // for cross-validations, this tracks how many folds use this attribute
 }
 
+// Classifier is a fully trained classifier produced by make_classifier().
+// It contains the trained attribute maps, encoded instance byte arrays,
+// class information, and the creation history needed to reproduce or
+// extend the classifier.
 pub struct Classifier {
 	History
 	Parameters
@@ -130,27 +158,22 @@ pub mut:
 	// history   []HistoryEvent
 }
 
-pub struct ParametersForShow {
+// ParametersForShow is a lightweight struct combining Parameters,
+// LoadOptions, and Class, used solely for formatted console display
+// of classifier or result settings.
+struct ParametersForShow {
 	Parameters
 	LoadOptions
 	Class
 }
 
+// History wraps the ordered list of HistoryEvent records that track
+// how a Classifier was created and subsequently extended.
 pub struct History {
 pub mut:
 	history_events []HistoryEvent
 }
 
-pub struct OneVsRestClassifier {
-	Parameters
-	LoadOptions
-	Class
-	History
-pub mut:
-	struct_type   string = '.OneVsRestClassifier'
-	datafile_path string
-	// history       []HistoryEvent
-}
 
 struct TotalNnParams {
 mut:
@@ -159,6 +182,9 @@ mut:
 	lcm_max_ham_dist               i64
 }
 
+// HistoryEvent records a single event (create or append) in a
+// classifier's lifecycle, capturing the date, instance counts before
+// and after any purging, and the source file path.
 pub struct HistoryEvent {
 	Environment
 pub mut:
@@ -170,6 +196,10 @@ pub mut:
 	file_path string
 }
 
+// Parameters holds the core training and cross-validation settings
+// shared across many operations: binning range, number of attributes,
+// purge/weighting/one-vs-rest flags, fold and repetition counts, and
+// the maximum Hamming distance.
 pub struct Parameters {
 pub mut:
 	binning              Binning
@@ -188,6 +218,9 @@ pub mut:
 	maximum_hamming_distance int
 }
 
+// CombinationSizeLimits controls the minimum and maximum number of
+// classifiers to combine when generating multi-classifier combinations.
+// Setting min/max also activates the generate_combinations_flag.
 @[params]
 pub struct CombinationSizeLimits {
 pub mut:
@@ -196,6 +229,10 @@ pub mut:
 	max                        int
 }
 
+// DisplaySettings aggregates all flags and limits that control what
+// is printed to the console or generated as plots: show, expand,
+// graph, verbose, ROC, overfitting, output limits, and combination
+// size limits.
 @[params]
 pub struct DisplaySettings {
 	CombinationSizeLimits
@@ -212,6 +249,9 @@ pub mut:
 	all_attributes_flag  bool
 }
 
+// LoadOptions are passed to load_file() to control dataset loading:
+// the positive class label, whether to purge instances with a missing
+// class value, and whether to balance class prevalences.
 @[params]
 pub struct LoadOptions {
 	DefaultVals
@@ -222,9 +262,12 @@ pub mut:
 	balance_prevalences_threshold f64 = 0.9
 }
 
-// Options struct: can be used as the last parameter in a
-// function's parameter list, to enable
-// default values to be passed to functions.
+// Options is the main all-in-one options struct used throughout the
+// library. It embeds Parameters, LoadOptions, DisplaySettings, and
+// MultipleOptions, and adds file paths (data, test, classifier,
+// output, settings) and runtime flags such as concurrency and
+// traverse_all_flags. It can be used as the last parameter of a
+// function to pass named options with defaults.
 @[params]
 pub struct Options {
 	Parameters
@@ -255,17 +298,26 @@ pub mut:
 	kagglefile_path                     string
 }
 
-pub struct MultipleClassifierSettingsFileStruct {
+// MultipleClassifierSettingsFileStruct is a thin wrapper used when
+// deserialising a multiple-classifier settings file in which each
+// line holds one ClassifierSettings JSON object.
+struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
 }
 
+// AucClassifiers associates a set of classifier IDs with the
+// Area Under the ROC Curve (AUC) value they jointly achieved.
 pub struct AucClassifiers {
 pub mut:
 	classifier_ids []int
 	auc            f64
 }
 
+// OptimalsResult is returned by optimals(); it identifies which
+// classifier combinations achieve the best balanced accuracy,
+// highest Matthews Correlation Coefficient (MCC), highest total
+// correct inferences, and highest per-class correct inferences.
 pub struct OptimalsResult {
 	RocData
 	RocFiles
@@ -296,6 +348,9 @@ pub mut:
 	multi_classifier_combinations_for_auc               []AucClassifiers
 }
 
+// ClassifierSettings bundles all parameters needed to recreate a
+// single classifier, together with the binary and multi-class
+// performance metrics recorded when it was evaluated.
 pub struct ClassifierSettings {
 	Parameters
 	BinaryMetrics
@@ -304,12 +359,19 @@ pub struct ClassifierSettings {
 	ClassifierID
 }
 
+// ClassifierID links a numeric classifier identifier to the datafile
+// path from which the classifier was trained.
 pub struct ClassifierID {
 pub mut:
 	classifier_id int
 	datafile_path string
 }
 
+// MultipleOptions holds settings that govern how multiple classifiers
+// are combined: whether to stop as soon as all classifiers agree
+// (break_on_all_flag), which combination strategy to use
+// (multi_strategy: '', 'combined', or 'totalnn'), and which
+// classifier IDs to include.
 pub struct MultipleOptions {
 	TotalNnParams
 pub mut:
@@ -345,6 +407,9 @@ mut:
 	max_sphere_index             int
 }
 
+// Environment captures a snapshot of the runtime environment
+// (OS kind and details, architecture, V executable mtime and version,
+// and VFLAGS) recorded in classifier history events.
 pub struct Environment {
 pub mut:
 	vhammll_version string
@@ -357,6 +422,10 @@ pub mut:
 	vflags         string
 }
 
+// Attribute holds descriptive statistics and metadata for a single
+// attribute in a dataset, as produced by analyze_dataset(): name,
+// type, unique-value count, missing-value count, and (for continuous
+// attributes) min, max, mean, and median.
 pub struct Attribute {
 pub mut:
 	id            int
@@ -375,6 +444,9 @@ pub mut:
 	median        f32
 }
 
+// AnalyzeResult is returned by analyze_dataset(); it contains
+// per-attribute statistics, dataset-level metadata (path, type,
+// class breakdown), and overall min/max values.
 pub struct AnalyzeResult {
 	LoadOptions
 pub mut:
@@ -391,6 +463,9 @@ pub mut:
 	use_inferred_types_flag bool
 }
 
+// ClassifyResult holds the outcome of classifying a single instance:
+// the inferred class, nearest-neighbor counts by class, the labeled
+// class (if known), Hamming distance, and sphere index reached.
 pub struct ClassifyResult {
 	LoadOptions
 	Class
@@ -411,18 +486,13 @@ pub mut:
 	sphere_index               int
 }
 
-pub struct ResultForClass {
-pub mut:
-	labeled_instances    int
-	correct_inferences   int
-	incorrect_inferences int
-	wrong_inferences     int
-	confusion_matrix_row map[string]int
-}
 
 pub type StringFloatMap = map[string]f64
 
-// Returned by cross_validate() and verify()
+// CrossVerifyResult is returned by cross_validate() and verify().
+// It contains the inferred and actual class arrays, a full confusion
+// matrix, per-class inference counts, accuracy metrics, and
+// provenance information (file paths, classifier settings).
 pub struct CrossVerifyResult {
 	Parameters
 	LoadOptions
@@ -479,6 +549,9 @@ mut:
 	att_interval int
 }
 
+// ExploreResult is returned by explore(); it holds the array of
+// CrossVerifyResults produced over a parameter sweep, together with
+// the attribute range, binning, and display settings used.
 pub struct ExploreResult {
 	Class
 	Parameters
@@ -497,22 +570,11 @@ pub mut:
 	args []string
 }
 
-//
-pub struct SettingsForROC {
-pub mut:
-	master_class_index      int
-	classifiers_for_roc     []ClassifierSettings
-	array_of_correct_counts [][]int
-}
 
-pub struct PlotResult {
-pub mut:
-	bin             int
-	attributes_used int
-	correct_count   int
-	total_count     int
-}
-
+// ValidateResult is returned by validate(); it contains the inferred
+// classes for an unlabeled dataset, the encoded instance arrays, and
+// provenance metadata. The result can be saved and later used to
+// extend a classifier via append_instances().
 pub struct ValidateResult {
 	Class
 	Parameters
@@ -530,6 +592,10 @@ pub mut:
 	classifier_instances_counts     []int
 }
 
+// Metrics holds multi-class accuracy metrics computed for a
+// verification or cross-validation: precision, recall, and F1 per
+// class; their averages; balanced accuracy; and per-class instance,
+// correct, and incorrect counts.
 pub struct Metrics {
 pub mut:
 	precision         []f64
@@ -545,6 +611,10 @@ pub mut:
 	incorrect_counts  []int
 }
 
+// BinaryMetrics holds performance metrics for a binary classifier:
+// TP, FP, TN, FN counts; raw and balanced accuracy; sensitivity;
+// specificity; PPV; NPV; F1 score; and the Matthews Correlation
+// Coefficient (MCC).
 pub struct BinaryMetrics {
 pub mut:
 	t_p             int
@@ -561,13 +631,6 @@ pub mut:
 	mcc             f64 // Matthews Correlation Coefficient
 }
 
-pub struct BinaryCounts {
-pub mut:
-	t_p int
-	f_n int
-	t_n int
-	f_p int
-}
 
 type Val = f64 | int
 

@@ -82,7 +82,7 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	return result
 }
 
-pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
+fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path
 	mut total_instances := ds.Class.class_values.len

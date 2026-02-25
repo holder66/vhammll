@@ -36,7 +36,8 @@ pub fn load_instances_file(path string) !ValidateResult {
 	return instances
 }
 
-// save_json_file
+// save_json_file serialises the value u to JSON and writes it to path,
+// overwriting any existing file. Works with any type T.
 pub fn save_json_file[T](u T, path string) {
 	s := json.encode(u)
 	mut f := os.open_file(path, 'w') or { panic(err.msg()) }

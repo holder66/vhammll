@@ -1,10 +1,10 @@
 // purge_missings.v
 module vhammll
 
-pub fn purge_instances_for_missing_class_values_not_inline(mut ds Dataset) Dataset {
-	return ds.purge_instances_for_missing_class_values()
-}
-
+// purge_instances_for_missing_class_values removes all instances in
+// ds whose class value is in the missings list, updating class_values,
+// class_counts, data, and the useful attribute maps in place, then
+// returns the modified dataset.
 pub fn (mut ds Dataset) purge_instances_for_missing_class_values() Dataset {
 	mut instances_to_purge := []int{}
 	// println('ds.class_values in purge_missings.v: $ds.class_values')

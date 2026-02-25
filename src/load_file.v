@@ -96,8 +96,11 @@ fn replace_missing_value(w string, missings []string) f32 {
 	return f32(strconv.atof_quick(w))
 }
 
-// get_useful_continuous_attributes
-pub fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
+// get_useful_continuous_attributes returns a map from attribute index
+// to its float32 value array for every continuous attribute in ds
+// that has more than one distinct value (i.e. is usable for training).
+// Missing values are replaced with a sentinel before storage.
+fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	// initialize the values of the result to -max_f32, to indicate missing values
 	// mut min_value := f32(0.)
 	// mut max_value := f32{0.}
@@ -111,8 +114,10 @@ pub fn get_useful_continuous_attributes(ds Dataset) map[int][]f32 {
 	return cont_att
 }
 
-// get_useful_discrete_attributes
-pub fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
+// get_useful_discrete_attributes returns a map from attribute index
+// to its string value array for every discrete attribute in ds that
+// has more than one distinct value (i.e. is usable for training).
+fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	mut disc_att := map[int][]string{}
 	for i in 0 .. ds.attribute_names.len {
 		// println('i: $i ds.attribute_types[i]: ${ds.attribute_types[i]} uniques(ds.data[i]).len: ${uniques(ds.data[i]).len}')
@@ -124,8 +129,11 @@ pub fn get_useful_discrete_attributes(ds Dataset) map[int][]string {
 	return disc_att
 }
 
-// set_class_struct
-pub fn set_class_struct(ds Dataset) Class {
+// set_class_struct identifies the class attribute in ds (the one
+// typed 'c', or the last discrete attribute if none is explicitly
+// marked) and returns a populated Class struct with the class name,
+// index, unique class values, and per-class instance counts.
+fn set_class_struct(ds Dataset) Class {
 	mut cl := Class{}
 	// find the attribute whose type is 'c'
 	mut i := identify_class_attribute(ds.attribute_types)

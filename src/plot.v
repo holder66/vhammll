@@ -340,6 +340,10 @@ fn plot_roc(roc_points []RocPoint, auc f64) {
 	plt.show() or { panic(err) }
 }
 
+// RocData holds the data for one ROC curve trace: the (sensitivity,
+// specificity) pairs, the classifier description strings, the
+// classifier ID arrays for each point, and an optional hover-text
+// annotation.
 pub struct RocData {
 pub mut:
 	pairs          [][]f64
@@ -348,6 +352,9 @@ pub mut:
 	trace_text     string
 }
 
+// RocFiles holds the file paths associated with a ROC plot:
+// the training datafile, the test/verification file, and the
+// classifier settings file used to generate the curves.
 pub struct RocFiles {
 pub mut:
 	datafile     string
@@ -355,6 +362,10 @@ pub mut:
 	settingsfile string
 }
 
+// plot_mult_roc generates an interactive Receiver Operating
+// Characteristic plot in the default web browser for one or more
+// ROC traces. Each element of rocdata_array produces one scatter
+// trace; the AUC is computed and shown in the plot title.
 pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	annotation1 := plot.Annotation{
 		x:     0.8

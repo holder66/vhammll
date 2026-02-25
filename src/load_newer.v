@@ -47,7 +47,12 @@ fn extract_types(word string) []string {
 	}
 }
 
-pub fn combine_raw_and_inferred_types(ds Dataset) []string {
+// combine_raw_and_inferred_types resolves the final attribute-type
+// code for each attribute in ds by merging the explicitly declared
+// raw type (from the file header) with the inferred type (derived
+// from data values). Explicit type codes take precedence; missing
+// or unrecognised codes fall back to inferred or data-driven types.
+fn combine_raw_and_inferred_types(ds Dataset) []string {
 	mut combined_types := ds.raw_attribute_types.clone()
 	for i, t in ds.raw_attribute_types {
 		combined_types[i] = match true {

@@ -3,9 +3,11 @@ module vhammll
 
 // import math
 
-// rank_attributes takes a Dataset and returns a list of all the
-// dataset's usable attributes, ranked in order of each attribute's
-// ability to separate the classes.
+// rank_one_vs_rest ranks the dataset's attributes using a one-vs-rest
+// strategy: for each class, instances of that class are treated as
+// positives and all other instances as negatives. Attributes are
+// ranked by their ability to separate each class from the rest.
+// The result and output options are the same as for rank_attributes().
 // ```
 // Algorithm:
 // for each attribute:
