@@ -141,13 +141,18 @@ Let's look at cross-validation first:"
 	after = 'Note the classifier IDs listed for each category — you can pass those IDs to -m# in a subsequent cross or verify run.'
 	run_example(before, after, cmd)!
 
+	before = 'Settings files can accumulate duplicate entries (same parameters, different IDs). The -p flag purges duplicates, and -o saves the cleaned file for later use:'
+	cmd = 'v run . optimals -p -o ~/bcw-purged.opts ~/bcw.opts'
+	after = 'The purged file ~/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
+	run_example(before, after, cmd)!
+
 	before = 'To cross-validate using all classifiers in the settings file together (combining their votes):'
-	cmd = 'v run . cross -s -m ~/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Use -af (all-flags) to automatically run all strategy combinations and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
-	cmd = 'v run . cross -s -m ~/bcw.opts -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = 'Pick the strategy that gives the best result and then use it with -mc or -mt in a final cross or verify run.'
 	run_example(before, after, cmd)!
 
