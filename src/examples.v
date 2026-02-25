@@ -146,14 +146,19 @@ Let's look at cross-validation first:"
 	after = 'The purged file ~/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
 	run_example(before, after, cmd)!
 
-	before = 'To cross-validate using all classifiers in the settings file together (combining their votes):'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	before = 'The -s flag makes optimals show only classifier IDs for each category, which makes it easy to pick IDs to pass to -m#:'
+	cmd = 'v run . optimals -s ~/bcw-purged.opts'
+	after = 'Note the four IDs listed under "Best balanced accuracy" — use them in the -m# flag below.'
+	run_example(before, after, cmd)!
+
+	before = 'Cross-validate using the four classifiers with the highest balanced accuracy from the previous step. Replace 0,1,2,3 with the actual IDs shown above:'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,1,2,3 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = ''
 	run_example(before, after, cmd)!
 
-	before = 'Use -af (all-flags) to automatically run all strategy combinations and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
-	after = 'Pick the strategy that gives the best result and then use it with -mc or -mt in a final cross or verify run.'
+	before = 'Use -af (all-flags) to run all strategy combinations for those four classifiers and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
+	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,1,2,3 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	after = 'Pick the strategy that gives the best result and use it with -mc or -mt in a final cross or verify run.'
 	run_example(before, after, cmd)!
 
 	// make
