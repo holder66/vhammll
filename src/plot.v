@@ -20,8 +20,14 @@ mut:
 // for a continuous attribute, with separate curves for each class.
 fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 	mut anno1_text := 'Rank value: ${attr.rank_value:-6.2f} at ${attr.bins} bins'
+	y_max := if weighting {
+		100.0
+	} else {
+		f64(array_max(classes_info.class_counts.values()))
+	}
 	mut annotation1 := plot.Annotation{
 		x:     0
+		y:     0.95 * y_max
 		text:  anno1_text
 		align: 'left'
 	}
@@ -41,7 +47,6 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 				fill: 'tozeroy'
 				name: '${class} (${cases})'
 			)
-			annotation1.y = array_max(classes_info.class_counts.values())
 		}
 		plt.layout(
 			title:       if weighting { 'Weighted h' } else { 'H' } +
