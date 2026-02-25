@@ -4,6 +4,24 @@ module vhammll
 // import math
 import math.stats
 
+const analyze_help = '
+Description:
+"analyze" displays on the console, tables containing information about a
+datafile\'s type, the attributes, and the class attribute. The tables are:
+1. a list of attributes, their types, the unique values, and a count of
+missing values;
+2. a table with counts for each type of attribute;
+3. a list of discrete attributes useful for training a classifier;
+4. a list of continuous attributes useful for training a classifier;
+5. a breakdown of the class attribute, showing counts for each class.
+
+Usage:
+ v run main.v analyze <path_to_dataset_file>
+
+Options:
+-h --help: displays this message.
+  '
+
 // analyze_dataset returns a struct with information about a datafile.
 // ```sh
 // Optional:

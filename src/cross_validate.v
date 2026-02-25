@@ -6,6 +6,64 @@ import runtime
 import rand
 import os
 
+const cross_help = '
+Description:
+"cross": When verifying the accuracy of a ML tool, it is common practice
+to train the tool on a subset of the instances in a datafile, and then
+test that trained tool on the instances excluded from the subset.
+Two schemes are: leave one out, where a single instance is kept aside
+for testing; and n-fold partitioning, where n is often chosen to be 10.
+The training and testing is repeated for every possible fold.
+For example, suppose the total dataset has 700 instances. That would
+give 70 instances for each fold, in the case of 10-fold partitioning.
+Thus, 70 instances would be kept aside and the tool trained on the
+remaining 630 instances, and this process would be repeated 10 times
+to ensure that testing is done on all the instances.
+Picking the instances to be kept aside can be done sequentially or
+randomly. If random, more repetitions are necessary to obtain some
+degree of statistical validity.
+An important consideration is that when training on a subset of instances,
+the dataset characteristics used in the training NOT be those of the
+whole dataset. For example, the maximum and minimum values for continuous
+attributes need to be recalculated for the subset, and the map of unique
+values for discrete attributes may be different also for the subset
+compared to the whole dataset.
+
+Usage: v run main.v cross -c <path_to_dataset_file>
+
+Options:
+  -a --attributes: the number of attributes (picked from the list of
+      ranked attributes) to be used in training the classifier
+  -b --bins: eg, "3,6" specifies the lower and upper limits for the
+      number of slices or bins for continuous attributes;
+  -c --concurrent: permit parallel processing to use multiple cores;
+  -e --expanded: expanded results on the console;
+  -f --folds: number of cross-validation folds (default is leave-one-out);
+  -m --multiple:    classify using more than one trained classifier, followed
+       by the path to a json file with parameters to generate
+       each classifier;
+  -ma: when multiple classifiers are used, stop classifying when
+       matches have been found for all classifiers;
+  -mc: sets multi_strategy to combined: combine the possible
+       hamming distances for each classifier into a single list;
+  -ms: when followed by a file path, appends the classifier settings
+       to that settings file (for use in multiple classifier operations);
+  -mt: sets multi_strategy to totalnn: add the nearest neighbors
+       from each classifier, weight by class prevalences, and then
+       infer from the totals; takes precedence over -mc if both
+       are specified;
+  -m#: followed by a list of which classifiers to apply in a
+       multiple classification run (zero-indexed);
+  -p --purge: remove instances which are duplicates after binning;
+  -r --reps: number of repetitions; if > 1, a random selection of
+      instances to be included in each fold will be applied;
+  -w --weight: weight the number of nearest neighbor counts by
+      class prevalences;
+  -wr: when ranking attributes, weight contributions by class prevalences;
+  -x --exclude: exclude missing values from rank value calculations;
+
+'
+
 fn multi_classify_balance_prevalence(opts Options) bool {
 	path := opts.multiple_classify_options_file_path
 	if path != '' && os.is_file(path) {

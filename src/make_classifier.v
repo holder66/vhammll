@@ -6,6 +6,25 @@ module vhammll
 
 import time
 
+const make_help = '
+Description:
+"make" creates a classifier from the datafile given as the last argument.
+Returns a classifier struct.
+
+Usage: v run main.v make -s <path_to_dataset_file>
+
+Options:
+  -a --attributes: the number of attributes (picked from the list of
+      ranked attributes) to be used in training the classifier
+  -b --bins: eg, "3,6" specifies the lower and upper limits for the number
+      of slices or bins for continuous attributes;
+  -e --expanded: display the classifier struct on the console.
+  -o --output: followed by the path to a file in which the classifier will be stored;
+  -p --purge: remove instances which are duplicates after binning;
+  -wr: when ranking attributes, weight contributions by class prevalences;
+  -x --exclude: exclude missing values from rank value calculations.
+    '
+
 // make_classifier returns a Classifier struct, given a Dataset (as created by
 // load_file).
 // ```sh

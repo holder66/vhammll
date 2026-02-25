@@ -14,6 +14,40 @@ module vhammll
 
 import os
 
+const validate_help = '
+Description:
+"validate" classifies the instances in a validation dataset (specified by
+-t, --test) using a classifier generated from the dataset specified by the
+final command line argument (or optionally a classifier file specified by
+-k --classifier). Note that a validation dataset does not contain class
+information. The parameters regarding which attributes to use, the list of
+permissible attribute values for discrete attributes, and the binning
+information for continuous attributes is copied from the classification
+dataset. Each instance in the validation dataset is classified, and the
+inferred classes are displayed on the console.
+
+IMPORTANT: The validation dataset should still have an identified
+class attribute; however, the values should be empty.
+
+Usage: v run main.v validate -o ~/instancesfile -t datasets/bcw174validate <path_to_dataset_file>
+
+Required:
+  -t --test: followed by the file path for the datafile to be used
+  for validation;
+
+Options:
+  In addition to the options below, the options for "make" apply to
+  both the classification and the validation datafile.
+  -c --concurrent: permit parallel processing to use multiple cores (TODO);
+  -e --expanded: display the ValidateResult struct on the console;
+  -k --classifier: followed by the path to a file for a saved Classifier;
+  -ka --kaggle:    followed by the path to a file for submission to a Kaggle
+  competition;
+  -w --weight: weight the number of nearest neighbor counts
+  by class prevalences when classifying;
+  -wr: when ranking attributes, weight contributions by class prevalences.
+  '
+
 // validate classifies each instance of a validation datafile against
 // a trained Classifier; returns the predicted classes for each case
 // of the validation_set.

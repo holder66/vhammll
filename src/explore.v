@@ -1,6 +1,50 @@
 // explore.v
 module vhammll
 
+const explore_help = '
+Description:
+"explore" runs a series of cross-validations (or of verifies, if a
+second file is given) over a range of parameter
+settings, used when seeking optimal values for parameters. A parameter
+range can be specified with up to 3 integers, with the first two for
+lower and upper ends of the range, and the 3rd integer (optional) for
+the interval. For example, --bins 2,12,3 would indicate to do
+cross-validations for bins settings of 2, 5, 8, and 11. Note that a
+single integer specifies the upper end of a range starting at 1.
+
+Usage: v run main.v explore <options> <path_to_dataset_file>
+
+Options:
+  -a --attributes: a range for the number of attributes (picked from the list
+      of ranked attributes) to be used in training the classifier;
+  -af --all-flags: used with explore to repeat the explore operation for all
+      possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
+  -b --bins: a range for the number of bins for continuous attributes;
+  -c --concurrent: permit parallel processing to use multiple cores;
+  -e --expanded: show expanded results on the console;
+  -f --folds: number of cross-validation folds (default is leave-one-out);
+  -g --graph: generates plots of accuracy vs number of attributes used; for
+      binary classifiers (ie only 2 classes) also generates AUC plots;
+  -ms: save the classifier parameters to an .opts file, using the file path
+      following this option;
+  -o --output: followed by the path to a file in which the ExploreResult
+      struct will be saved;
+  -p --purge: remove instances which are duplicates after binning;
+  -r --reps: number of repetitions; if > 1, a random selection of
+      instances to be included in each fold will be applied;
+  -roc: collect settings for generating a Receiver Operating Characteristic (ROC)
+      curve; if followed by a file path, appends classifier setting to this file;
+  -s --show: show output on the console;
+  -t --test: followed by the path to a second file, used for verifications;
+  -u --uniform: specifies that the number of bins used will be the same
+      for all attributes on a given cross-validation or verification;
+  -w --weight: weight the number of nearest neighbor counts by
+      class prevalences;
+  -wr: when ranking attributes, weight contributions by class prevalences;
+  -x --exclude: exclude missing values from rank value calculations;
+'
+
+
 // explore runs a series of cross-validations or verifications,
 // over a range of attributes and a range of binning values.
 // ```sh

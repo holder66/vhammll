@@ -4,6 +4,28 @@ module vhammll
 import readline
 import strconv
 
+const query_help = '
+Description:
+"query" takes a classifier created by make(), and interactively asks the user
+to input (at the console) values for each attribute included in the classifier.
+After the last entry, it classifies the new instance and returns its inferred
+class.
+Optionally, the new instance can be saved in an instances file specified by -o.
+This instances file can be used by "append" to extend the classifier.
+
+Usage: v run main.v query -k <path_to_classifier_file>
+
+Options:
+In addition to the options below, the options for the "make" command are also
+applicable.
+  -k --classifier, followed by the path to a classifier file.
+  -o --output, followed by the path for saving the instance file.
+  -v --verbose, show additional information for each query, and additional
+    statistics for the classification.
+  -w --weight, weight the number of nearest neighbor counts by class prevalences;
+  -wr, when ranking attributes, weight contributions by class prevalences.
+    '
+
 // query takes a trained classifier and performs an interactive session
 // with the user at the console, asking the user to input a value for each
 // trained attribute. It then asks to confirm or redo the responses. Once

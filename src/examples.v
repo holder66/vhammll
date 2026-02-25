@@ -5,6 +5,20 @@ import os
 import readline { read_line }
 import chalk
 
+const examples_help = '
+Description:
+"examples" displays information about running the various commands, shows
+a typical command interface line illustrating the example, prompts the user
+to continue by hitting the "return" key, and then executes the example
+and displays the result on the console.
+
+Usage:
+To start the demonstration, enter "v run main.v examples go"
+
+Options:
+To stop before completing the demo, hit ctrl-C
+'
+
 // run_example
 fn run_example(before string, after string, cmd string) ! {
 	println(before)

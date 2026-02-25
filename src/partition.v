@@ -1,6 +1,29 @@
 // partition.v
 module vhammll
 
+const partition_help = '
+Description:
+"partition" splits a datafile into two or more partitions, saving each partition
+into a separate datafile which includes the header from the original datafile.
+The size of each partition is specified in a list of integers, each of which
+represents the numerator of a fraction of which the denominator is the sum of
+the integers. For example: 2,1 splits into 2 partitions, the first being 2/3 of
+the total cases, the second comprising the remaining one third. 5,2,2 splits into
+3 partitions, the first 5/9 of the cases, the other two both 2/9 of the total.
+If the total cases do not divide equally, the remainder go into the last partition.
+Cases for each partition are picked randomly (but a case can only be in one
+partition).
+
+Usage: v run main.v partition <options> <path_to_dataset_file>
+
+Options:
+  -p#:             followed by a list of integers specifying the relative
+                   sizes of each partition (used with the partition command);
+  -ps:             followed by a list of partition file paths;
+  -rand:           cases are picked randomly (no repeats)
+'
+
+
 // partition splits a dataset into a fold set of instances, and the remainder
 // of the dataset (ie with the fold instances taken out).
 fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Options) (Dataset, Fold) {

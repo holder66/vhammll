@@ -3,6 +3,46 @@ module vhammll
 
 import runtime
 
+const verify_help = '
+Description:
+"verify" takes two datasets; it creates a classifier from the dataset file
+given by the last item in the command line, and uses that classifier to
+classify the instances in the second dataset, given by the -t --test option.
+The parameters for which attributes to use, the list of permissible attribute
+values for discrete attributes, and the binning information for continuous
+attributes is copied from the classification dataset. Each instance in the
+verification dataset is classified, and the inferred classes are compared to
+the labeled classes to provide accuracy and other statistics.
+
+Usage: v run main.v verify -c -e -t datasets/bcw174test datasets/bcw350train
+
+Required:
+-t --test: path to a test file to be verified.
+Options:
+In addition to the options below, the options for "make" apply to
+both the classification and the verification datafile.
+-c --concurrent, permit parallel processing to use multiple cores;
+-e --expanded, expanded results on the console;
+-k --classifier, followed by the path to a file for a saved Classifier;
+    can be used instead of the training dataset;
+-m --multiple:    classify using more than one trained classifier, followed
+     by the path to a json file with parameters to generate
+     each classifier;
+-ma: when multiple classifiers are used, stop classifying when
+     matches have been found for all classifiers;
+-mc: sets multi_strategy to combined: combine the possible
+     hamming distances for each classifier into a single list;
+-mt: sets multi_strategy to totalnn: add the nearest neighbors
+     from each classifier, weight by class prevalences, and then
+     infer from the totals; takes precedence over -mc if both
+     are specified;
+-m#: followed by a list of which classifiers to apply in a
+     multiple classification run (zero-indexed);
+-w --weight, weight the number of nearest neighbor counts
+    by class prevalences when classifying;
+-wr, when ranking attributes, weight contributions by class prevalences.
+    '
+
 // verify classifies all the instances in a verification datafile (specified
 // by `opts.testfile_path`) using a trained Classifier; returns metrics
 // comparing the inferred classes to the labeled (assigned) classes

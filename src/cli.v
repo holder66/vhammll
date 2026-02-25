@@ -7,6 +7,114 @@ import time
 import math
 // import runtime
 
+const vhammll_help = "
+
+    Description:
+    vhamml.v is a command line interface app to make use of the functionality
+    of the holder66.vhamml Machine Learning library.
+
+    help, -h, --help to display this usage information.
+
+    For help with any of the commands below, enter the command followed by
+      -h or --help, eg v run main.v make --help, or just enter the command,
+      eg v run main.v explore
+
+    Usage:
+    Specify the file's path as the last command line argument,
+      eg, v run main.v analyze -s datasets/iris.tab
+
+    Commands:
+    analyze:   generates information about a dataset, for printing to the
+               console;
+    append:    takes a classifier and extends it by adding labeled instances;
+    cross:     performs a cross-validation on a dataset;
+    display:   loads a previously saved result and displays it on the console.
+               Applies to commands `analyze, append, cross, explore, make,
+               rank, validate, and verify` when those commands are run with
+               -o --output and the path to a file.
+    examples:  runs a file that displays brief information and a usage example
+               for running each command, prompts the user to continue, and then
+               executes the example, displaying results on the console;
+    explore:   carry out a series of cross-validation or verification
+               experiments over a range of parameter settings, in order to find
+               optimal values for classifier parameters;
+    make:      create a classifier from a dataset;
+    optimals:  determines which classifiers provide the best balanced accuracy,
+               highest total for correct inferences, and highest correct inferences
+               per class, for multiple classifiers whose settings are stored
+               in a settings file specified by the last command line argument;
+    orange:    print an explanation of Orange file formats to the console;
+    partition: breaks a datafile into two or more partitions and saves each
+               partition into a separate datafile;
+    query:     using a classifier, create an instance using an interactive
+               dialogue and then classify that instance;
+    rank:      rank order the dataset's attributes in terms of their
+               power in separating classes;
+    validate:  as for verify, but using an unlabeled second dataset. Outputs
+               inferred classes for the second dataset;
+    verify:    use a classifier and a second labeled dataset to verify how well
+               the classifier performs in classifying the second dataset's
+               instances;
+
+    Options:
+    Note - only the options which apply in general are shown here. Use
+    v run main.v <command> -h to show options specific to that command.
+
+    -e --expanded:   show expanded results on the console;
+    -g --graph:      generates plots that show in your default web browser;
+    -h --help:
+    -o --output:     followed by the path to a file in which a classifier, a
+                     result, instances used for validation, or a query instance
+                     is to be stored;
+    -s --show:       output results to the console;
+    -t --test:       followed by the path to the datafile to be verified or
+                     validated;
+    -v --verbose:    display additional information for debugging.
+  "
+
+const orange_help = "
+Description:
+How to format files as per Orange.
+
+Usage: v run main.v orange
+
+Options: none
+
+
+NEWER ORANGE FORMAT:
+A single-line header consisting of attribute names prefixed by an optional
+'<flags>#'' string, i.e. flags followed by a hash ('#') sign. The flags can
+be a consistent combination of:
+
+c for class attribute (also known as a target variable or dependent variable),
+i for attribute to be ignored,
+m for meta attributes (not used in learning),
+C for attributes that are continuous (numeric),
+D for attributes that are discrete (categorical),
+T for attributes that represent date and/or time in one of the ISO 8601 formats,
+S for string attributes.
+
+    if there are no prefixes for an attribute (ie just the attribute name)
+    then the attribute will be treated as discrete, unless the actual values
+    are numbers, in which case it will be treated as continuous.
+
+OLDER ORANGE FORMAT:
+the information about variable type, etc is contained in two lines:
+  in the second line:
+  d or discrete or a list of values: denotes a discrete attribute
+  c or continuous: denotes a continuous attribute
+  string denotes a string variable, which we ignore
+  basket: these are continuous-valued meta attributes; ignore
+  it may also contain a string of values separated by spaces. Use these
+  as the values for a discrete attribute.
+the third line contains optional flags:
+  i or ignore
+  c or class: there can only be one class attribute. If none is found,
+   use the last attribute as the class attribute.
+  m or meta: meta attribute, eg weighting information; ignore
+  -dc followed by a value: indicates how a don't care is represented.
+    "
+
 // CliOptions allows the cli() function to be driven programmatically:
 // pass either a pre-split args slice or a single space-separated
 // string (astr). If both are empty, os.args is used.
