@@ -45,7 +45,6 @@ Options:
   -x --exclude: exclude missing values from rank value calculations;
 '
 
-
 // explore runs a series of cross-validations or verifications,
 // over a range of attributes and a range of binning values.
 // ```sh

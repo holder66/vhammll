@@ -23,7 +23,6 @@ Options:
   -rand:           cases are picked randomly (no repeats)
 '
 
-
 // partition splits a dataset into a fold set of instances, and the remainder
 // of the dataset (ie with the fold instances taken out).
 fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Options) (Dataset, Fold) {

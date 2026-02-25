@@ -137,7 +137,6 @@ Let's look at cross-validation first:"
 	cmd = 'v run . explore   -c -u -w -t ~/.vmodules/holder66/vhammll/datasets/vowel-test.tab ~/.vmodules/holder66/vhammll/datasets/vowel-train.tab'
 	run_example(before, after, cmd)!
 
-	
 	// make
 	before = 'Once you have settled on parameter values that will be optimal for your use case, you can generate a classifier and save it to a file, which you specify with the -o or --output option:'
 	cmd = 'v run . make --output ${examples_tempfolder}/bcw.cl -a 4 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
@@ -188,7 +187,7 @@ Let's look at cross-validation first:"
 	run_example(before, after, cmd)!
 
 	// multiple classifiers and optimals
-	before = 'VHamMLL can combine several classifiers trained with different settings to improve accuracy. The -ms flag saves each classifier\'s settings to a file as explore runs. Here we save settings for the breast-cancer-wisconsin dataset:'
+	before = "VHamMLL can combine several classifiers trained with different settings to improve accuracy. The -ms flag saves each classifier's settings to a file as explore runs. Here we save settings for the breast-cancer-wisconsin dataset:"
 	cmd = 'v run . explore -s -c -w -ms ${examples_tempfolder}/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = 'Each row in the output corresponds to one classifier. Its settings have been appended to ${examples_tempfolder}/bcw.opts.'
 	run_example(before, after, cmd)!

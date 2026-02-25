@@ -54,7 +54,8 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
-	mut atts := []Attribute{}	for i, name in ds.attribute_names {
+	mut atts := []Attribute{}
+	for i, name in ds.attribute_names {
 		mut att_info := Attribute{
 			id:            i
 			name:          name

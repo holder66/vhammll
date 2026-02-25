@@ -69,7 +69,9 @@ fn multi_classify_balance_prevalence(opts Options) bool {
 	path := opts.multiple_classify_options_file_path
 	if path != '' && os.is_file(path) {
 		s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
-		if s.contains('"balance_prevalences_flag":true') { return true }
+		if s.contains('"balance_prevalences_flag":true') {
+			return true
+		}
 	}
 	return false
 }
@@ -104,7 +106,8 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	// at this stage, prior to partitioning
 	// or, if multiple classifiers, then if any of the classifiers in the settings file
 	// has balanced_prevalences_flag set to true, then we must also do it here
-	if (opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts)) || multi_classify_balance_prevalence(opts) {
+	if (opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts))
+		|| multi_classify_balance_prevalence(opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}
 	// instantiate a struct for SettingsForROC

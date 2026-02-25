@@ -600,8 +600,8 @@ struct Styles {
 }
 
 const c_r = Styles{
-	fg:	'cyan'
-	style:	'reverse'
+	fg:    'cyan'
+	style: 'reverse'
 }
 
 const m_u = Styles{

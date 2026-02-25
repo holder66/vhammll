@@ -174,7 +174,6 @@ pub mut:
 	history_events []HistoryEvent
 }
 
-
 struct TotalNnParams {
 mut:
 	maximum_hamming_distance_array []int
@@ -486,7 +485,6 @@ pub mut:
 	sphere_index               int
 }
 
-
 pub type StringFloatMap = map[string]f64
 
 // CrossVerifyResult is returned by cross_validate() and verify().
@@ -570,7 +568,6 @@ pub mut:
 	args []string
 }
 
-
 // ValidateResult is returned by validate(); it contains the inferred
 // classes for an unlabeled dataset, the encoded instance arrays, and
 // provenance metadata. The result can be saved and later used to
@@ -630,7 +627,6 @@ pub mut:
 	f1_score_binary f64
 	mcc             f64 // Matthews Correlation Coefficient
 }
-
 
 type Val = f64 | int
 
