@@ -4,6 +4,8 @@ module vhammll
 import os
 import readline { read_line }
 
+const examples_tempfolder = 'tempfolders/tempfolder_examples'
+
 const examples_help = '
 Description:
 "examples" displays information about running the various commands, shows
@@ -32,6 +34,11 @@ fn run_example(before string, after string, cmd string) ! {
 
 // examples
 fn examples() ! {
+	if os.is_dir(examples_tempfolder) {
+		os.rmdir_all(examples_tempfolder)!
+	}
+	os.mkdir_all(examples_tempfolder)!
+
 	mut before := ''
 	mut after := ''
 	mut cmd := ''
@@ -133,25 +140,25 @@ Let's look at cross-validation first:"
 	
 	// make
 	before = 'Once you have settled on parameter values that will be optimal for your use case, you can generate a classifier and save it to a file, which you specify with the -o or --output option:'
-	cmd = 'v run . make --output ~/bcw.cl -a 4 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . make --output ${examples_tempfolder}/bcw.cl -a 4 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	run_example(before, after, cmd)!
 
 	before = 'The saved classifier, accessed with the -k or --classifier option, can be used to verify a separate dataset (the -t or --test option is required to specify the dataset to be verified):'
-	cmd = 'v run . verify -k ~/bcw.cl -t ~/.vmodules/holder66/vhammll/datasets/bcw174test'
+	cmd = 'v run . verify -k ${examples_tempfolder}/bcw.cl -t ~/.vmodules/holder66/vhammll/datasets/bcw174test'
 	run_example(before, after, cmd)!
 
 	before = 'A classifier, generated as needed or a saved file, can be used to classify unlabeled instances in a dataset file. This process uses the validate command, and the test dataset specified with the -t or --test option should include the class attribute, but with empty strings for its values.'
-	cmd = 'v run . validate --classifier ~/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
+	cmd = 'v run . validate --classifier ${examples_tempfolder}/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
 	after = 'The output of validate gives the inferred class for each instance, and the nearest neighbor counts for that instance to each of the possible classes. When the counts are very different between classes, one can be confident in the inferred classification. For example, look at the second-last instance in the output of the above command, [3, 8], a ratio of 8 to 3, or 2.67, in favor of "malignant".'
 	run_example(before, after, cmd)!
 
 	before = 'If the classifier was generated with the -w or --weighting flag set, then that flag can also be used with validate, in order to weight the nearest neighbor counts by class prevalences. Saving...'
 	after = ''
-	cmd = 'v run . make --output ~/bcw.cl -a 4 -w ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . make --output ${examples_tempfolder}/bcw.cl -a 4 -w ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	run_example(before, after, cmd)!
 
 	before = 'And now validating...'
-	cmd = 'v run . validate -w --classifier ~/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
+	cmd = 'v run . validate -w --classifier ${examples_tempfolder}/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
 	after = 'The resultant count values are artificially high, but the ratios are important; with weighting, the second-last instance gives [159, 191], which still classifies to malignant, but the ratio of 1.2 to 1 inspires much less confidence than 8 to 3 without weighting.'
 	run_example(before, after, cmd)!
 
@@ -161,53 +168,53 @@ Let's look at cross-validation first:"
 	// run_example(before, after, cmd)!
 
 	before = 'It is possible to save the results of a query or a validate to a file specified with the -o or --output option. This saved file can be used to extend a saved classifier by appending the now labeled instances onto it. First, save a classifier:'
-	cmd = 'v run . make -a 33 -o ~/soybean.cl ~/.vmodules/holder66/vhammll/datasets/soybean-large-train.tab'
+	cmd = 'v run . make -a 33 -o ${examples_tempfolder}/soybean.cl ~/.vmodules/holder66/vhammll/datasets/soybean-large-train.tab'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Do a validation using the saved classifier:'
-	cmd = 'v run . validate -k ~/soybean.cl -o ~/soybean.val -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-validate.tab'
+	cmd = 'v run . validate -k ${examples_tempfolder}/soybean.cl -o ${examples_tempfolder}/soybean.val -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-validate.tab'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Then append the saved validation file to the saved classifier:'
-	cmd = 'v run . append -o ~/soybean.ext.cl -k ~/soybean.cl ~/soybean.val'
+	cmd = 'v run . append -o ${examples_tempfolder}/soybean.ext.cl -k ${examples_tempfolder}/soybean.cl ${examples_tempfolder}/soybean.val'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = "Let's test the extended classifier with a test file:"
-	cmd = 'v run . verify -k ~/soybean.ext.cl -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-test.tab'
+	cmd = 'v run . verify -k ${examples_tempfolder}/soybean.ext.cl -t ~/.vmodules/holder66/vhammll/datasets/soybean-large-test.tab'
 	after = "That's it! Now try it on your own datasets!"
 	run_example(before, after, cmd)!
 
 	// multiple classifiers and optimals
 	before = 'VHamMLL can combine several classifiers trained with different settings to improve accuracy. The -ms flag saves each classifier\'s settings to a file as explore runs. Here we save settings for the breast-cancer-wisconsin dataset:'
-	cmd = 'v run . explore -s -c -w -ms ~/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
-	after = 'Each row in the output corresponds to one classifier. Its settings have been appended to ~/bcw.opts.'
+	cmd = 'v run . explore -s -c -w -ms ${examples_tempfolder}/bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	after = 'Each row in the output corresponds to one classifier. Its settings have been appended to ${examples_tempfolder}/bcw.opts.'
 	run_example(before, after, cmd)!
 
 	before = 'The optimals command searches through classifiers in a settings file and reports which classifiers give the best balanced accuracy, highest Matthews Correlation Coefficient (MCC), and highest correct-inference count per class:'
-	cmd = 'v run . optimals -e ~/bcw.opts'
+	cmd = 'v run . optimals -e ${examples_tempfolder}/bcw.opts'
 	after = 'Note the classifier IDs listed for each category — you can pass those IDs to -m# in a subsequent cross or verify run.'
 	run_example(before, after, cmd)!
 
 	before = 'Settings files can accumulate duplicate entries (same parameters, different IDs). The -p flag purges duplicates, and -o saves the cleaned file for later use:'
-	cmd = 'v run . optimals -p -o ~/bcw-purged.opts ~/bcw.opts'
-	after = 'The purged file ~/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
+	cmd = 'v run . optimals -p -o ${examples_tempfolder}/bcw-purged.opts ${examples_tempfolder}/bcw.opts'
+	after = 'The purged file ${examples_tempfolder}/bcw-purged.opts contains only unique classifier settings and can be used in place of the original.'
 	run_example(before, after, cmd)!
 
 	before = 'The -s flag makes optimals show only classifier IDs for each category, which makes it easy to pick IDs to pass to -m#:'
-	cmd = 'v run . optimals -s ~/bcw-purged.opts'
+	cmd = 'v run . optimals -s ${examples_tempfolder}/bcw-purged.opts'
 	after = 'Note the four IDs listed under "Best balanced accuracy" — an example will use them in the -m# flag below.'
 	run_example(before, after, cmd)!
 
 	before = 'Cross-validate using the four classifiers with the highest balanced accuracy from the previous step.'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,21,40,61 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 0,21,40,61 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Use -af (all-flags) to run all strategy combinations for those four classifiers and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
-	cmd = 'v run . cross -s -m ~/bcw-purged.opts -m# 0,21,40,61 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 0,21,40,61 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = 'Pick the strategy that gives the best result and use it with -mc or -mt in a final cross or verify run.'
 	run_example(before, after, cmd)!
 }
