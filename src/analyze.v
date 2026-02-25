@@ -19,7 +19,10 @@ Usage:
  v run main.v analyze <path_to_dataset_file>
 
 Options:
--h --help: displays this message.
+-h --help:   displays this message.
+-o --output: followed by the path to a file in which the analyze 
+             result will be saved.
+-s --show:   output results to the console.
   '
 
 // analyze_dataset returns a struct with information about a datafile.
@@ -36,7 +39,6 @@ Options:
 // outputfile_path: if specified, saves the analysis results.
 // ```
 pub fn analyze_dataset(opts Options) AnalyzeResult {
-	// println('ds in analyze_dataset: ${ds}')
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut result := AnalyzeResult{
 		environment:              get_environment()
@@ -48,20 +50,11 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
-	// println('opts.missings in analyze_dataset: ${opts.missings}')
-	// println('missing_values in analyze_dataset: ${missing_vals}')
 	mut indices_of_useful_attributes := ds.useful_continuous_attributes.keys()
 	indices_of_useful_attributes << ds.useful_discrete_attributes.keys()
 	mut max_values := []f32{}
 	mut min_values := []f32{}
-	mut atts := []Attribute{}
-	// println('indices_of_useful_attributes: ${indices_of_useful_attributes}')
-	// println('raw_attribute_types: ${ds.raw_attribute_types}')
-	// println('attribute_types: ${ds.attribute_types}')
-	// println('inferred_attribute_types: ${ds.inferred_attribute_types}')
-	for i, name in ds.attribute_names {
-		// println('i: $i name: $name ${ds.data[i].len} ${uniques_values(ds.data[i])} ${missing_vals[i]}')
-
+	mut atts := []Attribute{}	for i, name in ds.attribute_names {
 		mut att_info := Attribute{
 			id:            i
 			name:          name
@@ -74,7 +67,6 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 			inferred_type: ds.inferred_attribute_types[i]
 			for_training:  i in indices_of_useful_attributes
 		}
-		// println('we are here')
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
 			att_info.max = array_max(ds.useful_continuous_attributes[i].filter(!is_nan(it)))
 			att_info.min = f32(array_min(ds.useful_continuous_attributes[i].filter(!is_nan(it))))
@@ -82,21 +74,15 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 			att_info.median = stats.median(ds.useful_continuous_attributes[i].filter(!is_nan(it)).sorted())
 		}
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'D' {
-			// println('ds.data.len: ${ds.data.len}')
-			// println('ds.data[i]: ${ds.data[i]}')
 			att_info.counts_map = element_counts(ds.data[i])
-			// println('att_info: ${att_info}')
 		}
 		atts << att_info
-		// println('atts: $atts')
 		max_values << att_info.max
 		min_values << att_info.min
 	}
-	// println('we are here: ${max_values} ${min_values}')
 	result.attributes = atts
 	result.overall_max = array_max(max_values)
 	result.overall_min = array_min(min_values)
-	// println('result in analyze_dataset: ${result}')
 	if opts.show_flag {
 		show_analyze(result)
 	}

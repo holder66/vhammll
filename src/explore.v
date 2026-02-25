@@ -20,6 +20,7 @@ Options:
   -af --all-flags: used with explore to repeat the explore operation for all
       possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
   -b --bins: a range for the number of bins for continuous attributes;
+  -bp --balanced-prevalences: add instances to balance class prevalences;
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: show expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);

@@ -18,6 +18,7 @@ Options:
       ranked attributes) to be used in training the classifier
   -b --bins: eg, "3,6" specifies the lower and upper limits for the number
       of slices or bins for continuous attributes;
+  -bp --balanced-prevalences: add instances to balance class prevalences;
   -e --expanded: display the classifier struct on the console.
   -o --output: followed by the path to a file in which the classifier will be stored;
   -p --purge: remove instances which are duplicates after binning;

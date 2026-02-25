@@ -21,6 +21,7 @@ Required:
 Options:
 In addition to the options below, the options for "make" apply to
 both the classification and the verification datafile.
+-bp --balanced-prevalences: add instances to balance class prevalences;
 -c --concurrent, permit parallel processing to use multiple cores;
 -e --expanded, expanded results on the console;
 -k --classifier, followed by the path to a file for a saved Classifier;

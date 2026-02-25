@@ -36,6 +36,7 @@ Options:
       ranked attributes) to be used in training the classifier
   -b --bins: eg, "3,6" specifies the lower and upper limits for the
       number of slices or bins for continuous attributes;
+  -bp --balanced-prevalences: add instances to balance class prevalences;
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);
