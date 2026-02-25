@@ -1,0 +1,1555 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>vhammll | vdoc</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+		<link rel="manifest" href="site.webmanifest" />
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+		<link rel="stylesheet" href="doc.css" />
+		<link rel="stylesheet" href="normalize.css" />
+		<script src="dark-mode.js"></script>
+	</head>
+
+	<body>
+		<div><a id="skip-to-content-link" href="#main-content">Skip to content</a></div>
+		<div id="page">
+			<header class="doc-nav hidden">
+				<div class="heading-container">
+					<div class="heading">
+						<div class="info">
+							<div class="module">vhammll</div>
+							<div class="toggle-version-container">
+								<span> e432094</span>
+								<div
+									id="dark-mode-toggle"
+									role="switch"
+									aria-checked="false"
+									aria-label="Toggle dark mode"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="light-icon" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="dark-icon" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><g><path d="M11.1,12.08C8.77,7.57,10.6,3.6,11.63,2.01C6.27,2.2,1.98,6.59,1.98,12c0,0.14,0.02,0.28,0.02,0.42 C2.62,12.15,3.29,12,4,12c1.66,0,3.18,0.83,4.1,2.15C9.77,14.63,11,16.17,11,18c0,1.52-0.87,2.83-2.12,3.51 c0.98,0.32,2.03,0.5,3.11,0.5c3.5,0,6.58-1.8,8.37-4.52C18,17.72,13.38,16.52,11.1,12.08z"/></g><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></g></g></svg>
+
+								</div>
+							</div>
+							<svg xmlns="http://www.w3.org/2000/svg" id="toggle-menu" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+						</div>
+						<div id="search">
+							<input type="text" placeholder="Search... (beta)" autocomplete="off" />
+						</div>
+					</div>
+				</div>
+				<nav class="search hidden"></nav>
+				<nav class="content hidden">
+					<ul>
+						<li class="open"><a href="#analyze_dataset">fn analyze_dataset</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#append_instances">fn append_instances</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#auc_roc">fn auc_roc</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#cli">fn cli</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#cross_validate">fn cross_validate</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#display_file">fn display_file</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#explore">fn explore</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#file_type">fn file_type</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#load_classifier_file">fn load_classifier_file</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#load_file">fn load_file</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#load_instances_file">fn load_instances_file</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#make_classifier">fn make_classifier</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#one_vs_rest_verify">fn one_vs_rest_verify</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#optimals">fn optimals</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#opts">fn opts</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#plot_mult_roc">fn plot_mult_roc</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#purge_instances_for_missing_class_values_not_inline">fn purge_instances_for_missing_class_values_not_inline</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#query">fn query</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#rank_attributes">fn rank_attributes</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#rank_one_vs_rest">fn rank_one_vs_rest</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#roc_values">fn roc_values</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#save_json_file">fn save_json_file</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_analyze">fn show_analyze</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_classifier">fn show_classifier</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_crossvalidation">fn show_crossvalidation</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_rank_attributes">fn show_rank_attributes</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_validate">fn show_validate</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#show_verify">fn show_verify</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#transpose">fn transpose</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#validate">fn validate</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#verify">fn verify</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#StringFloatMap">type StringFloatMap</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#AnalyzeResult">struct AnalyzeResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Attribute">struct Attribute</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#AucClassifiers">struct AucClassifiers</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#BinaryCounts">struct BinaryCounts</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#BinaryMetrics">struct BinaryMetrics</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Binning">struct Binning</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Class">struct Class</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Classifier">struct Classifier</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ClassifierID">struct ClassifierID</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ClassifierSettings">struct ClassifierSettings</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ClassifyResult">struct ClassifyResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#CliOptions">struct CliOptions</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Cmd">struct Cmd</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#CombinationSizeLimits">struct CombinationSizeLimits</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#CrossVerifyResult">struct CrossVerifyResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Dataset">struct Dataset</a>        <ul>
+<li><a href="#Dataset.purge_instances_for_missing_class_values">fn purge_instances_for_missing_class_values</a></li>
+</ul>
+</li>
+<li class="open"><a href="#DefaultVals">struct DefaultVals</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#DisplaySettings">struct DisplaySettings</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Environment">struct Environment</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ExploreResult">struct ExploreResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#History">struct History</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#HistoryEvent">struct HistoryEvent</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#LoadOptions">struct LoadOptions</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Metrics">struct Metrics</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#MultipleOptions">struct MultipleOptions</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#OneVsRestClassifier">struct OneVsRestClassifier</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#OptimalsResult">struct OptimalsResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Options">struct Options</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Parameters">struct Parameters</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#PlotResult">struct PlotResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Point">struct Point</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#RankedAttribute">struct RankedAttribute</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#RankingResult">struct RankingResult</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ResultForClass">struct ResultForClass</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#RocData">struct RocData</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#RocFiles">struct RocFiles</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#RocPoint">struct RocPoint</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#SettingsForROC">struct SettingsForROC</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#TrainedAttribute">struct TrainedAttribute</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#ValidateResult">struct ValidateResult</a>        <ul>
+</ul>
+</li>
+
+					</ul>
+				</nav>
+			</header>
+			<div class="doc-scrollview" tabindex="-1" id="main-content">
+				<div class="doc-container">
+					<div class="doc-content">
+								<section id="readme_vhammll" class="doc-node">
+			<div class="title"><h1> vhammll <a href="#readme_vhammll">#</a></h1></div>
+
+
+</section>
+
+		<section id="analyze_dataset" class="doc-node">
+			<div class="title"><h2>fn analyze_dataset <a href="#analyze_dataset">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">analyze_dataset</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> AnalyzeResult</code></pre>
+<p>analyze_dataset returns a struct with information about a datafile.</p>
+<pre><code class="language-sh">Optional<span class="token punctuation">:</span>
+<span class="token keyword">if</span> show_flag <span class="token keyword">is</span> <span class="token boolean">true</span><span class="token punctuation">,</span> displays on the <span class="token function">console</span> <span class="token punctuation">(</span>using show_analyze<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token number">1.</span> a list of attributes<span class="token punctuation">,</span> their types<span class="token punctuation">,</span> the unique values<span class="token punctuation">,</span> and a count of
+missing values<span class="token punctuation">;</span>
+<span class="token number">2.</span> a table with counts <span class="token keyword">for</span> each <span class="token keyword">type</span> of attribute<span class="token punctuation">;</span>
+<span class="token number">3.</span> a list of discrete attributes useful <span class="token keyword">for</span> training a classifier<span class="token punctuation">;</span>
+<span class="token number">4.</span> a list of continuous attributes useful <span class="token keyword">for</span> training a classifier<span class="token punctuation">;</span>
+<span class="token number">5.</span> a breakdown of the class attribute<span class="token punctuation">,</span> showing counts <span class="token keyword">for</span> each class<span class="token punctuation">.</span>
+
+outputfile_path<span class="token punctuation">:</span> <span class="token keyword">if</span> specified<span class="token punctuation">,</span> saves the analysis results<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="append_instances" class="doc-node">
+			<div class="title"><h2>fn append_instances <a href="#append_instances">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">append_instances</span><span class="token punctuation">(</span>cl Classifier<span class="token punctuation">,</span> instances_to_append ValidateResult<span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span> Classifier</code></pre>
+<p>append_instances extends a classifier by adding more instances. It returns the extended classifier struct.</p>
+<pre><code class="language-sh">Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> display results on the console<span class="token punctuation">;</span>
+outputfile_path<span class="token punctuation">:</span> saves the extended classifier to a file<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="auc_roc" class="doc-node">
+			<div class="title"><h2>fn auc_roc <a href="#auc_roc">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">auc_roc</span><span class="token punctuation">(</span>points <span class="token punctuation">[</span><span class="token punctuation">]</span>Point<span class="token punctuation">)</span> <span class="token builtin">f64</span></code></pre>
+<p>auc_roc returns the area under the Receiver Operating Characteristic curve, for an array of points.</p>
+
+</section>
+
+		<section id="cli" class="doc-node">
+			<div class="title"><h2>fn cli <a href="#cli">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">cli</span><span class="token punctuation">(</span>cli_options CliOptions<span class="token punctuation">)</span> <span class="token operator">!</span></code></pre>
+<p>cli() is the command line interface app for the holder66.vhamml ML library.</p>
+<pre><code class="language-sh">Usage<span class="token punctuation">:</span> v run main<span class="token punctuation">.</span>v <span class="token punctuation">[</span>command<span class="token punctuation">]</span> <span class="token punctuation">[</span>flags and options<span class="token punctuation">]</span> <span class="token operator"><</span>path_to_file<span class="token operator">></span>
+Datafiles should be either tab<span class="token operator">-</span>delimited<span class="token punctuation">,</span> <span class="token keyword">or</span> have extension <span class="token punctuation">.</span>csv <span class="token keyword">or</span> <span class="token punctuation">.</span>arff
+Commands<span class="token punctuation">:</span> analyze <span class="token operator">|</span> append <span class="token operator">|</span> cross <span class="token operator">|</span> display <span class="token operator">|</span> examples <span class="token operator">|</span> explore
+<span class="token operator">|</span> make <span class="token operator">|</span> optimals <span class="token operator">|</span> orange <span class="token operator">|</span> partition <span class="token operator">|</span> query <span class="token operator">|</span> rank <span class="token operator">|</span> validate <span class="token operator">|</span> verify
+To get help with individual commands<span class="token punctuation">,</span> <span class="token keyword">type</span> <span class="token char">`v run main.v [command] -h`</span>
+
+Flags and <span class="token function">options</span> <span class="token punctuation">(</span>note that most are specific to commands<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token operator">-</span>a <span class="token operator">--</span>attributes<span class="token punctuation">,</span> followed by one<span class="token punctuation">,</span> two<span class="token punctuation">,</span> <span class="token keyword">or</span> <span class="token number">3</span> integers<span class="token punctuation">:</span> Parameters<span class="token punctuation">.</span>number_of_attributes
+<span class="token operator">-</span>aa <span class="token operator">--</span>all<span class="token operator">-</span>attributes<span class="token punctuation">:</span> <span class="token keyword">for</span> each category of optimals<span class="token punctuation">,</span> retain all <span class="token function">settings</span> <span class="token punctuation">(</span>the
+   default <span class="token keyword">is</span> to retain only settings with unique attribute numbers <span class="token keyword">in</span> each category<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">-</span>af <span class="token operator">--</span>all<span class="token operator">-</span>flags<span class="token punctuation">:</span> Options<span class="token punctuation">.</span>traverse_all_flags
+<span class="token operator">-</span>b <span class="token operator">--</span>bins<span class="token punctuation">,</span> followed by one<span class="token punctuation">,</span> two<span class="token punctuation">,</span> <span class="token keyword">or</span> <span class="token number">3</span> integers<span class="token punctuation">:</span> Binning
+   A single value will be used <span class="token keyword">for</span> all attributes<span class="token punctuation">;</span> two integers <span class="token keyword">for</span> a range of bin
+   values<span class="token punctuation">;</span> a third integer specifies an interval <span class="token keyword">for</span> the <span class="token function">range</span> <span class="token punctuation">(</span>note that
+   the binning range <span class="token keyword">is</span> from the upper to the lower value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   note<span class="token punctuation">:</span> when doing an explore<span class="token punctuation">,</span> the first integer specifies the lower
+   limit <span class="token keyword">for</span> the number of bins<span class="token punctuation">,</span> and the second gives the upper value
+   <span class="token keyword">for</span> the explore range<span class="token punctuation">.</span> Example<span class="token punctuation">:</span> explore <span class="token operator">-</span>b <span class="token number">3</span><span class="token punctuation">,</span><span class="token number">6</span> would first use <span class="token number">3</span> <span class="token operator">-</span> <span class="token number">3</span><span class="token punctuation">,</span>
+   then <span class="token number">3</span> <span class="token operator">-</span> <span class="token number">4</span><span class="token punctuation">,</span> then <span class="token number">3</span> <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">,</span> and finally <span class="token number">3</span> <span class="token operator">-</span> <span class="token number">6</span> <span class="token keyword">for</span> the binning ranges<span class="token punctuation">.</span>
+   If the uniform flag <span class="token keyword">is</span> <span class="token boolean">true</span><span class="token punctuation">,</span> then a single integer specifies
+   the number of bins <span class="token keyword">for</span> all continuous attributes<span class="token punctuation">;</span> two integers <span class="token keyword">for</span> a
+   range of uniform bin values <span class="token keyword">for</span> the explore command<span class="token punctuation">;</span> a third integer
+   <span class="token keyword">for</span> the interval to be used over the explore range<span class="token punctuation">;</span>
+<span class="token operator">-</span>bp<span class="token punctuation">,</span> <span class="token operator">--</span>balanced<span class="token operator">-</span>prevalences<span class="token punctuation">:</span> Parameters<span class="token punctuation">.</span>balance_prevalences_flag
+<span class="token operator">-</span>c <span class="token operator">--</span>concurrent<span class="token punctuation">,</span> permit parallel processing to use multiple cores<span class="token punctuation">:</span> Options<span class="token punctuation">.</span>concurrency_flag
+<span class="token operator">-</span>cl <span class="token operator">--</span>combination<span class="token operator">-</span>limits<span class="token punctuation">:</span> sets minimum and maximum lengths <span class="token keyword">for</span> combinations
+   of multiple classifiers<span class="token punctuation">:</span> Options<span class="token punctuation">.</span>DisplaySettings<span class="token punctuation">.</span>CombinationSizeLimits<span class="token punctuation">;</span>
+   entering values <span class="token keyword">for</span> limits also sets the generate_combinations_flag so
+   that classifier combinations will be generated<span class="token punctuation">.</span>
+<span class="token operator">-</span>e <span class="token operator">--</span>expanded<span class="token punctuation">,</span> expanded results on the console<span class="token punctuation">:</span> DisplaySettings<span class="token punctuation">.</span>expanded_flag
+<span class="token operator">-</span>ea display information re trained attributes on the console<span class="token punctuation">,</span> <span class="token keyword">for</span>
+   classification operations<span class="token punctuation">;</span> DisplaySettings<span class="token punctuation">.</span>show_attributes_flag
+<span class="token operator">-</span>exr <span class="token operator">--</span>explore<span class="token operator">-</span>rank<span class="token punctuation">,</span> followed by eg <span class="token string">'2,7'</span><span class="token punctuation">,</span> will repeat the ranking
+   exercise over the binning range from <span class="token number">2</span> through <span class="token number">7</span></code></pre>
+
+</section>
+
+		<section id="cross_validate" class="doc-node">
+			<div class="title"><h2>fn cross_validate <a href="#cross_validate">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">cross_validate</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> CrossVerifyResult</code></pre>
+<p>cross_validate performs n-fold cross-validation on a dataset: it partitions the instances in a dataset into a fold, trains a classifier on all the dataset instances not in the fold, and then uses this classifier to classify the fold cases. This process is repeated for each of n folds, and the classification results are summarized.</p>
+<pre><code class="language-sh"><span class="token function">Options</span> <span class="token punctuation">(</span>also see the Options <span class="token keyword">struct</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+bins<span class="token punctuation">:</span> range <span class="token keyword">for</span> binning <span class="token keyword">or</span> slicing of continuous attributes<span class="token punctuation">;</span>
+number_of_attributes<span class="token punctuation">:</span> the number of attributes to use<span class="token punctuation">,</span> <span class="token keyword">in</span> descending
+    order of rank value<span class="token punctuation">;</span>
+exclude_flag<span class="token punctuation">:</span> excludes missing values when ranking attributes<span class="token punctuation">;</span>
+weighting_flag<span class="token punctuation">:</span> nearest neighbor counts are weighted by
+    class prevalences<span class="token punctuation">;</span>
+folds<span class="token punctuation">:</span> number of folds n to use <span class="token keyword">for</span> n<span class="token operator">-</span>fold cross<span class="token operator">-</span><span class="token function">validation</span> <span class="token punctuation">(</span>default
+    <span class="token keyword">is</span> leave<span class="token operator">-</span>one<span class="token operator">-</span>out cross<span class="token operator">-</span>validation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+repetitions<span class="token punctuation">:</span> number of times to repeat n<span class="token operator">-</span>fold cross<span class="token operator">-</span>validations<span class="token punctuation">;</span>
+random<span class="token operator">-</span>pick<span class="token punctuation">:</span> choose instances randomly <span class="token keyword">for</span> n<span class="token operator">-</span>fold cross<span class="token operator">-</span>validations<span class="token punctuation">.</span>
+Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> prints results to the console<span class="token punctuation">;</span>
+expanded_flag<span class="token punctuation">:</span> prints additional information to the console<span class="token punctuation">,</span> including
+    a confusion matrix<span class="token punctuation">.</span>
+outputfile_path<span class="token punctuation">:</span> saves the result <span class="token keyword">as</span> a json file<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="display_file" class="doc-node">
+			<div class="title"><h2>fn display_file <a href="#display_file">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">display_file</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">,</span> in_opts Options<span class="token punctuation">)</span></code></pre>
+<p>display_file displays on the console, a results file as produced by other hamnn functions; a multiple classifier settings file; or graphs for explore, ranking, or crossvalidation results.</p>
+<pre><code class="language-sh"><span class="token function">display_file</span><span class="token punctuation">(</span><span class="token string">'path_to_saved_results_file'</span><span class="token punctuation">,</span> expanded_flag<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+Output options<span class="token punctuation">:</span>
+expanded_flag<span class="token punctuation">:</span> display additional information on the console<span class="token punctuation">,</span> including
+    a confusion matrix <span class="token keyword">for</span> cross<span class="token operator">-</span>validation <span class="token keyword">or</span> verification operations<span class="token punctuation">;</span>
+graph_flag<span class="token punctuation">:</span> generates plots <span class="token keyword">for</span> display <span class="token keyword">in</span> the default web browser<span class="token punctuation">;</span>
+Options <span class="token keyword">for</span> displaying classifier settings <span class="token function">files</span> <span class="token punctuation">(</span>suffix <span class="token punctuation">.</span>opts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+show_attributes_flag<span class="token punctuation">:</span> list the attributes used by each classifier<span class="token punctuation">;</span>
+classifiers<span class="token punctuation">:</span> a list of classifier id<span class="token string">'s to display.
+'</span></code></pre>
+
+</section>
+
+		<section id="explore" class="doc-node">
+			<div class="title"><h2>fn explore <a href="#explore">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">explore</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> ExploreResult</code></pre>
+<p>explore runs a series of cross-validations or verifications, over a range of attributes and a range of binning values.</p>
+<pre><code class="language-sh"><span class="token function">Options</span> <span class="token punctuation">(</span>also see the Options <span class="token keyword">struct</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+append_settings_flag<span class="token punctuation">:</span> <span class="token keyword">if</span> <span class="token boolean">true</span><span class="token punctuation">,</span> appends classifier settings to an
+ opts file<span class="token punctuation">;</span>
+bins<span class="token punctuation">:</span> range <span class="token keyword">for</span> binning <span class="token keyword">or</span> slicing of continuous attributes<span class="token punctuation">;</span>
+uniform_bins<span class="token punctuation">:</span> same number of bins <span class="token keyword">for</span> all continuous attributes<span class="token punctuation">;</span>
+number_of_attributes<span class="token punctuation">:</span> range <span class="token keyword">for</span> attributes to include<span class="token punctuation">;</span>
+exclude_flag<span class="token punctuation">:</span> excludes missing values when ranking attributes<span class="token punctuation">;</span>
+weighting_flag<span class="token punctuation">:</span> nearest neighbor counts are weighted by
+    class prevalences<span class="token punctuation">;</span>
+folds<span class="token punctuation">:</span> number of folds n to use <span class="token keyword">for</span> n<span class="token operator">-</span>fold cross<span class="token operator">-</span><span class="token function">validation</span> <span class="token punctuation">(</span>default
+    <span class="token keyword">is</span> leave<span class="token operator">-</span>one<span class="token operator">-</span>out cross<span class="token operator">-</span>validation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+repetitions<span class="token punctuation">:</span> number of times to repeat n<span class="token operator">-</span>fold cross<span class="token operator">-</span>validations<span class="token punctuation">;</span>
+random<span class="token operator">-</span>pick<span class="token punctuation">:</span> choose instances randomly <span class="token keyword">for</span> n<span class="token operator">-</span>fold cross<span class="token operator">-</span>validations<span class="token punctuation">.</span>
+Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> display results on the console<span class="token punctuation">;</span>
+expanded_flag<span class="token punctuation">:</span> display additional information on the console<span class="token punctuation">,</span> including
+    a confusion matrix <span class="token keyword">for</span> each explore step<span class="token punctuation">;</span>
+graph_flag<span class="token punctuation">:</span> generate plots of Receiver Operating <span class="token function">Characteristics</span> <span class="token punctuation">(</span>ROC<span class="token punctuation">)</span>
+    by attributes used<span class="token punctuation">;</span> ROC by bins used<span class="token punctuation">,</span> and accuracy by attributes
+    used<span class="token punctuation">.</span>
+traverse_all_flags<span class="token punctuation">:</span> repeat the explore operation <span class="token keyword">for</span> all possible
+ combinations of the flags uniform_bins<span class="token punctuation">,</span> weight_ranking_flag<span class="token punctuation">,</span> etc<span class="token punctuation">;</span>
+ note that <span class="token keyword">if</span> <span class="token operator">-</span>bp <span class="token keyword">is</span> also set<span class="token punctuation">,</span> then <span class="token operator">-</span>af will only traverse the settings
+ which make sense <span class="token keyword">in</span> the context of balancing prevalences<span class="token punctuation">;</span>
+outputfile_path<span class="token punctuation">:</span> saves the result to a file<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="file_type" class="doc-node">
+			<div class="title"><h2>fn file_type <a href="#file_type">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">file_type</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>file_type returns a string identifying how a dataset is structured or formatted, eg 'orange_newer', 'orange_older', 'arff', or 'csv'. On the assumption that an 'orange_older' file will always identify a class attribute by having 'c' or 'class' in the third header line, all other tab-delimited datafiles will be typed as 'orange_newer'.</p>
+
+<section class="doc-node examples"><h4>Example</h4>
+<pre>
+<code class="language-v"><span class="token keyword">assert</span> <span class="token function">file_type</span><span class="token punctuation">(</span><span class="token string">'datasets/iris.tab'</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'orange_older'</span></code></pre>
+</section>
+</section>
+
+		<section id="load_classifier_file" class="doc-node">
+			<div class="title"><h2>fn load_classifier_file <a href="#load_classifier_file">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">load_classifier_file</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span>Classifier</code></pre>
+<p>load_classifier_file loads a file generated by make_classifier(); returns a Classifier struct.</p>
+
+<section class="doc-node examples"><h4>Example</h4>
+<pre>
+<code class="language-v">cl <span class="token operator">:=</span> <span class="token function">load_classifier_file</span><span class="token punctuation">(</span><span class="token string">'tempfolder/saved_classifier.txt'</span><span class="token punctuation">)</span></code></pre>
+</section>
+</section>
+
+		<section id="load_file" class="doc-node">
+			<div class="title"><h2>fn load_file <a href="#load_file">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">load_file</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">,</span> opts LoadOptions<span class="token punctuation">)</span> Dataset</code></pre>
+<p>load_file returns a struct containing the datafile's contents, suitable for generating a classifier</p>
+
+<section class="doc-node examples"><h4>Example</h4>
+<pre>
+<code class="language-v">ds <span class="token operator">:=</span> <span class="token function">load_file</span><span class="token punctuation">(</span><span class="token string">'datasets/iris.tab'</span><span class="token punctuation">)</span></code></pre>
+</section>
+</section>
+
+		<section id="load_instances_file" class="doc-node">
+			<div class="title"><h2>fn load_instances_file <a href="#load_instances_file">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">load_instances_file</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">!</span>ValidateResult</code></pre>
+<p>load_instances_file loads a file generated by validate() or query(), and returns it as a struct, suitable for appending to a classifier.</p>
+
+<section class="doc-node examples"><h4>Example</h4>
+<pre>
+<code class="language-v">instances <span class="token operator">:=</span> <span class="token function">load_instances_file</span><span class="token punctuation">(</span><span class="token string">'tempfolder/saved_validate_result.txt'</span><span class="token punctuation">)</span></code></pre>
+</section>
+</section>
+
+		<section id="make_classifier" class="doc-node">
+			<div class="title"><h2>fn make_classifier <a href="#make_classifier">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">make_classifier</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> Classifier</code></pre>
+<p>make_classifier returns a Classifier struct, given a Dataset (as created by load_file).</p>
+<pre><code class="language-sh"><span class="token function">Options</span> <span class="token punctuation">(</span>also see the Options <span class="token keyword">struct</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+bins<span class="token punctuation">:</span> range <span class="token keyword">for</span> binning <span class="token keyword">or</span> slicing of continuous attributes<span class="token punctuation">;</span>
+uniform_bins<span class="token punctuation">:</span> same number of bins <span class="token keyword">for</span> continuous attributes<span class="token punctuation">;</span>
+number_of_attributes<span class="token punctuation">:</span> the number of highest<span class="token operator">-</span>ranked attributes to include<span class="token punctuation">;</span>
+exclude_flag<span class="token punctuation">:</span> excludes missing values when ranking attributes<span class="token punctuation">;</span>
+purge_flag<span class="token punctuation">:</span> remove those instances which are duplicates<span class="token punctuation">,</span> after
+    binning and based on only the attributes to be used<span class="token punctuation">;</span>
+outputfile_path<span class="token punctuation">:</span> <span class="token keyword">if</span> specified<span class="token punctuation">,</span> saves the classifier to this file<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="one_vs_rest_verify" class="doc-node">
+			<div class="title"><h2>fn one_vs_rest_verify <a href="#one_vs_rest_verify">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">one_vs_rest_verify</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> CrossVerifyResult</code></pre>
+<p>one_vs_rest_verify classifies all the cases in a verification datafile (specified by <code>opts.testfile_path</code>) using an array of trained Classifiers, one per class; each classifier is trained using a one class vs all the other classes. It returns metrics comparing the inferred classes to the labeled (assigned) classes of the verification datafile.</p>
+<pre><code class="language-sh"><span class="token function">Optional</span> <span class="token punctuation">(</span>also see <span class="token char">`make_classifier.v`</span> <span class="token keyword">for</span> options <span class="token keyword">in</span> training a classifier<span class="token punctuation">)</span>
+weighting_flag<span class="token punctuation">:</span> nearest neighbor counts are weighted by
+    class prevalences<span class="token punctuation">.</span>
+Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> display results on the console<span class="token punctuation">;</span>
+expanded_flag<span class="token punctuation">:</span> display additional information on the console<span class="token punctuation">,</span> including
+        a confusion matrix<span class="token punctuation">.</span>
+outputfile_path<span class="token punctuation">:</span> saves the result <span class="token keyword">as</span> a json file</code></pre>
+
+</section>
+
+		<section id="optimals" class="doc-node">
+			<div class="title"><h2>fn optimals <a href="#optimals">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">optimals</span><span class="token punctuation">(</span>path <span class="token builtin">string</span><span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span> OptimalsResult</code></pre>
+<p>optimals determines which classifiers provide the best balanced accuracy, best Matthews Correlation Coefficient (MCC), highest total for correct inferences, and highest correct inferences per class, for multiple classifiers whose settings are stored in a settings file.</p>
+<pre><code class="language-sh"><span class="token function">Options</span> <span class="token punctuation">(</span>also see the Options <span class="token keyword">struct</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+purge_flag<span class="token punctuation">:</span> discard duplicate settings
+all_attributes_flag<span class="token punctuation">:</span> show all settings <span class="token keyword">in</span> each category<span class="token punctuation">,</span> not only those with unique attribute numbers
+Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> prints a list of classifier settings indices <span class="token keyword">for</span> each category<span class="token punctuation">;</span>
+expanded_flag<span class="token punctuation">:</span> <span class="token keyword">for</span> each setting<span class="token punctuation">,</span> prints the Parameters<span class="token punctuation">,</span> results obtained<span class="token punctuation">,</span> and Metrics
+graph_flag<span class="token punctuation">:</span> plots a receiver operating characteristic curve
+outputfile_path<span class="token punctuation">:</span> saves the settings <span class="token keyword">in</span> a file given by the path<span class="token punctuation">.</span> Useful <span class="token keyword">if</span> the settings are purged<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="opts" class="doc-node">
+			<div class="title"><h2>fn opts <a href="#opts">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">opts</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> c Cmd<span class="token punctuation">)</span> Options</code></pre>
+<p>opts takes a string of command line arguments and returns an Options struct corresponding to the command line arguments.</p>
+
+</section>
+
+		<section id="plot_mult_roc" class="doc-node">
+			<div class="title"><h2>fn plot_mult_roc <a href="#plot_mult_roc">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">plot_mult_roc</span><span class="token punctuation">(</span>rocdata_array <span class="token punctuation">[</span><span class="token punctuation">]</span>RocData<span class="token punctuation">,</span> files RocFiles<span class="token punctuation">)</span></code></pre>
+<p>plot_mult_roc generates an interactive Receiver Operating Characteristic plot in the default web browser for one or more ROC traces. Each element of rocdata_array produces one scatter trace; the AUC is computed and shown in the plot title.</p>
+
+</section>
+
+		<section id="purge_instances_for_missing_class_values_not_inline" class="doc-node">
+			<div class="title"><h2>fn purge_instances_for_missing_class_values_not_inline <a href="#purge_instances_for_missing_class_values_not_inline">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">purge_instances_for_missing_class_values_not_inline</span><span class="token punctuation">(</span><span class="token keyword">mut</span> ds Dataset<span class="token punctuation">)</span> Dataset</code></pre>
+<p>purge_instances_for_missing_class_values_not_inline removes all instances whose class value is in the missings list, returning the modified dataset. This is a non-method wrapper around the method form; prefer the method form where possible.</p>
+
+</section>
+
+		<section id="query" class="doc-node">
+			<div class="title"><h2>fn query <a href="#query">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">query</span><span class="token punctuation">(</span>cl Classifier<span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span> ClassifyResult</code></pre>
+<p>query takes a trained classifier and performs an interactive session with the user at the console, asking the user to input a value for each trained attribute. It then asks to confirm or redo the responses. Once confirmed, the instance is classified and the inferred class is shown. The classified instance can optionally be saved in a file. The saved instance can be appended to the classifier using append_instances().</p>
+
+</section>
+
+		<section id="rank_attributes" class="doc-node">
+			<div class="title"><h2>fn rank_attributes <a href="#rank_attributes">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">rank_attributes</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> RankingResult</code></pre>
+<p>rank_attributes takes a Dataset and returns a list of all the dataset's usable attributes, ranked in order of each attribute's ability to separate the classes.</p>
+<pre><code>Algorithm:
+for each attribute:
+    create a matrix with attribute values for row headers, and
+    class values for column headers;
+    for each unique value `val` for that attribute:
+        for each unique value `class` of the class attribute:
+            for each instance:
+                accumulate a count for those instances whose class value
+                equals `class`;
+                populate the matrix with these accumulated counts;
+    for each `val`:
+        get the absolute values of the differences between accumulated
+        counts for each pair of `class` values`;
+        add those absolute differences;
+    total those added absolute differences to get the raw rank value
+for that attribute.
+To obtain rank values weighted by class prevalences, use the same algorithm
+except before taking the difference of each pair of accumulated counts,
+multiply each count of the pair by the class prevalence of the other class.
+(Note: rank_attributes always uses class prevalences as weights)
+
+Obtain a maximum rank value by calculating a rank value for the class
+attribute itself.
+
+To obtain normalized rank values:
+for each attribute:
+    divide its raw rank value by the maximum rank value and multiply by 100.
+
+Sort the attributes by descending rank values.
+</code></pre>
+<pre><code class="language-sh">Options<span class="token punctuation">:</span>
+<span class="token char">`binning`</span><span class="token punctuation">:</span> specifies the range <span class="token keyword">for</span> <span class="token function">binning</span> <span class="token punctuation">(</span>slicing<span class="token punctuation">)</span> continous attributes<span class="token punctuation">;</span>
+<span class="token char">`weight_ranking_flag`</span><span class="token punctuation">:</span> appplies prevalences of each class <span class="token keyword">in</span> calculating rankings<span class="token punctuation">;</span>
+<span class="token char">`exclude_flag`</span><span class="token punctuation">:</span> exclude missing values when calculating rank values<span class="token punctuation">;</span>
+<span class="token char">`explore_rank`</span><span class="token punctuation">:</span> gives start and end values <span class="token keyword">for</span> maximum binning number to be
+    over an exploration of ranking <span class="token keyword">for</span> different binning values<span class="token punctuation">;</span>
+
+Output options<span class="token punctuation">:</span>
+<span class="token char">`show_flag`</span><span class="token punctuation">:</span> print the ranked list to the console<span class="token punctuation">;</span>
+<span class="token char">`graph_flag`</span><span class="token punctuation">:</span> generate plots of rank values <span class="token keyword">for</span> each attribute on the
+    y axis<span class="token punctuation">,</span> with number of bins on the x axis<span class="token punctuation">.</span>
+<span class="token char">`overfitting_flag`</span><span class="token punctuation">:</span> generates metrics<span class="token operator">/</span>plots to help determine<span class="token punctuation">,</span> <span class="token keyword">for</span> continuous
+    attributes<span class="token punctuation">,</span> whether overfitting <span class="token keyword">is</span> occurring<span class="token punctuation">.</span>
+<span class="token char">`weighting_flag`</span><span class="token punctuation">:</span> <span class="token keyword">for</span> the hits per bin graph produced by the overfitting flag<span class="token punctuation">,</span>
+    weights and normalizes the hits<span class="token punctuation">.</span>
+<span class="token char">`outputfile_path`</span><span class="token punctuation">:</span> saves the result <span class="token keyword">as</span> json<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="rank_one_vs_rest" class="doc-node">
+			<div class="title"><h2>fn rank_one_vs_rest <a href="#rank_one_vs_rest">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">rank_one_vs_rest</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> RankingResult</code></pre>
+<p>rank_one_vs_rest ranks the dataset's attributes using a one-vs-rest strategy: for each class, instances of that class are treated as positives and all other instances as negatives. Attributes are ranked by their ability to separate each class from the rest. The result and output options are the same as for rank_attributes().</p>
+<pre><code>Algorithm:
+for each attribute:
+    create a matrix with attribute values for row headers, and
+    class values for column headers;
+    for each unique value `val` for that attribute:
+        for each unique value `class` of the class attribute:
+            for each instance:
+                accumulate a count for those instances whose class value
+                equals `class`;
+                populate the matrix with these accumulated counts;
+    for each `val`:
+        get the absolute values of the differences between accumulated
+        counts for each pair of `class` values`;
+        add those absolute differences;
+    total those added absolute differences to get the raw rank value
+for that attribute.
+To obtain rank values weighted by class prevalences, use the same algorithm
+except before taking the difference of each pair of accumulated counts,
+multiply each count of the pair by the class prevalence of the other class.
+(Note: rank_attributes always uses class prevalences as weights)
+
+Obtain a maximum rank value by calculating a rank value for the class
+attribute itself.
+
+To obtain normalized rank values:
+for each attribute:
+    divide its raw rank value by the maximum rank value and multiply by 100.
+
+Sort the attributes by descending rank values.
+</code></pre>
+<pre><code class="language-sh">Options<span class="token punctuation">:</span>
+<span class="token operator">-</span>b <span class="token operator">--</span>bins<span class="token punctuation">:</span> specifies the range <span class="token keyword">for</span> <span class="token function">binning</span> <span class="token punctuation">(</span>slicing<span class="token punctuation">)</span> continous attributes<span class="token punctuation">;</span>
+<span class="token operator">-</span>x <span class="token operator">--</span>exclude<span class="token punctuation">:</span>  to exclude missing values when calculating rank values<span class="token punctuation">;</span>
+Output options<span class="token punctuation">:</span>
+<span class="token char">`show_flag`</span> to print the ranked list to the console<span class="token punctuation">;</span>
+<span class="token char">`graph_flag`</span> to generate plots of rank values <span class="token keyword">for</span> each attribute on the
+    y axis<span class="token punctuation">,</span> with number of bins on the x axis<span class="token punctuation">.</span>
+<span class="token char">`outputfile_path`</span><span class="token punctuation">,</span> saves the result <span class="token keyword">as</span> json<span class="token punctuation">.</span></code></pre>
+
+</section>
+
+		<section id="roc_values" class="doc-node">
+			<div class="title"><h2>fn roc_values <a href="#roc_values">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">roc_values</span><span class="token punctuation">(</span>pairs <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span><span class="token punctuation">,</span> classifier_ids <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>RocPoint</code></pre>
+<p>roc_values takes a list of pairs of sensitivity and specificity values, along with the corresponding list of classifier ID's, and returns a list of Receiver Operating Characteristic plot points (sensitivity vs 1 - specificity).</p>
+
+</section>
+
+		<section id="save_json_file" class="doc-node">
+			<div class="title"><h2>fn save_json_file <a href="#save_json_file">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> save_json_file<span class="token punctuation">[</span><span class="token builtin">T</span><span class="token punctuation">]</span><span class="token punctuation">(</span>u <span class="token builtin">T</span><span class="token punctuation">,</span> path <span class="token builtin">string</span><span class="token punctuation">)</span></code></pre>
+<p>save_json_file serialises the value u to JSON and writes it to path, overwriting any existing file. Works with any type T.</p>
+
+</section>
+
+		<section id="show_analyze" class="doc-node">
+			<div class="title"><h2>fn show_analyze <a href="#show_analyze">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_analyze</span><span class="token punctuation">(</span>result AnalyzeResult<span class="token punctuation">)</span></code></pre>
+<p>show_analyze prints out to the console, a series of tables detailing a dataset. It takes as input an AnalyzeResult struct generated by analyze_dataset().</p>
+
+</section>
+
+		<section id="show_classifier" class="doc-node">
+			<div class="title"><h2>fn show_classifier <a href="#show_classifier">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_classifier</span><span class="token punctuation">(</span>cl Classifier<span class="token punctuation">)</span></code></pre>
+<p>show_classifier outputs to the console information about a classifier</p>
+
+</section>
+
+		<section id="show_crossvalidation" class="doc-node">
+			<div class="title"><h2>fn show_crossvalidation <a href="#show_crossvalidation">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_crossvalidation</span><span class="token punctuation">(</span>result CrossVerifyResult<span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span></code></pre>
+<p>show_crossvalidation prints to the console the results of a cross_validate() run: the partitioning scheme, classifier parameters (or multiple-classifier settings), instance counts, per-class accuracy, confusion matrix (when expanded), and binary metrics for two-class problems.</p>
+
+</section>
+
+		<section id="show_rank_attributes" class="doc-node">
+			<div class="title"><h2>fn show_rank_attributes <a href="#show_rank_attributes">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_rank_attributes</span><span class="token punctuation">(</span>result RankingResult<span class="token punctuation">)</span></code></pre>
+<p>show_rank_attributes prints to the console the ranked list of attributes in result, showing each attribute's name, index, type, rank value, and bin count. Output is limited to result.limit_output entries when that field is non-zero.</p>
+
+</section>
+
+		<section id="show_validate" class="doc-node">
+			<div class="title"><h2>fn show_validate <a href="#show_validate">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_validate</span><span class="token punctuation">(</span>result ValidateResult<span class="token punctuation">)</span></code></pre>
+<p>show_validate prints to the console the results of a validate() run: the classifier parameters, the number of instances validated, and for each instance its index, inferred class, and nearest- neighbor counts by class.</p>
+
+</section>
+
+		<section id="show_verify" class="doc-node">
+			<div class="title"><h2>fn show_verify <a href="#show_verify">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">show_verify</span><span class="token punctuation">(</span>result CrossVerifyResult<span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span></code></pre>
+<p>show_verify prints to the console the results of a verify() run: the classifier parameters (or multiple-classifier settings), instance counts, per-class accuracy, confusion matrix (when expanded), and binary metrics for two-class problems.</p>
+
+</section>
+
+		<section id="transpose" class="doc-node">
+			<div class="title"><h2>fn transpose <a href="#transpose">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> transpose<span class="token punctuation">[</span><span class="token builtin">T</span><span class="token punctuation">]</span><span class="token punctuation">(</span>matrix <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">T</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">T</span></code></pre>
+<p>transpose a 2d array</p>
+
+</section>
+
+		<section id="validate" class="doc-node">
+			<div class="title"><h2>fn validate <a href="#validate">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">validate</span><span class="token punctuation">(</span>cl Classifier<span class="token punctuation">,</span> opts Options<span class="token punctuation">)</span> <span class="token operator">!</span>ValidateResult</code></pre>
+<p>validate classifies each instance of a validation datafile against a trained Classifier; returns the predicted classes for each case of the validation_set. The file to be validated is specified by <code>opts.testfile_path</code>. Optionally, saves the cases and their predicted classes in a file. This file can be used to append these cases to the classifier.</p>
+
+</section>
+
+		<section id="verify" class="doc-node">
+			<div class="title"><h2>fn verify <a href="#verify">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token function">verify</span><span class="token punctuation">(</span>opts Options<span class="token punctuation">)</span> CrossVerifyResult</code></pre>
+<p>verify classifies all the instances in a verification datafile (specified by <code>opts.testfile_path</code>) using a trained Classifier; returns metrics comparing the inferred classes to the labeled (assigned) classes of the verification datafile.</p>
+<pre><code class="language-sh"><span class="token function">Optional</span> <span class="token punctuation">(</span>also see <span class="token char">`make_classifier.v`</span> <span class="token keyword">for</span> options <span class="token keyword">in</span> training a classifier<span class="token punctuation">)</span>
+weighting_flag<span class="token punctuation">:</span> nearest neighbor counts are weighted by
+    class prevalences<span class="token punctuation">.</span>
+Output options<span class="token punctuation">:</span>
+show_flag<span class="token punctuation">:</span> display results on the console<span class="token punctuation">;</span>
+expanded_flag<span class="token punctuation">:</span> display additional information on the console<span class="token punctuation">,</span> including
+        a confusion matrix<span class="token punctuation">.</span>
+show_attributes_flag<span class="token punctuation">:</span> list the trained attributes <span class="token keyword">for</span> the classifier used
+outputfile_path<span class="token punctuation">:</span> saves the result <span class="token keyword">as</span> a json file</code></pre>
+
+</section>
+
+		<section id="StringFloatMap" class="doc-node">
+			<div class="title"><h2>type StringFloatMap <a href="#StringFloatMap">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">type</span> StringFloatMap <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">f64</span></code></pre>
+
+
+</section>
+
+		<section id="AnalyzeResult" class="doc-node">
+			<div class="title"><h2>struct AnalyzeResult <a href="#AnalyzeResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">AnalyzeResult</span> <span class="token punctuation">{</span>
+	LoadOptions
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type             <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.AnalyzeResult'</span>
+	environment             Environment
+	datafile_path           <span class="token builtin">string</span>
+	datafile_type           <span class="token builtin">string</span>
+	class_name              <span class="token builtin">string</span>
+	class_index             <span class="token builtin">int</span>
+	class_counts            <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	attributes              <span class="token punctuation">[</span><span class="token punctuation">]</span>Attribute
+	overall_min             <span class="token builtin">f32</span>
+	overall_max             <span class="token builtin">f32</span>
+	use_inferred_types_flag <span class="token builtin">bool</span>
+<span class="token punctuation">}</span></code></pre>
+<p>AnalyzeResult is returned by analyze_dataset(); it contains per-attribute statistics, dataset-level metadata (path, type, class breakdown), and overall min/max values.</p>
+
+</section>
+
+		<section id="Attribute" class="doc-node">
+			<div class="title"><h2>struct Attribute <a href="#Attribute">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Attribute</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	id            <span class="token builtin">int</span>
+	name          <span class="token builtin">string</span>
+	count         <span class="token builtin">int</span>
+	counts_map    <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	uniques       <span class="token builtin">int</span>
+	missing       <span class="token builtin">int</span>
+	raw_type      <span class="token builtin">string</span>
+	att_type      <span class="token builtin">string</span>
+	inferred_type <span class="token builtin">string</span>
+	for_training  <span class="token builtin">bool</span>
+	min           <span class="token builtin">f32</span>
+	max           <span class="token builtin">f32</span>
+	mean          <span class="token builtin">f32</span>
+	median        <span class="token builtin">f32</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Attribute holds descriptive statistics and metadata for a single attribute in a dataset, as produced by analyze_dataset(): name, type, unique-value count, missing-value count, and (for continuous attributes) min, max, mean, and median.</p>
+
+</section>
+
+		<section id="AucClassifiers" class="doc-node">
+			<div class="title"><h2>struct AucClassifiers <a href="#AucClassifiers">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">AucClassifiers</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	classifier_ids <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	auc            <span class="token builtin">f64</span>
+<span class="token punctuation">}</span></code></pre>
+<p>AucClassifiers associates a set of classifier IDs with the Area Under the ROC Curve (AUC) value they jointly achieved.</p>
+
+</section>
+
+		<section id="BinaryCounts" class="doc-node">
+			<div class="title"><h2>struct BinaryCounts <a href="#BinaryCounts">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">BinaryCounts</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	t_p <span class="token builtin">int</span>
+	f_n <span class="token builtin">int</span>
+	t_n <span class="token builtin">int</span>
+	f_p <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>BinaryCounts holds the raw binary-classification confusion counts (true positives, false negatives, true negatives, false positives) before metric calculation.</p>
+
+</section>
+
+		<section id="BinaryMetrics" class="doc-node">
+			<div class="title"><h2>struct BinaryMetrics <a href="#BinaryMetrics">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">BinaryMetrics</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	t_p             <span class="token builtin">int</span>
+	f_n             <span class="token builtin">int</span>
+	t_n             <span class="token builtin">int</span>
+	f_p             <span class="token builtin">int</span>
+	raw_acc         <span class="token builtin">f64</span>
+	bal_acc         <span class="token builtin">f64</span>
+	sens            <span class="token builtin">f64</span>
+	spec            <span class="token builtin">f64</span>
+	ppv             <span class="token builtin">f64</span>
+	npv             <span class="token builtin">f64</span>
+	f1_score_binary <span class="token builtin">f64</span>
+	mcc             <span class="token builtin">f64</span> <span class="token comment">// Matthews Correlation Coefficient</span>
+<span class="token punctuation">}</span></code></pre>
+<p>BinaryMetrics holds performance metrics for a binary classifier: TP, FP, TN, FN counts; raw and balanced accuracy; sensitivity; specificity; PPV; NPV; F1 score; and the Matthews Correlation Coefficient (MCC).</p>
+
+</section>
+
+		<section id="Binning" class="doc-node">
+			<div class="title"><h2>struct Binning <a href="#Binning">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Binning</span> <span class="token punctuation">{</span>
+<span class="token keyword">mut</span><span class="token punctuation">:</span>
+	lower    <span class="token builtin">int</span>
+	upper    <span class="token builtin">int</span>
+	interval <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Binning specifies the lower bound, upper bound, and step interval for binning (discretising) continuous attribute values.</p>
+
+</section>
+
+		<section id="Class" class="doc-node">
+			<div class="title"><h2>struct Class <a href="#Class">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Class</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	class_name  <span class="token builtin">string</span> <span class="token comment">// the attribute which holds the class</span>
+	class_index <span class="token builtin">int</span>
+	classes     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// to ensure that the ordering remains the same</span>
+	<span class="token comment">// positive_class string</span>
+	class_values                         <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	missing_class_values                 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// these are the indices of the original class values array</span>
+	class_counts                         <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	pre_balance_prevalences_class_counts <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	lcm_class_counts                     <span class="token builtin">i64</span>
+	prepurge_class_values_len            <span class="token builtin">int</span>
+	postpurge_class_counts               <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	postpurge_lcm_class_counts           <span class="token builtin">i64</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Class holds all class-attribute metadata for a dataset: the class attribute name and index, the unique class labels, per-class instance counts, and pre/post-purge statistics.</p>
+
+</section>
+
+		<section id="Classifier" class="doc-node">
+			<div class="title"><h2>struct Classifier <a href="#Classifier">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Classifier</span> <span class="token punctuation">{</span>
+	History
+	Parameters
+	LoadOptions
+	Class
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type        <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.Classifier'</span>
+	datafile_path      <span class="token builtin">string</span>
+	attribute_ordering <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	trained_attributes <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>TrainedAttribute
+	<span class="token comment">// maximum_hamming_distance int</span>
+	indices   <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	instances <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">u8</span>
+	<span class="token comment">// history   []HistoryEvent</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Classifier is a fully trained classifier produced by make_classifier(). It contains the trained attribute maps, encoded instance byte arrays, class information, and the creation history needed to reproduce or extend the classifier.</p>
+
+</section>
+
+		<section id="ClassifierID" class="doc-node">
+			<div class="title"><h2>struct ClassifierID <a href="#ClassifierID">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ClassifierID</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	classifier_id <span class="token builtin">int</span>
+	datafile_path <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>ClassifierID links a numeric classifier identifier to the datafile path from which the classifier was trained.</p>
+
+</section>
+
+		<section id="ClassifierSettings" class="doc-node">
+			<div class="title"><h2>struct ClassifierSettings <a href="#ClassifierSettings">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ClassifierSettings</span> <span class="token punctuation">{</span>
+	Parameters
+	BinaryMetrics
+	Metrics
+	LoadOptions
+	ClassifierID
+<span class="token punctuation">}</span></code></pre>
+<p>ClassifierSettings bundles all parameters needed to recreate a single classifier, together with the binary and multi-class performance metrics recorded when it was evaluated.</p>
+
+</section>
+
+		<section id="ClassifyResult" class="doc-node">
+			<div class="title"><h2>struct ClassifyResult <a href="#ClassifyResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ClassifyResult</span> <span class="token punctuation">{</span>
+	LoadOptions
+	Class
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.ClassifyResult'</span>
+	index                      <span class="token builtin">int</span>
+	inferred_class             <span class="token builtin">string</span>
+	inferred_class_array       <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	labeled_class              <span class="token builtin">string</span>
+	nearest_neighbors_by_class <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	nearest_neighbors_array    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	classes                    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	class_counts               <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	weighting_flag             <span class="token builtin">bool</span>
+	weighting_flag_array       <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">bool</span>
+	multiple_flag              <span class="token builtin">bool</span>
+	hamming_distance           <span class="token builtin">int</span>
+	sphere_index               <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>ClassifyResult holds the outcome of classifying a single instance: the inferred class, nearest-neighbor counts by class, the labeled class (if known), Hamming distance, and sphere index reached.</p>
+
+</section>
+
+		<section id="CliOptions" class="doc-node">
+			<div class="title"><h2>struct CliOptions <a href="#CliOptions">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">CliOptions</span> <span class="token punctuation">{</span>
+	LoadOptions
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	args <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	astr <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>CliOptions allows the cli() function to be driven programmatically: pass either a pre-split args slice or a single space-separated string (astr). If both are empty, os.args is used.</p>
+
+</section>
+
+		<section id="Cmd" class="doc-node">
+			<div class="title"><h2>struct Cmd <a href="#Cmd">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Cmd</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	cmd <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Cmd carries the command name used by opts() to set Options.command when constructing an Options struct from a string.</p>
+
+</section>
+
+		<section id="CombinationSizeLimits" class="doc-node">
+			<div class="title"><h2>struct CombinationSizeLimits <a href="#CombinationSizeLimits">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">CombinationSizeLimits</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	generate_combinations_flag <span class="token builtin">bool</span>
+	min                        <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">2</span>
+	max                        <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>CombinationSizeLimits controls the minimum and maximum number of classifiers to combine when generating multi-classifier combinations. Setting min/max also activates the generate_combinations_flag.</p>
+
+</section>
+
+		<section id="CrossVerifyResult" class="doc-node">
+			<div class="title"><h2>struct CrossVerifyResult <a href="#CrossVerifyResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">CrossVerifyResult</span> <span class="token punctuation">{</span>
+	Parameters
+	LoadOptions
+	DisplaySettings
+	Metrics
+	BinaryMetrics
+	MultipleOptions <span class="token comment">// MultipleClassifierSettingsArray</span>
+	Class
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                         <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.CrossVerifyResult'</span>
+	command                             <span class="token builtin">string</span>
+	datafile_path                       <span class="token builtin">string</span>
+	testfile_path                       <span class="token builtin">string</span>
+	multiple_classify_options_file_path <span class="token builtin">string</span>
+	multiple_classifier_settings        <span class="token punctuation">[</span><span class="token punctuation">]</span>ClassifierSettings
+	labeled_classes                     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	actual_classes                      <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	inferred_classes                    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	nearest_neighbors_by_class          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	instance_indices                    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	<span class="token comment">// classes                              []string</span>
+	<span class="token comment">// class_counts                         map[string]int</span>
+	<span class="token comment">// pre_balance_prevalences_class_counts map[string]int</span>
+	train_dataset_class_counts <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	labeled_instances          <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	correct_inferences         <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	incorrect_inferences       <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	wrong_inferences           <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	true_positives             <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	false_positives            <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	true_negatives             <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	false_negatives            <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	<span class="token comment">// outer key: actual class; inner key: predicted class</span>
+	confusion_matrix_map            <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>StringFloatMap
+	pos_neg_classes                 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	correct_count                   <span class="token builtin">int</span>
+	incorrects_count                <span class="token builtin">int</span>
+	wrong_count                     <span class="token builtin">int</span>
+	total_count                     <span class="token builtin">int</span>
+	bin_values                      <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// used for displaying the binning range for explore</span>
+	attributes_used                 <span class="token builtin">int</span>
+	prepurge_instances_counts_array <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	classifier_instances_counts     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	repetitions                     <span class="token builtin">int</span>
+	confusion_matrix                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	<span class="token comment">// trained_attribute_maps_array    []map[string]TrainedAttribute</span>
+	trained_attribute_maps_array <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>TrainedAttribute
+<span class="token punctuation">}</span></code></pre>
+<p>CrossVerifyResult is returned by cross_validate() and verify(). It contains the inferred and actual class arrays, a full confusion matrix, per-class inference counts, accuracy metrics, and provenance information (file paths, classifier settings).</p>
+
+</section>
+
+		<section id="Dataset" class="doc-node">
+			<div class="title"><h2>struct Dataset <a href="#Dataset">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Dataset</span> <span class="token punctuation">{</span>
+	Class <span class="token comment">// DataDict</span>
+	LoadOptions
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                  <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.Dataset'</span>
+	path                         <span class="token builtin">string</span>
+	attribute_names              <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	attribute_flags              <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	raw_attribute_types          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	attribute_types              <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	inferred_attribute_types     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	data                         <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	useful_continuous_attributes <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f32</span>
+	useful_discrete_attributes   <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	row_identifiers              <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Dataset is the primary data structure produced by load_file(). It holds all attribute data and types, class information, and pre-computed maps of useful continuous and discrete attributes ready for training a classifier.</p>
+
+</section>
+
+		<section id="Dataset.purge_instances_for_missing_class_values" class="doc-node">
+			<div class="title"><h2>fn (Dataset) purge_instances_for_missing_class_values <a href="#Dataset.purge_instances_for_missing_class_values">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> ds Dataset<span class="token punctuation">)</span> <span class="token function">purge_instances_for_missing_class_values</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Dataset</code></pre>
+<p>purge_instances_for_missing_class_values removes all instances in ds whose class value is in the missings list, updating class_values, class_counts, data, and the useful attribute maps in place, then returns the modified dataset.</p>
+
+</section>
+
+		<section id="DefaultVals" class="doc-node">
+			<div class="title"><h2>struct DefaultVals <a href="#DefaultVals">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">DefaultVals</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	missings                   <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'?'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token string">'NA'</span><span class="token punctuation">,</span> <span class="token string">' '</span><span class="token punctuation">]</span>
+	integer_range_for_discrete <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>    <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre>
+<p>DefaultVals holds configurable default values used during dataset loading: the string tokens recognised as missing values, and the integer range treated as discrete rather than continuous.</p>
+
+</section>
+
+		<section id="DisplaySettings" class="doc-node">
+			<div class="title"><h2>struct DisplaySettings <a href="#DisplaySettings">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">DisplaySettings</span> <span class="token punctuation">{</span>
+	CombinationSizeLimits
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	show_flag            <span class="token builtin">bool</span>
+	expanded_flag        <span class="token builtin">bool</span>
+	show_attributes_flag <span class="token builtin">bool</span>
+	graph_flag           <span class="token builtin">bool</span>
+	help_flag            <span class="token builtin">bool</span>
+	verbose_flag         <span class="token builtin">bool</span>
+	generate_roc_flag    <span class="token builtin">bool</span>
+	limit_output         <span class="token builtin">int</span>
+	overfitting_flag     <span class="token builtin">bool</span>
+	all_attributes_flag  <span class="token builtin">bool</span>
+<span class="token punctuation">}</span></code></pre>
+<p>DisplaySettings aggregates all flags and limits that control what is printed to the console or generated as plots: show, expand, graph, verbose, ROC, overfitting, output limits, and combination size limits.</p>
+
+</section>
+
+		<section id="Environment" class="doc-node">
+			<div class="title"><h2>struct Environment <a href="#Environment">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Environment</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	vhammll_version <span class="token builtin">string</span>
+	<span class="token comment">// cached_cpuinfo map[string]string</span>
+	os_kind        <span class="token builtin">string</span>
+	os_details     <span class="token builtin">string</span>
+	arch_details   <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	vexe_mtime     <span class="token builtin">string</span>
+	v_full_version <span class="token builtin">string</span>
+	vflags         <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Environment captures a snapshot of the runtime environment (OS kind and details, architecture, V executable mtime and version, and VFLAGS) recorded in classifier history events.</p>
+
+</section>
+
+		<section id="ExploreResult" class="doc-node">
+			<div class="title"><h2>struct ExploreResult <a href="#ExploreResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ExploreResult</span> <span class="token punctuation">{</span>
+	Class
+	Parameters
+	LoadOptions
+	AttributeRange
+	DisplaySettings
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type      <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.ExploreResult'</span>
+	path             <span class="token builtin">string</span>
+	testfile_path    <span class="token builtin">string</span>
+	pos_neg_classes  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	array_of_results <span class="token punctuation">[</span><span class="token punctuation">]</span>CrossVerifyResult
+	<span class="token comment">// accuracy_types   []string = ['raw accuracy', 'balanced accuracy', ' MCC (Matthews Correlation Coefficient)']</span>
+	<span class="token comment">// analytics        []MaxSettings</span>
+	<span class="token comment">// analytics map[string]Analytics</span>
+	args <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>ExploreResult is returned by explore(); it holds the array of CrossVerifyResults produced over a parameter sweep, together with the attribute range, binning, and display settings used.</p>
+
+</section>
+
+		<section id="History" class="doc-node">
+			<div class="title"><h2>struct History <a href="#History">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">History</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	history_events <span class="token punctuation">[</span><span class="token punctuation">]</span>HistoryEvent
+<span class="token punctuation">}</span></code></pre>
+<p>History wraps the ordered list of HistoryEvent records that track how a Classifier was created and subsequently extended.</p>
+
+</section>
+
+		<section id="HistoryEvent" class="doc-node">
+			<div class="title"><h2>struct HistoryEvent <a href="#HistoryEvent">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">HistoryEvent</span> <span class="token punctuation">{</span>
+	Environment
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	event_date               <span class="token builtin">string</span>
+	instances_count          <span class="token builtin">int</span>
+	prepurge_instances_count <span class="token builtin">int</span>
+	<span class="token comment">// event_environment        Environment</span>
+	event     <span class="token builtin">string</span>
+	file_path <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>HistoryEvent records a single event (create or append) in a classifier's lifecycle, capturing the date, instance counts before and after any purging, and the source file path.</p>
+
+</section>
+
+		<section id="LoadOptions" class="doc-node">
+			<div class="title"><h2>struct LoadOptions <a href="#LoadOptions">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">LoadOptions</span> <span class="token punctuation">{</span>
+	DefaultVals
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	positive_class                <span class="token builtin">string</span>
+	class_missing_purge_flag      <span class="token builtin">bool</span>
+	balance_prevalences_flag      <span class="token builtin">bool</span>
+	balance_prevalences_threshold <span class="token builtin">f64</span> <span class="token operator">=</span> <span class="token number">0.9</span>
+<span class="token punctuation">}</span></code></pre>
+<p>LoadOptions are passed to load_file() to control dataset loading: the positive class label, whether to purge instances with a missing class value, and whether to balance class prevalences.</p>
+
+</section>
+
+		<section id="Metrics" class="doc-node">
+			<div class="title"><h2>struct Metrics <a href="#Metrics">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Metrics</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	precision         <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	recall            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	f1_score          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	avg_precision     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	avg_recall        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	avg_f1_score      <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	avg_type          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	balanced_accuracy <span class="token builtin">f64</span>
+	class_counts_int  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	correct_counts    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	incorrect_counts  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Metrics holds multi-class accuracy metrics computed for a verification or cross-validation: precision, recall, and F1 per class; their averages; balanced accuracy; and per-class instance, correct, and incorrect counts.</p>
+
+</section>
+
+		<section id="MultipleOptions" class="doc-node">
+			<div class="title"><h2>struct MultipleOptions <a href="#MultipleOptions">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">MultipleOptions</span> <span class="token punctuation">{</span>
+	TotalNnParams
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	break_on_all_flag <span class="token builtin">bool</span>
+	multi_strategy    <span class="token builtin">string</span> <span class="token comment">// '', 'combined', or 'totalnn'</span>
+	classifiers       <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>  <span class="token comment">// refers to an array of classsifier ID values</span>
+<span class="token punctuation">}</span></code></pre>
+<p>MultipleOptions holds settings that govern how multiple classifiers are combined: whether to stop as soon as all classifiers agree (break_on_all_flag), which combination strategy to use (multi_strategy: '', 'combined', or 'totalnn'), and which classifier IDs to include.</p>
+
+</section>
+
+		<section id="OneVsRestClassifier" class="doc-node">
+			<div class="title"><h2>struct OneVsRestClassifier <a href="#OneVsRestClassifier">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">OneVsRestClassifier</span> <span class="token punctuation">{</span>
+	Parameters
+	LoadOptions
+	Class
+	History
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type   <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.OneVsRestClassifier'</span>
+	datafile_path <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>OneVsRestClassifier holds metadata for a one-vs-rest classification strategy, used when classifying multiclass problems by training a separate binary classifier for each class against all other classes.</p>
+
+</section>
+
+		<section id="OptimalsResult" class="doc-node">
+			<div class="title"><h2>struct OptimalsResult <a href="#OptimalsResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">OptimalsResult</span> <span class="token punctuation">{</span>
+	RocData
+	RocFiles
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	settings_length                                     <span class="token builtin">int</span>
+	settings_purged                                     <span class="token builtin">int</span>
+	all_attributes_flag                                 <span class="token builtin">bool</span>
+	settingsfile_path                                   <span class="token builtin">string</span>
+	datafile_path                                       <span class="token builtin">string</span>
+	class_counts                                        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	best_balanced_accuracies                            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	best_balanced_accuracies_classifiers_all            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// refers to an array of classsifier ID values</span>
+	best_balanced_accuracies_classifiers                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	mcc_max                                             <span class="token builtin">f64</span>
+	mcc_max_classifiers_all                             <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// refers to an array of classsifier ID values</span>
+	mcc_max_classifiers                                 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	correct_inferences_total_max                        <span class="token builtin">int</span>
+	correct_inferences_total_max_classifiers_all        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// refers to an array of classsifier ID values</span>
+	correct_inferences_total_max_classifiers            <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	classes                                             <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	correct_inferences_by_class_max                     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	correct_inferences_by_class_max_classifiers_all     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token comment">// refers to an array of classsifier ID values</span>
+	correct_inferences_by_class_max_classifiers         <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	receiver_operating_characteristic_settings          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	reversed_receiver_operating_characteristic_settings <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	all_optimals                                        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	all_optimals_unique_attributes                      <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	multi_classifier_combinations_for_auc               <span class="token punctuation">[</span><span class="token punctuation">]</span>AucClassifiers
+<span class="token punctuation">}</span></code></pre>
+<p>OptimalsResult is returned by optimals(); it identifies which classifier combinations achieve the best balanced accuracy, highest Matthews Correlation Coefficient (MCC), highest total correct inferences, and highest per-class correct inferences.</p>
+
+</section>
+
+		<section id="Options" class="doc-node">
+			<div class="title"><h2>struct Options <a href="#Options">#</a></h2></div>
+<div class="attributes"><div class="attribute">@[params]</div></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Options</span> <span class="token punctuation">{</span>
+	Parameters
+	LoadOptions
+	DisplaySettings
+	MultipleOptions <span class="token comment">// MultipleClassifierSettingsArray</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                         <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.Options'</span>
+	non_options                         <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	bins                                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">]</span>
+	explore_rank                        <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	partition_sizes                     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	concurrency_flag                    <span class="token builtin">bool</span>
+	datafile_path                       <span class="token builtin">string</span>
+	traverse_all_flags                  <span class="token builtin">bool</span>
+	testfile_path                       <span class="token builtin">string</span>
+	outputfile_path                     <span class="token builtin">string</span>
+	classifierfile_path                 <span class="token builtin">string</span>
+	instancesfile_path                  <span class="token builtin">string</span>
+	multiple_classify_options_file_path <span class="token builtin">string</span>
+	multiple_classifier_settings        <span class="token punctuation">[</span><span class="token punctuation">]</span>ClassifierSettings
+	settingsfile_path                   <span class="token builtin">string</span>
+	roc_settingsfile_path               <span class="token builtin">string</span>
+	partitionfiles_paths                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	append_settings_flag                <span class="token builtin">bool</span>
+	command                             <span class="token builtin">string</span>
+	args                                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	kagglefile_path                     <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Options is the main all-in-one options struct used throughout the library. It embeds Parameters, LoadOptions, DisplaySettings, and MultipleOptions, and adds file paths (data, test, classifier, output, settings) and runtime flags such as concurrency and traverse_all_flags. It can be used as the last parameter of a function to pass named options with defaults.</p>
+
+</section>
+
+		<section id="Parameters" class="doc-node">
+			<div class="title"><h2>struct Parameters <a href="#Parameters">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Parameters</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	binning              Binning
+	number_of_attributes <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+	uniform_bins         <span class="token builtin">bool</span>
+	exclude_flag         <span class="token builtin">bool</span>
+	purge_flag           <span class="token builtin">bool</span>
+	weighting_flag       <span class="token builtin">bool</span>
+	weight_ranking_flag  <span class="token builtin">bool</span>
+	one_vs_rest_flag     <span class="token builtin">bool</span>
+	multiple_flag        <span class="token builtin">bool</span>
+	folds                <span class="token builtin">int</span>
+	repetitions          <span class="token builtin">int</span>
+	random_pick          <span class="token builtin">bool</span>
+	<span class="token comment">// balance_prevalences_flag bool</span>
+	maximum_hamming_distance <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Parameters holds the core training and cross-validation settings shared across many operations: binning range, number of attributes, purge/weighting/one-vs-rest flags, fold and repetition counts, and the maximum Hamming distance.</p>
+
+</section>
+
+		<section id="PlotResult" class="doc-node">
+			<div class="title"><h2>struct PlotResult <a href="#PlotResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">PlotResult</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	bin             <span class="token builtin">int</span>
+	attributes_used <span class="token builtin">int</span>
+	correct_count   <span class="token builtin">int</span>
+	total_count     <span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>PlotResult holds a single data point for plotting accuracy vs parameter settings: bin count, number of attributes used, correct-inference count, and total instance count.</p>
+
+</section>
+
+		<section id="Point" class="doc-node">
+			<div class="title"><h2>struct Point <a href="#Point">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">Point</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	fpr  <span class="token builtin">f64</span> <span class="token comment">// 1 - specificity</span>
+	sens <span class="token builtin">f64</span> <span class="token comment">// sensitivity</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Point is a 2D coordinate used for ROC plots: fpr is 1 − specificity (false positive rate); sens is sensitivity.</p>
+
+</section>
+
+		<section id="RankedAttribute" class="doc-node">
+			<div class="title"><h2>struct RankedAttribute <a href="#RankedAttribute">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">RankedAttribute</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	attribute_index      <span class="token builtin">int</span>
+	attribute_name       <span class="token builtin">string</span>
+	attribute_type       <span class="token builtin">string</span>
+	rank_value           <span class="token builtin">f32</span>
+	rank_value_array     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f32</span>
+	bins                 <span class="token builtin">int</span>
+	array_of_hits_arrays <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>RankedAttribute represents a single attribute together with its computed rank value, optimal bin count, and supporting hit arrays.</p>
+
+</section>
+
+		<section id="RankingResult" class="doc-node">
+			<div class="title"><h2>struct RankingResult <a href="#RankingResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">RankingResult</span> <span class="token punctuation">{</span>
+	Class
+	LoadOptions
+	DisplaySettings
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.RankingResult'</span>
+	path                       <span class="token builtin">string</span>
+	exclude_flag               <span class="token builtin">bool</span>
+	weight_ranking_flag        <span class="token builtin">bool</span>
+	binning                    Binning
+	array_of_ranked_attributes <span class="token punctuation">[</span><span class="token punctuation">]</span>RankedAttribute
+<span class="token punctuation">}</span></code></pre>
+<p>RankingResult is returned by rank_attributes() and rank_one_vs_rest(); it contains the ordered list of ranked attributes and the options used to produce the ranking.</p>
+
+</section>
+
+		<section id="ResultForClass" class="doc-node">
+			<div class="title"><h2>struct ResultForClass <a href="#ResultForClass">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ResultForClass</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	labeled_instances    <span class="token builtin">int</span>
+	correct_inferences   <span class="token builtin">int</span>
+	incorrect_inferences <span class="token builtin">int</span>
+	wrong_inferences     <span class="token builtin">int</span>
+	confusion_matrix_row <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>ResultForClass holds per-class tabulation of labeled, correct, incorrect, and wrong inferences for a single class in a verification or cross-validation run.</p>
+
+</section>
+
+		<section id="RocData" class="doc-node">
+			<div class="title"><h2>struct RocData <a href="#RocData">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">RocData</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	pairs          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">f64</span>
+	classifiers    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	classifier_ids <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	trace_text     <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>RocData holds the data for one ROC curve trace: the (sensitivity, specificity) pairs, the classifier description strings, the classifier ID arrays for each point, and an optional hover-text annotation.</p>
+
+</section>
+
+		<section id="RocFiles" class="doc-node">
+			<div class="title"><h2>struct RocFiles <a href="#RocFiles">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">RocFiles</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	datafile     <span class="token builtin">string</span>
+	testfile     <span class="token builtin">string</span>
+	settingsfile <span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+<p>RocFiles holds the file paths associated with a ROC plot: the training datafile, the test/verification file, and the classifier settings file used to generate the curves.</p>
+
+</section>
+
+		<section id="RocPoint" class="doc-node">
+			<div class="title"><h2>struct RocPoint <a href="#RocPoint">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">RocPoint</span> <span class="token punctuation">{</span>
+	Point
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	classifiers    <span class="token builtin">string</span>
+	classifier_ids <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>RocPoint is a point on a Receiver Operating Characteristic curve, extending Point with the classifier identifier string that produced it.</p>
+
+</section>
+
+		<section id="SettingsForROC" class="doc-node">
+			<div class="title"><h2>struct SettingsForROC <a href="#SettingsForROC">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">SettingsForROC</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	master_class_index      <span class="token builtin">int</span>
+	classifiers_for_roc     <span class="token punctuation">[</span><span class="token punctuation">]</span>ClassifierSettings
+	array_of_correct_counts <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>SettingsForROC collects the per-fold classifier settings and correct-count arrays needed to generate a ROC curve after a cross-validation run.</p>
+
+</section>
+
+		<section id="TrainedAttribute" class="doc-node">
+			<div class="title"><h2>struct TrainedAttribute <a href="#TrainedAttribute">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">TrainedAttribute</span> <span class="token punctuation">{</span>
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	attribute_type    <span class="token builtin">string</span>
+	translation_table <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	minimum           <span class="token builtin">f32</span>
+	maximum           <span class="token builtin">f32</span>
+	bins              <span class="token builtin">int</span>
+	rank_value        <span class="token builtin">f32</span>
+	index             <span class="token builtin">int</span>
+	folds_count       <span class="token builtin">int</span> <span class="token comment">// for cross-validations, this tracks how many folds use this attribute</span>
+<span class="token punctuation">}</span></code></pre>
+<p>TrainedAttribute holds the training-time representation of a single attribute: its type, the value-to-integer translation table (discrete) or range and bin count (continuous), rank value, and fold-usage counter.</p>
+
+</section>
+
+		<section id="ValidateResult" class="doc-node">
+			<div class="title"><h2>struct ValidateResult <a href="#ValidateResult">#</a></h2></div>
+<pre class="signature">
+<code><span class="token keyword">struct</span> <span class="token symbol">ValidateResult</span> <span class="token punctuation">{</span>
+	Class
+	Parameters
+	LoadOptions
+<span class="token keyword">pub</span> <span class="token keyword">mut</span><span class="token punctuation">:</span>
+	struct_type                     <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'.ValidateResult'</span>
+	datafile_path                   <span class="token builtin">string</span>
+	validate_file_path              <span class="token builtin">string</span>
+	row_identifiers                 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	inferred_classes                <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+	counts                          <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	instances                       <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">u8</span>
+	attributes_used                 <span class="token builtin">int</span>
+	prepurge_instances_counts_array <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	classifier_instances_counts     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span></code></pre>
+<p>ValidateResult is returned by validate(); it contains the inferred classes for an unlabeled dataset, the encoded instance arrays, and provenance metadata. The result can be saved and later used to extend a classifier via append_instances().</p>
+
+</section>
+
+
+						<div class="footer">Powered by vdoc.</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<script src="doc.js"></script>
+		<script async src="search_index.js"></script>
+	</body>
+</html>

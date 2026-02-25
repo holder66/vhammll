@@ -7,6 +7,7 @@ A machine learning (ML) library for classification using a nearest neighbor algo
 You can incorporate the `VHamMLL` functions into your own code, or use the included Command Line Interface app (`cli.v`).
 
 [Link to html documentation for the library functions and structs](https://holder66.github.io/vhammll.html)
+(An up-to-date local copy is in [`docs/vhammll.html/`](docs/vhammll.html/vhammll.html))
 
 You can use `VHamMLL` with your own datasets, or with a selection of publicly available datasets that are widely used for demonstrating and testing ML classifiers, in the `datasets` directory. These files are mostly in [Orange file format](https://orange3.readthedocs.io/projects/orange-data-mining-library/en/latest/reference/data.io.html); there are also datasets in [ARFF (Attribute-Relation File Format)](https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/) or in comma-separated-values (CSV) as used in [Kaggle](https://www.kaggle.com).
 
@@ -59,10 +60,10 @@ fn main() {
 }
 ```
 Assuming the file containing the `main()` function is named `main.v`, in the terminal:
-`v run main.v` followed by the command line arguments, eg
-`v run main.v --help` or `v run . analyze <path_to_dataset_file>`
+`v run .` followed by the command line arguments, eg
+`v run . --help` or `v run . analyze <path_to_dataset_file>`
 Command-specific help is available, like so:
-`v run main.v explore --help` or `v run . explore -h`
+`v run . explore --help` or `v run . explore -h`
 
 Note that the publicly available datasets included with the VHamMLL distribution can be found at `~/.vmodules/holder66/vhammll/datasets`.
 
@@ -70,13 +71,13 @@ That's it!
 
 ## Tutorial:
 ```sh
-v run main.v examples go
+v run . examples go
 ```
 
 ## Updating:
 ```sh
 v up        # installs the latest release of V
-v update    # get the latest version of the libraries, including holder66.vhammllj
+v update    # get the latest version of the libraries, including holder66.vhammll
 ```
 
 
@@ -89,24 +90,34 @@ For bug reports, feature requests, etc., please raise an issue on [github](https
 
 ## Speed things up:
 
-Use the -c (--concurrent) argument (in the CLI) to make use of available CPU cores for
-some vhammll functions; this may speed things up (timings are on a MacBook Pro 2019)
+Use the `-c` (`--concurrent`) flag to make use of available CPU cores for
+some vhammll functions; this may speed things up (timings are on a MacBook Pro 2019).
+
+For repeated runs it is faster to compile a binary first (`v .` produces `./vhamml`
+in the current directory) rather than using `v run .`, which recompiles every time:
 ```sh
-v main.v
-./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 10.157 sec
-./main explore -c  ~/.vmodules/holder66/vhammll/datasets/iris.tab   # 4.910 sec
+v .
+./vhamml explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     # 10.157 sec
+./vhamml explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  #  4.910 sec
 ```
-A huge speedup usually happens if you compile using the -prod (for production) option. The compilation itself takes longer, but the resulting code is highly optimized.
+A large additional speedup comes from compiling with the `-prod` (production) flag.
+The compilation itself takes longer, but the resulting binary is highly optimised:
 ```sh
-v -prod main.v
-./main explore ~/.vmodules/holder66/vhammll/datasets/iris.tab  # 3.899 sec
-./main explore -c  ~/.vmodules/holder66/vhammll/datasets/iris.tab   # 4.849 sec!!
+v -prod .
+./vhamml explore ~/.vmodules/holder66/vhammll/datasets/iris.tab     #  3.899 sec
+./vhamml explore -c ~/.vmodules/holder66/vhammll/datasets/iris.tab  #  4.849 sec
 ```
-Note that in this case, there is no speedup for `-prod` when the `-c` argument is used.
+Note: `-prod` does not speed things up further when `-c` is also used.
 
 
 ## Examples showing use of the Command Line Interface
 Please see [examples_of_command_line_usage.md](https://github.com/holder66/vhammll/blob/master/docs/examples_of_command_line_usage.md)
+
+## Using multiple classifiers
+VHamMLL can combine several classifiers trained with different settings to improve
+classification accuracy. Please see
+[multiple_classifier_workflow.md](https://github.com/holder66/vhammll/blob/master/docs/multiple_classifier_workflow.md)
+for a step-by-step guide.
 
 
 ## Example: typical use case, a clinical risk calculator
