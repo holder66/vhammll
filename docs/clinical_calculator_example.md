@@ -5,10 +5,10 @@ Health care professionals frequently make use of calculators to inform clinical 
 Here we use the VHamMLL classifier to generate a clinical risk calculator, using the [Wisconsin Breast Cancer dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Original%29). This data consists of the pathological findings on biopsies of breast lumps from 699 women; subsequent surgery in these patients determined whether the lump was benign or cancerous. Each case includes values for nine attributes (rating various aspects of the cell nucleus when examined under a microscope, on a scale from 1 to 10).
 
 First, display information about the dataset:
-In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
+In your terminal, navigate to the directory/folder containing the `main.v` file
 (see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
- v run . analyze ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+ v run main.v analyze ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -59,7 +59,7 @@ processing time: 0 hrs 0 min  0.105 sec
 Rank order the attributes according to their contribution to separating the classes: 
 
 ```sh
-v run . rank ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v rank ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -85,7 +85,7 @@ We can run a set of exploratory cross-validations using leave-one-out
 folding, and with the -w flag to weight the results using class prevalences.
 
 ```sh
-v run . explore -w -wr -x -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v explore -w -wr -x -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 Note the additional flags: -w to prevalence-weight nearest neighbor counts; -wr to prevalence-weight when ranking attributes; -x to exclude missing values; -c to exploit parallel processing by using all the available CPU cores on your machine; -e to show extended results.
 ```sh
@@ -129,7 +129,7 @@ Picking the best combination of attributes to be used, and bin range when there 
 For the purposes of this example, however, let us train our classifier using 4 attributes. Using the "cross" command to see additional stats:
 
 ```sh
-v run . cross -a 4 -w -wr  -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v cross -a 4 -w -wr  -c -e ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -164,7 +164,7 @@ processing time: 0 hrs 0 min  0.715 sec
 Using the "make" command generates a classifier (which can be saved to a file with the -o option):
 
 ```sh
-v run . make -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v make -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -191,7 +191,7 @@ processing time: 0 hrs 0 min  0.101 sec
 We can use this trained classifier as a clinical calculator, to classify a new sample of breast tissue (with values of 8, 9, 7, and 8 for the four attributes identified above) as either malignant or benign:
 
 ```sh
-v run . query -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v query -a 4 -w -wr ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 
@@ -219,7 +219,7 @@ neighbour counts would be 4 for malignant and 0 for benign).
 In the real world, important information may not be available. Suppose we have a breast tissue sample where we only have information on the uniformity of cell shape which has a value of 2, and single epithelial cell size with a value of 3:
 
 ```sh
-v run . query -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
+v run main.v query -a 4 -w -wr -p ~/.vmodules/holder66/vhammll/datasets/breast-cancer-wisconsin-disc.tab
 ```
 ```sh
 

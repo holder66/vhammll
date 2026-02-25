@@ -8,11 +8,11 @@ are 12534 data points, of which one is the class attribute. Can this
 mass of data be used to predict whether a person has a tumor or is normal?
 
 To try the example on your own installation, start by compiling an optimized version.
-In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
+In your terminal, navigate to the directory/folder containing the `main.v` file
 (see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
-% cd vhamml
-% v -prod .
+% cd <directory containing your main.v file>
+% v -prod main.v
 ```
 
 Note: processing times are on a 2019 Macbook Pro.

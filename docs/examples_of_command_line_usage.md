@@ -1,30 +1,30 @@
 # Examples of Command Line usage
 
 ## Compile the app
-In your terminal, navigate to directory/folder `vhamml` containing the `main.v` file
+In your terminal, navigate to the directory/folder containing the `main.v` file
 (see the [README](https://github.com/holder66/vhammll/blob/master/README.md))
 ```sh
-% cd vhamml
-% v -prod .
+% cd <directory containing your main.v file>
+% v -prod main.v
 ```
 
 Now you can run the app with command line entries starting with `% ./main`, 
 as in `% ./main analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`.
-Sometimes, it may be more convenient and quicker to start with `% v run .`, as in
-`% v run . verify -c -t ~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/datasets/bcw350train`.
+Sometimes, it may be more convenient and quicker to start with `% v run main.v`, as in
+`% v run main.v verify -c -t ~/.vmodules/holder66/vhammll/datasets/bcw174test ~/.vmodules/holder66/vhammll/datasets/bcw350train`.
 
 ## Getting help
-`% v run . --help` or
-`% v run . -h` or simply, 
-`% v run .`
+`% v run main.v --help` or
+`% v run main.v -h` or simply, 
+`% v run main.v`
 
 For individual commands, use this pattern:
 
-`% v run . analyze --help` or
+`% v run main.v analyze --help` or
 
-`% v run . analyze -h` or 
+`% v run main.v analyze -h` or 
 
-`% v run . analyze`
+`% v run main.v analyze`
 
 ## Analyzing a dataset
 `% ./main analyze ~/.vmodules/holder66/vhammll/datasets/anneal.tab`
