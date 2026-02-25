@@ -599,6 +599,11 @@ struct Styles {
 	style string
 }
 
+const c_r = Styles{
+	fg:	'cyan'
+	style:	'reverse'
+}
+
 const m_u = Styles{
 	fg:    'magenta'
 	style: 'underline'
@@ -661,6 +666,10 @@ fn chlk(s string, style_code Styles) string {
 		else {}
 	}
 	return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg), style_code.fg)
+}
+
+fn c_r(s string) string {
+	return chlk(s, c_r)
 }
 
 fn c(s string) string {

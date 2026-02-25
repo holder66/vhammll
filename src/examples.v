@@ -3,7 +3,6 @@ module vhammll
 
 import os
 import readline { read_line }
-import chalk
 
 const examples_help = '
 Description:
@@ -22,10 +21,9 @@ To stop before completing the demo, hit ctrl-C
 // run_example
 fn run_example(before string, after string, cmd string) ! {
 	println(before)
-	println('eg, ~$ ' + chalk.fg(chalk.style(cmd, 'reverse'), 'cyan'))
+	println('eg, ~$ ' + c_r(cmd))
 	line := read_line('Press "return" to execute ("s" to skip)...')!
 	// test if an 's' was entered
-	// if line[0] != u8(115) {
 	if !line.contains_u8(115) {
 		println(os.execute_or_panic(cmd).output)
 	}
@@ -142,7 +140,7 @@ Let's look at cross-validation first:"
 
 	before = 'A classifier, generated as needed or a saved file, can be used to classify unlabeled instances in a dataset file. This process uses the validate command, and the test dataset specified with the -t or --test option should include the class attribute, but with empty strings for its values.'
 	cmd = 'v run . validate --classifier ~/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
-	after = 'The output of validate gives the inferred class for each instance, and the nearest neighbor counts for that instance to each of the possible classes. When the counts are very different between classes, one can be confident in the inferred classification. For example, look at the second-last instance in the output of the above command, [1, 6], a ratio of 6 to 1 in favor of "malignant".'
+	after = 'The output of validate gives the inferred class for each instance, and the nearest neighbor counts for that instance to each of the possible classes. When the counts are very different between classes, one can be confident in the inferred classification. For example, look at the second-last instance in the output of the above command, [3, 8], a ratio of 8 to 3, or 2.67, in favor of "malignant".'
 	run_example(before, after, cmd)!
 
 	before = 'If the classifier was generated with the -w or --weighting flag set, then that flag can also be used with validate, in order to weight the nearest neighbor counts by class prevalences. Saving...'
@@ -152,7 +150,7 @@ Let's look at cross-validation first:"
 
 	before = 'And now validating...'
 	cmd = 'v run . validate -w --classifier ~/bcw.cl --test ~/.vmodules/holder66/vhammll/datasets/bcw174validate'
-	after = 'The resultant count values are artificially high, but the ratios are important; with weighting, the second-last instance gives [159, 191], which still classifies to malignant, but the ratio of 1.2 to 1 inspires much less confidence than 6 to 1 without weighting.'
+	after = 'The resultant count values are artificially high, but the ratios are important; with weighting, the second-last instance gives [159, 191], which still classifies to malignant, but the ratio of 1.2 to 1 inspires much less confidence than 8 to 3 without weighting.'
 	run_example(before, after, cmd)!
 
 	// before = 'The "query" command is another way to use a trained classifier, either generated on the spot or as a saved file. This command starts an interactive session at the console for the user to enter values for attributes:'
