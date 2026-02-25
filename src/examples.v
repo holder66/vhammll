@@ -209,12 +209,12 @@ Let's look at cross-validation first:"
 	run_example(before, after, cmd)!
 
 	before = 'Cross-validate using the four classifiers with the highest balanced accuracy from the previous step.'
-	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 0,21,40,61 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 1,0,3,6 ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = ''
 	run_example(before, after, cmd)!
 
 	before = 'Use -af (all-flags) to run all strategy combinations for those four classifiers and compare them side by side (3 strategies × 2 -ma settings = 6 rows):'
-	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 0,21,40,61 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
+	cmd = 'v run . cross -s -m ${examples_tempfolder}/bcw-purged.opts -m# 1,0,3,6 -af ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	after = 'Pick the strategy that gives the best result and use it with -mc or -mt in a final cross or verify run.'
 	run_example(before, after, cmd)!
 }
