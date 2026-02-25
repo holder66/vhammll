@@ -31,18 +31,19 @@ Options:
 '
 
 // optimals determines which classifiers provide the best balanced accuracy, best Matthews
-// Correlation Coefficient (MCC), highest total for
-// correct inferences, and highest correct inferences per class, for multiple classifiers whose
-// settings are stored in a settings file.
+// Correlation Coefficient (MCC), highest total for correct inferences, and highest correct
+// inferences per class, for multiple classifiers whose settings are stored in a settings file.
 // ```sh
-// Options (also see the Options struct):
-// purge_flag: discard duplicate settings
-// all_attributes_flag: show all settings in each category, not only those with unique attribute numbers
-// Output options:
-// show_flag: prints a list of classifier settings indices for each category;
-// expanded_flag: for each setting, prints the Parameters, results obtained, and Metrics
-// graph_flag: plots a receiver operating characteristic curve
-// outputfile_path: saves the settings in a file given by the path. Useful if the settings are purged.
+// Options:
+// -cl --combination-limits: search combinations of classifiers for best ROC AUC; optional
+//      pair of integers sets the lower and upper limits on combination length.
+// -e --expanded: for each setting, print the Parameters, results obtained, and Metrics.
+// -g --graph: plot a Receiver Operating Characteristic curve.
+// -p --purge: discard duplicate settings (identical parameters, different IDs).
+// -aa --all-attributes: show all settings in each category; default shows only those
+//      with unique attribute counts.
+// -o --output: path to a file in which to save the (purged) settings.
+// -s --show: print only classifier IDs for each category.
 // ```
 pub fn optimals(path string, opts Options) OptimalsResult {
 	// settings_struct is a MultipleClassifierSettings struct
