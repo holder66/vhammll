@@ -87,7 +87,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 	mult_opts.total_max_ham_dist = array_sum(maximum_hamming_distance_array)
 	mult_opts.lcm_max_ham_dist = lcm(maximum_hamming_distance_array)
 
-	if opts.verbose_flag && opts.total_nn_counts_flag {
+	if opts.verbose_flag && opts.multi_strategy == 'totalnn' {
 		println('maximum_hamming_distance_array: ${mult_opts.maximum_hamming_distance_array}')
 		println('total_max_ham_dist: ${mult_opts.total_max_ham_dist}')
 		println('lcm_max_ham_dist: ${mult_opts.lcm_max_ham_dist}')
@@ -96,7 +96,7 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		if opts.verbose_flag {
 			println('\ncase_array: ${i:-7}  ${case_array}   classes: ${classifier_array[0].classes.join(' | ')}')
 		}
-		m_classify_result = if opts.total_nn_counts_flag {
+		m_classify_result = if opts.multi_strategy == 'totalnn' {
 			multiple_classifier_classify_totalnn(classifier_array, case_array, test_ds.classes,
 				mult_opts)
 		} else {

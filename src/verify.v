@@ -27,15 +27,13 @@ pub fn verify(opts Options) CrossVerifyResult {
 		af_opts.show_flag = false
 		mut af_result := CrossVerifyResult{}
 		ft := [false, true]
+		strategies := ['', 'combined', 'totalnn']
 		for ma in ft {
 			af_opts.break_on_all_flag = ma
-			for mc in ft {
-				af_opts.combined_radii_flag = mc
-				for mt in ft {
-					af_opts.total_nn_counts_flag = mt
-					af_result = run_verify(af_opts)
-					println('corrects: ${af_result.correct_counts} balanced accuracy: ${af_result.balanced_accuracy:-6.2f} MCC: ${af_result.mcc:-7.3f} sens: ${af_result.sens:-7.3f} spec: ${af_result.spec:-4.3f} ma ${ma} mc ${mc} mt ${mt} ${af_opts.classifiers}')
-				}
+			for strategy in strategies {
+				af_opts.multi_strategy = strategy
+				af_result = run_verify(af_opts)
+				println('corrects: ${af_result.correct_counts} balanced accuracy: ${af_result.balanced_accuracy:-6.2f} MCC: ${af_result.mcc:-7.3f} sens: ${af_result.sens:-7.3f} spec: ${af_result.spec:-4.3f} ma ${ma} strategy ${strategy} ${af_opts.classifiers}')
 			}
 		}
 		return af_result // returns just the last result

@@ -49,7 +49,6 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 	if (opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts)) || multi_classify_balance_prevalence(opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
 	}
-	dump(ds.class_counts)
 	// instantiate a struct for SettingsForROC
 	// look for the class with the fewest instances
 	// dump(ds.class_counts)
@@ -65,26 +64,20 @@ pub fn cross_validate(opts Options) CrossVerifyResult {
 		af_opts.show_flag = false
 		mut af_result := CrossVerifyResult{}
 		ft := [false, true]
+		strategies := ['', 'combined', 'totalnn']
 		for ma in ft {
 			af_opts.break_on_all_flag = ma
-			for mc in ft {
-				af_opts.combined_radii_flag = mc
-				for tnc in ft {
-					af_opts.total_nn_counts_flag = tnc
-					// for cmp in ft {
-					// 	af_opts.class_missing_purge_flag = cmp
-					// dump(af_opts.Parameters)
-					af_result = run_cross_validate(ds, af_opts)
-					println('corrects: ${af_result.correct_counts}   balanced accuracy: ${af_result.balanced_accuracy:-6.2f}   mcc: ${af_result.mcc:-7.3f}   sens: ${af_result.sens:-7.3f}   spec: ${af_result.spec:-4.3f} ma ${ma} mc ${mc} mt ${tnc} ${af_opts.classifiers}')
-					// }
-				}
+			for strategy in strategies {
+				af_opts.multi_strategy = strategy
+				af_result = run_cross_validate(ds, af_opts)
+				println('corrects: ${af_result.correct_counts}   balanced accuracy: ${af_result.balanced_accuracy:-6.2f}   mcc: ${af_result.mcc:-7.3f}   sens: ${af_result.sens:-7.3f}   spec: ${af_result.spec:-4.3f} ma ${ma} strategy ${strategy} ${af_opts.classifiers}')
 			}
 		}
 		return af_result // returns just the last result for multiple cross_validates
 	}
 	result := run_cross_validate(ds, opts)
 	if !opts.show_flag && !opts.expanded_flag && opts.command == 'cross' {
-		println('corrects: ${result.correct_counts} balanced_accuracy: ${result.balanced_accuracy:-6.2f} MCC: ${result.mcc:-7.3f} sens: ${result.sens:-7.3f} spec: ${result.spec:-4.3f} ma ${result.break_on_all_flag} mc ${result.combined_radii_flag} mt ${result.total_nn_counts_flag} ${opts.classifiers}')
+		println('corrects: ${result.correct_counts} balanced_accuracy: ${result.balanced_accuracy:-6.2f} MCC: ${result.mcc:-7.3f} sens: ${result.sens:-7.3f} spec: ${result.spec:-4.3f} ma ${result.break_on_all_flag} strategy ${result.multi_strategy} ${opts.classifiers}')
 	}
 	return result
 }
@@ -93,7 +86,6 @@ pub fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	mut cross_opts := opts
 	cross_opts.datafile_path = ds.path
 	mut total_instances := ds.Class.class_values.len
-	dump(ds.class_counts)
 	repeats := if opts.repetitions == 0 { 1 } else { opts.repetitions }
 	// for each class, instantiate an entry in the confusion matrix map
 	mut confusion_matrix_map := map[string]StringFloatMap{}
@@ -399,7 +391,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			if cross_opts.verbose_flag {
 				println('\ncase: ${i:-7}  ${case}    classes: ${classifier_array[0].classes.join(' | ')}')
 			}
-			m_classify_result := if mult_opts.total_nn_counts_flag {
+			m_classify_result := if mult_opts.multi_strategy == 'totalnn' {
 				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes,
 					mult_opts)
 			} else {

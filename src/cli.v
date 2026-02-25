@@ -190,9 +190,12 @@ fn get_options(args []string) Options {
 	opts.show_attributes_flag = flag(args, ['-ea'])
 	opts.multiple_flag = flag(args, ['-m', '--multiple'])
 	opts.break_on_all_flag = flag(args, ['-ma'])
-	opts.combined_radii_flag = flag(args, ['-mc'])
+	if flag(args, ['-mt']) {
+		opts.multi_strategy = 'totalnn'
+	} else if flag(args, ['-mc']) {
+		opts.multi_strategy = 'combined'
+	}
 	opts.one_vs_rest_flag = flag(args, ['-mr'])
-	opts.total_nn_counts_flag = flag(args, ['-mt'])
 	opts.append_settings_flag = flag(args, ['-ms'])
 	opts.overfitting_flag = flag(args, ['-of', '--overfitting'])
 	opts.purge_flag = flag(args, ['-p', '--purge'])

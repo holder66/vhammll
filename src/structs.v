@@ -313,10 +313,9 @@ pub mut:
 pub struct MultipleOptions {
 	TotalNnParams
 pub mut:
-	break_on_all_flag    bool
-	combined_radii_flag  bool
-	total_nn_counts_flag bool
-	classifiers          []int // refers to an array of classsifier ID values
+	break_on_all_flag bool
+	multi_strategy    string // '', 'combined', or 'totalnn'
+	classifiers       []int  // refers to an array of classsifier ID values
 }
 
 struct RadiusResults {

@@ -234,7 +234,7 @@ const attribute_headings = {
 // show_multiple_classifier_settings expects the multiple classifiers to be in opts, and
 // the classifier indices in result
 fn show_multiple_classifier_settings(result CrossVerifyResult, opts Options) {
-	println('break_on_all_flag: ${opts.break_on_all_flag}     combined_radii_flag: ${opts.combined_radii_flag}      total_nn_counts_flag: ${opts.total_nn_counts_flag}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
+	println('break_on_all_flag: ${opts.break_on_all_flag}     multi_strategy: ${opts.multi_strategy}     class_missing_purge_flag: ${opts.class_missing_purge_flag}')
 	println(g_b('Multiple Classifier Parameters:'))
 	show_multiple_classifier_settings_details(result.multiple_classifier_settings)
 	if opts.show_attributes_flag {
