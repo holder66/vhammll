@@ -28,7 +28,7 @@ are appended if it does.
 
 ```sh
 # Explore, saving the classifier settings used for each run to bcw.opts
-./vhamml explore -s -ms bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train
+./main explore -s -ms bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train
 ```
 
 Each row in the console output corresponds to one classifier. To save only specific
@@ -36,7 +36,7 @@ ones, note their classifier IDs and use `-m#`:
 
 ```sh
 # Append only classifiers 0, 2, and 5 to the settings file
-./vhamml explore -s -ms bcw.opts -m# 0,2,5 ~/.vmodules/holder66/vhammll/datasets/bcw350train
+./main explore -s -ms bcw.opts -m# 0,2,5 ~/.vmodules/holder66/vhammll/datasets/bcw350train
 ```
 
 ### Settings file format
@@ -54,10 +54,10 @@ Pass the settings file to `cross` or `verify` with the `-m` flag:
 
 ```sh
 # Cross-validate using all classifiers in bcw.opts
-./vhamml cross -s -m bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train
+./main cross -s -m bcw.opts ~/.vmodules/holder66/vhammll/datasets/bcw350train
 
 # Verify against a held-out test set
-./vhamml verify -s -m bcw.opts \
+./main verify -s -m bcw.opts \
     -t ~/.vmodules/holder66/vhammll/datasets/bcw174test \
     ~/.vmodules/holder66/vhammll/datasets/bcw350train
 ```
@@ -65,7 +65,7 @@ Pass the settings file to `cross` or `verify` with the `-m` flag:
 To use only a subset of the classifiers in the file, list their IDs with `-m#`:
 
 ```sh
-./vhamml cross -s -m bcw.opts -m# 0,3,7 ~/.vmodules/holder66/vhammll/datasets/bcw350train
+./main cross -s -m bcw.opts -m# 0,3,7 ~/.vmodules/holder66/vhammll/datasets/bcw350train
 ```
 
 ---
@@ -86,7 +86,7 @@ Use `-af` (all-flags) to run all combinations automatically and compare them sid
 side:
 
 ```sh
-./vhamml cross -s -m bcw.opts -af ~/.vmodules/holder66/vhammll/datasets/bcw350train
+./main cross -s -m bcw.opts -af ~/.vmodules/holder66/vhammll/datasets/bcw350train
 ```
 
 This prints one result line per combination (3 strategies × 2 `-ma` settings = 6 rows),
@@ -102,14 +102,14 @@ accuracy, highest Matthews Correlation Coefficient (MCC), or highest correct-inf
 count per class.
 
 ```sh
-./vhamml optimals -s bcw.opts
+./main optimals -s bcw.opts
 ```
 
 Use `-cl` to control the minimum and maximum combination size to consider:
 
 ```sh
 # Only consider pairs and triples
-./vhamml optimals -s -cl 2,3 bcw.opts
+./main optimals -s -cl 2,3 bcw.opts
 ```
 
 The output lists the top-performing combinations by each criterion. You can then use

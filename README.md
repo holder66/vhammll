@@ -49,8 +49,7 @@ Finally, `export VFLAGS="-d dynamic_boehm"`
 
 See above re needed dependencies.
 
-In a folder or directory that you want to use for your project, you will need to create a file with module `main`, and a function `main()`.
-You can do this in the terminal, or with a text editor. The file should contain:
+In a folder or directory that you want to use for your project, save the following snippet into a file called `main.v`:
 ```v
 module main
 import holder66.vhammll
@@ -59,11 +58,19 @@ fn main() {
     vhammll.cli()!
 }
 ```
-Assuming the file containing the `main()` function is named `main.v`, in the terminal:
-`v run .` followed by the command line arguments, eg
-`v run . --help` or `v run . analyze <path_to_dataset_file>`
-Command-specific help is available, like so:
-`v run . explore --help` or `v run . explore -h`
+You can then run commands directly with `v run`:
+```sh
+v run main.v --help
+v run main.v analyze <path_to_dataset_file>
+v run main.v explore --help
+```
+For repeated use, compile a binary first — it is faster than `v run` because it skips recompilation:
+```sh
+v main.v          # produces ./main
+v -prod main.v    # optimised build, faster at runtime
+./main --help
+./main analyze <path_to_dataset_file>
+```
 
 Note that the publicly available datasets included with the VHamMLL distribution can be found at `~/.vmodules/holder66/vhammll/datasets`.
 

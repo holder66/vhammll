@@ -18,7 +18,7 @@ In your terminal, navigate to directory/folder `vhamml` containing the `main.v` 
 Note: processing times are on a 2019 Macbook Pro.
 
 ```sh
-% ./vhamml rank -w -wr -s ~/.vmodules/holder66/vhammll/datasets/prostata.tab 
+% ./main rank -w -wr -s ~/.vmodules/holder66/vhammll/datasets/prostata.tab 
 ```   
 ```sh
 
@@ -55,7 +55,7 @@ processing time: 0 hrs 0 min  1.518 sec
 Accumulated experience with the algorithm suggests that using a fixed number
 of bins often gives good results. 
 ```sh
-% ./vhamml rank -w -wr -s -b 6 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
+% ./main rank -w -wr -s -b 6 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 ```sh
 Attributes Sorted by Rank Value, for "~/.vmodules/holder66/vhammll/datasets/prostata.tab"
@@ -85,7 +85,7 @@ which is optimized over a range.
 Here are the results for exploring over a range of attributes from 1 to 20, 
 and a binning range from 2 to 12:
 ```sh
-% % ./vhamml explore -e -g -w -wr -b 2,12 -a 1,20 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
+% % ./main explore -e -g -w -wr -b 2,12 -a 1,20 ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 Note the flags: -c calls for parallel processing, using all available CPU cores
 on you machine; -e for expanded output to the console; -g results in graphical
@@ -338,7 +338,7 @@ all continuous attributes in some cases provides better results. We can try this
 with the -u flag, over an abbreviated range of attributes and bins:
 
 ```sh
-% ./vhamml explore -e -g -w -wr -b 6,12 -a 3,5 -u ~/.vmodules/holder66/vhammll/datasets/prostata.tab
+% ./main explore -e -g -w -wr -b 6,12 -a 3,5 -u ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 ```sh
 
@@ -385,7 +385,7 @@ gives us the best balanced accuracy of 94.33%, marginally better than when using
 Using the "cross" command with the -e flag provides additional statistics, including a confusion matrix:
 ```sh
 
-% ./vhamml cross -b 6,6 -a 3 -e -w -wr ~/.vmodules/holder66/vhammll/datasets/prostata.tab
+% ./main cross -b 6,6 -a 3 -e -w -wr ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 
 ```sh
@@ -423,7 +423,7 @@ Let's stick with these settings, and create a classifier that
 can be used for predicting outcomes:
 
 ```sh
-% ./vhamml make -a 3 -b 6 -u -c -o ../classifiers/prostata_classifier ~/.vmodules/holder66/vhammll/datasets/prostata.tab
+% ./main make -a 3 -b 6 -u -c -o ../classifiers/prostata_classifier ~/.vmodules/holder66/vhammll/datasets/prostata.tab
 ```
 
 Note the use of the -o flag to specify a file where the classifier is to be saved in a file for later use.
