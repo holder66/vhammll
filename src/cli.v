@@ -66,13 +66,13 @@ pub mut:
 //    Options.multiple_classify_options_file_path
 // -ma when multiple classifiers are used, stop classifying when matches
 //    have been found for all classifiers;
-// -mc when multiple classifiers are used, combine the possible hamming
+// -mc sets multi_strategy to 'combined': combine the possible hamming
 //    distances for each classifier into a single list;
 // -mr for multiclass datasets, perform classification using a classifier for
 //    each class, based on cases for that class set against all the other cases;
-// -mt when multiple classifiers are used, add the nearest neighbors from
+// -mt sets multi_strategy to 'totalnn': add the nearest neighbors from
 //    each classifier, weight by class prevalences, and then infer
-//    from the totals;
+//    from the totals; takes precedence over -mc if both are specified;
 // -m# followed by a list of which classifiers to apply in a multiple classi-
 //	  fication run; also used to specify which classifiers to
 //    append to a settings file. These values are classifier IDs, not array indices.

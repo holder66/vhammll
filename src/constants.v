@@ -229,14 +229,15 @@ both the classification and the verification datafile.
 -m --multiple:    classify using more than one trained classifier, followed
      by the path to a json file with parameters to generate
      each classifier;
--ma: when multiple classifiers are used, stop classifying when 
+-ma: when multiple classifiers are used, stop classifying when
      matches have been found for all classifiers;
--mc: when multiple classifiers are used, combine the possible 
+-mc: sets multi_strategy to combined: combine the possible
      hamming distances for each classifier into a single list;
--mt: when multiple classifiers are used, add the nearest
-     neighbors from each classifier, weight by class
-     prevalences, and then infer from the totals;
--m#: followed by a list of which classifiers to apply in a 
+-mt: sets multi_strategy to totalnn: add the nearest neighbors
+     from each classifier, weight by class prevalences, and then
+     infer from the totals; takes precedence over -mc if both
+     are specified;
+-m#: followed by a list of which classifiers to apply in a
      multiple classification run (zero-indexed);
 -w --weight, weight the number of nearest neighbor counts
     by class prevalences when classifying;
@@ -313,16 +314,17 @@ Options:
   -m --multiple:    classify using more than one trained classifier, followed
        by the path to a json file with parameters to generate
        each classifier;
-  -ma: when multiple classifiers are used, stop classifying when 
+  -ma: when multiple classifiers are used, stop classifying when
        matches have been found for all classifiers;
-  -mc: when multiple classifiers are used, combine the possible 
+  -mc: sets multi_strategy to combined: combine the possible
        hamming distances for each classifier into a single list;
   -ms: when followed by a file path, appends the classifier settings
        to that settings file (for use in multiple classifier operations);
-  -mt: when multiple classifiers are used, add the nearest
-       neighbors from each classifier, weight by class
-       prevalences, and then infer from the totals;
-  -m#: followed by a list of which classifiers to apply in a 
+  -mt: sets multi_strategy to totalnn: add the nearest neighbors
+       from each classifier, weight by class prevalences, and then
+       infer from the totals; takes precedence over -mc if both
+       are specified;
+  -m#: followed by a list of which classifiers to apply in a
        multiple classification run (zero-indexed);
   -p --purge: remove instances which are duplicates after binning;
   -r --reps: number of repetitions; if > 1, a random selection of 
