@@ -8,25 +8,26 @@ on:
     - cron: "31 1,12 * * *"
 
   push:
-    branches: [optimals-improvements]
+    branches: [master]
 
 jobs:
   build:
-  - name: Install MPI Development Libraries
-  run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
     strategy:
       matrix:
         os: ["ubuntu-latest"]
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Install MPI Development Libraries
+        run: sudo apt-get update && sudo apt-get install -y libopenmpi-dev
+
       - name: Install V
         uses: vlang/setup-v@v1
         with:
           check-latest: true
 
       - name: Checkout ${{ github.event.repository.name }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Check if code is formatted
         run: |
@@ -42,4 +43,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          VTEST_ONLY=analyze,append,classify,balance_prevalences,classify,cross_validate,environment,explore,json,load_arff,load_csv,load_file,load_newer,load_older,make_classifier,make_multi_classifiers,metrics,optimals,partition,partition_file,purge,purge_missings,rank,tools,validate,verify v test .
+          VTEST_ONLY=analyze,append,balance_prevalences,classify,cross_validate,environment,explore,json,load_arff,load_csv,load_file,load_newer,load_older,make_classifier,make_multi_classifiers,metrics,optimals,partition,partition_file,purge,purge_missings,rank,tools,validate,verify v test .
