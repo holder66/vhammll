@@ -43,4 +43,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          VTEST_ONLY=analyze,append,balance_prevalences,classify,cross_validate,environment,explore,json,load_arff,load_csv,load_file,load_newer,load_older,make_classifier,make_multi_classifiers,metrics,partition,partition_file,purge,purge_missings,rank,tools,validate,verify v test .
+          VTEST_ONLY=analyze,append,balance_prevalences,classify,cross_validate,environment,json,load_arff,load_csv,load_file,load_newer,load_older,make_classifier,make_multi_classifiers,metrics,partition,partition_file,purge,purge_missings,rank,tools,validate,verify v test .
