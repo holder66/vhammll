@@ -200,6 +200,12 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	return result
 }
 
+// limit_to_unique_attribute_number filters `classifier_ids` so that at most one
+// classifier ID is kept per distinct attribute count. For each unique value of
+// `number_of_attributes[0]` found among the matching classifiers, the first
+// classifier ID (in the order of `classifier_ids`) that carries that attribute
+// count is retained. This avoids redundant display of classifiers that differ
+// only in how many attributes they use.
 fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classifier_ids []int) []int {
 	// Build a lookup map once: classifier_id -> first number_of_attributes value
 	mut id_to_first_attr := map[int]int{}
@@ -221,6 +227,14 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 	return uniques_attributes_classifiers
 }
 
+// max_auc_combinations generates every combination of classifiers whose size
+// falls within `limits.min`..`limits.max`, computes the Area Under the ROC
+// Curve (AUC) for each combination using the sensitivity/specificity values
+// from the stored `ClassifierSettings`, and returns the full list of
+// `AucClassifiers` structs (classifier IDs + AUC). The caller is responsible
+// for sorting or filtering the returned slice. If `limits.max` exceeds the
+// number of available classifiers it is clamped to that count; if `limits.min`
+// exceeds the count the function panics.
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
 	mut new_limits := limits
 	if limits.min > classifier_ids.len {
@@ -256,6 +270,11 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]
 	return auc_classifiers
 }
 
+// purge_duplicate_settings removes entries from `settings` that share identical
+// `Parameters` values, keeping only the first occurrence of each unique
+// parameter set. Classifiers that were trained with the same hyperparameters
+// (binning, attribute count, flags, etc.) but received different IDs are
+// therefore deduplicated, reducing redundant computation in downstream steps.
 fn purge_duplicate_settings(settings []ClassifierSettings) []ClassifierSettings {
 	// Keep the first occurrence of each unique Parameters
 	mut seen := []Parameters{}

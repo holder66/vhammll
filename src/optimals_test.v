@@ -15,16 +15,17 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_optimals')!
 }
 
-// fn test_max_auc_combinations() {
-// 	settings := read_multiple_opts('src/testdata/leukbp.opts')!
-// 	mut r := max_auc_combinations(settings, [[1, 2]], min: 2)
-// 	// dump(r)
-// }
+fn test_max_auc_combinations() {
+	settings := read_multiple_opts('src/testdata/leukbp.opts')!
+	dump(settings)
+	mut r := max_auc_combinations(settings, [[1, 2]], min: 2)
+	dump(r)
+}
 
-// fn test_optimals_with_max_auc_combinations() {
-// 	options := opts('optimals -p -l 3,4 src/testdata/leukbp.opts')
-// 	// dump(options)
-// }
+fn test_optimals_with_max_auc_combinations() {
+	options := opts('optimals -p -l 3,4 src/testdata/leukbp.opts')
+	dump(options)
+}
 
 fn test_limit_to_unique_attribute_number() {
 	savedsettings := 'src/testdata/anneal.opts'
