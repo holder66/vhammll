@@ -50,8 +50,8 @@ fn test_optimals_with_purge() {
 	println(r_b('\nDump the optimals result struct:'))
 	result_a := optimals(settingsfile)
 	dump(optimals(settingsfile))
-	assert result_a.best_balanced_accuracies_classifiers == 
-		[[1], [2, 9], [16], [0, 3, 14], [21], [23, 24], [27]]
+	assert result_a.best_balanced_accuracies_classifiers == [
+		[1], [2, 9], [16], [0, 3, 14], [21], [23, 24], [27]]
 	assert result_a.receiver_operating_characteristic_settings == [27, 23, 0, 1, 2]
 	assert result_a.mcc_max_classifiers == [0, 3, 14]
 
@@ -59,7 +59,8 @@ fn test_optimals_with_purge() {
 	result_b := optimals(settingsfile, opts('-p'))
 	dump(result_b)
 	assert result_b.settings_length - result_b.settings_purged == 224 - 160
-	assert result_b.correct_inferences_total_max_classifiers_all == [0, 3, 7, 14, 28, 31, 35, 42, 56, 59, 63, 70, 84, 87, 91, 98, 112, 119, 126, 133]
+	assert result_b.correct_inferences_total_max_classifiers_all == [0, 3, 7, 14, 28, 31, 35, 42,
+		56, 59, 63, 70, 84, 87, 91, 98, 112, 119, 126, 133]
 	println(r_b('\nDump the optimals struct result after purging and with auc combinations from 2 through 4:'))
 	result_c := optimals(settingsfile, opts('-p -cl 2,4'))
 	dump(result_c)
@@ -85,6 +86,6 @@ fn test_optimals_with_purge() {
 	assert result_c.best_balanced_accuracies_classifiers_all[2] == [16, 44, 72, 100]
 	println(r_b('\nGet all the combinations of lengths 4 and 5:'))
 	result_d = optimals(settingsfile, opts('-g -s -p -cl 4,5'))
-	result_f := verify(opts('-e -m# 0,1,2,3,16 -ma -mc -m $settingsfile -t $testfile $datafile'))
-	assert result_f.correct_counts == [133,38]
+	result_f := verify(opts('-e -m# 0,1,2,3,16 -ma -mc -m ${settingsfile} -t ${testfile} ${datafile}'))
+	assert result_f.correct_counts == [133, 38]
 }
