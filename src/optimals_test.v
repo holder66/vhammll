@@ -51,7 +51,14 @@ fn test_optimals_with_purge() {
 	result_a := optimals(settingsfile)
 	dump(optimals(settingsfile))
 	assert result_a.best_balanced_accuracies_classifiers == [
-		[1], [2, 9], [16], [0, 3, 14], [21], [23, 24], [27]]
+		[1],
+		[2, 9],
+		[16],
+		[0, 3, 14],
+		[21],
+		[23, 24],
+		[27],
+	]
 	assert result_a.receiver_operating_characteristic_settings == [27, 23, 0, 1, 2]
 	assert result_a.mcc_max_classifiers == [0, 3, 14]
 
