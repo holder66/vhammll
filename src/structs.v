@@ -96,6 +96,10 @@ pub mut:
 	rank_value_array     []f32
 	bins                 int
 	array_of_hits_arrays [][][]int
+	// switches is the number of dominant-class flips across bins at the
+	// selected bin count; -1 means not applicable (multi-class or discrete).
+	switches       int = -1
+	switches_array []int
 }
 
 // Binning specifies the lower bound, upper bound, and step interval
@@ -119,6 +123,7 @@ pub mut:
 	path                       string
 	exclude_flag               bool
 	weight_ranking_flag        bool
+	switches_threshold         int
 	binning                    Binning
 	array_of_ranked_attributes []RankedAttribute
 }
@@ -208,6 +213,12 @@ pub mut:
 	purge_flag           bool
 	weighting_flag       bool
 	weight_ranking_flag  bool
+	// switches_threshold applies only to 2-class datasets during attribute
+	// ranking: bin counts whose switch count exceeds this value are excluded
+	// from the search for the maximum rank value. Attributes where every bin
+	// count exceeds the threshold receive rank value 0. Default 2 allows
+	// U-shaped / inverted-U dose-response curves while blocking likely noise.
+	switches_threshold   int = 2
 	one_vs_rest_flag     bool
 	multiple_flag        bool
 	folds                int
