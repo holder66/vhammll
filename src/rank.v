@@ -36,11 +36,13 @@ Options:
   -w --weight, weights and normalizes the graph of hits per bin per class (see -of option)
   -wr, weight contribution to ranking by considering class
       prevalences [Parameters.weight_ranking_flag]
-  -swt --switch-threshold, followed by an integer (default 2); for 2-class
-      datasets, bin counts whose dominant-class switch count exceeds this
-      value are excluded when searching for the maximum rank value for each
-      continuous attribute; attributes where every bin count exceeds the
-      threshold receive rank value 0 (treated as noise) [Parameters.switches_threshold]
+  -sw --switches, enables the dominant-class switch metric for 2-class
+      datasets: bin counts whose switch count exceeds the threshold are
+      excluded when searching for the maximum rank value; attributes where
+      every bin count exceeds the threshold receive rank value 0 [Parameters.switches_flag]
+  -swt --switch-threshold, followed by an integer (default 2, min 1, max
+      upper binning limit); sets the switch count threshold used when -sw is
+      active [Parameters.switches_threshold]
 
     '
 
@@ -106,6 +108,7 @@ pub fn rank_attributes(opts Options) RankingResult {
 		path:                ds.path
 		exclude_flag:        opts.exclude_flag
 		weight_ranking_flag: opts.weight_ranking_flag
+		switches_flag:       opts.switches_flag
 		switches_threshold:  opts.switches_threshold
 		array_of_ranked_attributes: []RankedAttribute{cap: ds.useful_discrete_attributes.len +
 			ds.useful_continuous_attributes.len}
@@ -138,7 +141,7 @@ pub fn rank_attributes(opts Options) RankingResult {
 			i in ds.useful_continuous_attributes.keys() {
 				r_v, bin_number, rank_value_array, hits_array, sw, sw_arr := rank_continuous_attribute(i,
 					ds, binning, opts.exclude_flag, opts.weight_ranking_flag, opts.overfitting_flag,
-					opts.switches_threshold)
+					opts.switches_flag, opts.switches_threshold)
 				rank_value_map[i] = r_v
 				binning_map[i] = bin_number
 				rank_value_array_map[i] = rank_value_array
@@ -279,16 +282,18 @@ fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
 }
 
 // rank_continuous_attribute calculates rank values for attribute i over a range
-// of bin values given by binning_range. For 2-class datasets it also computes
-// the dominant-class switch count for each bin number and excludes bin counts
-// whose switch count exceeds switches_threshold when searching for the maximum
-// rank value. An attribute where every bin count exceeds the threshold receives
-// rank value 0. For multi-class datasets the switch logic is skipped and the
-// existing max-rank-value behaviour is preserved. Returns the best rank value,
-// the corresponding bin count, rank values for all bin counts, the full hits
-// array, the switch count at the best bin count, and switch counts for all bin
-// counts.
-fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool, overfitting_flag bool, switches_threshold int) (int, int, []i64, [][][]int, int, []int) {
+// of bin values given by binning_range. When switches_flag is true and the
+// dataset has exactly 2 classes, the dominant-class switch count is computed
+// for each bin number and bin counts whose switch count exceeds
+// switches_threshold are excluded from the search for the maximum rank value;
+// an attribute where every bin count exceeds the threshold receives rank value
+// 0. switches_threshold is clamped to [1, binning_range.upper]. When
+// switches_flag is false, or for multi-class datasets, every bin count is
+// eligible (original behaviour). Returns the best rank value, the
+// corresponding bin count, rank values for all bin counts, the full hits
+// array, the switch count at the best bin count, and switch counts for all
+// bin counts.
+fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool, overfitting_flag bool, switches_flag bool, switches_threshold int) (int, int, []i64, [][][]int, int, []int) {
 	mut result := 0
 	mut max_rank_value := 0
 	mut bins_for_max_rank_value := 0
@@ -301,6 +306,18 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 		ds.class_values[index])}
 	mut hits_array := [][][]int{cap: binning_range.upper}
 	two_class := ds.classes.len == 2
+	// Clamp threshold to the valid range [1, binning_range.upper].
+	effective_threshold := if switches_flag {
+		if switches_threshold < 1 {
+			1
+		} else if switches_threshold > binning_range.upper {
+			binning_range.upper
+		} else {
+			switches_threshold
+		}
+	} else {
+		0 // unused when switches_flag is false
+	}
 	for bin_number in binning_range.lower .. binning_range.upper + 1 {
 		mut hits := [][]int{len: ds.classes.len, init: []int{len: bin_number + 1}}
 		binning := discretize_attribute_with_range_check(values, array_min(values.filter(!is_nan(it))),
@@ -320,11 +337,10 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 		rank_value_array << result
 		sw := count_switches(hits, weights, weight_ranking_flag)
 		switches_array << sw
-		// For 2-class datasets, a bin count is only eligible for the maximum
-		// if its switch count does not exceed the threshold. For multi-class
-		// datasets the switch metric is not applicable and every bin count
-		// is eligible.
-		eligible := !two_class || sw <= switches_threshold
+		// A bin count is eligible for the maximum rank value unless switches_flag
+		// is active on a 2-class dataset and its switch count exceeds the
+		// (clamped) threshold. Multi-class datasets are always fully eligible.
+		eligible := !switches_flag || !two_class || sw <= effective_threshold
 		if eligible && result > max_rank_value {
 			max_rank_value = result
 			bins_for_max_rank_value = bin_number
@@ -332,8 +348,8 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 		}
 		hits_array << hits
 	}
-	// If two_class and no eligible bin count was found, max_rank_value remains
-	// 0, signalling that this attribute should not be used for classification.
+	// If switches_flag is true, two_class, and no eligible bin count was found,
+	// max_rank_value remains 0, signalling this attribute should not be used.
 	return max_rank_value, bins_for_max_rank_value, rank_value_array, hits_array, switches_at_best, switches_array
 }
 

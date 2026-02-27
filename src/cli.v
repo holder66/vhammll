@@ -297,6 +297,7 @@ fn get_options(args []string) Options {
 	opts.verbose_flag = flag(args, ['-v', '--verbose'])
 	opts.weighting_flag = flag(args, ['-w', '--weight'])
 	opts.weight_ranking_flag = flag(args, ['-wr'])
+	opts.switches_flag = flag(args, ['-sw', '--switches'])
 	if option(args, ['-swt', '--switch-threshold']) != '' {
 		opts.switches_threshold = option(args, ['-swt', '--switch-threshold']).int()
 	}

@@ -123,6 +123,7 @@ pub mut:
 	path                       string
 	exclude_flag               bool
 	weight_ranking_flag        bool
+	switches_flag              bool
 	switches_threshold         int
 	binning                    Binning
 	array_of_ranked_attributes []RankedAttribute
@@ -213,11 +214,16 @@ pub mut:
 	purge_flag           bool
 	weighting_flag       bool
 	weight_ranking_flag  bool
-	// switches_threshold applies only to 2-class datasets during attribute
-	// ranking: bin counts whose switch count exceeds this value are excluded
-	// from the search for the maximum rank value. Attributes where every bin
-	// count exceeds the threshold receive rank value 0. Default 2 allows
-	// U-shaped / inverted-U dose-response curves while blocking likely noise.
+	// switches_flag enables the dominant-class switch metric for 2-class
+	// datasets during attribute ranking (-sw / --switches). When true, bin
+	// counts whose switch count exceeds switches_threshold are excluded from
+	// the search for the maximum rank value; attributes where every bin count
+	// exceeds the threshold receive rank value 0 (treated as noise).
+	switches_flag        bool
+	// switches_threshold sets the maximum permitted number of dominant-class
+	// switches per bin count when switches_flag is active (-swt). Valid values
+	// are 1 through the upper binning limit; default 2 allows U-shaped /
+	// inverted-U dose-response curves while blocking likely noise.
 	switches_threshold   int = 2
 	one_vs_rest_flag     bool
 	multiple_flag        bool

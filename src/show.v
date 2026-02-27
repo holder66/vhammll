@@ -102,8 +102,8 @@ pub fn show_rank_attributes(result RankingResult) {
 	println(if result.weight_ranking_flag { 'Weighted' } else { 'Unweighted' } +
 		' by class prevalences')
 	println('Purging of instances with missing class values: ${result.class_missing_purge_flag}')
-	two_class := result.class_counts.len == 2
-	if two_class {
+	show_switches := result.switches_flag && result.class_counts.len == 2
+	if show_switches {
 		println('Switch threshold (2-class): ${result.switches_threshold}')
 		println(b_u('         Name                         Index  Type   Rank Value   Bins  Switches'))
 	} else {
@@ -115,7 +115,7 @@ pub fn show_rank_attributes(result RankingResult) {
 			break
 		}
 		base := '${i + 1:6}   ${attr.attribute_name:-27} ${attr.attribute_index:6} ${attr.attribute_type:2}         ${attr.rank_value:7.2f} ${attr.bins:6}'
-		if two_class {
+		if show_switches {
 			sw_str := if attr.switches == -1 { '       -' } else { '${attr.switches:8}' }
 			array_to_print << base + '  ${sw_str}'
 		} else {
