@@ -3,7 +3,7 @@ module vhammll
 
 // evaluate_class_prevalence_imbalance returns true if the ratio between the
 // minimum and maximum class counts for the dataset exceeds the threshold specified by
-// Options.balance_prevalence_threshold.
+// Options.balance_prevalences_threshold.
 fn evaluate_class_prevalence_imbalance(ds Dataset, opts Options) bool {
 	class_counts_array := ds.class_counts.values()
 	if f64(array_min(class_counts_array)) / array_max(class_counts_array) <= opts.balance_prevalences_threshold {
