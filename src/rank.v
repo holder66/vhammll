@@ -335,8 +335,16 @@ fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_f
 		// for each column in hits, sum up the absolute differences between each pair of values
 		result = sum_absolute_differences(pairs(ds.classes.len), hits, weights, weight_ranking_flag)
 		rank_value_array << result
-		sw := count_switches(hits, weights, weight_ranking_flag)
-		switches_array << sw
+		// Only compute switch counts when the flag is active and the dataset
+		// has exactly 2 classes; otherwise leave sw at -1 (not applicable).
+		sw := if switches_flag && two_class {
+			count_switches(hits, weights, weight_ranking_flag)
+		} else {
+			-1
+		}
+		if switches_flag && two_class {
+			switches_array << sw
+		}
 		// A bin count is eligible for the maximum rank value unless switches_flag
 		// is active on a 2-class dataset and its switch count exceeds the
 		// (clamped) threshold. Multi-class datasets are always fully eligible.
