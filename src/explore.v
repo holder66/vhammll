@@ -21,6 +21,8 @@ Options:
       possible combinations of flags -bp, -p, -u, -w, -wr, and -x;
   -b --bins: a range for the number of bins for continuous attributes;
   -bp --balanced-prevalences: add instances to balance class prevalences;
+  -bpt --balance-prevalences-threshold: ratio threshold below which class
+      prevalences are considered imbalanced (default 0.9; range 0.0–1.0);
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: show expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);
@@ -68,6 +70,9 @@ Options:
 // graph_flag: generate plots of Receiver Operating Characteristics (ROC)
 // 	by attributes used; ROC by bins used, and accuracy by attributes
 //	used.
+// balance_prevalences_flag / balance_prevalences_threshold: when set,
+//  duplicates minority-class instances until prevalences are balanced;
+//  threshold is the min/max ratio below which balancing triggers (default 0.9);
 // traverse_all_flags: repeat the explore operation for all possible
 //  combinations of the flags uniform_bins, weight_ranking_flag, etc;
 //  note that if -bp is also set, then -af will only traverse the settings

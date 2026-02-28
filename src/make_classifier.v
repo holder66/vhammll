@@ -19,6 +19,8 @@ Options:
   -b --bins: eg, "3,6" specifies the lower and upper limits for the number
       of slices or bins for continuous attributes;
   -bp --balanced-prevalences: add instances to balance class prevalences;
+  -bpt --balance-prevalences-threshold: ratio threshold below which class
+      prevalences are considered imbalanced (default 0.9; range 0.0–1.0);
   -e --expanded: display the classifier struct on the console.
   -ms: followed by the path to a settings file; appends the classifier
       settings to that file for later use in multiple classification;
@@ -43,6 +45,10 @@ Options:
 // exclude_flag: excludes missing values when ranking attributes;
 // purge_flag: remove those instances which are duplicates, after
 //     binning and based on only the attributes to be used;
+// balance_prevalences_flag: when true, duplicates instances of minority
+//     classes until class prevalences are sufficiently balanced;
+// balance_prevalences_threshold: the min/max class-count ratio below which
+//     balancing is triggered (default 0.9; set via -bpt);
 // switches_flag: when true and the dataset has exactly 2 classes, excludes
 //     bin counts whose dominant-class switch count exceeds switches_threshold
 //     from the rank value search; attributes where every bin count exceeds

@@ -37,6 +37,8 @@ Options:
   -b --bins: eg, "3,6" specifies the lower and upper limits for the
       number of slices or bins for continuous attributes;
   -bp --balanced-prevalences: add instances to balance class prevalences;
+  -bpt --balance-prevalences-threshold: ratio threshold below which class
+      prevalences are considered imbalanced (default 0.9; range 0.0–1.0);
   -c --concurrent: permit parallel processing to use multiple cores;
   -e --expanded: expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);
@@ -94,6 +96,9 @@ fn multi_classify_balance_prevalence(opts Options) bool {
 // 	is leave-one-out cross-validation);
 // repetitions: number of times to repeat n-fold cross-validations;
 // random-pick: choose instances randomly for n-fold cross-validations.
+// balance_prevalences_flag / balance_prevalences_threshold: when set,
+//  duplicates minority-class instances until prevalences are balanced;
+//  threshold is the min/max ratio below which balancing triggers (default 0.9).
 // Output options:
 // show_flag: prints results to the console;
 // expanded_flag: prints additional information to the console, including

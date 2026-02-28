@@ -22,6 +22,8 @@ Options:
 In addition to the options below, the options for "make" apply to
 both the classification and the verification datafile.
 -bp --balanced-prevalences: add instances to balance class prevalences;
+-bpt --balance-prevalences-threshold: ratio threshold below which class
+    prevalences are considered imbalanced (default 0.9; range 0.0–1.0);
 -c --concurrent, permit parallel processing to use multiple cores;
 -e --expanded, expanded results on the console;
 -k --classifier, followed by the path to a file for a saved Classifier;

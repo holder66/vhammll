@@ -152,6 +152,9 @@ pub mut:
 //    range of uniform bin values for the explore command; a third integer
 //    for the interval to be used over the explore range;
 // -bp, --balanced-prevalences: Parameters.balance_prevalences_flag
+// -bpt --balance-prevalences-threshold, followed by a float: the ratio threshold
+//    below which class prevalences are considered imbalanced (default 0.9):
+//    LoadOptions.balance_prevalences_threshold
 // -c --concurrent, permit parallel processing to use multiple cores: Options.concurrency_flag
 // -cl --combination-limits: sets minimum and maximum lengths for combinations
 //    of multiple classifiers: Options.DisplaySettings.CombinationSizeLimits;
@@ -318,6 +321,9 @@ fn get_options(args []string) Options {
 	opts.purge_flag = flag(args, ['-p', '--purge'])
 	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
 	opts.balance_prevalences_flag = flag(args, ['-bp', '--balanced-prevalences'])
+	if option(args, ['-bpt', '--balance-prevalences-threshold']) != '' {
+		opts.balance_prevalences_threshold = option(args, ['-bpt', '--balance-prevalences-threshold']).f64()
+	}
 	opts.random_pick = flag(args, ['-rand'])
 	opts.generate_roc_flag = flag(args, ['-roc'])
 	opts.all_attributes_flag = flag(args, ['-aa', '--all_attributes'])
@@ -512,14 +518,9 @@ fn rank(opts Options) {
 }
 
 // make generates a Classifier, and displays it on the console.
-// Optionally (-e flag) it prints out the classifier struct.
 // Optionally (-o flag) it saves the classifier file.
 fn make(opts Options) {
-	// mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	cl := make_classifier(opts)
-	if opts.expanded_flag {
-		println(cl)
-	}
+	make_classifier(opts)
 }
 
 fn do_partition(opts Options) ! {
