@@ -20,8 +20,15 @@ Options:
       of slices or bins for continuous attributes;
   -bp --balanced-prevalences: add instances to balance class prevalences;
   -e --expanded: display the classifier struct on the console.
+  -ms: followed by the path to a settings file; appends the classifier
+      settings to that file for later use in multiple classification;
   -o --output: followed by the path to a file in which the classifier will be stored;
   -p --purge: remove instances which are duplicates after binning;
+  -sw --switches: use the dominant-class switch count when ranking attributes
+      (2-class datasets only); bin counts whose switch count exceeds the
+      threshold are excluded from the rank value search;
+  -swt --switch-threshold: maximum permitted switches per bin count when
+      -sw is active (default 2);
   -wr: when ranking attributes, weight contributions by class prevalences;
   -x --exclude: exclude missing values from rank value calculations.
     '
@@ -36,7 +43,15 @@ Options:
 // exclude_flag: excludes missing values when ranking attributes;
 // purge_flag: remove those instances which are duplicates, after
 //     binning and based on only the attributes to be used;
-// outputfile_path: if specified, saves the classifier to this file.
+// switches_flag: when true and the dataset has exactly 2 classes, excludes
+//     bin counts whose dominant-class switch count exceeds switches_threshold
+//     from the rank value search; attributes where every bin count exceeds
+//     the threshold receive rank value 0;
+// switches_threshold: maximum permitted switches per bin count when
+//     switches_flag is active (default 2);
+// outputfile_path: if specified, saves the classifier to this file;
+// append_settings_flag / settingsfile_path: if set, appends the classifier
+//     parameters as a ClassifierSettings entry to the given settings file.
 // ```
 pub fn make_classifier(opts Options) Classifier {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
@@ -109,6 +124,7 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 				bins:           ra.bins
 				rank_value:     ra.rank_value
 				index:          ra.attribute_index
+				switches:       ra.switches
 			}
 		} else { // ie for discrete attributes
 			attr_string_values = ds.useful_discrete_attributes[ra.attribute_index]
@@ -153,6 +169,9 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	}
 	if opts.outputfile_path != '' {
 		save_json_file[Classifier](cl, opts.outputfile_path)
+	}
+	if opts.append_settings_flag && opts.command == 'make' {
+		append_make_settings_to_file(cl, opts)
 	}
 	return cl
 }

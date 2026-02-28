@@ -135,7 +135,7 @@ pub fn show_classifier(cl Classifier) {
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
 	show_parameters(parameters_for_show)
 	println(g_b('Trained attributes sorted by rank value:'))
-	show_trained_attributes(cl.trained_attributes)
+	show_trained_attributes(cl.trained_attributes, cl.switches_flag && cl.class_counts.len == 2)
 	println(g_b('\nClassifier History:'))
 	println(b_u('Date & Time (UTC)    Event   From file                   Original Instances' +
 		if cl.purge_flag { '  After purging' } else { '' }))
@@ -159,6 +159,10 @@ fn show_parameters(r ParametersForShow) {
 	println('${'Missing values: ':55}' + if r.exclude_flag { 'excluded' } else { 'included' })
 	println('${'Purging of duplicate instances: ':55}${r.purge_flag}')
 	println('${'Prevalence weighting for ranking attributes: ':55}${r.weight_ranking_flag}')
+	println('${'Switches flag for ranking attributes: ':55}${r.switches_flag}')
+	if r.switches_flag {
+		println('${'Switches threshold: ':60}${r.switches_threshold}')
+	}
 	println('${'Prevalence weighting for nearest neighbor counts: ':55}${r.weighting_flag}')
 	println('${'Add instances to balance class prevalences: ':55}${r.balance_prevalences_flag}')
 	if r.balance_prevalences_flag {

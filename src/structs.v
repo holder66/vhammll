@@ -141,7 +141,10 @@ pub mut:
 	bins              int
 	rank_value        f32
 	index             int
-	folds_count       int // for cross-validations, this tracks how many folds use this attribute
+	// switches is the number of dominant-class flips across bins at the
+	// selected bin count; -1 means not applicable (multi-class or discrete).
+	switches    int = -1
+	folds_count int // for cross-validations, this tracks how many folds use this attribute
 }
 
 // Classifier is a fully trained classifier produced by make_classifier().

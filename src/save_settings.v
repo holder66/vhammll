@@ -4,6 +4,19 @@ module vhammll
 
 import os
 
+// append_make_settings_to_file saves the classifier's parameters and load
+// options as a ClassifierSettings entry (without metrics) appended to the
+// settings file specified in opts.settingsfile_path.
+fn append_make_settings_to_file(cl Classifier, opts Options) {
+	mut settings_to_append := ClassifierSettings{
+		Parameters:    cl.Parameters
+		LoadOptions:   cl.LoadOptions
+		datafile_path: os.abs_path(cl.datafile_path)
+	}
+	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)
+	append_json_file(settings_to_append, opts.settingsfile_path)
+}
+
 // append_cross_verify_settings_to_file
 fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) {
 	mut settings_to_append := ClassifierSettings{
