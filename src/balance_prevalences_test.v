@@ -16,7 +16,6 @@ fn testsuite_end() ! {
 }
 
 fn test_evaluate_class_prevalence_imbalance() {
-	// balance_prevalences_threshold has no CLI flag, so we use manual Options
 	mut o := Options{
 		balance_prevalences_threshold: 0.25
 	}
@@ -141,17 +140,14 @@ fn test_verify() ? {
 fn test_cross_validate() ? {
 	mut result := CrossVerifyResult{}
 
-	// balance_prevalences_threshold has no CLI flag, so we combine opts() with manual override
-	mut o := opts('-bp -wr -a 7 -b 8,8 -f 10 -r 10 datasets/UCI/ionosphere.arff', cmd: 'cross')
-	o.balance_prevalences_threshold = 0.9
-	result = cross_validate(o)
+	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 7 -b 8,8 -f 10 -r 10 datasets/UCI/ionosphere.arff',
+		cmd: 'cross'))
 	assert result.total_count == 1305
 	assert result.correct_counts == [675, 630]
 	println(r_b('\nDone with datasets/UCI/ionosphere.arff'))
 
-	o = opts('-bp -wr -a 8 -b 9,9 datasets/UCI/diabetes.arff', cmd: 'cross')
-	o.balance_prevalences_threshold = 0.9
-	result = cross_validate(o)
+	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 8 -b 9,9 datasets/UCI/diabetes.arff',
+		cmd: 'cross'))
 	assert result.total_count == 1036
 	assert result.correct_counts == [530, 370]
 	println(r_b('\nDone with datasets/UCI/diabetes.arff'))
@@ -224,18 +220,12 @@ fn test_multiple_verify() {
 	assert result140_96_92.correct_counts == [20, 12]
 
 	// now, do similarly with balance_prevalences_flag set
-	// balance_prevalences_threshold has no CLI flag, so combine opts() with manual override
-	mut o := opts('-bp -a 1 -b 1,5 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'verify')
-	o.balance_prevalences_threshold = 0.9
-	assert verify(o).correct_counts == [18, 13]
-
-	o = opts('-bp -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'verify')
-	o.balance_prevalences_threshold = 0.9
-	assert verify(o).correct_counts == [17, 14]
-
-	o = opts('-bp -a 2 -b 4,4 -ms ${settingsfile} -t ${testfile} ${datafile}', cmd: 'verify')
-	o.balance_prevalences_threshold = 0.9
-	assert verify(o).correct_counts == [20, 6]
+	assert verify(opts('-bp -bpt 0.9 -a 1 -b 1,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify')).correct_counts == [18, 13]
+	assert verify(opts('-bp -bpt 0.9 -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify')).correct_counts == [17, 14]
+	assert verify(opts('-bp -bpt 0.9 -a 2 -b 4,4 -ms ${settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'verify')).correct_counts == [20, 6]
 
 	// now, multiple classifiers
 	display_file(settingsfile, opts('-bp ${datafile}'))
@@ -251,4 +241,37 @@ fn test_multiple_verify_with_bcw() {
 	testfile := 'datasets/bcw174test'
 
 	explore(opts('-af -b 1,6 -t ${testfile} ${datafile}'))
+}
+
+fn test_bpt_cli_flag() {
+	// leukemia38train: ALL=27, AML=11, ratio ≈ 0.407
+	// Note: load_file always initialises pre_balance_prevalences_class_counts from
+	// class_counts; after balancing triggers, class_counts diverges from it.
+	//
+	// with threshold 0.9: ratio (0.407) < threshold, so balancing IS triggered
+	cl_balanced := make_classifier(opts('-bp -bpt 0.9 -a 3 -b 4,4 datasets/leukemia38train.tab',
+		cmd: 'make'))
+	// original counts preserved in pre_balance_prevalences_class_counts
+	assert cl_balanced.pre_balance_prevalences_class_counts == {
+		'ALL': 27
+		'AML': 11
+	}
+	// class_counts expanded by balancing
+	assert cl_balanced.class_counts != {
+		'ALL': 27
+		'AML': 11
+	}
+	// with threshold 0.3: ratio (0.407) > threshold, so balancing is NOT triggered
+	cl_not_balanced := make_classifier(opts('-bp -bpt 0.3 -a 3 -b 4,4 datasets/leukemia38train.tab',
+		cmd: 'make'))
+	// no balancing: class_counts unchanged and equal to pre_balance_prevalences_class_counts
+	assert cl_not_balanced.class_counts == {
+		'ALL': 27
+		'AML': 11
+	}
+	assert cl_not_balanced.class_counts == cl_not_balanced.pre_balance_prevalences_class_counts
+	// omitting -bpt uses the default threshold of 0.9: result identical to explicit -bpt 0.9
+	cl_default := make_classifier(opts('-bp -a 3 -b 4,4 datasets/leukemia38train.tab',
+		cmd: 'make'))
+	assert cl_default.class_counts == cl_balanced.class_counts
 }

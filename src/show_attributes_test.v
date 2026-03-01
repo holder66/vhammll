@@ -20,6 +20,15 @@ fn test_show_attributes_in_make_classifier() {
 	make_classifier(opts('-s -ea datasets/developer.tab', cmd: 'make'))
 }
 
+fn test_show_attributes_with_switches() {
+	// 2-class dataset with -sw: exercises the show_switches == true branch of
+	// show_trained_attributes, adding a Switches column to the output
+	make_classifier(opts('-sw -s -ea datasets/leukemia38train.tab', cmd: 'make'))
+	// multi-class dataset with -sw: class_counts.len > 2 so show_switches == false;
+	// exercises the guard condition that keeps the column hidden for multi-class
+	make_classifier(opts('-sw -s -ea datasets/iris.tab', cmd: 'make'))
+}
+
 fn test_show_attributes_in_verify() {
 	verify(opts('-s -e -ea -t datasets/mobile_price_classification_test.csv datasets/mobile_price_classification_train.csv',
 		cmd: 'verify'

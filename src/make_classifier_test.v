@@ -59,6 +59,37 @@ fn test_make_classifier() ? {
 	assert cl.prepurge_class_values_len == 34
 }
 
+fn test_switches_stored_in_trained_attributes() {
+	// Without -sw: sentinel value -1 is preserved for all trained attributes
+	cl := make_classifier(opts('-wr -b 2,6 datasets/2_class_developer.tab', cmd: 'make'))
+	for _, ta in cl.trained_attributes {
+		assert ta.switches == -1
+	}
+	// With -sw on a 2-class dataset: continuous attrs get switches >= 0 (loose threshold
+	// of 100 ensures no bin count is excluded), discrete attrs retain -1
+	cl_sw := make_classifier(opts('-sw -swt 100 -wr -b 2,6 datasets/2_class_developer.tab',
+		cmd: 'make'))
+	for _, ta in cl_sw.trained_attributes {
+		if ta.attribute_type == 'C' {
+			assert ta.switches >= 0
+		} else {
+			assert ta.switches == -1
+		}
+	}
+	// With -sw on a multi-class dataset: class_counts.len > 2, so switches stays -1
+	cl_multi := make_classifier(opts('-sw -swt 100 -wr -b 2,6 datasets/iris.tab', cmd: 'make'))
+	for _, ta in cl_multi.trained_attributes {
+		assert ta.switches == -1
+	}
+	// switches values in trained_attributes match what rank_attributes reports
+	// for the same attributes (leukemia38train: all-continuous, 2-class)
+	ranking := rank_attributes(opts('-sw -wr -b 2,6 datasets/leukemia38train.tab', cmd: 'rank'))
+	cl_leuk := make_classifier(opts('-sw -wr -b 2,6 datasets/leukemia38train.tab', cmd: 'make'))
+	for ra in ranking.array_of_ranked_attributes {
+		assert cl_leuk.trained_attributes[ra.attribute_name].switches == ra.switches
+	}
+}
+
 fn test_make_translation_table() {
 	mut array := ['Montreal', 'Ottawa', 'Markham', 'Oakville', 'Oakville', 'Laval', 'Laval', 'Laval',
 		'Laval', 'Laval', 'Laval', 'Laval', 'Laval']
