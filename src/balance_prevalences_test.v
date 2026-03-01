@@ -141,13 +141,15 @@ fn test_cross_validate() ? {
 	mut result := CrossVerifyResult{}
 
 	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 7 -b 8,8 -f 10 -r 10 datasets/UCI/ionosphere.arff',
-		cmd: 'cross'))
+		cmd: 'cross'
+	))
 	assert result.total_count == 1305
 	assert result.correct_counts == [675, 630]
 	println(r_b('\nDone with datasets/UCI/ionosphere.arff'))
 
 	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 8 -b 9,9 datasets/UCI/diabetes.arff',
-		cmd: 'cross'))
+		cmd: 'cross'
+	))
 	assert result.total_count == 1036
 	assert result.correct_counts == [530, 370]
 	println(r_b('\nDone with datasets/UCI/diabetes.arff'))
@@ -221,11 +223,14 @@ fn test_multiple_verify() {
 
 	// now, do similarly with balance_prevalences_flag set
 	assert verify(opts('-bp -bpt 0.9 -a 1 -b 1,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
-		cmd: 'verify')).correct_counts == [18, 13]
+		cmd: 'verify'
+	)).correct_counts == [18, 13]
 	assert verify(opts('-bp -bpt 0.9 -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
-		cmd: 'verify')).correct_counts == [17, 14]
+		cmd: 'verify'
+	)).correct_counts == [17, 14]
 	assert verify(opts('-bp -bpt 0.9 -a 2 -b 4,4 -ms ${settingsfile} -t ${testfile} ${datafile}',
-		cmd: 'verify')).correct_counts == [20, 6]
+		cmd: 'verify'
+	)).correct_counts == [20, 6]
 
 	// now, multiple classifiers
 	display_file(settingsfile, opts('-bp ${datafile}'))
@@ -250,7 +255,8 @@ fn test_bpt_cli_flag() {
 	//
 	// with threshold 0.9: ratio (0.407) < threshold, so balancing IS triggered
 	cl_balanced := make_classifier(opts('-bp -bpt 0.9 -a 3 -b 4,4 datasets/leukemia38train.tab',
-		cmd: 'make'))
+		cmd: 'make'
+	))
 	// original counts preserved in pre_balance_prevalences_class_counts
 	assert cl_balanced.pre_balance_prevalences_class_counts == {
 		'ALL': 27
@@ -263,7 +269,8 @@ fn test_bpt_cli_flag() {
 	}
 	// with threshold 0.3: ratio (0.407) > threshold, so balancing is NOT triggered
 	cl_not_balanced := make_classifier(opts('-bp -bpt 0.3 -a 3 -b 4,4 datasets/leukemia38train.tab',
-		cmd: 'make'))
+		cmd: 'make'
+	))
 	// no balancing: class_counts unchanged and equal to pre_balance_prevalences_class_counts
 	assert cl_not_balanced.class_counts == {
 		'ALL': 27
@@ -271,7 +278,6 @@ fn test_bpt_cli_flag() {
 	}
 	assert cl_not_balanced.class_counts == cl_not_balanced.pre_balance_prevalences_class_counts
 	// omitting -bpt uses the default threshold of 0.9: result identical to explicit -bpt 0.9
-	cl_default := make_classifier(opts('-bp -a 3 -b 4,4 datasets/leukemia38train.tab',
-		cmd: 'make'))
+	cl_default := make_classifier(opts('-bp -a 3 -b 4,4 datasets/leukemia38train.tab', cmd: 'make'))
 	assert cl_default.class_counts == cl_balanced.class_counts
 }

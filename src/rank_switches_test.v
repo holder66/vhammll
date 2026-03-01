@@ -81,8 +81,7 @@ fn test_count_switches_weighting() {
 fn test_rank_attributes_no_switches_flag() {
 	// Without -sw the old algorithm is used: switches fields stay at their
 	// default sentinel value (-1) and switches_array is empty for all attributes.
-	result := rank_attributes(opts('-wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'rank'))
+	result := rank_attributes(opts('-wr -b 2,6 datasets/2_class_developer.tab', cmd: 'rank'))
 	assert result.switches_flag == false
 	for attr in result.array_of_ranked_attributes {
 		assert attr.switches == -1
@@ -97,8 +96,7 @@ fn test_rank_attributes_switches_flag_two_class() {
 	//     bin count exceeded the threshold
 	//   • discrete attributes remain at -1 / empty
 	// Bin range 2..6 → 5 bin counts tested.
-	result := rank_attributes(opts('-sw -wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'rank'))
+	result := rank_attributes(opts('-sw -wr -b 2,6 datasets/2_class_developer.tab', cmd: 'rank'))
 	assert result.switches_flag == true
 	assert result.switches_threshold == 2 // default
 	for attr in result.array_of_ranked_attributes {
@@ -126,9 +124,9 @@ fn test_rank_attributes_switches_loose_threshold_matches_old() {
 	// makes every bin count eligible, so rank values must equal the old algorithm.
 	// Upper limit is 6, max switches for 6 bins = 5; -swt 16 is clamped to 6.
 	result_loose := rank_attributes(opts('-sw -swt 16 -wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'rank'))
-	result_old := rank_attributes(opts('-wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'rank'))
+		cmd: 'rank'
+	))
+	result_old := rank_attributes(opts('-wr -b 2,6 datasets/2_class_developer.tab', cmd: 'rank'))
 	assert result_loose.array_of_ranked_attributes.len == result_old.array_of_ranked_attributes.len
 	for i, attr in result_loose.array_of_ranked_attributes {
 		assert attr.rank_value == result_old.array_of_ranked_attributes[i].rank_value
@@ -145,7 +143,8 @@ fn test_rank_attributes_switches_threshold_one() {
 	// With threshold=1 (strict), no bin count with more than 1 switch may be
 	// selected; any attribute that does receive a switches value must have it ≤ 1.
 	result := rank_attributes(opts('-sw -swt 1 -wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'rank'))
+		cmd: 'rank'
+	))
 	assert result.switches_threshold == 1
 	for attr in result.array_of_ranked_attributes {
 		if attr.attribute_type == 'C' && attr.switches != -1 {
@@ -156,8 +155,7 @@ fn test_rank_attributes_switches_threshold_one() {
 
 fn test_rank_attributes_switches_threshold_stored_in_result() {
 	// The threshold value used is recorded in RankingResult for display.
-	result := rank_attributes(opts('-sw -swt 3 -b 2,8 datasets/2_class_developer.tab',
-		cmd: 'rank'))
+	result := rank_attributes(opts('-sw -swt 3 -b 2,8 datasets/2_class_developer.tab', cmd: 'rank'))
 	assert result.switches_flag == true
 	assert result.switches_threshold == 3
 }

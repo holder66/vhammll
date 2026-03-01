@@ -144,7 +144,8 @@ pub fn display_file(path string, in_opts Options) {
 						opts.classifiers)
 					for i, idx in classifiers_array {
 						println(g_b('Trained attributes for classifier ${opts.classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
-						show_trained_attributes(idx.trained_attributes, idx.switches_flag && idx.class_counts.len == 2)
+						show_trained_attributes(idx.trained_attributes, idx.switches_flag
+							&& idx.class_counts.len == 2)
 					}
 				}
 			}

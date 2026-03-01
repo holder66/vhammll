@@ -68,7 +68,8 @@ fn test_switches_stored_in_trained_attributes() {
 	// With -sw on a 2-class dataset: continuous attrs get switches >= 0 (loose threshold
 	// of 100 ensures no bin count is excluded), discrete attrs retain -1
 	cl_sw := make_classifier(opts('-sw -swt 100 -wr -b 2,6 datasets/2_class_developer.tab',
-		cmd: 'make'))
+		cmd: 'make'
+	))
 	for _, ta in cl_sw.trained_attributes {
 		if ta.attribute_type == 'C' {
 			assert ta.switches >= 0

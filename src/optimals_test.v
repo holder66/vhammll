@@ -57,8 +57,6 @@ fn test_purge_duplicate_settings() {
 // 	dump(options)
 // }
 
-
-
 // fn test_optimals_with_purge() {
 // 	// create a settings file by doing an explore on bcwtrain and test
 // 	datafile := 'datasets/bcw350train'

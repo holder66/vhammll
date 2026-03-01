@@ -222,17 +222,17 @@ pub mut:
 	// counts whose switch count exceeds switches_threshold are excluded from
 	// the search for the maximum rank value; attributes where every bin count
 	// exceeds the threshold receive rank value 0 (treated as noise).
-	switches_flag        bool
+	switches_flag bool
 	// switches_threshold sets the maximum permitted number of dominant-class
 	// switches per bin count when switches_flag is active (-swt). Valid values
 	// are 1 through the upper binning limit; default 2 allows U-shaped /
 	// inverted-U dose-response curves while blocking likely noise.
-	switches_threshold   int = 2
-	one_vs_rest_flag     bool
-	multiple_flag        bool
-	folds                int
-	repetitions          int
-	random_pick          bool
+	switches_threshold int = 2
+	one_vs_rest_flag   bool
+	multiple_flag      bool
+	folds              int
+	repetitions        int
+	random_pick        bool
 	// balance_prevalences_flag bool
 	maximum_hamming_distance int
 }

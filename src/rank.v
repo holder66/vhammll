@@ -102,14 +102,14 @@ Options:
 pub fn rank_attributes(opts Options) RankingResult {
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut result := RankingResult{
-		Class:               ds.Class
-		LoadOptions:         ds.LoadOptions
-		DisplaySettings:     opts.DisplaySettings
-		path:                ds.path
-		exclude_flag:        opts.exclude_flag
-		weight_ranking_flag: opts.weight_ranking_flag
-		switches_flag:       opts.switches_flag
-		switches_threshold:  opts.switches_threshold
+		Class:                      ds.Class
+		LoadOptions:                ds.LoadOptions
+		DisplaySettings:            opts.DisplaySettings
+		path:                       ds.path
+		exclude_flag:               opts.exclude_flag
+		weight_ranking_flag:        opts.weight_ranking_flag
+		switches_flag:              opts.switches_flag
+		switches_threshold:         opts.switches_threshold
 		array_of_ranked_attributes: []RankedAttribute{cap: ds.useful_discrete_attributes.len +
 			ds.useful_continuous_attributes.len}
 	}

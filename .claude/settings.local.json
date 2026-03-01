@@ -5,7 +5,9 @@
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(v:*)",
+      "Bash(/tmp/rank_test_dbg:*)"
     ]
   }
 }
