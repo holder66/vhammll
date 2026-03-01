@@ -41,6 +41,9 @@ both the classification and the verification datafile.
      are specified;
 -m#: followed by a list of which classifiers to apply in a
      multiple classification run (zero-indexed);
+-af --all-flags: when used with -m (multiple classifiers), iterates
+    over all combinations of multi-strategy (-mc/-mt) and -ma settings
+    (3 strategies × 2 -ma values = 6 rows) and prints results side by side;
 -w --weight, weight the number of nearest neighbor counts
     by class prevalences when classifying;
 -wr, when ranking attributes, weight contributions by class prevalences.
@@ -54,6 +57,9 @@ both the classification and the verification datafile.
 // Optional (also see `make_classifier.v` for options in training a classifier)
 // weighting_flag: nearest neighbor counts are weighted by
 // 	class prevalences.
+// traverse_all_flags: when used with multiple_flag, iterates over all
+//  combinations of multi_strategy and break_on_all_flag and prints each
+//  result side by side (3 strategies × 2 -ma values = 6 rows).
 // Output options:
 // show_flag: display results on the console;
 // expanded_flag: display additional information on the console, including

@@ -57,6 +57,9 @@ Options:
        are specified;
   -m#: followed by a list of which classifiers to apply in a
        multiple classification run (zero-indexed);
+  -af --all-flags: when used with -m (multiple classifiers), iterates
+      over all combinations of multi-strategy (-mc/-mt) and -ma settings
+      (3 strategies × 2 -ma values = 6 rows) and prints results side by side;
   -p --purge: remove instances which are duplicates after binning;
   -r --reps: number of repetitions; if > 1, a random selection of
       instances to be included in each fold will be applied;
@@ -99,6 +102,9 @@ fn multi_classify_balance_prevalence(opts Options) bool {
 // balance_prevalences_flag / balance_prevalences_threshold: when set,
 //  duplicates minority-class instances until prevalences are balanced;
 //  threshold is the min/max ratio below which balancing triggers (default 0.9).
+// traverse_all_flags: when used with multiple_flag, iterates over all
+//  combinations of multi_strategy and break_on_all_flag and prints each
+//  result side by side (3 strategies × 2 -ma values = 6 rows).
 // Output options:
 // show_flag: prints results to the console;
 // expanded_flag: prints additional information to the console, including
