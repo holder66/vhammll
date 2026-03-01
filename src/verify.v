@@ -177,7 +177,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 			verify_result.actual_classes << classify_result.labeled_class
 			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		}
-	} else {	// ie not concurrency or not multiple classifiers
+	} else { // ie not concurrency or not multiple classifiers
 		for i, test_instance in case_array {
 			classify_result = classify_case(cl, test_instance, opts)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
@@ -197,7 +197,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// verify_result = summarize_results(1, mut verify_result)
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
-	
+
 	// } else { // ie, asking for multiple classifiers
 	// 	mut classifier_array := []Classifier{}
 	// 	mut instances_to_be_classified := [][][]u8{}
