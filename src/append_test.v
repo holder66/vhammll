@@ -39,7 +39,6 @@ fn test_append() ! {
 	// saving the extended classifier
 	opts.outputfile_path = 'tempfolders/tempfolder_append/extclassifierfile'
 	tcl = append_instances(cl, val_results, opts)
-	// dump(tcl.history.len)
 	assert tcl.class_counts == {
 		'f': 9
 		'm': 7

@@ -151,6 +151,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	} else {
 		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
 	}
+	show_classifier(cl)
 	verify_result.trained_attribute_maps_array << cl.trained_attributes
 	// verify_result.command = 'verify' // override the 'make' command from cl.Parameters
 	// massage each case in the test dataset according to the
@@ -194,7 +195,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
-	// verify_result = summarize_results(1, mut verify_result)
+	verify_result = summarize_results(1, mut verify_result)
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
 
