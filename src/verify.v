@@ -81,7 +81,7 @@ pub fn verify(opts Options) CrossVerifyResult {
 			af_opts.break_on_all_flag = ma
 			for strategy in strategies {
 				af_opts.multi_strategy = strategy
-				af_result = run_verify(af_opts)
+				af_result = multi_verify(af_opts)
 				println('corrects: ${af_result.correct_counts} balanced accuracy: ${af_result.balanced_accuracy:-6.2f} MCC: ${af_result.mcc:-7.3f} sens: ${af_result.sens:-7.3f} spec: ${af_result.spec:-4.3f} ma ${ma} strategy ${strategy} ${af_opts.classifiers}')
 			}
 		}
@@ -177,7 +177,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 			verify_result.actual_classes << classify_result.labeled_class
 			verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		}
-	} else {
+	} else {	// ie not concurrency or not multiple classifiers
 		for i, test_instance in case_array {
 			classify_result = classify_case(cl, test_instance, opts)
 			// result.inferred_classes << classify_case(cl, test_instance, opts).inferred_class
@@ -194,10 +194,10 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// if opts.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('result in classify_to_verify(): ${result}')
 	// }
-	verify_result = summarize_results(1, mut verify_result)
+	// verify_result = summarize_results(1, mut verify_result)
 	// if disp.verbose_flag && !opts.multiple_flag && opts.command == 'verify' {
 	// 	println('summarize_result: ${result}')
-	// }
+	
 	// } else { // ie, asking for multiple classifiers
 	// 	mut classifier_array := []Classifier{}
 	// 	mut instances_to_be_classified := [][][]u8{}
