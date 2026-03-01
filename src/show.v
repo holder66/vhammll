@@ -241,15 +241,17 @@ const headers = {
 	5:  'Weighting of NN counts:'
 	6:  'Balance prevalences:'
 	7:  'Bal.prev. threshold:'
-	8:  'Purge duplicate cases:'
-	9:  'True / correct counts:'
-	10: 'False / incorrect counts:'
-	11: 'Raw accuracy:'
-	12: 'Balanced accuracy:'
-	13: 'Matthews Correlation Coef:'
-	14: 'Sensitivity:'
-	15: 'Specificity:'
-	16: 'Maximum Hamming Distance:'
+	8:  'Switches metric:'
+	9:  'Switches threshold:'
+	10: 'Purge duplicate cases:'
+	11: 'True / correct counts:'
+	12: 'False / incorrect counts:'
+	13: 'Raw accuracy:'
+	14: 'Balanced accuracy:'
+	15: 'Matthews Correlation Coef:'
+	16: 'Sensitivity:'
+	17: 'Specificity:'
+	18: 'Maximum Hamming Distance:'
 }
 
 const attribute_headings = {
@@ -313,22 +315,26 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 		if d.balance_prevalences_flag {
 			row_data[7] += '${d.balance_prevalences_threshold:-13}' + pad(col_width - 13)
 		}
-		row_data[8] += '${a.purge_flag:-13}' + pad(col_width - 13)
-		if c.class_counts_int.len > 2 {
-			row_data[9] += corrects + pad(col_width - corrects.len)
-			row_data[10] += incorrects + pad(col_width - incorrects.len)
-			row_data[11] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[12] += '${c.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
-		} else {
-			row_data[9] += '${b.t_p:-6} ${b.t_n:-6}' + pad(col_width - 13)
-			row_data[10] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
-			row_data[11] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[12] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[13] += '${b.mcc:-4.3f}        ' + pad(col_width - 13)
-			row_data[14] += '${b.sens:-4.3f}        ' + pad(col_width - 13)
-			row_data[15] += '${b.spec:-4.3f}        ' + pad(col_width - 13)
+		row_data[8] += '${a.switches_flag:-13}' + pad(col_width - 13)
+		if a.switches_flag {
+			row_data[9] += '${a.switches_threshold:-13}' + pad(col_width - 13)
 		}
-		row_data[16] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
+		row_data[10] += '${a.purge_flag:-13}' + pad(col_width - 13)
+		if c.class_counts_int.len > 2 {
+			row_data[11] += corrects + pad(col_width - corrects.len)
+			row_data[12] += incorrects + pad(col_width - incorrects.len)
+			row_data[13] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[14] += '${c.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
+		} else {
+			row_data[11] += '${b.t_p:-6} ${b.t_n:-6}' + pad(col_width - 13)
+			row_data[12] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
+			row_data[13] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[14] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[15] += '${b.mcc:-4.3f}        ' + pad(col_width - 13)
+			row_data[16] += '${b.sens:-4.3f}        ' + pad(col_width - 13)
+			row_data[17] += '${b.spec:-4.3f}        ' + pad(col_width - 13)
+		}
+		row_data[18] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
 	for i, row in row_data {
 		if row != '' {
