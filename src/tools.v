@@ -354,13 +354,16 @@ fn nan[T]() T {
 }
 
 // is_nan reports whether the f32 or f64 value f is Not-a-Number.
+// Uses bit-level comparison to work correctly under all C optimisation
+// levels; Clang/GCC with -O3 may fold `f != f` to `false`.
 fn is_nan[T](f T) bool {
-	$if fast_math {
-		if f64_bits(f) == u64(0x7FF8000000000001) || f32_bits(f) == u32(0x7FF80001) {
-			return true
-		}
+	$if T is f32 {
+		return (f32_bits(f) & u32(0x7FFFFFFF)) > u32(0x7F800000)
 	}
-	return f != f
+	$if T is f64 {
+		return (f64_bits(f) & u64(0x7FFFFFFFFFFFFFFF)) > u64(0x7FF0000000000000)
+	}
+	return false
 }
 
 // array_min returns the minimum value in the array
