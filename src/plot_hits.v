@@ -1,6 +1,7 @@
 module vhammll
 
 import vsl.plot
+import time
 
 // plot-hits generates a series of scatterplots with smoothed lines of the
 // number of hits per bin number,over a range of bin numbers,
@@ -59,5 +60,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 			annotations: [annotation1]
 		)
 		plt.show() or { panic(err) }
+		// the time delay is to prevent a "page unable to load" error
+		time.sleep(1 * time.second)
 	}
 }
