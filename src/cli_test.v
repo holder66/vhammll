@@ -39,19 +39,19 @@ fn testsuite_end() ? {
 // 	cli(args: ['rank'])!
 // }
 
-// fn test_explore() {
-// 	opts := CliOptions{}
-// 	mut r := os.execute_or_panic('./temp explore --help')
-// 	dump(r)
-// 	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
-// 	dump(r)
-// 	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-// 	dump(r)
-// 	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
-// 	dump(r)
-// 	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
-// 	dump(r)
-// }
+fn test_explore() {
+	opts := CliOptions{}
+	mut r := os.execute_or_panic('./temp explore --help')
+	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class')
+	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
+	assert r.output.contains('Totals                      150     142 (accuracy: raw: 94.67% balanced: 94.67%)')
+	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
+	assert r.output.contains('2  1 - 6      13     1    19     1   0.929  0.950  0.929  0.950     0.929         94.12%    93.93%   0.87')
+	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
+	assert r.output.contains('MCC (Matthews Correlation Coefficient):   0.908 [225, 16, 445, 13] using 9 attribute')
+	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
+	assert r.output.contains('reptile                           5       4 ( 80.00%)        1.000     0.800       0.889')
+}
 
 // fn test_verify() {
 // 	mut r := os.execute_or_panic('./temp verify -h'))

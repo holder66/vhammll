@@ -77,11 +77,43 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	result0 := verify(opts('-ma -bp -wr -a 3 -b 6,6 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result0.confusion_matrix_map == {'m': {'m': 2.0, 'X': 1.0, 'f': 1.0}, 'X': {'m': 0.0, 'X': 1.0, 'f': 0.0}, 'f': {'m': 1.0, 'X': 0.0, 'f': 0.0}}
+	assert result0.confusion_matrix_map == {
+		'm': {
+			'm': 2.0
+			'X': 1.0
+			'f': 1.0
+		}
+		'X': {
+			'm': 0.0
+			'X': 1.0
+			'f': 0.0
+		}
+		'f': {
+			'm': 1.0
+			'X': 0.0
+			'f': 0.0
+		}
+	}
 	result1 := verify(opts('-ma -a 3 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result1.confusion_matrix_map == {'m': {'m': 2.0, 'X': 2.0, 'f': 0.0}, 'X': {'m': 0.0, 'X': 1.0, 'f': 0.0}, 'f': {'m': 1.0, 'X': 0.0, 'f': 0.0}}
+	assert result1.confusion_matrix_map == {
+		'm': {
+			'm': 2.0
+			'X': 2.0
+			'f': 0.0
+		}
+		'X': {
+			'm': 0.0
+			'X': 1.0
+			'f': 0.0
+		}
+		'f': {
+			'm': 1.0
+			'X': 0.0
+			'f': 0.0
+		}
+	}
 	// verify that the settings file was correctly saved, and is the right length
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
@@ -91,5 +123,9 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	result = verify(opts('-af -m ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result.correct_inferences == {'m': 1, 'f': 0, 'X': 1}
+	assert result.correct_inferences == {
+		'm': 1
+		'f': 0
+		'X': 1
+	}
 }
