@@ -12,9 +12,9 @@ fn testsuite_begin() ? {
 	os.mkdir_all('tempfolders/tempfolder_heart_statlog')!
 }
 
-// fn testsuite_end() ? {
-// 	os.rmdir_all('tempfolders/tempfolder_heart_statlog')!
-// }
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolders/tempfolder_heart_statlog')!
+}
 
 fn test_heart_statlog() ? {
 	mut datafile := os.join_path(os.home_dir(), '.vmodules/holder66/vhammll', 'datasets/UCI/heart-statlog.arff')

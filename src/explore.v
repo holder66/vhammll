@@ -115,7 +115,7 @@ pub fn explore(opts Options) ExploreResult {
 				}
 			}
 		}
-		// to do the explore over balancing prevalences, first check that the prevalende
+		// to do the explore over balancing prevalences, first check that the prevalence
 		// imbalance exceeds the threshold
 		if evaluate_class_prevalence_imbalance(load_file(af_opts.datafile_path), opts) {
 			af_opts.uniform_bins = false
@@ -202,7 +202,6 @@ fn run_explore(opts Options) ExploreResult {
 	results.binning = get_binning(ex_opts.bins)
 	binning := results.binning
 	if opts.command == 'explore' && (opts.show_flag || opts.expanded_flag) {
-		// show_explore_header(pos_neg_classes, binning, opts)
 		show_explore_header(results, results.DisplaySettings)
 	}
 	mut atts := results.start

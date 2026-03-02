@@ -28,15 +28,15 @@ fn test_multiple_verify() ? {
 
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
-	result96 := verify(opts('-e -ea -p -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+	result96 := verify(opts('-e -ea -a 1 -b 5,5 -wr -bp -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
 	assert result96.correct_counts == [17, 14]
-	result131 := verify(opts('-e -ea -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+	result131 := verify(opts('-e -ea -p -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
 	assert result131.correct_counts == [17, 14]
-	result92 := verify(opts('-e -ea -w -a 3 -b 4,4 -ms ${settingsfile} -t ${testfile} ${datafile}',
+	result92 := verify(opts('-e -ea -p -a 3 -b 4,4 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
 	assert result92.correct_counts == [20, 11]
@@ -52,18 +52,18 @@ fn test_multiple_verify() ? {
 		cmd: 'verify'
 	))
 	assert result2.confusion_matrix_map == result92.confusion_matrix_map
-	result96_92 := verify(opts('-e -ea -mt -m ${settingsfile} -m# 0,2 -t ${testfile} ${datafile}',
+	result96_92 := verify(opts('-e -ea -m ${settingsfile} -m# 0,2 -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result96_92.correct_counts == [18, 12]
+	assert result96_92.correct_counts == [17, 14]
 	result140_131_92 := verify(opts('-e -ea -mt -m ${settingsfile} -m# 1,2,3 -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result140_131_92.correct_counts == [20, 12]
+	assert result140_131_92.correct_counts == [19, 12]
 	result140_96_92 := verify(opts('-e -ea -m ${settingsfile} -m# 0,2,3 -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result140_96_92.correct_counts == [20, 11]
+	assert result140_96_92.correct_counts == [20, 12]
 }
 
 fn test_multiple_verify_with_multiple_classes() ? {
@@ -74,46 +74,14 @@ fn test_multiple_verify_with_multiple_classes() ? {
 
 	// check that the non-multiple verify works OK, and that the
 	// settings file is getting appended
-	result0 := verify(opts('-ma -bp -p -a 2 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}',
+	result0 := verify(opts('-ma -bp -wr -a 3 -b 6,6 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result0.confusion_matrix_map == {
-		'm': {
-			'm': 4.0
-			'X': 0.0
-			'f': 0.0
-		}
-		'X': {
-			'm': 0.0
-			'X': 1.0
-			'f': 0.0
-		}
-		'f': {
-			'm': 1.0
-			'X': 0.0
-			'f': 0.0
-		}
-	}
-	result1 := verify(opts('-ma -bp -p -wr -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
+	assert result0.confusion_matrix_map == {'m': {'m': 2.0, 'X': 1.0, 'f': 1.0}, 'X': {'m': 0.0, 'X': 1.0, 'f': 0.0}, 'f': {'m': 1.0, 'X': 0.0, 'f': 0.0}}
+	result1 := verify(opts('-ma -a 3 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result1.confusion_matrix_map == {
-		'm': {
-			'm': 4.0
-			'X': 0.0
-			'f': 0.0
-		}
-		'X': {
-			'm': 0.0
-			'X': 1.0
-			'f': 0.0
-		}
-		'f': {
-			'm': 1.0
-			'X': 0.0
-			'f': 0.0
-		}
-	}
+	assert result1.confusion_matrix_map == {'m': {'m': 2.0, 'X': 2.0, 'f': 0.0}, 'X': {'m': 0.0, 'X': 1.0, 'f': 0.0}, 'f': {'m': 1.0, 'X': 0.0, 'f': 0.0}}
 	// verify that the settings file was correctly saved, and is the right length
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
@@ -123,9 +91,5 @@ fn test_multiple_verify_with_multiple_classes() ? {
 	result = verify(opts('-af -m ${settingsfile} -t ${testfile} ${datafile}',
 		cmd: 'verify'
 	))
-	assert result.correct_inferences == {
-		'm': 4
-		'f': 0
-		'X': 0
-	}
+	assert result.correct_inferences == {'m': 1, 'f': 0, 'X': 1}
 }

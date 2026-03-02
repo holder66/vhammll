@@ -238,7 +238,6 @@ pub fn cli(cli_options CliOptions) ! {
 	if opts.help_flag {
 		println(show_help(opts))
 	} else {
-		opts.show_flag = true
 		command := opts.command
 		match command {
 			'analyze' { analyze(opts) }

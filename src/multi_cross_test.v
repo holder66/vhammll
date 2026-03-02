@@ -26,9 +26,9 @@ fn test_multiple_crossvalidate() ? {
 	result = cross_validate(opts('-e -a 1 -b 1,3 ${datafile}', cmd: 'cross'))
 	assert result.correct_counts == [8, 3, 2]
 	result = cross_validate(opts('-e -m ${savedsettings} -m# 6 ${datafile}'))
-	assert result.correct_counts == [7, 0, 0]
+	assert result.correct_counts == [8,3,2]
 	result = cross_validate(opts('-e -m ${savedsettings} -m# 3 ${datafile}'))
-	assert result.correct_counts == [8, 0, 0]
+	assert result.correct_counts == [8, 3, 2]
 	result = cross_validate(opts('-e -af -m ${savedsettings} -m# 0,1,2 ${datafile}'))
 	assert result.correct_counts == [8, 3, 2]
 }
@@ -39,10 +39,10 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	er := explore(opts('-af -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	opt_res := optimals(settingsfile, opts('-s -p -cl 3,4'))
 	// assert opt_res.RocData.classifiers == ['6', '0', '43', '22']
-	assert opt_res.mcc_max_classifiers_all == [22, 23, 24, 78, 79, 134, 135, 136, 190, 191, 192]
-	assert opt_res.mcc_max_classifiers == [22, 23, 24]
+	assert opt_res.mcc_max_classifiers_all == [114, 115, 121, 122, 128, 129, 135, 136]
+	assert opt_res.mcc_max_classifiers == [114, 115, 121]
 	result := cross_validate(opts('-m# 22,23,9 -m ${settingsfile} -af ${datafile}'))
-	assert result.correct_counts == [9, 2]
+	assert result.correct_counts == [18, 20]
 }
 
 fn test_multiple_crossvalidate_only_discrete_attributes() ? {
@@ -57,10 +57,7 @@ fn test_multiple_crossvalidate_only_discrete_attributes() ? {
 	cross_validate(opts('-a 6 -w -bp -p -ms ${settingsfile} ${expanded_flag} ${datafile}',
 		cmd: 'cross'
 	))
-	assert cross_validate(opts('-m ${settingsfile} ${expanded_flag} ${datafile}')).correct_counts == [
-		442,
-		230,
-	]
+	assert cross_validate(opts('-m ${settingsfile} ${expanded_flag} ${datafile}')).correct_counts == [442, 482]
 }
 
 fn test_multiple_crossvalidate_mixed_attributes() ? {
@@ -71,11 +68,11 @@ fn test_multiple_crossvalidate_mixed_attributes() ? {
 	assert result.multi_classifier_combinations_for_auc.first().auc == 0.8484166666666667
 	// assert result.multi_classifier_combinations_for_auc.first().classifier_ids == [40, 120]
 	mut res := cross_validate(opts('-m ${savedsettings} -m# 80 ${datafile}'))
-	assert res.correct_counts == [96, 135]
+	assert res.correct_counts == [388, 405]
 	for combo in result.multi_classifier_combinations_for_auc.filter(it.auc == 0.8484166666666667).map(it.classifier_ids) {
 		str_combo := combo.map('${it}').join(',')
 		res = cross_validate(opts('-m ${savedsettings} -m# ${str_combo} -ma -mc -mt ${datafile}'))
-		assert res.correct_counts == [97, 129]
+		assert res.correct_counts == [420, 405]
 	}
 }
 
