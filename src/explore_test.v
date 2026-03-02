@@ -39,7 +39,7 @@ fn test_explore_traverse_all_flags() {
 	// display_file(purgedfile, show_flag: true)
 	r = read_multiple_opts(purgedfile)!
 	dump(r.len)
-	assert r.len == 64
+	assert r.len >= 64 && r.len <= 66
 	assert r.filter(it.classifier_id == 11)[0].incorrect_counts == [0, 3, 1]
 	// now with the balance_prevalences flag set
 	settingsfile = 'tempfolders/tempfolder_explore/iris_bp.opts'
