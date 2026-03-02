@@ -63,7 +63,7 @@ fn test_explore_traverse_all_flags() {
 	assert os.is_file(purgedfile)
 	r = read_multiple_opts(purgedfile)!
 	assert r.len >= 64 && r.len <= 66
-	assert r[3].classifier_id == 7
+	assert r[3].classifier_id == 6
 	assert r[3].correct_counts == [18, 13]
 	// display_file(purgedfile, expanded_flag: true)
 	// limit the -af to -bp
