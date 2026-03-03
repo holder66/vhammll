@@ -12,7 +12,6 @@ import regex
 // ```sh
 // ds := load_file('datasets/iris.tab')
 // ```
-
 pub fn load_file(path string, opts LoadOptions) Dataset {
 	mut ds := Dataset{}
 	ds = match file_type(path) {
