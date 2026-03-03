@@ -1,0 +1,56 @@
+name: Generate and Deploy Docs
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
+      - name: Install dependencies
+        run: v install
+
+      - name: Generate HTML docs
+        run: |
+          mkdir -p _site
+          v doc -f html -o _site src/
+          # v doc names the file after the module; serve it as index.html
+          html=$(ls _site/*.html 2>/dev/null | head -1)
+          if [ -n "$html" ] && [ "$(basename "$html")" != "index.html" ]; then
+            cp "$html" _site/index.html
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
