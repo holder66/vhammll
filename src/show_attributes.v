@@ -1,8 +1,5 @@
 module vhammll
 
-// import arrays
-// import strings
-
 fn show_classifier_attributes(cl Classifier) {
 	show_trained_attributes(cl.trained_attributes, cl.switches_flag && cl.class_counts.len == 2)
 }

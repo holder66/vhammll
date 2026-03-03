@@ -1,4 +1,8 @@
 // show.v
+module vhammll
+
+import strings
+
 // in order to establish style consistency, aim to use magenta underline
 // for the first line of each output, and blue underline for table headings.
 // use bold green for subheadings
@@ -8,12 +12,6 @@
 //
 // this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
 // best explanation of multiclass metrics and how they're calculated
-
-module vhammll
-
-// import arrays
-import strings
-// import math
 
 // pad
 fn pad(l int) string {

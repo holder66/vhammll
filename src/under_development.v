@@ -1,8 +1,8 @@
 // under_development.v
+module vhammll
+
 // This file holds structs and functions that are not yet wired into
 // the active codebase but are retained for future use.
-
-module vhammll
 
 // OneVsRestClassifier holds metadata for a one-vs-rest classification
 // strategy, used when classifying multiclass problems by training a

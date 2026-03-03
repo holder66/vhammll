@@ -1,12 +1,10 @@
 // metrics.v
-
-// this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
-// best explanation of multiclass metrics and how they're calculated
-
 module vhammll
 
 import arrays
 import math
+// this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
+// best explanation of multiclass metrics and how they're calculated
 
 // append_metric
 fn (mut m Metrics) append_metric(p f64, r f64, f1 f64) Metrics {

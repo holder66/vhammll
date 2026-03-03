@@ -1,19 +1,8 @@
 // show_explore.v
-// in order to establish style consistency, aim to use magenta underline
-// for the first line of each output, and blue underline for table headings.
-// use bold green for subheadings
-// ie, println(m_u('\nfirst line')
-// println(b_u('table header')
-// println(g_b('subheading')
-//
-// this website https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-score-ebe8b2c2ca1 gives the
-// best explanation of multiclass metrics and how they're calculated
 
 module vhammll
 
 import arrays
-// import strings
-// import math
 
 // show_expanded_explore_result
 fn show_expanded_explore_result(result CrossVerifyResult, opts Options) {

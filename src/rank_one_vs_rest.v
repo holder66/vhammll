@@ -1,8 +1,6 @@
 // rank_one_vs_rest.v
 module vhammll
 
-// import math
-
 // rank_one_vs_rest ranks the dataset's attributes using a one-vs-rest
 // strategy: for each class, instances of that class are treated as
 // positives and all other instances as negatives. Attributes are

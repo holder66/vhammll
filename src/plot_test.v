@@ -1,7 +1,4 @@
 // plot_test.v
-// for some reason, we are unable to actually generate plots from this code.
-// It seems using the vhamm CLI is the only way to have plots actually show up.
-
 module vhammll
 
 import os

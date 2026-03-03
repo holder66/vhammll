@@ -2,7 +2,6 @@
 module vhammll
 
 import os
-// import x.json2
 import json
 
 const display_help = '

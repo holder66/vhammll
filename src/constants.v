@@ -1,2 +1,0 @@
-// constants.v
-module vhammll
