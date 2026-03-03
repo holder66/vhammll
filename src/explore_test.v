@@ -1,8 +1,6 @@
-// explore_test.v
 module vhammll
 
 import os
-// import vtl
 
 fn testsuite_begin() ? {
 	if os.is_dir('tempfolders/tempfolder_explore') {

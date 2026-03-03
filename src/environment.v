@@ -1,4 +1,3 @@
-// environment.v
 module vhammll
 
 import os

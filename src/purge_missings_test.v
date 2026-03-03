@@ -1,4 +1,3 @@
-// purge_missings_test.v
 module vhammll
 
 fn test_purge_array() {

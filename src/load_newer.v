@@ -1,4 +1,3 @@
-// load_newer.v
 module vhammll
 
 import os

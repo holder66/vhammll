@@ -1,4 +1,3 @@
-// multiple_verify.v
 module vhammll
 
 fn multi_verify(opts Options) CrossVerifyResult {

@@ -32,7 +32,7 @@ jobs:
       - name: Generate HTML docs
         run: |
           mkdir -p _site
-          v doc -f html -o _site src/
+          v doc -readme -f html -o _site src/
           # v doc names the file after the module; serve it as index.html
           html=$(ls _site/*.html 2>/dev/null | head -1)
           if [ -n "$html" ] && [ "$(basename "$html")" != "index.html" ]; then

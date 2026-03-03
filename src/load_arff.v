@@ -1,4 +1,3 @@
-// load_arff_file
 module vhammll
 
 import os

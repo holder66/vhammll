@@ -1,7 +1,5 @@
-// purge_test.v
 module vhammll
 
-// test_purge
 fn test_purge() ? {
 	mut opts := Options{
 		datafile_path:        'datasets/iris.tab'

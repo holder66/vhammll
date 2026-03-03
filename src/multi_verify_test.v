@@ -1,9 +1,3 @@
-// multiple_verify_test.v
-
-// test_multiple_classifier_settings
-
-// as of 2025-3-9, this test fails with the totalnn_flag set
-
 module vhammll
 
 import os

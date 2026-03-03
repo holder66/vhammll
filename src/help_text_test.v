@@ -1,5 +1,3 @@
-// help_text_test.v
-
 module vhammll
 
 import os

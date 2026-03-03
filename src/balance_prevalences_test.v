@@ -1,5 +1,3 @@
-// verify_test.v
-// this test file uses only two-class datasets
 module vhammll
 
 import os

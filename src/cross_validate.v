@@ -1,4 +1,3 @@
-// cross_validate.v
 module vhammll
 
 import strconv

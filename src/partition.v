@@ -1,4 +1,3 @@
-// partition.v
 module vhammll
 
 const partition_help = '

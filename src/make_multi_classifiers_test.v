@@ -1,5 +1,3 @@
-// make_multi_classifiers_test.v
-
 module vhammll
 
 import os

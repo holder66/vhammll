@@ -1,4 +1,3 @@
-// classify.v
 module vhammll
 
 // to simplify the documentation, we will change "instance to be classified"

@@ -1,5 +1,3 @@
-// save_settings_test.v
-
 module vhammll
 
 import os

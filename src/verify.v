@@ -1,4 +1,3 @@
-// verify.v
 module vhammll
 
 import runtime

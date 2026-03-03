@@ -1,4 +1,3 @@
-// load_file_test.v
 module vhammll
 
 import os

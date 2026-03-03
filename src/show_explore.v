@@ -1,5 +1,3 @@
-// show_explore.v
-
 module vhammll
 
 import arrays

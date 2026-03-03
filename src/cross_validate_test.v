@@ -1,4 +1,3 @@
-// cross_validate_test.v
 module vhammll
 
 fn test_cross_validate() ? {

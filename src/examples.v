@@ -1,4 +1,3 @@
-// examples.v
 module vhammll
 
 import os

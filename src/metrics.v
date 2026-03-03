@@ -1,4 +1,3 @@
-// metrics.v
 module vhammll
 
 import arrays

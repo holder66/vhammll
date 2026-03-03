@@ -1,4 +1,3 @@
-// balance_prevalences.v
 module vhammll
 
 // evaluate_class_prevalence_imbalance returns true if the ratio between the

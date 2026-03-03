@@ -1,4 +1,3 @@
-// load_file_test.v
 module vhammll
 
 fn test_file_type() {

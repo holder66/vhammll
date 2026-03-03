@@ -1,4 +1,3 @@
-// rank_switches_test.v
 module vhammll
 
 // Tests for count_switches and the -sw / -swt behaviour in rank_attributes.

@@ -1,4 +1,3 @@
-// load_arff_test.v
 module vhammll
 
 fn test_load_arff_files() {

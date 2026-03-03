@@ -1,7 +1,4 @@
-// one_vs_rest_verify.v
 module vhammll
-
-// import arrays
 
 // one_vs_rest_verify classifies all the cases in a verification datafile (specified
 // by `opts.testfile_path`) using an array of trained Classifiers, one per class;

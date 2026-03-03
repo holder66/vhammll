@@ -1,4 +1,3 @@
-// purge_missings.v
 module vhammll
 
 // purge_instances_for_missing_class_values removes all instances in

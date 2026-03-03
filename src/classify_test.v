@@ -1,4 +1,3 @@
-// classify_test.v
 module vhammll
 
 fn test_classify_case() {

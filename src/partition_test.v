@@ -1,7 +1,5 @@
-// partition_test.v
 module vhammll
 
-// test_get_partition_indices
 fn test_get_partition_indices() {
 	mut arr := [11, 22, 33, 44, 55, 66]
 	mut len := arr.len

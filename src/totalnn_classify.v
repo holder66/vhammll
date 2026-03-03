@@ -1,4 +1,3 @@
-// totalnn.v
 module vhammll
 
 import arrays

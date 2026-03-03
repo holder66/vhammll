@@ -1,5 +1,3 @@
-// explore_analytics.v
-
 module vhammll
 
 struct BalAcc {

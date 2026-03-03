@@ -1,4 +1,3 @@
-// rank_one_vs_rest.v
 module vhammll
 
 // rank_one_vs_rest ranks the dataset's attributes using a one-vs-rest

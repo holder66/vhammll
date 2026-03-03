@@ -1,4 +1,3 @@
-// structs.v
 module vhammll
 
 // pub const missings = ['?', '', 'NA', ' ']

@@ -1,4 +1,3 @@
-// append.v
 module vhammll
 
 import time

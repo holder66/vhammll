@@ -1,4 +1,3 @@
-// rank_test.v
 module vhammll
 
 fn test_sum_along_row_unweighted() {

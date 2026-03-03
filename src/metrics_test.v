@@ -1,5 +1,3 @@
-// metrics_test.v
-
 module vhammll
 
 // import os

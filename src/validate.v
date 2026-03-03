@@ -1,4 +1,7 @@
-// validate.v
+module vhammll
+
+import os
+
 /*
 Given a classifier and a validation dataset, classifies each case
 of the validation_set on the trained classifier; returns the predicted classes
@@ -10,9 +13,6 @@ Thus, for Kaggle, adjust their test file by adding (if necessary) a row
 identifier attribute, and make sure that there is a class attribute whose
 values are empty.
 */
-module vhammll
-
-import os
 
 const validate_help = '
 Description:

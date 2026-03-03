@@ -1,4 +1,3 @@
-// purge
 module vhammll
 
 // purge returns a Classifier struct with duplicate instances removed,

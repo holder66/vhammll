@@ -1,4 +1,3 @@
-// make_classifier_test
 module vhammll
 
 import os

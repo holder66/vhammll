@@ -1,5 +1,3 @@
-// environment_test.v
-
 module vhammll
 
 // test_get_package_version

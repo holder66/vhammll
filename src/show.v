@@ -1,4 +1,3 @@
-// show.v
 module vhammll
 
 import strings

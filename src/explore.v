@@ -1,4 +1,3 @@
-// explore.v
 module vhammll
 
 const explore_help = '

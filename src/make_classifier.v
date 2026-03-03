@@ -1,4 +1,3 @@
-// make_classifier.v
 module vhammll
 
 import time

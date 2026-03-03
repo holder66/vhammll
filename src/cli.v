@@ -1,4 +1,3 @@
-// cli.v
 module vhammll
 
 import os

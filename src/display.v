@@ -1,4 +1,3 @@
-// display.v
 module vhammll
 
 import os

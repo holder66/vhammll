@@ -1,7 +1,3 @@
-// totalnn_test.v
-
-// test_multiple_classifier_settings using the totalnn algorithm
-
 module vhammll
 
 import os

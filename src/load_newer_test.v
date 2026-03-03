@@ -1,4 +1,3 @@
-// load_newer_test.v
 module vhammll
 
 // fn test_infer_attribute_types_newer() {

@@ -1,4 +1,3 @@
-// query.v
 module vhammll
 
 import readline

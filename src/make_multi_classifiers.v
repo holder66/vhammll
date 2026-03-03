@@ -1,5 +1,3 @@
-// make_multi_classifiers.v
-
 module vhammll
 
 // make_multi_classifiers takes a dataset, an array of classifier settings, and

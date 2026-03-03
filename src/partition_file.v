@@ -1,4 +1,3 @@
-// partition_file.v
 module vhammll
 
 import os

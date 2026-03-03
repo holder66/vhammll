@@ -1,4 +1,3 @@
-// tools_test.v
 module vhammll
 
 // import arrays

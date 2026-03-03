@@ -1,4 +1,3 @@
-// optimals.v
 module vhammll
 
 import arrays

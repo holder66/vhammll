@@ -1,5 +1,3 @@
-// show_attributes_test.v
-
 module vhammll
 
 import os

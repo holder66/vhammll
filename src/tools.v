@@ -1,4 +1,3 @@
-// v contains functions used elsewhere in hamnn
 module vhammll
 
 import math

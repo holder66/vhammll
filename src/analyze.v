@@ -1,4 +1,3 @@
-// analyze.v
 module vhammll
 
 // import math

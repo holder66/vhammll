@@ -1,4 +1,3 @@
-// rank
 module vhammll
 
 import maps
