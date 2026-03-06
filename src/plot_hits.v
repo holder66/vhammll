@@ -7,7 +7,7 @@ import time
 // number of hits per bin number,over a range of bin numbers,
 // for a continuous attribute, with separate curves for each class.
 fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
-	mut anno1_text := 'Rank value: ${attr.rank_value:-6.2f} at ${attr.bins} bins'
+	mut anno1_text := 'Rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins<br>      '
 	y_max := if weighting {
 		100.0
 	} else {
@@ -41,6 +41,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 				'its per bin, per class, for attribute "${attr.attribute_name}"'
 			autosize:    false
 			width:       800
+			height:      600
 			xaxis:       plot.Axis{
 				title: plot.AxisTitle{
 					text: 'Bin number (bin 0 is for missing values)'

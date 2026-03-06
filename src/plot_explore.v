@@ -80,62 +80,61 @@ fn plot_explore(result ExploreResult, opts Options) {
 		)
 	}
 	annotation1 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     5
-		text:  'Hover your cursor over a marker to view details.'
+		x:     array_max(x)
+		y:     50
+		text:  'Hover your cursor<br>over a marker<br>to view details<br>     <br>      '
 		align: 'center'
 		font:  plot.Font{
-			color:  'red'
-			size:   14.0
-			family: 'Times New Roman'
+			color: 'red'
+			size:  14.0
+			// family: 'Times New Roman'
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     10
-		text:  explore_type_string(opts)
-		align: 'center'
+		x:     array_min(x) + 1
+		y:     30
+		text:  explore_type_string(opts) + '<br>       '
+		align: 'left'
 		font:  plot.Font{
-			color:  'blue'
-			size:   12.0
-			family: 'Times New Roman'
+			color: 'blue'
+			size:  12.0
+			// family: 'Times New Roman'
 		}
 	}
 	annotation3 := plot.Annotation{
 		x:     (array_max(x) + array_min(x)) / 2
 		y:     15
-		text:  'UTC: ${time.utc()}'
+		text:  'UTC: ${time.utc()}<br>        <br>        '
 		align: 'center'
 		font:  plot.Font{
-			color:  'blue'
-			size:   12.0
-			family: 'Times New Roman'
+			color: 'blue'
+			size:  12.0
+			// family: 'Times New Roman'
 		}
 	}
 	annotation4 := plot.Annotation{
 		x:     (array_max(x) + array_min(x)) / 2
 		y:     20
-		text:  'args: ${opts.args}'
+		text:  'args: ${opts.args}<br>      <br>        '
 		align: 'center'
 		font:  plot.Font{
-			color:  'black'
-			size:   12.0
-			family: 'Times New Roman'
+			color: 'black'
+			size:  12.0
+			// family: 'Times New Roman'
 		}
 	}
 	title_string := 'Balanced Accuracy by Number of Attributes\n for "${opts.datafile_path}"'
 	plt.layout(
 		title:       title_string
-		width:       900
+		width:       800
+		height:      600
 		xaxis:       plot.Axis{
-			tickmode: 'array'
-			tickvals: x
-			title:    plot.AxisTitle{
+			title: plot.AxisTitle{
 				text: 'Number of Attributes Used'
 			}
 		}
-		annotations: [annotation1, annotation2, annotation3, annotation4]
-		autosize:    true
+		annotations: [annotation4, annotation3, annotation2, annotation1]
+		// autosize:    false
 	)
 	plt.show() or { panic(err) }
 }
@@ -144,14 +143,14 @@ fn plot_explore(result ExploreResult, opts Options) {
 fn explore_type_string(opts Options) string {
 	// mut explore_type_string := ''
 	if opts.testfile_path == '' {
-		return if opts.folds == 0 { 'Leave-one-out ' } else { '${opts.folds}-fold ' } + 'cross-validations' + if opts.repetitions > 0 {
+		return if opts.folds == 0 { 'Leave-one-out' } else { '${opts.folds}-fold' } + '<br>' + 'cross-validations<br>' + if opts.repetitions > 0 {
 			' (${opts.repetitions} repetitions' + if opts.random_pick {
 				', random selection)'
 			} else {
 				')'
 			}
 		} else {
-			''
+			'        '
 		}
 	}
 	return 'Verifications with "${opts.testfile_path}"'
@@ -170,14 +169,14 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	// mut pos_class := result.array_of_results[0].pos_neg_classes[0]
 	// mut neg_class := result.array_of_results[0].pos_neg_classes[1]
 	annotation1 := plot.Annotation{
-		x:     0.5
-		y:     -0.05
-		text:  'Hover your cursor over a marker to view details.'
+		x:     0.3
+		y:     0.2
+		text:  'Hover your cursor<br>over a marker<br>to view details'
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
-		x:     0.5
-		y:     -0.02
+		x:     0.8
+		y:     0.2
 		text:  explore_type_string(opts)
 		align: 'left'
 	}

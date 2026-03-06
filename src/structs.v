@@ -13,11 +13,11 @@ pub mut:
 }
 
 // RocPoint is a point on a Receiver Operating Characteristic curve,
-// extending Point with the classifier identifier string that produced it.
+// extending Point with the classifier identifiers that produced it.
 pub struct RocPoint {
 	Point
 pub mut:
-	classifiers    string
+	// classifiers    string
 	classifier_ids []int
 }
 
@@ -243,7 +243,7 @@ pub mut:
 pub struct CombinationSizeLimits {
 pub mut:
 	generate_combinations_flag bool
-	min                        int = 2
+	min                        int
 	max                        int
 }
 

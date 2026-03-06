@@ -150,7 +150,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		all_optimals)
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
-			result.all_optimals_unique_attributes.map([it]), opts.DisplaySettings.CombinationSizeLimits)
+			result.all_optimals_unique_attributes.map([it])[0], opts.DisplaySettings.CombinationSizeLimits)
 		// sort by auc in ascending order (makes it easier to see the important ones)
 		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
 	}
@@ -234,7 +234,7 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 // for sorting or filtering the returned slice. If `limits.max` exceeds the
 // number of available classifiers it is clamped to that count; if `limits.min`
 // exceeds the count the function panics.
-fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]int, limits CombinationSizeLimits) []AucClassifiers {
+fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
 	mut new_limits := limits
 	if limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
@@ -244,7 +244,7 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]
 	}
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
 	for id in classifier_ids {
-		settings << settings_array.filter(it.classifier_id == id[0])
+		settings << settings_array.filter(it.classifier_id == id)
 	}
 	mut pairs := [][]f64{}
 	mut classifiers := []int{}
@@ -263,7 +263,7 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids [][]
 	for i, points in points_array {
 		auc_classifiers << AucClassifiers{
 			classifier_ids: classifier_combos[i]
-			auc:            auc_roc(points.map(it.Point))
+			auc:            auc_roc(points)
 		}
 	}
 	return auc_classifiers

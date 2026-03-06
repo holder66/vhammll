@@ -14,21 +14,21 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 		panic('no sensitivity/specificity pairs provided to roc_values()')
 	}
 	if pairs.len != classifier_ids.len {
-		panic('mismatch between pairs and classifiers')
+		panic('mismatch between pairs and classifier_ids')
 	}
 	mut big_pairs := pairs.clone()
-	mut big_classifiers := classifier_ids.map('${it}')
+	mut big_classifiers := classifier_ids.clone()
 	if [0.0, 1.0] !in pairs {
 		big_pairs << [0.0, 1.0]
-		big_classifiers << ''
+		big_classifiers << []int{}
 	}
 	mut roc_points := []RocPoint{cap: big_pairs.len}
 	// Convert to FPR/sens and create points
 	for i, p in big_pairs {
 		roc_points << RocPoint{
-			fpr:         1 - p[1] // Convert specificity to FPR
-			sens:        p[0]     // Sensitivity = sens
-			classifiers: big_classifiers[i]
+			fpr:            1 - p[1] // Convert specificity to FPR
+			sens:           p[0]     // Sensitivity = sens
+			classifier_ids: big_classifiers[i]
 		}
 	}
 	// Sort points by FPR ascending, then sens ascending
@@ -63,24 +63,24 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 	points := result.map(it.Point)
 	// if result does not include [1.0,1.0] then tack it on
 	if Point{1, 1} !in points {
-		result << RocPoint{Point{1, 1}, '', []}
+		result << RocPoint{Point{1, 1}, []}
 	}
 	return result
 }
 
 // auc_roc returns the area under the Receiver Operating Characteristic
 // curve, for an array of points.
-pub fn auc_roc(points []Point) f64 {
-	if points.len < 2 {
-		panic('cannot calculate area_roc with fewer than 2 points')
+pub fn auc_roc(roc_points []RocPoint) f64 {
+	if roc_points.len < 2 {
+		panic('cannot calculate area_roc with fewer than 2 roc_points')
 	}
 	mut auc := f64(0)
-	for i in 0 .. points.len - 1 {
+	for i in 0 .. roc_points.len - 1 {
 		// Calculate trapezoid area between consecutive points
-		x1 := points[i].fpr
-		y1 := points[i].sens
-		x2 := points[i + 1].fpr
-		y2 := points[i + 1].sens
+		x1 := roc_points[i].fpr
+		y1 := roc_points[i].sens
+		x2 := roc_points[i + 1].fpr
+		y2 := roc_points[i + 1].sens
 		width := x2 - x1
 		avg_height := (y1 + y2) / 2
 		auc += width * avg_height

@@ -122,7 +122,7 @@ pub fn display_file(path string, in_opts Options) {
 						classifiers[i] = [setting.classifier_id]
 					}
 					roc_points := roc_values(pairs, classifiers)
-					auc = auc_roc(roc_points.map(it.Point))
+					auc = auc_roc(roc_points)
 					if opts.graph_flag {
 						plot_roc(roc_points, auc)
 						// plotly_roc(roc_points, auc)

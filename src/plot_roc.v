@@ -67,12 +67,12 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	mut plt := plot.Plot.new()
 	for rocdata in rocdata_array {
 		rocpoints := roc_values(rocdata.pairs, rocdata.classifier_ids)
-		auc := auc_roc(rocpoints.map(it.Point))
+		auc := auc_roc(rocpoints)
 		mut hovertext := []string{cap: rocdata.classifiers.len + 2}
 
-		for ids in rocpoints.map(it.classifiers) {
-			hovertext << 'classifier' + if ids.contains(',') { 's' } else { '' } + ': ' + ids
-		}
+		// for ids in rocpoints.map(it.classifier_ids) {
+		// 	hovertext << 'classifier' + if ids.contains(',') { 's' } else { '' } + ': ' + ids
+		// }
 		plt.scatter(
 			x:    rocpoints.map(it.fpr)
 			y:    rocpoints.map(it.sens)
@@ -169,7 +169,7 @@ fn make_roc_plot_layout(mut plt plot.Plot, curve_series string, path string, ann
 	plt.layout(
 		title:       'ROC Curves by ${curve_series} for "${path}"'
 		width:       800
-		height:      800
+		height:      600
 		xaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: '1 - specificity'

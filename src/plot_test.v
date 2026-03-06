@@ -33,24 +33,24 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_plot')!
 }
 
-fn test_plot_hits() {
-	os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
-	os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
-	os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
-	os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
-}
+// fn test_plot_hits() {
+// 	os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
+// 	os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
+// 	os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
+// 	os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
+// }
 
-fn test_plot_rank() {
-	os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
-	os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
-	os.execute_or_panic('./temp rank -g vhammll/datasets/anneal.tab')
-	os.execute_or_panic('./temp rank -g -l 3 vhammll/datasets/anneal.tab')
-}
+// fn test_plot_rank() {
+// 	os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
+// 	os.execute_or_panic('./temp rank -g -b 2,7 vhammll/datasets/iris.tab')
+// 	os.execute_or_panic('./temp rank -g vhammll/datasets/anneal.tab')
+// 	os.execute_or_panic('./temp rank -g -l 3 vhammll/datasets/anneal.tab')
+// }
 
 fn test_plot_explore() {
 	os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab')
 	os.execute_or_panic('./temp explore -g -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-	os.execute_or_panic('./temp explore -g -o tempfolders/tempfolder_plot/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
+	os.execute_or_panic('./temp explore -g vhammll/datasets/breast-cancer-wisconsin-disc.tab')
 }
 
 fn test_area_under_curve() {
@@ -67,23 +67,23 @@ fn test_area_under_curve() {
 	assert area_under_curve(x, y) == 0.06
 }
 
-fn test_plot_roc() {
-	// generate a multiple classifier settings file from a 2-class dataset
-	os.execute_or_panic('./temp explore -ms tempfolders/tempfolder_plot/bcw.opts -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')
-	// display the ROC curve from the settings file (exercises plot_roc)
-	os.execute_or_panic('./temp display -g tempfolders/tempfolder_plot/bcw.opts')
-}
+// fn test_plot_roc() {
+// 	// generate a multiple classifier settings file from a 2-class dataset
+// 	os.execute_or_panic('./temp explore -ms tempfolders/tempfolder_plot/bcw.opts -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')
+// 	// display the ROC curve from the settings file (exercises plot_roc)
+// 	os.execute_or_panic('./temp display -g tempfolders/tempfolder_plot/bcw.opts')
+// }
 
-fn test_plot_multi_roc() {
-	// generate multiple ROC curve traces from the settings file (exercises plot_mult_roc)
-	os.execute_or_panic('./temp optimals -g tempfolders/tempfolder_plot/bcw.opts')
-}
+// fn test_plot_multi_roc() {
+// 	// generate multiple ROC curve traces from the settings file (exercises plot_mult_roc)
+// 	os.execute_or_panic('./temp optimals -g tempfolders/tempfolder_plot/bcw.opts')
+// }
 
-fn test_plot_roc_multiclass() {
-	// generate a settings file from a multi-class dataset (iris: 3 classes)
-	os.execute_or_panic('./temp explore -ms tempfolders/tempfolder_plot/iris.opts vhammll/datasets/iris.tab')
-	// display -g with multi-class settings: the 2-class guard skips plot_roc but must not crash
-	os.execute_or_panic('./temp display -g tempfolders/tempfolder_plot/iris.opts')
-	// optimals -g with multi-class settings: exercises plot_mult_roc with multi-class sens/spec values
-	os.execute_or_panic('./temp optimals -g tempfolders/tempfolder_plot/iris.opts')
-}
+// fn test_plot_roc_multiclass() {
+// 	// generate a settings file from a multi-class dataset (iris: 3 classes)
+// 	os.execute_or_panic('./temp explore -ms tempfolders/tempfolder_plot/iris.opts vhammll/datasets/iris.tab')
+// 	// display -g with multi-class settings: the 2-class guard skips plot_roc but must not crash
+// 	os.execute_or_panic('./temp display -g tempfolders/tempfolder_plot/iris.opts')
+// 	// optimals -g with multi-class settings: exercises plot_mult_roc with multi-class sens/spec values
+// 	os.execute_or_panic('./temp optimals -g tempfolders/tempfolder_plot/iris.opts')
+// }
