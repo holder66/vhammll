@@ -2,22 +2,11 @@ module vhammll
 
 import math
 import vsl.plot
-import time
-
-struct ExploreTrace {
-mut:
-	label           string
-	percents        []f64
-	max_percents    f64
-	attributes_used []f64
-	bin_range       []string
-	bin_for_sorting int
-}
+// import time
 
 // plot_explore generates a scatterplot for the results of
 // an explore.explore() on a dataset.
 fn plot_explore(result ExploreResult, opts Options) {
-	// println('opts in plot_explore: $opts')
 	mut plt := plot.Plot.new()
 	mut traces := []ExploreTrace{}
 	mut x := []f64{}
@@ -39,7 +28,7 @@ fn plot_explore(result ExploreResult, opts Options) {
 		bin_values_strings_filtered = filter_int(b, bins_for_sorting, bin_values_strings)
 		max_percents = array_max(percents)
 		traces << ExploreTrace{
-			label:           'Bins: ${bin_values_strings_filtered[0]} ${array_max(percents):5.2f}'
+			label:           'Bins: ${bin_values_strings_filtered[0]}  ${array_max(percents):5.2f}'
 			percents:        percents
 			max_percents:    max_percents
 			attributes_used: filter_int(b, bins_for_sorting, x)
@@ -68,15 +57,14 @@ fn plot_explore(result ExploreResult, opts Options) {
 		return 0
 	}
 	traces.sort_with_compare(custom_sort_fn)
-	for value in traces {
-		text := value.bin_range.repeat(value.percents.len)
+	for trace in traces {
+		hovertext := trace.bin_range.repeat(trace.percents.len)
 		plt.scatter(
-			x:    value.attributes_used
-			y:    value.percents.map((math.round(it * 100)) / 100)
-			text: text
+			x:    trace.attributes_used
+			y:    trace.percents.map((math.round(it * 100)) / 100)
+			text: hovertext
 			mode: 'lines+markers'
-			name: value.label
-			// hovertemplate: 'bins: ${text}<br>attributes: ${value.attributes_used}<br>accuracy: S{value.percents.map((math.round(it * 100)) / 100)}%'
+			name: trace.label
 		)
 	}
 	annotation1 := plot.Annotation{
@@ -87,7 +75,6 @@ fn plot_explore(result ExploreResult, opts Options) {
 		font:  plot.Font{
 			color: 'red'
 			size:  14.0
-			// family: 'Times New Roman'
 		}
 	}
 	annotation2 := plot.Annotation{
@@ -98,32 +85,29 @@ fn plot_explore(result ExploreResult, opts Options) {
 		font:  plot.Font{
 			color: 'blue'
 			size:  12.0
-			// family: 'Times New Roman'
 		}
 	}
-	annotation3 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     15
-		text:  'UTC: ${time.utc()}<br>        <br>        '
-		align: 'center'
-		font:  plot.Font{
-			color: 'blue'
-			size:  12.0
-			// family: 'Times New Roman'
-		}
-	}
+	// annotation3 := plot.Annotation{
+	// 	x:     (array_max(x) + array_min(x)) / 2
+	// 	y:     15
+	// 	text:  'UTC: ${time.utc()}<br>        <br>        '
+	// 	align: 'center'
+	// 	font:  plot.Font{
+	// 		color: 'blue'
+	// 		size:  12.0
+	// 	}
+	// }
 	annotation4 := plot.Annotation{
 		x:     (array_max(x) + array_min(x)) / 2
 		y:     20
-		text:  'args: ${opts.args}<br>      <br>        '
+		text:  'args: ${opts.args}<br>      <br>        <br>        '
 		align: 'center'
 		font:  plot.Font{
 			color: 'black'
 			size:  12.0
-			// family: 'Times New Roman'
 		}
 	}
-	title_string := 'Balanced Accuracy by Number of Attributes\n for "${opts.datafile_path}"'
+	title_string := 'Balanced Accuracy by Number of Attributes<br>for "${opts.datafile_path}"'
 	plt.layout(
 		title:       title_string
 		width:       800
@@ -133,7 +117,7 @@ fn plot_explore(result ExploreResult, opts Options) {
 				text: 'Number of Attributes Used'
 			}
 		}
-		annotations: [annotation4, annotation3, annotation2, annotation1]
+		annotations: [annotation4, annotation2, annotation1]
 		// autosize:    false
 	)
 	plt.show() or { panic(err) }
@@ -250,30 +234,4 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	])
 
 	plt_atts.show() or { panic(err) }
-}
-
-// filter takes two coordinated arrays. It filters array b
-// to include only elements whose corresponding element
-// in array a is equal to the match_value.
-fn filter[T](match_value string, a []string, b []T) []T {
-	mut result := []T{}
-	for i, value in a {
-		if match_value == value {
-			result << b[i]
-		}
-	}
-	return result
-}
-
-// filter_int takes two coordinated arrays. It filters array b
-// to include only elements whose corresponding element
-// in array a is equal to the match_value.
-fn filter_int[T](match_value int, a []int, b []T) []T {
-	mut result := []T{}
-	for i, value in a {
-		if match_value == value {
-			result << b[i]
-		}
-	}
-	return result
 }

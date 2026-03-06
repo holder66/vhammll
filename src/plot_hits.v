@@ -7,17 +7,22 @@ import time
 // number of hits per bin number,over a range of bin numbers,
 // for a continuous attribute, with separate curves for each class.
 fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
-	mut anno1_text := 'Rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins<br>      '
+	dump(attr.array_of_hits_arrays)
+	mut anno1_text := 'Max rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins<br>      '
 	y_max := if weighting {
 		100.0
 	} else {
 		f64(array_max(classes_info.class_counts.values()))
 	}
 	mut annotation1 := plot.Annotation{
-		x:     2
-		y:     0.3 * y_max
+		x:     if attr.array_of_hits_arrays.len == 0 {
+			2
+		} else {
+			attr.array_of_hits_arrays.last().last().len - 2
+		}
+		y:     0.95 * y_max
 		text:  anno1_text
-		align: 'center'
+		align: 'right'
 	}
 	for hits_array in attr.array_of_hits_arrays {
 		mut plt := plot.Plot.new()

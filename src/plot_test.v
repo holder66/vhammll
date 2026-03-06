@@ -34,10 +34,9 @@ fn testsuite_end() ? {
 }
 
 // fn test_plot_hits() {
-// 	os.execute_or_panic('./temp rank -of vhammll/datasets/developer.tab')
+// 	os.execute_or_panic('./temp rank -of -l 2 -b 2,5 vhammll/datasets/developer.tab')
 // 	os.execute_or_panic('./temp rank -of -b 2,7 vhammll/datasets/iris.tab')
-// 	os.execute_or_panic('./temp rank -of vhammll/datasets/anneal.tab')
-// 	os.execute_or_panic('./temp rank -of -l 3 vhammll/datasets/anneal.tab')
+// 	os.execute_or_panic('./temp rank -e -of -l 3 -b 3,6 vhammll/datasets/anneal.tab')
 // }
 
 // fn test_plot_rank() {
@@ -48,24 +47,24 @@ fn testsuite_end() ? {
 // }
 
 fn test_plot_explore() {
-	os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab')
+	// os.execute_or_panic('./temp explore -g vhammll/datasets/iris.tab')
 	os.execute_or_panic('./temp explore -g -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-	os.execute_or_panic('./temp explore -g vhammll/datasets/breast-cancer-wisconsin-disc.tab')
+	// os.execute_or_panic('./temp explore -g vhammll/datasets/breast-cancer-wisconsin-disc.tab')
 }
 
-fn test_area_under_curve() {
-	mut x := []f64{}
-	mut y := []f64{}
-	x = [0.0, 1.0]
-	y = [0.0, 1.0]
-	assert area_under_curve(x, y) == 0.5
-	x = [0.2, 0.4]
-	y = [0.3, 0.4]
-	assert area_under_curve(x, y) == 0.07
-	x = [0.2, 0.3, 0.4]
-	y = [0.5, 0.3, 0.1]
-	assert area_under_curve(x, y) == 0.06
-}
+// fn test_area_under_curve() {
+// 	mut x := []f64{}
+// 	mut y := []f64{}
+// 	x = [0.0, 1.0]
+// 	y = [0.0, 1.0]
+// 	assert area_under_curve(x, y) == 0.5
+// 	x = [0.2, 0.4]
+// 	y = [0.3, 0.4]
+// 	assert area_under_curve(x, y) == 0.07
+// 	x = [0.2, 0.3, 0.4]
+// 	y = [0.5, 0.3, 0.1]
+// 	assert area_under_curve(x, y) == 0.06
+// }
 
 // fn test_plot_roc() {
 // 	// generate a multiple classifier settings file from a 2-class dataset

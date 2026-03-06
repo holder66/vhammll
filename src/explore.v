@@ -26,7 +26,7 @@ Options:
   -e --expanded: show expanded results on the console;
   -f --folds: number of cross-validation folds (default is leave-one-out);
   -g --graph: generates plots of accuracy vs number of attributes used; for
-      binary classifiers (ie only 2 classes) also generates AUC plots;
+      binary classifiers (ie only 2 classes) also generates ROC plots;
   -ms: save the classifier parameters to an .opts file, using the file path
       following this option;
   -o --output: followed by the path to a file in which the ExploreResult

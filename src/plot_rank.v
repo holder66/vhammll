@@ -2,14 +2,6 @@ module vhammll
 
 import vsl.plot
 
-struct RankTrace {
-mut:
-	label              string
-	rank_values        []f64
-	maximum_rank_value f32
-	hover_text         []string
-}
-
 // plot_rank generates a scatterplot of the rank values
 // for continuous attributes, as a function of the number of bins.
 fn plot_rank(result RankingResult) {

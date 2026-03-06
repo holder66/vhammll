@@ -13,13 +13,15 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_explore')!
 }
 
-// fn test_settings_for_roc() {
-// 	roc_settingsfile := 'src/testdata/roc_settings.opts'
-// 	datafile :=         'datasets/bcw350train'
-// 	testfile :=       'datasets/bcw174test'
-// 	explore(opts('-e -af -b 1,6 -u -roc $roc_settingsfile -t $testfile $datafile', cmd: 'explore'))
-// 	display_file(roc_settingsfile)
-// }
+fn test_settings_for_roc() {
+	roc_settingsfile := 'src/testdata/roc_settings.opts'
+	datafile := 'datasets/bcw350train'
+	testfile := 'datasets/bcw174test'
+	explore(opts('-e -af -b 1,6 -u -roc ${roc_settingsfile} -t ${testfile} ${datafile}',
+		cmd: 'explore'
+	))
+	display_file(roc_settingsfile)
+}
 
 fn test_explore_traverse_all_flags() {
 	// first, with a dataset with balanced prevalences

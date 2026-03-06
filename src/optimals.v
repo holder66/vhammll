@@ -150,7 +150,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		all_optimals)
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
-			result.all_optimals_unique_attributes.map([it])[0], opts.DisplaySettings.CombinationSizeLimits)
+			result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)
 		// sort by auc in ascending order (makes it easier to see the important ones)
 		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
 	}
@@ -236,6 +236,8 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 // exceeds the count the function panics.
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
 	mut new_limits := limits
+	dump(limits)
+	dump(classifier_ids)
 	if limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
 	}

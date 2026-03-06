@@ -80,7 +80,7 @@ fn test_purge_duplicate_settings() {
 	// generate a settings file for further testing
 	datafile := 'datasets/2_class_developer.tab'
 	settingsfile := 'tempfolders/tempfolder_optimals/2_class_developer.opts'
-	explore(opts('-af -a 2 -b 2,7 -e -ms ${settingsfile} ${datafile}', cmd: 'explore'))
+	explore(opts('-af -a 2 -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	assert os.is_file(settingsfile)
 	all_settings := read_multiple_opts(settingsfile)!
 	assert all_settings.len == 140
@@ -96,7 +96,7 @@ fn test_purge_duplicate_settings() {
 
 fn test_optimals_with_max_auc_combinations() {
 	options := opts('optimals -p -l 3,4 src/testdata/leukbp.opts')
-	dump(options)
+	// dump(options)
 }
 
 fn test_optimals_with_purge() {
@@ -156,6 +156,6 @@ fn test_optimals_with_purge() {
 	assert result_c.best_balanced_accuracies_classifiers_all[2] == [16, 44, 72, 100]
 	println(r_b('\nGet all the combinations of lengths 4 and 5:'))
 	result_d = optimals(settingsfile, opts('-g -s -p -cl 4,5'))
-	result_f := verify(opts('-e -m# 0,1,2,3,16 -ma -mc -m ${settingsfile} -t ${testfile} ${datafile}'))
+	result_f := verify(opts('-m# 0,1,2,3,16 -ma -mc -m ${settingsfile} -t ${testfile} ${datafile}'))
 	assert result_f.correct_counts == [133, 38]
 }
