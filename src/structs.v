@@ -12,23 +12,6 @@ pub mut:
 	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }
 
-// RocPoint is a point on a Receiver Operating Characteristic curve,
-// extending Point with the classifier identifiers that produced it.
-pub struct RocPoint {
-	Point
-pub mut:
-	// classifiers    string
-	classifier_ids []int
-}
-
-// Point is a 2D coordinate used for ROC plots:
-// fpr is 1 − specificity (false positive rate); sens is sensitivity.
-pub struct Point {
-pub mut:
-	fpr  f64 // 1 - specificity
-	sens f64 // sensitivity
-}
-
 // Class holds all class-attribute metadata for a dataset:
 // the class attribute name and index, the unique class labels,
 // per-class instance counts, and pre/post-purge statistics.
@@ -322,14 +305,6 @@ pub mut:
 struct MultipleClassifierSettingsFileStruct {
 pub mut:
 	multiple_classifier_settings []ClassifierSettings
-}
-
-// AucClassifiers associates a set of classifier IDs with the
-// Area Under the ROC Curve (AUC) value they jointly achieved.
-pub struct AucClassifiers {
-pub mut:
-	classifier_ids []int
-	auc            f64
 }
 
 // OptimalsResult is returned by optimals(); it identifies which

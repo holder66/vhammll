@@ -123,10 +123,6 @@ pub fn display_file(path string, in_opts Options) {
 					}
 					roc_points := roc_values(pairs, classifiers)
 					auc = auc_roc(roc_points)
-					if opts.graph_flag {
-						// plot_roc(roc_points, auc)
-						// plotly_roc(roc_points, auc)
-					}
 				}
 				if opts.expanded_flag {
 					println(m_u('Multiple Classifier Settings: file: ${path}' +

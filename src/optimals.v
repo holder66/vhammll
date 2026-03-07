@@ -21,7 +21,7 @@ Options:
        if -cl is followed by a pair of integers, those values are used as the lower 
        and upper limits of combination length.
 -e --expanded: show expanded results on the console
--g --graph: display a plot of the Receiver Operating Characteristic curve
+-g --graph: display a plot of the Receiver Operating Characteristic curve (for binary classification datasets)
 -p --purge: remove duplicate settings (ie settings with identical parameters)
 -aa --all-attributes: for each category of optimals, show all settings (the default  
 		is to show only those settings with unique attribute numbers)
@@ -37,7 +37,8 @@ Options:
 // -cl --combination-limits: search combinations of classifiers for best ROC AUC; optional
 //      pair of integers sets the lower and upper limits on combination length.
 // -e --expanded: for each setting, print the Parameters, results obtained, and Metrics.
-// -g --graph: plot a Receiver Operating Characteristic curve.
+// -g --graph: plot a Receiver Operating Characteristic curve (for
+//      binary classification datasets)
 // -p --purge: discard duplicate settings (identical parameters, different IDs).
 // -aa --all-attributes: show all settings in each category; default shows only those
 //      with unique attribute counts.
@@ -117,16 +118,16 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	for classifier_id in roc_settings.map(it.classifier_id) {
 		sorted_roc_settings << settings.filter(it.classifier_id == classifier_id)
 	}
-	mut pairs := [][]f64{cap: sorted_roc_settings.len}
+	mut coordinates := [][]f64{cap: sorted_roc_settings.len}
 	mut classifiers := []string{cap: sorted_roc_settings.len}
 	mut classifier_ids := [][]int{cap: sorted_roc_settings.len}
 	for setting in sorted_roc_settings {
-		pairs << [setting.sens, setting.spec]
+		coordinates << [setting.sens, setting.spec]
 		classifier_ids << [setting.classifier_id]
 		classifiers << '${setting.classifier_id}'
 	}
 	result.RocData = RocData{
-		pairs:          pairs
+		coordinates:    coordinates
 		classifiers:    classifiers
 		classifier_ids: classifier_ids
 		trace_text:     'Single classifier<br>cross-validations'
@@ -188,7 +189,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		show_multiple_classifier_settings_details(sorted_roc_settings)
 	}
 
-	if opts.graph_flag {
+	if opts.graph_flag && result.class_counts.len == 2 {
 		plot_mult_roc([result.RocData], result.RocFiles)
 	}
 	if opts.outputfile_path != '' {
@@ -235,39 +236,57 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 // number of available classifiers it is clamped to that count; if `limits.min`
 // exceeds the count the function panics.
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
-	mut new_limits := limits
-	dump(limits)
+	dump(settings_array.len)
 	dump(classifier_ids)
-	if limits.min > classifier_ids.len {
+	mut new_limits := limits
+	if limits.generate_combinations_flag && (limits.min == 0 || limits.max == 0) {
+		new_limits.min = 1
+		new_limits.max = classifier_ids.len
+	}
+	dump(new_limits)
+	dump(classifier_ids)
+	if new_limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
 	}
-	if limits.max > classifier_ids.len {
+	if new_limits.max > classifier_ids.len {
 		new_limits.max = classifier_ids.len
 	}
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
 	for id in classifier_ids {
 		settings << settings_array.filter(it.classifier_id == id)
 	}
-	mut pairs := [][]f64{}
+	// we now have an array of settings for only the classifier id's
+	dump(settings.len)
+	mut roc_points := [][]f64{}
 	mut classifiers := []int{}
 	for setting in settings {
-		pairs << [setting.sens, setting.spec]
+		roc_points << [setting.sens, setting.spec]
 		classifiers << setting.classifier_id
 	}
-	classifier_combos := combinations(classifiers, new_limits)
-	pairs_combos := combinations(pairs, new_limits)
-	mut points_array := [][]RocPoint{cap: classifier_combos.len + 2}
-	for i, pair_sets in pairs_combos {
-		points_array << roc_values(pair_sets, classifier_combos[i].map([it]))
-	}
-	// calculate auc values
-	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
-	for i, points in points_array {
-		auc_classifiers << AucClassifiers{
-			classifier_ids: classifier_combos[i]
-			auc:            auc_roc(points)
+	classifier_combos := combinations(classifier_ids, new_limits)
+	dump(classifier_combos)
+	// for each combo, we need to calculate auc
+	// so we need to calculate the points for each classifier in the combo
+	mut points_array := []RocPoint{cap: classifier_combos.len + 2}
+	// for i, pair_sets in roc_points_combos {
+	// 	points_array << roc_values(pair_sets, classifier_combos[i])
+	// }
+	for classifier_combo in classifier_combos {
+		points_array << RocPoint{
+			classifier_ids: classifier_combo
+			Point:          Point{}
 		}
 	}
+
+	dump(points_array[0..10])
+	// calculate auc values
+	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
+	// for i, points in points_array {
+	// 	auc_classifiers << AucClassifiers{
+	// 		classifier_ids: classifier_combos[i]
+	// 		auc:            auc_roc(points)
+	// 	}
+	// }
 	return auc_classifiers
 }
 

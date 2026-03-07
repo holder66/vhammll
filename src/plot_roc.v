@@ -1,6 +1,5 @@
 module vhammll
 
-import math
 import vsl.plot
 
 // massage_roc_traces appends 0. and 1. to the beginning and end of

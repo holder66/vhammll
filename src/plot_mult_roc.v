@@ -1,6 +1,5 @@
 module vhammll
 
-import math
 import vsl.plot
 
 // plot_mult_roc generates an interactive Receiver Operating
@@ -11,18 +10,17 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	annotation1 := plot.Annotation{
 		x:     0.8
 		y:     0.2
-		text:  'Hover your cursor<br>over a marker<br>to view details'
+		text:  'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
 		align: 'center'
 	}
 	mut plt := plot.Plot.new()
 	for rocdata in rocdata_array {
-		rocpoints := roc_values(rocdata.pairs, rocdata.classifier_ids)
+		rocpoints := roc_values(rocdata.coordinates, rocdata.classifier_ids)
 		auc := auc_roc(rocpoints)
-		mut hovertext := []string{cap: rocdata.classifiers.len + 2}
-
-		// for ids in rocpoints.map(it.classifier_ids) {
-		// 	hovertext << 'classifier' + if ids.contains(',') { 's' } else { '' } + ': ' + ids
-		// }
+		mut hovertext := []string{}
+		hovertext << '${rocdata.classifier_ids[0]}'
+		// for id in rocdata {
+		// 	hovertext << 'classifier ${ids}
 		plt.scatter(
 			x:    rocpoints.map(it.fpr)
 			y:    rocpoints.map(it.sens)
@@ -43,7 +41,9 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 		name: 'random guess<br>(probability 0.5)'
 	)
 	plt.layout(
-		title:       'Receiver Operating Characteristic curves<br>Training dataset: ${files.datafile}<br>Settings file: ${files.settingsfile} '
+		title:       'Receiver Operating Characteristic Curves For ' +
+			if rocdata_array.len == 1 { 'Individual Classifiers<br>' } else { 'Combos of ${rocdata_array.len} Classifiers<br>' } +
+			'Training dataset: ${files.datafile}<br>Settings file: ${files.settingsfile} '
 		width:       800
 		height:      600
 		xaxis:       plot.Axis{
