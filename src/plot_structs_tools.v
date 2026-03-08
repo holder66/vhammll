@@ -11,6 +11,13 @@ mut:
 	classifier_ids []int
 }
 
+struct RocPoints {
+mut:
+	roc_points_id string
+	roc_points    []RocPoint
+	auc           f64
+}
+
 // Point is a 2D coordinate used for ROC plots:
 // fpr is 1 − specificity (false positive rate); sens is sensitivity.
 struct Point {
@@ -81,6 +88,33 @@ pub mut:
 	datafile     string
 	testfile     string
 	settingsfile string
+}
+
+fn make_rocpoint(settings ClassifierSettings, classifier_id int) RocPoint {
+	return RocPoint{
+		classifier_ids: [classifier_id]
+		Point:          Point{
+			fpr:  1.0 - settings.spec
+			sens: settings.sens
+		}
+	}
+}
+
+fn (mut r RocPoints) extend_rocpoints() RocPoints {
+	// tack on a [0,0] and a [1,1] point
+	r.roc_points.prepend(RocPoint{
+		Point: Point{
+			fpr:  0.0
+			sens: 0.0
+		}
+	})
+	r.roc_points << RocPoint{
+		Point: Point{
+			fpr:  1.0
+			sens: 1.0
+		}
+	}
+	return r
 }
 
 // roc_values takes a list of pairs of sensitivity and specificity values,
@@ -155,10 +189,10 @@ pub fn auc_roc(roc_points []RocPoint) f64 {
 	mut auc := f64(0)
 	for i in 0 .. roc_points.len - 1 {
 		// Calculate trapezoid area between consecutive points
-		x1 := roc_points[i].fpr
-		y1 := roc_points[i].sens
-		x2 := roc_points[i + 1].fpr
-		y2 := roc_points[i + 1].sens
+		x1 := roc_points[i].Point.fpr
+		y1 := roc_points[i].Point.sens
+		x2 := roc_points[i + 1].Point.fpr
+		y2 := roc_points[i + 1].Point.sens
 		width := x2 - x1
 		avg_height := (y1 + y2) / 2
 		auc += width * avg_height

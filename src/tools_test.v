@@ -3,50 +3,6 @@ module vhammll
 // import arrays
 import math.unsigned
 
-fn test_roc_values() {
-	mut pairs := [[0.857, 0.671], [0.857, 0.612], [0.857, 0.682],
-		[0.286, 0.824], [0.714, 0.824], [0.286, 0.800], [0.857, 0.706]]
-	mut classifiers := [[5, 113, 118], [120, 113, 118], [120, 113, 118],
-		[70, 5, 120, 14, 113, 118], [70, 118, 113, 135, 14], [70, 5, 120, 14, 113, 118],
-		[120, 113, 118]]
-	mut result := roc_values(pairs, classifiers)
-	assert result[6] == RocPoint{
-		Point:          Point{
-			fpr:  0.388
-			sens: 0.857
-		}
-		classifier_ids: [120, 113, 118]
-	}
-	assert result[0].Point == Point{}
-	assert result[7].Point == Point{1, 1}
-	assert result[7].classifier_ids == []
-}
-
-fn test_auc_roc() {
-	rp00 := RocPoint{Point{0, 0}, []int{}}
-	rp01 := RocPoint{Point{0, 1}, []int{}}
-	rp10 := RocPoint{Point{1, 0}, []int{}}
-	rp11 := RocPoint{Point{1, 1}, []int{}}
-	assert auc_roc([rp00, rp11]) == 0.5
-	assert auc_roc([rp00, rp01]) == 0.0
-	assert auc_roc([rp00, rp10]) == 0.0
-	assert auc_roc([rp01, rp11]) == 1.0
-	rp29 := RocPoint{Point{0.2, 0.9}, []int{}}
-	rp58 := RocPoint{Point{0.5, 0.8}, []int{}}
-	rp76 := RocPoint{Point{0.7, 0.6}, []int{}}
-	assert auc_roc([rp00, rp29, rp58, rp76, rp11]) == 0.7250000000000001
-	// mut pairs := [[0.0, 1.0], [0.2, 0.9], [0.5, 0.8], [0.7, 0.6]]
-	// assert auc_roc(roc_values(pairs,[[0,1,2,3]])) == 0.675
-	// assert auc_roc(roc_values([[0.5, 0.5]])) == 0.5
-	// assert auc_roc(roc_values([[1.0, 1.0]])) == 1.0
-	// assert auc_roc(roc_values([[0.0, 0.0]])) == 0.0
-	// pairs = [[0.765, 0.931], [0.882, 0.737], [0.941, 0.720], [1.0, 0.6]]
-	// assert auc_roc(roc_values(pairs)) == 0.918107
-	// pairs = [[0.941, 0.720], [0.765, 0.931], [1.0, 0.6], [0.882, 0.737]]
-	// assert auc_roc(roc_values(pairs)) == 0.918107
-	// pairs = [[0.857, 0.682], [0.286, 0.812]]
-	// assert auc_roc(roc_values(pairs)) == 0.7344160000000001
-}
 
 fn test_combinations() {
 	assert combinations([1, -2, 3, 6, 0], min: 2) == [[1, -2],

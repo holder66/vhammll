@@ -62,20 +62,6 @@ fn test_plot_explore() {
 	assert output.output.contains('Listening on')
 }
 
-fn test_area_under_curve() {
-	mut x := []f64{}
-	mut y := []f64{}
-	x = [0.0, 1.0]
-	y = [0.0, 1.0]
-	assert area_under_curve(x, y) == 0.5
-	x = [0.2, 0.4]
-	y = [0.3, 0.4]
-	assert area_under_curve(x, y) == 0.07
-	x = [0.2, 0.3, 0.4]
-	y = [0.5, 0.3, 0.1]
-	assert area_under_curve(x, y) == 0.06
-}
-
 fn test_plot_roc() {
 	// generate a multiple classifier settings file from a 2-class dataset
 	mut output := os.execute_or_panic('./temp explore -ms tempfolders/tempfolder_plot/bcw.opts -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')

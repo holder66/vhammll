@@ -74,17 +74,17 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		mcc_max:                                      mcc_max
 		mcc_max_classifiers_all:                      mcc_max_ids
 		mcc_max_classifiers:                          limit_to_unique_attribute_number(settings,
-			mcc_max_ids)
+			mcc_max_ids, opts.all_attributes_flag)
 		correct_inferences_total_max:                 corrects_max
 		correct_inferences_total_max_classifiers_all: corrects_max_ids
 		correct_inferences_total_max_classifiers:     limit_to_unique_attribute_number(settings,
-			corrects_max_ids)
+			corrects_max_ids, opts.all_attributes_flag)
 	}
 	for value in balanced_accuracy_values {
 		matching_ids := settings.filter(it.balanced_accuracy == value).map(it.classifier_id)
 		result.best_balanced_accuracies_classifiers_all << matching_ids
 		result.best_balanced_accuracies_classifiers << limit_to_unique_attribute_number(settings,
-			matching_ids)
+			matching_ids, opts.all_attributes_flag)
 	}
 	for i, _ in result.classes {
 		max_correct := array_max(settings.map(it.correct_counts[i]))
@@ -92,7 +92,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		matching_ids := settings.filter(it.correct_counts[i] == max_correct).map(it.classifier_id)
 		result.correct_inferences_by_class_max_classifiers_all << matching_ids
 		result.correct_inferences_by_class_max_classifiers << limit_to_unique_attribute_number(settings,
-			matching_ids)
+			matching_ids, opts.all_attributes_flag)
 	}
 
 	struct Counts {
@@ -148,7 +148,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	all_optimals.sort(a < b)
 	result.all_optimals = all_optimals
 	result.all_optimals_unique_attributes = limit_to_unique_attribute_number(settings,
-		all_optimals)
+		all_optimals, opts.all_attributes_flag)
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
 			result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)
@@ -190,6 +190,12 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	}
 
 	if opts.graph_flag && result.class_counts.len == 2 {
+		if opts.generate_combinations_flag {
+			dump(result.multi_classifier_combinations_for_auc)
+			// result.RocData = RocData{
+			// 	coordinates: result.multi_classifier_combinations_for_auc
+			// }
+		}
 		plot_mult_roc([result.RocData], result.RocFiles)
 	}
 	if opts.outputfile_path != '' {
@@ -204,9 +210,12 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 // classifier ID is kept per distinct attribute count. For each unique value of
 // `number_of_attributes[0]` found among the matching classifiers, the first
 // classifier ID (in the order of `classifier_ids`) that carries that attribute
-// count is retained. This avoids redundant display of classifiers that differ
-// only in how many attributes they use.
-fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classifier_ids []int) []int {
+// count is retained. This avoids redundant display of classifiers that use the
+// same number of attributes.
+fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classifier_ids []int, all_attributes_flag bool) []int {
+	if all_attributes_flag {
+		return classifier_ids
+	}
 	// Build a lookup map once: classifier_id -> first number_of_attributes value
 	mut id_to_first_attr := map[int]int{}
 	for setting in settings_array {
@@ -236,27 +245,30 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 // number of available classifiers it is clamped to that count; if `limits.min`
 // exceeds the count the function panics.
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
-	dump(settings_array.len)
-	dump(classifier_ids)
+	// dump(settings_array.len)
+	// dump(classifier_ids)
+	// mut auc_classifiers := []AucClassifiers{}
 	mut new_limits := limits
 	if limits.generate_combinations_flag && (limits.min == 0 || limits.max == 0) {
 		new_limits.min = 1
 		new_limits.max = classifier_ids.len
 	}
-	dump(new_limits)
-	dump(classifier_ids)
+	// dump(new_limits)
+	// dump(classifier_ids)
 	if new_limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
 	}
 	if new_limits.max > classifier_ids.len {
 		new_limits.max = classifier_ids.len
 	}
+	// dump(new_limits)
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
-	for id in classifier_ids {
-		settings << settings_array.filter(it.classifier_id == id)
-	}
+	// for id in classifier_ids {
+	// 	settings << settings_array.filter(it.classifier_id == id)
+	// }
+	settings << settings_array
 	// we now have an array of settings for only the classifier id's
-	dump(settings.len)
+	// dump(settings.len)
 	mut roc_points := [][]f64{}
 	mut classifiers := []int{}
 	for setting in settings {
@@ -264,29 +276,39 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []in
 		classifiers << setting.classifier_id
 	}
 	classifier_combos := combinations(classifier_ids, new_limits)
-	dump(classifier_combos)
+	// dump(classifier_combos)
 	// for each combo, we need to calculate auc
 	// so we need to calculate the points for each classifier in the combo
-	mut points_array := []RocPoint{cap: classifier_combos.len + 2}
+	mut array_of_points_arrays := []RocPoints{cap: classifier_combos.len}
+	mut points_array := RocPoints{}
 	// for i, pair_sets in roc_points_combos {
 	// 	points_array << roc_values(pair_sets, classifier_combos[i])
 	// }
 	for classifier_combo in classifier_combos {
-		points_array << RocPoint{
-			classifier_ids: classifier_combo
-			Point:          Point{}
+		points_array = RocPoints{
+			roc_points_id: '(' + classifier_combo.map(it.str()).join(',') + ')'
+			roc_points:    classifier_combo.map(make_rocpoint(settings[it], it))
 		}
-	}
+		points_array.extend_rocpoints()
+		points_array.auc = auc_roc(points_array.roc_points)
 
-	dump(points_array[0..10])
+		// points_array << RocPoint{
+		// 	classifier_ids: classifier_combo
+		// 	Point:          Point{}
+
+		array_of_points_arrays << points_array
+	}
+	dump(array_of_points_arrays.len)
+	dump(array_of_points_arrays[0 .. 4])
+	// dump(points_array)
 	// calculate auc values
-	mut auc_classifiers := []AucClassifiers{cap: points_array.len}
-	// for i, points in points_array {
-	// 	auc_classifiers << AucClassifiers{
-	// 		classifier_ids: classifier_combos[i]
-	// 		auc:            auc_roc(points)
-	// 	}
-	// }
+	mut auc_classifiers := []AucClassifiers{}
+	for i, points_arrays in array_of_points_arrays {
+		auc_classifiers << AucClassifiers{
+			classifier_ids: classifier_combos[i]
+// 			auc:            auc_roc(points_arrays.RocPoint)
+}
+	}
 	return auc_classifiers
 }
 
