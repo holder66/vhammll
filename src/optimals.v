@@ -149,6 +149,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	result.all_optimals = all_optimals
 	result.all_optimals_unique_attributes = limit_to_unique_attribute_number(settings,
 		all_optimals, opts.all_attributes_flag)
+	dump(result.all_optimals_unique_attributes)
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
 			result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)
@@ -191,12 +192,11 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 
 	if opts.graph_flag && result.class_counts.len == 2 {
 		if opts.generate_combinations_flag {
-			dump(result.multi_classifier_combinations_for_auc)
-			// result.RocData = RocData{
-			// 	coordinates: result.multi_classifier_combinations_for_auc
-			// }
+			plot_auc_combinations(result.multi_classifier_combinations_for_auc, result.RocFiles,
+				opts.limit_output)
+		} else {
+			plot_mult_roc([result.RocData], result.RocFiles)
 		}
-		plot_mult_roc([result.RocData], result.RocFiles)
 	}
 	if opts.outputfile_path != '' {
 		for setting in settings {
@@ -245,30 +245,22 @@ fn limit_to_unique_attribute_number(settings_array []ClassifierSettings, classif
 // number of available classifiers it is clamped to that count; if `limits.min`
 // exceeds the count the function panics.
 fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []int, limits CombinationSizeLimits) []AucClassifiers {
-	// dump(settings_array.len)
-	// dump(classifier_ids)
-	// mut auc_classifiers := []AucClassifiers{}
 	mut new_limits := limits
 	if limits.generate_combinations_flag && (limits.min == 0 || limits.max == 0) {
 		new_limits.min = 1
 		new_limits.max = classifier_ids.len
 	}
-	// dump(new_limits)
-	// dump(classifier_ids)
 	if new_limits.min > classifier_ids.len {
 		panic('combination size limits exceed the number of classifier settings')
 	}
 	if new_limits.max > classifier_ids.len {
 		new_limits.max = classifier_ids.len
 	}
-	// dump(new_limits)
 	mut settings := []ClassifierSettings{cap: classifier_ids.len}
-	// for id in classifier_ids {
-	// 	settings << settings_array.filter(it.classifier_id == id)
-	// }
-	settings << settings_array
+	for id in classifier_ids {
+		settings << settings_array.filter(it.classifier_id == id)
+	}
 	// we now have an array of settings for only the classifier id's
-	// dump(settings.len)
 	mut roc_points := [][]f64{}
 	mut classifiers := []int{}
 	for setting in settings {
@@ -276,38 +268,27 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []in
 		classifiers << setting.classifier_id
 	}
 	classifier_combos := combinations(classifier_ids, new_limits)
-	// dump(classifier_combos)
 	// for each combo, we need to calculate auc
 	// so we need to calculate the points for each classifier in the combo
 	mut array_of_points_arrays := []RocPoints{cap: classifier_combos.len}
 	mut points_array := RocPoints{}
-	// for i, pair_sets in roc_points_combos {
-	// 	points_array << roc_values(pair_sets, classifier_combos[i])
-	// }
 	for classifier_combo in classifier_combos {
 		points_array = RocPoints{
 			roc_points_id: '(' + classifier_combo.map(it.str()).join(',') + ')'
-			roc_points:    classifier_combo.map(make_rocpoint(settings[it], it))
+		}
+		for cl_id in classifier_combo {
+			points_array.roc_points << make_rocpoint(settings.filter(it.classifier_id == cl_id).first())
 		}
 		points_array.extend_rocpoints()
 		points_array.auc = auc_roc(points_array.roc_points)
-
-		// points_array << RocPoint{
-		// 	classifier_ids: classifier_combo
-		// 	Point:          Point{}
-
 		array_of_points_arrays << points_array
 	}
-	dump(array_of_points_arrays.len)
-	dump(array_of_points_arrays[0 .. 4])
-	// dump(points_array)
-	// calculate auc values
 	mut auc_classifiers := []AucClassifiers{}
 	for i, points_arrays in array_of_points_arrays {
 		auc_classifiers << AucClassifiers{
 			classifier_ids: classifier_combos[i]
-// 			auc:            auc_roc(points_arrays.RocPoint)
-}
+			auc:            points_arrays.auc
+		}
 	}
 	return auc_classifiers
 }
