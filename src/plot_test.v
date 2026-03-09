@@ -42,6 +42,22 @@ fn test_plot_hits() {
 	assert output.output.contains('Listening on')
 }
 
+fn test_plot_switches() {
+	// binary dataset with continuous attributes: both rank and switches plots appear
+	mut output := os.execute_or_panic('./temp rank -g -sw vhammll/datasets/bcw350train')
+	assert output.output.contains('Listening on')
+	// with a custom bin range and top-N limit
+	output = os.execute_or_panic('./temp rank -g -sw -b 2,7 -l 5 vhammll/datasets/bcw350train')
+	assert output.output.contains('Listening on')
+	// with an explicit threshold
+	output = os.execute_or_panic('./temp rank -g -sw -swt 1 vhammll/datasets/bcw350train')
+	assert output.output.contains('Listening on')
+	// multi-class dataset: -sw flag is set but switches_array stays empty,
+	// so only plot_rank runs; plot_switches is skipped (guarded by classes.len == 2)
+	output = os.execute_or_panic('./temp rank -g -sw vhammll/datasets/iris.tab')
+	assert output.output.contains('Listening on')
+}
+
 fn test_plot_rank() {
 	mut output := os.execute_or_panic('./temp rank -g vhammll/datasets/developer.tab')
 	assert output.output.contains('Listening on')

@@ -211,6 +211,9 @@ pub fn rank_attributes(opts Options) RankingResult {
 	}
 	if opts.graph_flag && opts.command == 'rank' {
 		plot_rank(result)
+		if result.switches_flag && result.classes.len == 2 {
+			plot_switches(result)
+		}
 	}
 	if opts.outputfile_path != '' {
 		save_json_file[RankingResult](result, opts.outputfile_path)
