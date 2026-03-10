@@ -43,19 +43,29 @@ fn test_plot_hits() {
 }
 
 fn test_plot_switches() {
-	// binary dataset with continuous attributes: both rank and switches plots appear
+	// binary + continuous: plot_rank AND plot_switches each emit 'Listening on' → 2 total
 	mut output := os.execute_or_panic('./temp rank -g -sw vhammll/datasets/bcw350train')
-	assert output.output.contains('Listening on')
-	// with a custom bin range and top-N limit
+	assert output.output.count('Listening on') == 2
+
+	// custom bin range and per-trace limit: still 2 plots
 	output = os.execute_or_panic('./temp rank -g -sw -b 2,7 -l 5 vhammll/datasets/bcw350train')
-	assert output.output.contains('Listening on')
-	// with an explicit threshold
+	assert output.output.count('Listening on') == 2
+
+	// stricter threshold (-swt 1): threshold line draws at 1; both plots still appear
 	output = os.execute_or_panic('./temp rank -g -sw -swt 1 vhammll/datasets/bcw350train')
-	assert output.output.contains('Listening on')
-	// multi-class dataset: -sw flag is set but switches_array stays empty,
-	// so only plot_rank runs; plot_switches is skipped (guarded by classes.len == 2)
+	assert output.output.count('Listening on') == 2
+
+	// exclude missing values from bin 0: both plots still appear
+	output = os.execute_or_panic('./temp rank -g -sw -x vhammll/datasets/bcw350train')
+	assert output.output.count('Listening on') == 2
+
+	// -sw without -g: no plots produced at all
+	output = os.execute_or_panic('./temp rank -sw vhammll/datasets/bcw350train')
+	assert output.output.count('Listening on') == 0
+
+	// multi-class (iris, 3 classes): guard skips plot_switches → only plot_rank fires = 1
 	output = os.execute_or_panic('./temp rank -g -sw vhammll/datasets/iris.tab')
-	assert output.output.contains('Listening on')
+	assert output.output.count('Listening on') == 1
 }
 
 fn test_plot_rank() {
