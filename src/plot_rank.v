@@ -8,8 +8,6 @@ fn plot_rank(result RankingResult) {
 	// dump(result)
 	mut ranked_atts := result.array_of_ranked_attributes.clone()
 	mut traces := []RankTrace{}
-	mut plt := plot.Plot.new()
-	// mut plt := plot.new_plot()
 	mut x := []f64{}
 	for i in result.binning.lower .. result.binning.upper + 1 {
 		x << i
@@ -27,8 +25,12 @@ fn plot_rank(result RankingResult) {
 			hover_text: ['${attr.attribute_name}'].repeat(result.binning.upper + 1)
 		}
 	}
+	if traces.len == 0 {
+		return
+	}
 	// sort in descending order of maximum_rank_value
 	traces.sort(a.maximum_rank_value > b.maximum_rank_value)
+	mut plt := plot.Plot.new()
 
 	mut attributes := []string{}
 	for value in traces {
