@@ -15,9 +15,18 @@ fn plot_switches(result RankingResult) {
 	}
 
 	// collect continuous attributes that have switch data; sort most-monotone first
-	mut attrs := result.array_of_ranked_attributes.filter(
-		it.attribute_type == 'C' && it.switches_array.len > 0)
-	attrs.sort(array_min(a.switches_array) < array_min(b.switches_array))
+	mut attrs := result.array_of_ranked_attributes.filter(it.attribute_type == 'C'
+		&& it.switches_array.len > 0)
+	attrs.sort_with_compare(fn (a &RankedAttribute, b &RankedAttribute) int {
+		a_min := array_min(a.switches_array)
+		b_min := array_min(b.switches_array)
+		if a_min < b_min {
+			return -1
+		} else if a_min > b_min {
+			return 1
+		}
+		return 0
+	})
 
 	mut plt := plot.Plot.new()
 	for i, attr in attrs {
@@ -53,8 +62,8 @@ fn plot_switches(result RankingResult) {
 	annotation2 := plot.Annotation{
 		x:     0.3 * f64(result.binning.upper)
 		y:     f64(result.switches_threshold) + 0.5
-		text:  'Missing Values<br>' +
-			if result.exclude_flag { 'excluded' } else { 'included' } + '<br>    '
+		text:  'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' } +
+			'<br>    '
 		align: 'center'
 	}
 
