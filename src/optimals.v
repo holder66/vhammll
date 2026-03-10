@@ -16,14 +16,19 @@ v run main.v optimals -e <path_to_settings_file>
 v run main.v optimals -e -p -o <path_to_new_settings_file> <path_to_settings_file>
 
 Options:
--cl --combination-limits: generates combinations of classifiers and calculates 
-       the area under the Receiver Operating Characteristic curve for each combination;
-       if -cl is followed by a pair of integers, those values are used as the lower 
-       and upper limits of combination length.
+-cl --combination-limits: generates all combinations of the optimal classifiers
+       and calculates the AUC for each; if followed by a pair of integers those
+       values set the minimum and maximum combination length; combine with -g to
+       display an AUC-vs-rank scatter plot (one trace per combination length).
 -e --expanded: show expanded results on the console
--g --graph: display a plot of the Receiver Operating Characteristic curve (for binary classification datasets)
+-g --graph: without -cl, display the ROC curve for individual classifiers;
+       with -cl (binary datasets only), display a scatter plot of AUC values
+       for each multi-classifier combination, grouped by combination length;
+       use -l to limit each trace to the top N combinations by AUC
+-l --limit-output: when used with -g -cl, restricts each combination-length
+       trace to the N highest-AUC combinations (0 = show all)
 -p --purge: remove duplicate settings (ie settings with identical parameters)
--aa --all-attributes: for each category of optimals, show all settings (the default  
+-aa --all-attributes: for each category of optimals, show all settings (the default
 		is to show only those settings with unique attribute numbers)
 -o --output: followed by the path to a file to save the (purged) settings
 -s --show: show only classifier id\'s for each category
@@ -34,11 +39,15 @@ Options:
 // inferences per class, for multiple classifiers whose settings are stored in a settings file.
 // ```sh
 // Options:
-// -cl --combination-limits: search combinations of classifiers for best ROC AUC; optional
-//      pair of integers sets the lower and upper limits on combination length.
+// -cl --combination-limits: enumerate all combinations of the optimal classifiers
+//      and compute each combination's AUC; an optional pair of integers sets the
+//      minimum and maximum combination size.
 // -e --expanded: for each setting, print the Parameters, results obtained, and Metrics.
-// -g --graph: plot a Receiver Operating Characteristic curve (for
-//      binary classification datasets)
+// -g --graph: without -cl, plots the ROC curve for individual classifiers (binary only);
+//      with -cl, plots AUC vs rank for every multi-classifier combination, one scatter
+//      trace per combination length; silently skipped for multi-class datasets.
+// -l --limit-output: with -g -cl, caps each combination-length trace to the top N
+//      combinations by AUC (0 = show all).
 // -p --purge: discard duplicate settings (identical parameters, different IDs).
 // -aa --all-attributes: show all settings in each category; default shows only those
 //      with unique attribute counts.

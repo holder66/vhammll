@@ -3,11 +3,15 @@ module vhammll
 import vsl.plot
 
 // plot_switches generates an interactive scatter plot of the number of
-// dominant-class switches per continuous attribute as a function of bin count,
-// with one trace per attribute sorted ascending by minimum switch count (most
-// monotone attributes appear first in the legend).  A dashed horizontal
-// reference line is drawn at result.switches_threshold.
-// Only called for binary classification datasets when the -sw flag is active.
+// dominant-class switches per continuous attribute as a function of bin count.
+// Each continuous attribute that has switch data produces one trace, sorted
+// ascending by minimum switch count so the most monotone attributes appear
+// first in the legend.  A dashed horizontal reference line is drawn at
+// result.switches_threshold.  Returns immediately without opening a browser
+// window when no continuous attributes have switch data (e.g. discrete-only
+// datasets or multi-class datasets where switches are not computed).
+// Called by rank_attributes when both -g and -sw are active and the dataset
+// is binary (classes.len == 2).
 fn plot_switches(result RankingResult) {
 	mut x := []f64{}
 	for i in result.binning.lower .. result.binning.upper + 1 {

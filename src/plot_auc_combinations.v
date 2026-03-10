@@ -4,10 +4,12 @@ import vsl.plot
 
 // plot_auc_combinations generates an interactive scatter plot of the Area Under
 // the ROC Curve (AUC) for each multi-classifier combination, with one trace per
-// combination length.  The incoming `combos` slice must already be sorted
-// descending by AUC (as done in optimals()).  If `top_n` is greater than zero,
-// only the `top_n` highest-AUC combinations are shown for each length; passing
-// zero shows all combinations for every length.
+// combination length.  X-axis is rank within the length group (1 = highest AUC);
+// Y-axis is AUC; hovering over a marker shows the constituent classifier IDs.
+// The incoming `combos` slice must already be sorted descending by AUC (as done
+// in optimals()).  If `top_n` is greater than zero, only the `top_n` highest-AUC
+// combinations are shown for each length; passing zero shows all combinations.
+// Called by optimals when -g and -cl are both active on a binary dataset.
 pub fn plot_auc_combinations(combos []AucClassifiers, files RocFiles, top_n int) {
 	// collect unique combination lengths, sorted ascending
 	mut lengths := []int{}

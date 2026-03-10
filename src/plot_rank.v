@@ -2,8 +2,10 @@ module vhammll
 
 import vsl.plot
 
-// plot_rank generates a scatterplot of the rank values
-// for continuous attributes, as a function of the number of bins.
+// plot_rank generates a scatterplot of the rank values for continuous
+// attributes as a function of the number of bins.  Each attribute produces
+// one trace, sorted descending by its maximum rank value.  Returns immediately
+// without opening a browser window when the dataset has no continuous attributes.
 fn plot_rank(result RankingResult) {
 	// dump(result)
 	mut ranked_atts := result.array_of_ranked_attributes.clone()

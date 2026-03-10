@@ -23,8 +23,11 @@ Options:
   -b --bins, eg, "3,6" specifies the lower and upper limits for the number 
       of slices or bins for continuous attributes [Options.bins]
   -x --exclude, exclude missing values from rank value calculations [Parameters.exclude_flag]
-  -g --graph, produce a plot showing rank values vs number of bins for   
-      continuous attributes [DisplaySettings.graph_flag]
+  -g --graph, produce a plot showing rank values vs number of bins for
+      continuous attributes; if -sw is also set on a binary dataset, a second
+      plot of dominant-class switches vs bins is shown alongside; no plot is
+      produced when the dataset has no continuous attributes
+      [DisplaySettings.graph_flag]
   -l --limit-output, followed by an integer which specifies how many
   		attributes should be included in the console listing [DisplaySettings.limit_output]
   -of --overfitting, console output and graph to include information
@@ -38,10 +41,12 @@ Options:
   -sw --switches, enables the dominant-class switch metric for 2-class
       datasets: bin counts whose switch count exceeds the threshold are
       excluded when searching for the maximum rank value; attributes where
-      every bin count exceeds the threshold receive rank value 0 [Parameters.switches_flag]
+      every bin count exceeds the threshold receive rank value 0; combine
+      with -g to display the switches-vs-bins plot [Parameters.switches_flag]
   -swt --switch-threshold, followed by an integer (default 2, min 1, max
       upper binning limit); sets the switch count threshold used when -sw is
-      active [Parameters.switches_threshold]
+      active; drawn as a dashed reference line when -g is also set
+      [Parameters.switches_threshold]
 
     '
 
@@ -90,8 +95,10 @@ Options:
 //
 // Output options:
 // `show_flag`: print the ranked list to the console;
-// `graph_flag`: generate plots of rank values for each attribute on the
-//     y axis, with number of bins on the x axis.
+// `graph_flag`: generate a rank-values plot (continuous attributes, y axis)
+//     vs number of bins (x axis); skipped silently when no continuous
+//     attributes exist.  When `switches_flag` is also set on a binary dataset,
+//     a second plot of dominant-class switches vs bins is produced.
 // `overfitting_flag`: generates metrics/plots to help determine, for continuous
 //     attributes, whether overfitting is occurring.
 // `weighting_flag`: for the hits per bin graph produced by the overfitting flag,
