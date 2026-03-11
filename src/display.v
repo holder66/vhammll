@@ -133,7 +133,14 @@ pub fn display_file(path string, in_opts Options) {
 				}
 				if opts.show_attributes_flag {
 					// we need to generate a classifier for each of the settings!
-					mut ds := load_file(multiple_classifier_settings[0].datafile_path)
+					s0 := multiple_classifier_settings[0]
+					mut ds := load_file(s0.datafile_path, s0.LoadOptions)
+					// Re-apply prevalence balancing if the original training used -bp,
+					// so that the rebuilt classifiers match the originals.
+					if s0.balance_prevalences_flag
+						&& evaluate_class_prevalence_imbalance(ds, Options{ LoadOptions: s0.LoadOptions }) {
+						ds = balance_prevalences(mut ds, s0.balance_prevalences_threshold)
+					}
 					mut classifiers_array := make_multi_classifiers(mut ds, multiple_classifier_settings,
 						opts.classifiers)
 					for i, idx in classifiers_array {

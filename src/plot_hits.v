@@ -33,12 +33,12 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 		if two_class {
 			// ── Butterfly layout ────────────────────────────────────────────
 			// y = bin index (0 … n_bins-1); x = hit count (class 0 negated)
-			annotation1 := plot.Annotation{
-				x:     0.7 * hit_max
-				y:     f64(n_bins - 2)
-				text:  anno1_text
-				align: 'right'
-			}
+			// annotation1 := plot.Annotation{
+			// 	x:     0.7 * hit_max
+			// 	y:     f64(n_bins - 2)
+			// 	text:  anno1_text
+			// 	align: 'right'
+			// }
 			for i, class in classes_info.classes {
 				raw := if weighting {
 					hits_array[i].map(f64(it) / classes_info.class_counts.values()[i] * 100)

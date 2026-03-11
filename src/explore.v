@@ -171,11 +171,8 @@ pub fn explore(opts Options) ExploreResult {
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// if the balance_prevalences flag is set, then we need to possibly add the extra cases
-	// at this stage, prior to partitioning
-	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
-		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
-	}
+	// Note: balance_prevalences is NOT applied here — cross_validate and verify
+	// each load the file independently and apply -bp themselves.
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		Parameters:      opts.Parameters
