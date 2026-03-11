@@ -171,8 +171,12 @@ pub fn explore(opts Options) ExploreResult {
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// Note: balance_prevalences is NOT applied here — cross_validate and verify
-	// each load the file independently and apply -bp themselves.
+	// Apply -bp here so that ds.Class (class_counts and pre_balance_prevalences_class_counts)
+	// are correct for the explore header display. ds is not passed to cross_validate or
+	// verify — those functions load the file independently and apply -bp themselves.
+	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	}
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		Parameters:      opts.Parameters
