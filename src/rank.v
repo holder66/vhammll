@@ -111,7 +111,10 @@ Options:
 // in-memory Dataset (e.g. per-fold training partitions in cross-validation)
 // should call rank_dataset directly to avoid reloading the full file.
 pub fn rank_attributes(opts Options) RankingResult {
-	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	if opts.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	}
 	return rank_dataset(ds, opts)
 }
 
