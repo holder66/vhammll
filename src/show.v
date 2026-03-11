@@ -99,6 +99,12 @@ pub fn show_rank_attributes(result RankingResult) {
 	println(if result.weight_ranking_flag { 'Weighted' } else { 'Unweighted' } +
 		' by class prevalences')
 	println('Purging of instances with missing class values: ${result.class_missing_purge_flag}')
+	println('Add instances to balance class prevalences: ${result.balance_prevalences_flag}')
+	if result.balance_prevalences_flag {
+		println('${'Threshold: ':60}${result.balance_prevalences_threshold}')
+		println('${'class counts: ':60}${result.class_counts}   ratio: ${ratio(result.class_counts.values())}')
+		println('${'pre_balance_prevalences_class_counts: ':60}${result.pre_balance_prevalences_class_counts}   ratio: ${ratio(result.pre_balance_prevalences_class_counts.values())}')
+	}
 	show_switches := result.switches_flag && result.class_counts.len == 2
 	if show_switches {
 		println('Switch threshold (2-class): ${result.switches_threshold}')
