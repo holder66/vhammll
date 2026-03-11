@@ -17,7 +17,6 @@ import time
 // numbers on the horizontal axis and hit counts on the vertical axis with
 // fill: 'tozeroy'.
 fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
-	dump(attr.array_of_hits_arrays)
 	two_class := classes_info.classes.len == 2
 	mut anno1_text := 'Max rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins<br>      '
 	// max hit count (or 100 when weighting normalises to a percentage)
@@ -59,14 +58,14 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 			}
 			plt.layout(
 				title:    if weighting { 'Weighted h' } else { 'H' } +
-					'its per bin, per class, for attribute "${attr.attribute_name}"'
+					'its per bin, per class, for attribute "${attr.attribute_name}"<br>Max rank value: ${attr.rank_value:-5.2f} at ${attr.bins} bins'
 				autosize: false
 				width:    800
 				height:   600
 				xaxis:    plot.Axis{
 					title: plot.AxisTitle{
 						text: if weighting { 'Weighted and normalized n' } else { 'N' } +
-							'umber of Hits  (← ${classes_info.classes[0]}  |  ${classes_info.classes[1]} →)'
+							'umber of Hits  (left: ${classes_info.classes[0]}  |  right: ${classes_info.classes[1]} )'
 					}
 					range: [-hit_max, hit_max]
 				}
@@ -75,7 +74,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 						text: 'Bin number (bin 0 is for missing values)'
 					}
 				}
-				annotations: [annotation1]
+				// annotations: [annotation1]
 			)
 		} else {
 			// ── Original multi-class layout ─────────────────────────────────

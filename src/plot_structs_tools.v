@@ -90,9 +90,9 @@ pub mut:
 	settingsfile string
 }
 
-fn make_rocpoint(settings ClassifierSettings, classifier_id int) RocPoint {
+fn make_rocpoint(settings ClassifierSettings) RocPoint {
 	return RocPoint{
-		classifier_ids: [classifier_id]
+		classifier_ids: [settings.classifier_id]
 		Point:          Point{
 			fpr:  1.0 - settings.spec
 			sens: settings.sens
@@ -182,11 +182,42 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 
 // auc_roc returns the area under the Receiver Operating Characteristic
 // curve, for an array of points.
-pub fn auc_roc(roc_points []RocPoint) f64 {
-	if roc_points.len < 2 {
+pub fn auc_roc(roc_point_array []RocPoint) f64 {
+	if roc_point_array.len < 2 {
 		panic('cannot calculate area_roc with fewer than 2 roc_points')
 	}
 	mut auc := f64(0)
+	mut roc_points := roc_point_array.clone()
+	// sort the points by fpr ascending, then sens ascending
+	// Sort points by FPR ascending, then sens ascending
+	custom_sort_fn := fn (a &RocPoint, b &RocPoint) int {
+		if a.fpr == b.fpr {
+			if a.sens < b.sens {
+				return -1
+			}
+			if a.sens > b.sens {
+				return 1
+			}
+			{
+				return 0
+			}
+		}
+		if a.fpr < b.fpr {
+			return -1
+		} else if a.fpr > b.fpr {
+			return 1
+		}
+		return 0
+	}
+	roc_points.sort_with_compare(custom_sort_fn)
+	mut result := []RocPoint{cap: roc_points.len}
+	result << roc_points[0]
+	for point in roc_points[1..] {
+		if point.sens >= array_max(result.map(it.sens)) {
+			result << point
+		}
+	}
+	// points := result.map(it.Point)
 	for i in 0 .. roc_points.len - 1 {
 		// Calculate trapezoid area between consecutive points
 		x1 := roc_points[i].Point.fpr

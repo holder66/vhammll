@@ -7,9 +7,12 @@ fn test_make_rocpoint() {
 			spec: 0.6
 		}
 	}
-	rp := make_rocpoint(settings, 7)
-	assert rp.classifier_ids == [7]
-	assert rp.Point == Point{fpr: 0.4, sens: 0.8} // fpr = 1.0 - spec
+	rp := make_rocpoint(settings)
+	assert rp.classifier_ids == [0]
+	assert rp.Point == Point{
+		fpr:  0.4
+		sens: 0.8
+	} // fpr = 1.0 - spec
 	// perfect classifier: fpr = 0, sens = 1
 	perfect := ClassifierSettings{
 		BinaryMetrics: BinaryMetrics{
@@ -17,18 +20,25 @@ fn test_make_rocpoint() {
 			spec: 1.0
 		}
 	}
-	rp_perfect := make_rocpoint(perfect, 0)
-	assert rp_perfect.Point == Point{fpr: 0.0, sens: 1.0}
+	rp_perfect := make_rocpoint(perfect)
+	assert rp_perfect.Point == Point{
+		fpr:  0.0
+		sens: 1.0
+	}
 	assert rp_perfect.classifier_ids == [0]
 	// worst case: fpr = 1, sens = 0
 	worst := ClassifierSettings{
+		classifier_id: 99
 		BinaryMetrics: BinaryMetrics{
 			sens: 0.0
 			spec: 0.0
 		}
 	}
-	rp_worst := make_rocpoint(worst, 99)
-	assert rp_worst.Point == Point{fpr: 1.0, sens: 0.0}
+	rp_worst := make_rocpoint(worst)
+	assert rp_worst.Point == Point{
+		fpr:  1.0
+		sens: 0.0
+	}
 	assert rp_worst.classifier_ids == [99]
 }
 
@@ -146,5 +156,3 @@ fn test_area_under_curve() {
 	y = [0.5, 0.3, 0.1]
 	assert area_under_curve(x, y) == 0.06
 }
-
-

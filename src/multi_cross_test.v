@@ -27,7 +27,7 @@ fn test_multiple_crossvalidate() ? {
 	assert result.correct_counts == [8, 3, 2]
 	result = cross_validate(opts('-e -m ${savedsettings} -m# 3 ${datafile}'))
 	assert result.correct_counts == [8, 3, 2]
-	result = cross_validate(opts('-e -af -m ${savedsettings} -m# 0,1,2 ${datafile}'))
+	result = cross_validate(opts('-s -af -m ${savedsettings} -m# 0,1,2 ${datafile}'))
 	assert result.correct_counts == [8, 3, 2]
 }
 
