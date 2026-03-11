@@ -105,8 +105,20 @@ Options:
 //     weights and normalizes the hits.
 // `outputfile_path`: saves the result as json.
 // ```
+// rank_attributes loads a dataset from opts.datafile_path and ranks its
+// attributes.  This is the entry point used by the CLI 'rank' command and
+// any caller that works with a file path.  Callers that already have an
+// in-memory Dataset (e.g. per-fold training partitions in cross-validation)
+// should call rank_dataset directly to avoid reloading the full file.
 pub fn rank_attributes(opts Options) RankingResult {
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
+	return rank_dataset(ds, opts)
+}
+
+// rank_dataset ranks the attributes of the supplied Dataset ds.  It is the
+// shared implementation used by both rank_attributes (file-based entry point)
+// and make_classifier_using_ds (in-memory entry point for cross-validation).
+fn rank_dataset(ds Dataset, opts Options) RankingResult {
 	mut result := RankingResult{
 		Class:                      ds.Class
 		LoadOptions:                ds.LoadOptions

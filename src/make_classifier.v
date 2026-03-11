@@ -94,7 +94,10 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	// number_of_attributes is 0)
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
-	ranking_result := rank_attributes(rank_opts)
+	// Use rank_dataset (not rank_attributes) so ranking is performed on the
+	// already-loaded in-memory Dataset ds — which, during cross-validation,
+	// is the fold-excluded training partition rather than the full file.
+	ranking_result := rank_dataset(ds, rank_opts)
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {
