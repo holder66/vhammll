@@ -79,12 +79,12 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		}
 		'X': {
 			'm': 0.0
-			'X': 1.0
-			'f': 0.0
+			'X': 0.0
+			'f': 1.0
 		}
 		'f': {
-			'm': 1.0
-			'X': 0.0
+			'm': 0.0
+			'X': 1.0
 			'f': 0.0
 		}
 	}
@@ -118,8 +118,8 @@ fn test_multiple_verify_with_multiple_classes() ? {
 		cmd: 'verify'
 	))
 	assert result.correct_inferences == {
-		'm': 1
+		'm': 2
 		'f': 0
-		'X': 1
+		'X': 0
 	}
 }

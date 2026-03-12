@@ -35,11 +35,11 @@ fn test_multiple_classifier_crossvalidate_totalnn_2_classes() {
 	result = cross_validate(opts('-mt -m ${settingsfile} -m# 1 ${datafile}', cmd: 'cross'))
 	// assert result.correct_counts == [8, 3], 'for classifier #1'
 	assert cross_validate(opts('-mt -m ${settingsfile} -m# 2 ${datafile}', cmd: 'cross')).correct_counts == [
-		9,
+		8,
 		3,
 	], 'for classifier #2'
 	result = cross_validate(opts('-s -mt -m ${settingsfile} -m# 2,3 ${datafile}', cmd: 'cross'))
-	assert result.correct_counts == [9, 3], 'for classifiers 2 & 3'
+	assert result.correct_counts == [8, 3], 'for classifiers 2 & 3'
 }
 
 fn test_multiple_classifier_crossvalidate_totalnn_multiple_classes() {

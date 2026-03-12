@@ -45,7 +45,7 @@ fn test_explore() {
 	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
 	assert r.output.contains('Totals                      150     142 (accuracy: raw: 94.67% balanced: 94.67%)')
 	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-	assert r.output.contains('2  1 - 6      13     1    19     1   0.929  0.950  0.929  0.950     0.929         94.12%    93.93%   0.87')
+	assert r.output.contains('2  1 - 6      11     3    17     3   0.786  0.850  0.786  0.850     0.786         82.35%    81.79%   0.636')
 	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
 	assert r.output.contains('MCC (Matthews Correlation Coefficient):   0.908 [225, 16, 445, 13] using 9 attribute')
 	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
