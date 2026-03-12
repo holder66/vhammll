@@ -137,8 +137,9 @@ pub fn display_file(path string, in_opts Options) {
 					mut ds := load_file(s0.datafile_path, s0.LoadOptions)
 					// Re-apply prevalence balancing if the original training used -bp,
 					// so that the rebuilt classifiers match the originals.
-					if s0.balance_prevalences_flag
-						&& evaluate_class_prevalence_imbalance(ds, Options{ LoadOptions: s0.LoadOptions }) {
+					if s0.balance_prevalences_flag && evaluate_class_prevalence_imbalance(ds, Options{
+						LoadOptions: s0.LoadOptions
+					}) {
 						ds = balance_prevalences(mut ds, s0.balance_prevalences_threshold)
 					}
 					mut classifiers_array := make_multi_classifiers(mut ds, multiple_classifier_settings,

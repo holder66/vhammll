@@ -31,7 +31,8 @@ fn test_max_auc_combinations() {
 	leukbp_settings := 'src/testdata/leukbp.opts'
 	if !os.is_file(leukbp_settings) {
 		explore(opts('-bp -a 1,2 -b 2,5 -af -ms ${leukbp_settings} -t datasets/leukemia34test.tab datasets/leukemia38train.tab',
-			cmd: 'explore'))
+			cmd: 'explore'
+		))
 	}
 	// display_file('src/testdata/leukbp.opts', expanded_flag: true)
 	settings := read_multiple_opts(leukbp_settings)!

@@ -8,7 +8,8 @@
       "Bash(git commit:*)",
       "Bash(v:*)",
       "Bash(/tmp/rank_test_dbg:*)",
-      "Bash(/Users/henryolders/use_vhammll/temp explore:*)"
+      "Bash(/Users/henryolders/use_vhammll/temp explore:*)",
+      "Bash(python3:*)"
     ]
   }
 }

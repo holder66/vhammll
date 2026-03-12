@@ -138,7 +138,7 @@ fn test_verify() ? {
 fn test_cross_validate() ? {
 	mut result := CrossVerifyResult{}
 
-	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 7 -b 8,8 -f 10 -r 10 datasets/UCI/ionosphere.arff',
+	result = cross_validate(opts('-bp -bpt 0.9 -wr -a 8 -b 8,8 datasets/UCI/ionosphere.arff',
 		cmd: 'cross'
 	))
 	assert result.total_count == 1305

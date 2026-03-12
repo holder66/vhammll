@@ -101,17 +101,17 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 				)
 			}
 			plt.layout(
-				title:    if weighting { 'Weighted h' } else { 'H' } +
+				title:       if weighting { 'Weighted h' } else { 'H' } +
 					'its per bin, per class, for attribute "${attr.attribute_name}"'
-				autosize: false
-				width:    800
-				height:   600
-				xaxis:    plot.Axis{
+				autosize:    false
+				width:       800
+				height:      600
+				xaxis:       plot.Axis{
 					title: plot.AxisTitle{
 						text: 'Bin number (bin 0 is for missing values)'
 					}
 				}
-				yaxis:    plot.Axis{
+				yaxis:       plot.Axis{
 					title: plot.AxisTitle{
 						text: if weighting { 'Weighted and normalized n' } else { 'N' } +
 							'umber of Hits'
