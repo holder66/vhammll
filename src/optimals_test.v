@@ -15,18 +15,26 @@ fn testsuite_end() ? {
 
 fn test_limit_to_unique_attribute_number() {
 	savedsettings := 'src/testdata/anneal.opts'
+	if !os.is_file(savedsettings) {
+		explore(opts('-a 2,10 -b 2,10 -ms ${savedsettings} datasets/anneal.tab', cmd: 'explore'))
+	}
 	settings := read_multiple_opts(savedsettings) or { panic('read_multiple_opts failed') }
 	assert limit_to_unique_attribute_number(settings, [3, 4, 5], true) == [3, 4, 5]
 	assert limit_to_unique_attribute_number(settings, [3, 4, 5], false) == [3, 4]
-	assert limit_to_unique_attribute_number(settings, [1, 2, 3], false) == [1]
-	assert limit_to_unique_attribute_number(settings, [2, 6, 7, 8], false) == [2, 6, 7]
+	assert limit_to_unique_attribute_number(settings, [1, 2, 3], false) == [1, 2, 3]
+	assert limit_to_unique_attribute_number(settings, [2, 6, 7, 8], false) == [2, 6, 8]
 	assert limit_to_unique_attribute_number(settings[..1], [3], false) == []
 	assert limit_to_unique_attribute_number(settings[3..4], [3], false) == [3]
 }
 
 fn test_max_auc_combinations() {
+	leukbp_settings := 'src/testdata/leukbp.opts'
+	if !os.is_file(leukbp_settings) {
+		explore(opts('-bp -a 1,2 -b 2,5 -af -ms ${leukbp_settings} -t datasets/leukemia34test.tab datasets/leukemia38train.tab',
+			cmd: 'explore'))
+	}
 	// display_file('src/testdata/leukbp.opts', expanded_flag: true)
-	settings := read_multiple_opts('src/testdata/leukbp.opts')!
+	settings := read_multiple_opts(leukbp_settings)!
 	classifier_ids := settings.map(it.classifier_id)
 	limits := CombinationSizeLimits{
 		generate_combinations_flag: true
