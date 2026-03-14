@@ -32,8 +32,8 @@ Options:
       attributes (discrete and continuous) should be included in the console
       listing [DisplaySettings.limit_output]
   -lc --limit-continuous, followed by an integer which specifies how many
-      continuous-attribute traces should be shown in plots (rank values and
-      switches graphs); has no effect on the console listing
+      continuous attributes should be shown in plots (rank values, switches,
+      and hits-per-bin graphs); has no effect on the console listing
       [DisplaySettings.limit_continuous]
   -of --overfitting, console output and graph to include information
   		allowing for an assessment of overfitting likelihood [DisplaySettings.overfitting_flag]
@@ -246,11 +246,13 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 		save_json_file[RankingResult](result, opts.outputfile_path)
 	}
 	if opts.overfitting_flag && opts.command == 'rank' {
-		for n, attr in result.array_of_ranked_attributes {
-			if opts.limit_output != 0 && n >= opts.limit_output {
+		mut n := 0
+		for attr in result.array_of_ranked_attributes.filter(it.attribute_type == 'C') {
+			if opts.limit_continuous > 0 && n >= opts.limit_continuous {
 				break
 			}
 			plot_hits(ds.path, result.Class, attr, opts.weighting_flag)
+			n++
 		}
 	}
 	return result
