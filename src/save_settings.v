@@ -9,7 +9,7 @@ fn append_make_settings_to_file(cl Classifier, opts Options) {
 	mut settings_to_append := ClassifierSettings{
 		Parameters:    cl.Parameters
 		LoadOptions:   cl.LoadOptions
-		datafile_path: os.abs_path(cl.datafile_path)
+		datafile_path: cl.datafile_path
 	}
 	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)
 	append_json_file(settings_to_append, opts.settingsfile_path)
@@ -23,7 +23,7 @@ fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) 
 		Metrics:       result.Metrics
 		LoadOptions:   result.LoadOptions
 
-		datafile_path: os.abs_path(result.datafile_path)
+		datafile_path: result.datafile_path
 	}
 	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)
 	append_json_file(settings_to_append, opts.settingsfile_path)
@@ -62,7 +62,7 @@ fn append_explore_settings_to_file(results ExploreResult, explore_analytics_valu
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
 				Metrics:       results.array_of_results[a.idx].Metrics
 				LoadOptions:   results.array_of_results[a.idx].LoadOptions
-				datafile_path: os.abs_path(opts.datafile_path)
+				datafile_path: opts.datafile_path
 			}
 			append_json_file(u, opts.settingsfile_path)
 		}
