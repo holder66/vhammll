@@ -70,8 +70,10 @@ fn plot_explore(result ExploreResult, opts Options) {
 	annotation1 := plot.Annotation{
 		x:     array_max(x)
 		y:     50
-		text:  'Hover your cursor<br>over a marker<br>to view details<br>     <br>      '
+		text:  'Hover your cursor<br>over a marker<br>to view details'
 		align: 'center'
+		showarrow:false
+		arrowcolor: 'white'
 		font:  plot.Font{
 			color: 'red'
 			size:  14.0
@@ -80,7 +82,9 @@ fn plot_explore(result ExploreResult, opts Options) {
 	annotation2 := plot.Annotation{
 		x:     array_min(x) + 1
 		y:     30
-		text:  explore_type_string(opts) + '<br>       '
+		text:  explore_type_string(opts)
+		showarrow:false
+		arrowcolor: 'white'
 		align: 'left'
 		font:  plot.Font{
 			color: 'blue'
@@ -100,7 +104,9 @@ fn plot_explore(result ExploreResult, opts Options) {
 	annotation4 := plot.Annotation{
 		x:     (array_max(x) + array_min(x)) / 2
 		y:     20
-		text:  'args: ${opts.args}<br>      <br>        <br>        '
+		text:  'args: ${opts.args}'
+		showarrow:false
+		arrowcolor: 'white'
 		align: 'center'
 		font:  plot.Font{
 			color: 'black'
@@ -155,12 +161,14 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	annotation1 := plot.Annotation{
 		x:     0.3
 		y:     0.2
+		arrowcolor: 'white'
 		text:  'Hover your cursor<br>over a marker<br>to view details'
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
 		x:     0.8
 		y:     0.2
+		arrowcolor: 'white'
 		text:  explore_type_string(opts)
 		align: 'left'
 	}

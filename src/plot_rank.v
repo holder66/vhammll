@@ -20,11 +20,11 @@ fn plot_rank(result RankingResult) {
 			break
 		}
 		traces << RankTrace{
-			label:              '${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f}'
+			label:              '#${attr.attribute_index:4} ${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f} @ ${attr.bins} bins'
 			rank_values:        attr.rank_value_array.map(f64(it)).reverse()
 			maximum_rank_value: array_max(attr.rank_value_array)
 			// the tooltip for each point shows the attribute name
-			hover_text: ['${attr.attribute_name}'].repeat(result.binning.upper + 1)
+			hover_text: ['#${attr.attribute_index}<br>${attr.attribute_name}']
 		}
 	}
 	if traces.len == 0 {
@@ -47,17 +47,21 @@ fn plot_rank(result RankingResult) {
 		)
 	}
 	rank_annotation_string := 'Missing Values<br>' +
-		if result.exclude_flag { 'excluded' } else { 'included' } + '<br>    '
+		if result.exclude_flag { 'excluded' } else { 'included' }
 	annotation1 := plot.Annotation{
 		x:     0.8 * f64(result.binning.upper)
 		y:     1.0
+		arrowcolor: 'white'
 		text:  'Hover your cursor<br>over a marker<br>to view details'
+		showarrow:false
 		align: 'center'
 	}
 	annotation2 := plot.Annotation{
 		x:     0.3 * f64(result.binning.upper)
 		y:     1.0
+		arrowcolor: 'white'
 		text:  rank_annotation_string
+		showarrow:false
 		align: 'center'
 	}
 	plt.layout(

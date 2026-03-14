@@ -24,19 +24,12 @@ fn plot_switches(result RankingResult) {
 	if attrs.len == 0 {
 		return
 	}
-	attrs.sort_with_compare(fn (a &RankedAttribute, b &RankedAttribute) int {
-		a_min := array_min(a.switches_array)
-		b_min := array_min(b.switches_array)
-		if a_min < b_min {
-			return -1
-		} else if a_min > b_min {
-			return 1
-		}
-		return 0
-	})
 
 	mut plt := plot.Plot.new()
+	// mut max_x := 1.0
+	mut max_y := 1.0
 	for i, attr in attrs {
+		max_y = array_max([max_y, f64(array_max(attr.switches_array))])
 		if result.limit_output > 0 && i >= result.limit_output {
 			break
 		}
@@ -45,7 +38,7 @@ fn plot_switches(result RankingResult) {
 			y:    attr.switches_array.map(f64(it))
 			text: ['${attr.attribute_name}'].repeat(x.len)
 			mode: 'lines+markers'
-			name: '${attr.attribute_name}  min:${array_min(attr.switches_array)}'
+			name: '#${attr.attribute_index:4} ${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f} @ ${attr.bins} bins'
 		)
 	}
 
@@ -57,25 +50,36 @@ fn plot_switches(result RankingResult) {
 		line: plot.Line{
 			dash: 'dashdot'
 		}
-		name: 'threshold (${result.switches_threshold})'
+		name: 'switches threshold: ${result.switches_threshold}'
 	)
 
 	annotation1 := plot.Annotation{
-		x:     0.8 * f64(result.binning.upper)
-		y:     f64(result.switches_threshold) + 0.5
+		x:     0.3 * f64(result.binning.upper)
+		y:     max_y -0.5
+		showarrow:false
+		arrowcolor: 'white'
 		text:  'Hover your cursor<br>over a marker<br>to view attribute name'
 		align: 'center'
+		font:  plot.Font{
+			color: 'blue'
+			size:  12.0
+		}
 	}
 	annotation2 := plot.Annotation{
 		x:     0.3 * f64(result.binning.upper)
-		y:     f64(result.switches_threshold) - 0.5
-		text:  'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' } +
-			'<br>    '
+		y:     max_y - 1.5
+		showarrow:false
+		arrowcolor: 'white'
+		text:  'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' }
 		align: 'center'
+		font:  plot.Font{
+			color: 'blue'
+			size:  12.0
+		}
 	}
 
 	plt.layout(
-		title:       'Switches per Continuous Attribute for "${result.path}"'
+		title:       'Switches per Continuous Attribute for "${result.path}"' + if result.limit_output > 0 {'<br>(${result.limit_output} highest-ranked attributes shown)' } else {''}
 		autosize:    false
 		width:       800
 		height:      600

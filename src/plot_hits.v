@@ -16,9 +16,13 @@ import time
 // For datasets with three or more classes the original layout is kept: bin
 // numbers on the horizontal axis and hit counts on the vertical axis with
 // fill: 'tozeroy'.
+
 fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
+	hits_title_text0 := if weighting { 'Weighted h' } else { 'H' } +
+					'its per bin, per class, for attribute #${attr.attribute_index} "${attr.attribute_name}" over '
+	hits_title_text1 := ' bins<br>Max rank value: ${attr.rank_value:-5.2f} at ${attr.bins} bins'
 	two_class := classes_info.classes.len == 2
-	mut anno1_text := 'Max rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins<br>      '
+	mut anno1_text := 'Max rank value:<br>${attr.rank_value:-5.2f} at ${attr.bins} bins'
 	// max hit count (or 100 when weighting normalises to a percentage)
 	hit_max := if weighting {
 		100.0
@@ -53,12 +57,11 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 					y:    []int{len: n_bins, init: index}
 					mode: 'lines+markers'
 					fill: 'tozerox'
-					name: '${class} (${cases})'
+					name: '${class} (${cases} cases) '
 				)
 			}
 			plt.layout(
-				title:    if weighting { 'Weighted h' } else { 'H' } +
-					'its per bin, per class, for attribute "${attr.attribute_name}"<br>Max rank value: ${attr.rank_value:-5.2f} at ${attr.bins} bins'
+				title:    hits_title_text0 + '${n_bins - 1}' + hits_title_text1
 				autosize: false
 				width:    800
 				height:   600
@@ -73,6 +76,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 					title: plot.AxisTitle{
 						text: 'Bin number (bin 0 is for missing values)'
 					}
+					dtick: 1
 				}
 				// annotations: [annotation1]
 			)
@@ -83,6 +87,8 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 				x:     n_bins - 2
 				y:     0.95 * hit_max
 				text:  anno1_text
+				showarrow:false
+				arrowcolor: 'white'
 				align: 'right'
 			}
 			for i, class in classes_info.classes {
@@ -101,8 +107,7 @@ fn plot_hits(classes_info Class, attr RankedAttribute, weighting bool) {
 				)
 			}
 			plt.layout(
-				title:       if weighting { 'Weighted h' } else { 'H' } +
-					'its per bin, per class, for attribute "${attr.attribute_name}"'
+				title:       hits_title_text0 + '${n_bins - 1}' + hits_title_text1
 				autosize:    false
 				width:       800
 				height:      600

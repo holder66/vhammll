@@ -10,8 +10,10 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	annotation1 := plot.Annotation{
 		x:     0.8
 		y:     0.2
+		arrowcolor: 'white'
 		text:  'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
 		align: 'center'
+		showarrow:false
 	}
 	mut plt := plot.Plot.new()
 	for rocdata in rocdata_array {
