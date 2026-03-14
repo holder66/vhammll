@@ -246,6 +246,7 @@ pub mut:
 	verbose_flag         bool
 	generate_roc_flag    bool
 	limit_output         int
+	limit_continuous     int
 	overfitting_flag     bool
 	all_attributes_flag  bool
 }

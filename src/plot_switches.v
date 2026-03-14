@@ -30,7 +30,7 @@ fn plot_switches(result RankingResult) {
 	mut max_y := 1.0
 	for i, attr in attrs {
 		max_y = array_max([max_y, f64(array_max(attr.switches_array))])
-		if result.limit_output > 0 && i >= result.limit_output {
+		if result.limit_continuous > 0 && i >= result.limit_continuous {
 			break
 		}
 		plt.scatter(
@@ -79,7 +79,7 @@ fn plot_switches(result RankingResult) {
 	}
 
 	plt.layout(
-		title:       'Switches per Continuous Attribute for "${result.path}"' + if result.limit_output > 0 {'<br>(${result.limit_output} highest-ranked attributes shown)' } else {''}
+		title:       'Switches per Continuous Attribute for "${result.path}"' + if result.limit_continuous > 0 {'<br>(${result.limit_continuous} highest-ranked continuous attributes shown)' } else {''}
 		autosize:    false
 		width:       800
 		height:      600

@@ -173,7 +173,11 @@ pub mut:
 // 	  a csv file suitable for submission to a Kaggle competition is created
 //		Options.kagglefile_path
 // -l --limit-output, followed by an integer which specifies how many
-//  	attributes should be included in the console listing: DisplaySettings.limit_output
+//  	attributes (discrete and continuous) should be included in the console listing:
+//    DisplaySettings.limit_output
+// -lc --limit-continuous, followed by an integer which specifies how many
+//    continuous-attribute traces should be shown in plots (rank and switches graphs):
+//    DisplaySettings.limit_continuous
 // -m --multiple, classify using more than one trained classifier, followed by
 //    the path to a json file with parameters to generate each classifier:
 //    Options.multiple_classify_options_file_path
@@ -343,6 +347,10 @@ fn get_options(args []string) Options {
 
 	if option(args, ['-l', '--limit-output']) != '' {
 		opts.limit_output = option(args, ['-l', '--limit-output']).int()
+	}
+
+	if option(args, ['-lc', '--limit-continuous']) != '' {
+		opts.limit_continuous = option(args, ['-lc', '--limit-continuous']).int()
 	}
 
 	if option(args, ['-r', '--reps']) != '' {

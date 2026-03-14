@@ -29,7 +29,12 @@ Options:
       produced when the dataset has no continuous attributes
       [DisplaySettings.graph_flag]
   -l --limit-output, followed by an integer which specifies how many
-  		attributes should be included in the console listing [DisplaySettings.limit_output]
+      attributes (discrete and continuous) should be included in the console
+      listing [DisplaySettings.limit_output]
+  -lc --limit-continuous, followed by an integer which specifies how many
+      continuous-attribute traces should be shown in plots (rank values and
+      switches graphs); has no effect on the console listing
+      [DisplaySettings.limit_continuous]
   -of --overfitting, console output and graph to include information
   		allowing for an assessment of overfitting likelihood [DisplaySettings.overfitting_flag]
   -exr --explore-rank, followed by eg "2,7", will repeat the ranking
@@ -245,7 +250,7 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 			if opts.limit_output != 0 && n >= opts.limit_output {
 				break
 			}
-			plot_hits(result.Class, attr, opts.weighting_flag)
+			plot_hits(ds.path, result.Class, attr, opts.weighting_flag)
 		}
 	}
 	return result
