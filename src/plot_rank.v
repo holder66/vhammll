@@ -46,26 +46,25 @@ fn plot_rank(result RankingResult) {
 		)
 	}
 	annotation1 := plot.Annotation{
-		x:     0.8 * f64(result.binning.upper)
-		y:     1.0
+		x:          0.8 * f64(result.binning.upper)
+		y:          1.0
 		arrowcolor: 'white'
-		text:  'Hover your cursor<br>over a marker<br>to view details'
-		showarrow:false
-		align: 'center'
-		font:  plot.Font{
+		text:       'Hover your cursor<br>over a marker<br>to view details'
+		showarrow:  false
+		align:      'center'
+		font:       plot.Font{
 			color: 'red'
 			size:  12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:     0.3 * f64(result.binning.upper)
-		y:     1.0
+		x:          0.3 * f64(result.binning.upper)
+		y:          1.0
 		arrowcolor: 'white'
-		text:  'Missing Values<br>' +
-		if result.exclude_flag { 'excluded' } else { 'included' }
-		showarrow:false
-		align: 'center'
-		font:  plot.Font{
+		text:       'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' }
+		showarrow:  false
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
 			size:  12.0
 		}

@@ -68,25 +68,25 @@ fn plot_explore(result ExploreResult, opts Options) {
 		)
 	}
 	annotation1 := plot.Annotation{
-		x:     array_max(x)
-		y:     50
-		text:  'Hover your cursor<br>over a marker<br>to view details'
-		align: 'center'
-		showarrow:false
+		x:          array_max(x)
+		y:          50
+		text:       'Hover your cursor<br>over a marker<br>to view details'
+		align:      'center'
+		showarrow:  false
 		arrowcolor: 'white'
-		font:  plot.Font{
+		font:       plot.Font{
 			color: 'red'
-			size:  14.0
+			size:  12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:     array_min(x) + 1
-		y:     30
-		text:  explore_type_string(opts)
-		showarrow:false
+		x:          array_min(x) + 1
+		y:          30
+		text:       explore_type_string(opts)
+		showarrow:  false
 		arrowcolor: 'white'
-		align: 'left'
-		font:  plot.Font{
+		align:      'left'
+		font:       plot.Font{
 			color: 'blue'
 			size:  12.0
 		}
@@ -102,13 +102,13 @@ fn plot_explore(result ExploreResult, opts Options) {
 	// 	}
 	// }
 	annotation4 := plot.Annotation{
-		x:     (array_max(x) + array_min(x)) / 2
-		y:     20
-		text:  'args: ${opts.args}'
-		showarrow:false
+		x:          (array_max(x) + array_min(x)) / 2
+		y:          20
+		text:       'args: ${opts.args}'
+		showarrow:  false
 		arrowcolor: 'white'
-		align: 'center'
-		font:  plot.Font{
+		align:      'center'
+		font:       plot.Font{
 			color: 'black'
 			size:  12.0
 		}
@@ -119,9 +119,19 @@ fn plot_explore(result ExploreResult, opts Options) {
 		width:       800
 		height:      600
 		xaxis:       plot.Axis{
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: 'Number of Attributes Used'
 			}
+			tickmode: 'linear'
+			dtick:    1.0
+		}
+		yaxis:       plot.Axis{
+			title:    plot.AxisTitle{
+				text: 'Balanced Accuracy (%)'
+			}
+			range:    [0.0, 100.0]
+			tickmode: 'linear'
+			dtick:    10.0
 		}
 		annotations: [annotation4, annotation2, annotation1]
 		// autosize:    false
@@ -159,18 +169,26 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	// mut pos_class := result.array_of_results[0].pos_neg_classes[0]
 	// mut neg_class := result.array_of_results[0].pos_neg_classes[1]
 	annotation1 := plot.Annotation{
-		x:     0.3
-		y:     0.2
+		x:          0.4
+		y:          0.1
 		arrowcolor: 'white'
-		text:  'Hover your cursor<br>over a marker<br>to view details'
-		align: 'center'
+		text:       'Hover your cursor<br>over a marker<br>to view details'
+		align:      'center'
+		font:       plot.Font{
+			color: 'red'
+			size:  12.0
+		}
 	}
 	annotation2 := plot.Annotation{
-		x:     0.8
-		y:     0.2
+		x:          0.9
+		y:          0.6
 		arrowcolor: 'white'
-		text:  explore_type_string(opts)
-		align: 'left'
+		text:       explore_type_string(opts)
+		align:      'center'
+		font:       plot.Font{
+			color: 'blue'
+			size:  12.0
+		}
 	}
 
 	// first, we'll do a series of curves, one per bin range, thus

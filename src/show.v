@@ -130,7 +130,6 @@ pub fn show_rank_attributes(result RankingResult) {
 
 // show_classifier outputs to the console information about a classifier
 pub fn show_classifier(cl Classifier) {
-	dump(cl.Parameters)
 	mut parameters_for_show := ParametersForShow{
 		Parameters:  cl.Parameters
 		LoadOptions: cl.LoadOptions

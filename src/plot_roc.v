@@ -38,19 +38,33 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 
 // make_roc_plot_layout
 fn make_roc_plot_layout(mut plt plot.Plot, curve_series string, path string, annotations []plot.Annotation) {
+	plt.scatter(
+		x:    [0.0, 1.0]
+		y:    [0.0, 1.0]
+		text: ['text when hovering']
+		mode: 'lines'
+		line: plot.Line{
+			dash: 'dashdot'
+		}
+		name: 'random guess<br>(probability 0.5)'
+	)
 	plt.layout(
-		title:       'ROC Curves by ${curve_series} for "${path}"'
+		title:       'ROC Curves by ${curve_series}<br>for "${path}"'
 		width:       800
 		height:      600
 		xaxis:       plot.Axis{
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: '1 - specificity'
 			}
+			tickmode: 'linear'
+			dtick:    0.1
 		}
 		yaxis:       plot.Axis{
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: 'sensitivity'
 			}
+			tickmode: 'linear'
+			dtick:    0.1
 		}
 		annotations: annotations
 	)

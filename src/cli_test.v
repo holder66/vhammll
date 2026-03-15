@@ -1,3 +1,6 @@
+// cli_test.v tests that the functionality provided by the cli() function works
+// a similar file, performance_test.v, tests that the various commands produce
+// consistent results with the datasets in the datasets folder
 module vhammll
 
 import os
@@ -16,7 +19,7 @@ fn testsuite_begin() ? {
 	f.write_string(main_text)!
 	f.close()
 
-	os.execute_or_panic('v -keepc run temp.v')
+	r := os.execute_or_panic('v temp.v')
 	if os.is_dir('tempfolders/tempfolder_cli') {
 		os.rmdir_all('tempfolders/tempfolder_cli')!
 	}
@@ -34,8 +37,8 @@ fn testsuite_end() ? {
 }
 
 // fn test_parameter_to_cli() {
-// 	cli(astr: 'rank')!
-// 	cli(args: ['rank'])!
+// cli(astr: 'rank')!
+// cli(args: ['rank'])!
 // }
 
 fn test_explore() {
@@ -43,52 +46,56 @@ fn test_explore() {
 	mut r := os.execute_or_panic('./temp explore --help')
 	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class')
 	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
-	assert r.output.contains('Totals                      150     142 (accuracy: raw: 94.67% balanced: 94.67%)')
+	dump(r.output)
+	assert r.output.contains('Explore leave-one-out cross-validation using classifiers from "vhammll/datasets/iris.tab"')
 	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-	assert r.output.contains('2  1 - 6      11     3    17     3   0.786  0.850  0.786  0.850     0.786         82.35%    81.79%   0.636')
-	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_cli/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
-	assert r.output.contains('MCC (Matthews Correlation Coefficient):   0.908 [225, 16, 445, 13] using 9 attribute')
+	dump(r.output)
+	assert r.output.contains('Explore leave-one-out cross-validation using classifiers from "vhammll/datasets/leukemia34test.tab"')
+	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_performance/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
+	dump(r.output)
+	assert r.output.contains('Explore leave-one-out cross-validation using classifiers from "vhammll/datasets/breast-cancer-wisconsin-disc.tab"')
 	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
-	assert r.output.contains('reptile                           5       4 ( 80.00%)        1.000     0.800       0.889')
+	dump(r.output)
+	assert r.output.contains('Cross-validation of "vhammll/datasets/UCI/zoo.arff"')
 }
 
-// fn test_verify() {
-// 	mut r := os.execute_or_panic('./temp verify -h'))
-// 	r = os.execute_or_panic('./temp verify  -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train'))
-// 	// save a classifier to a file
-// 	r = os.execute_or_panic('./temp make -a 33 -b 2,16 -w -o tempfolders/tempfolder_cli/soybean.cl vhammll/datasets/soybean-large-train.tab'))
-// 	r = os.execute_or_panic('./temp verify  -w -s -k tempfolders/tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab'))
-// }
+fn test_verify() {
+	mut r := os.execute_or_panic('./temp verify -h')
+	r = os.execute_or_panic('./temp verify  -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')
+	// save a classifier to a file
+	r = os.execute_or_panic('./temp make -a 33 -b 2,16 -w -o tempfolders/tempfolder_cli/soybean.cl vhammll/datasets/soybean-large-train.tab')
+	r = os.execute_or_panic('./temp verify  -w -s -k tempfolders/tempfolder_cli/soybean.cl -t vhammll/datasets/soybean-large-test.tab')
+}
 
 // fn test_analyze() {
-// 	mut r := os.execute_or_panic('./temp'))
-// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/developer.tab'))
-// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/bcw174test'))
-// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/iris.tab'))
+// 	mut r := os.execute_or_panic('./temp')
+// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/developer.tab')
+// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/bcw174test')
+// 	r = os.execute_or_panic('./temp analyze vhammll/datasets/iris.tab')
 // }
 
 // fn test_make() {
-// 	mut r := os.execute_or_panic('./temp make'))
-// 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 vhammll/datasets/developer.tab'))
-// 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 -x -e -o tempfolders/tempfolder_cli/dev.cl vhammll/datasets/developer.tab'))
+// 	mut r := os.execute_or_panic('./temp make')
+// 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 vhammll/datasets/developer.tab')
+// 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 -x -e -o tempfolders/tempfolder_cli/dev.cl vhammll/datasets/developer.tab')
 // }
 
 // fn test_cross() {
-// 	r = os.execute_or_panic('./temp cross --help'))
-// 	r = os.execute_or_panic('./temp cross vhammll/datasets/iris.tab'))
-// 	r = os.execute_or_panic('./temp cross -e -a 2 -b 3,6 vhammll/datasets/iris.tab'))
-// 	r = os.execute_or_panic('./temp cross -e -a 2 -b 3,6 -f 10 -w vhammll/datasets/iris.tab'))
-// 	r = os.execute_or_panic('./temp cross -e -a 6 -b 3,6 -f 20 -w vhammll/datasets/prostata.tab'))
-// 	r = os.execute_or_panic('./temp cross -w -e -a 13 vhammll/datasets/UCI/zoo.arff'))
+// 	r = os.execute_or_panic('./temp cross --help')
+// 	r = os.execute_or_panic('./temp cross vhammll/datasets/iris.tab')
+// 	r = os.execute_or_panic('./temp cross -e -a 2 -b 3,6 vhammll/datasets/iris.tab')
+// 	r = os.execute_or_panic('./temp cross -e -a 2 -b 3,6 -f 10 -w vhammll/datasets/iris.tab')
+// 	r = os.execute_or_panic('./temp cross -e -a 6 -b 3,6 -f 20 -w vhammll/datasets/prostata.tab')
+// 	r = os.execute_or_panic('./temp cross -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
 // }
 
 // fn test_append() ? {
 // 	// make a classifier
-// 	mut r := os.execute_or_panic('./temp make -a 4 -o tempfolders/tempfolder_cli/bcw.cl vhammll/datasets/bcw350train'))
+// 	mut r := os.execute_or_panic('./temp make -a 4 -o tempfolders/tempfolder_cli/bcw.cl vhammll/datasets/bcw350train')
 // 	// make an instances file by doing a validation
-// 	r = os.execute_or_panic('./temp validate -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw.inst -t vhammll/datasets/bcw174test'))
+// 	r = os.execute_or_panic('./temp validate -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw.inst -t vhammll/datasets/bcw174test')
 // 	// use the instances file to append to the saved classifier
-// 	r = os.execute_or_panic('./temp append -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw-ext.cl tempfolders/tempfolder_cli/bcw.inst'))
+// 	r = os.execute_or_panic('./temp append -k tempfolders/tempfolder_cli/bcw.cl -o tempfolders/tempfolder_cli/bcw-ext.cl tempfolders/tempfolder_cli/bcw.inst')
 // }
 
 fn test_rank_attributes() {
@@ -104,36 +111,36 @@ fn test_rank_attributes() {
 	assert r.output.contains('8   carbon                           3  C           78.90      7')
 }
 
-// fn test_display() {
-// 	mut r := os.execute_or_panic('./temp cross -c -b 2,4 -a 4 -o tempfolders/tempfolder_cli/cross_result.txt vhammll/datasets/developer.tab'))
-// 	r = os.execute_or_panic('./temp display -e tempfolders/tempfolder_cli/cross_result.txt'))
-// 	r = os.execute_or_panic('./temp rank -o tempfolders/tempfolder_cli/rank_result.txt vhammll/datasets/UCI/segment.arff'))
-// 	// r = os.execute_or_panic('./temp display tempfolders/tempfolder_cli/rank_result.txt'))
-// }
+fn test_display() {
+	mut r := os.execute_or_panic('./temp cross -c -b 2,4 -a 4 -o tempfolders/tempfolder_cli/cross_result.txt vhammll/datasets/developer.tab')
+	r = os.execute_or_panic('./temp display -e tempfolders/tempfolder_cli/cross_result.txt')
+	r = os.execute_or_panic('./temp rank -o tempfolders/tempfolder_cli/rank_result.txt vhammll/datasets/UCI/segment.arff')
+	// r = os.execute_or_panic('./temp display tempfolders/tempfolder_cli/rank_result.txt'))
+}
 
-// fn test_purge_for_missing_class_values() {
-// 	mut r := os.execute_or_panic('./temp analyze -pmc vhammll/datasets/class_missing_developer.tab')
-// 	r = r.output)
-// 	// assert r.output.len == 2031
-// 	// assert r.output.contains('6  SEC                                        13        5        1    7.7')
-// 	r = os.execute_or_panic('./temp rank -pmc vhammll/datasets/class_missing_developer.tab')
-// 	r = r.output)
-// 	// assert r.output.len == 965
-// 	// assert r.output.contains('2   negative                         9  C          100.00     12')
-// 	r = os.execute_or_panic('./temp make -a 7 -b 3,7 - pmc vhammll/datasets/class_missing_developer.tab')
-// 	r = r.output)
-// 	// assert r.output.len == 1379
-// 	// assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
-// }
+fn test_purge_for_missing_class_values() {
+	mut r := os.execute_or_panic('./temp analyze -pmc vhammll/datasets/class_missing_developer.tab')
+	// r = r.output
+	// assert r.output.len == 2031
+	// assert r.output.contains('6  SEC                                        13        5        1    7.7')
+	r = os.execute_or_panic('./temp rank -pmc vhammll/datasets/class_missing_developer.tab')
+	// r = r.output
+	// assert r.output.len == 965
+	// assert r.output.contains('2   negative                         9  C          100.00     12')
+	r = os.execute_or_panic('./temp make -a 7 -b 3,7 - pmc vhammll/datasets/class_missing_developer.tab')
+	// r = r.output
+	// assert r.output.len == 1379
+	// assert r.output.contains('9  negative                    C          80.00              -90.00      80.00     7')
+}
 
-// fn test_partitioning() {
-// 	path1 := 'tempfolders/tempfolder_cli/part1.tab'
-// 	path2 := 'tempfolders/tempfolder_cli/part2.tab'
-// 	path3 := 'tempfolders/tempfolder_cli/part3.tab'
-// 	mut r := os.execute_or_panic('./temp partition'))
-// 	r = os.execute_or_panic('./temp partition -p# 3,2,1 -ps ${path1},${path2},${path3} -rand vhammll/datasets/developer.tab'))
-// 	assert os.exists(path1)
-// 	assert os.exists(path2)
-// 	assert os.exists(path3)
-// 	assert os.read_lines(path3)!.len == 4
-// }
+fn test_partitioning() {
+	path1 := 'tempfolders/tempfolder_cli/part1.tab'
+	path2 := 'tempfolders/tempfolder_cli/part2.tab'
+	path3 := 'tempfolders/tempfolder_cli/part3.tab'
+	mut r := os.execute_or_panic('./temp partition')
+	r = os.execute_or_panic('./temp partition -p# 3,2,1 -ps ${path1},${path2},${path3} -rand vhammll/datasets/developer.tab')
+	assert os.exists(path1)
+	assert os.exists(path2)
+	assert os.exists(path3)
+	assert os.read_lines(path3)!.len == 4
+}

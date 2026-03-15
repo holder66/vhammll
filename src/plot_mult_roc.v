@@ -8,25 +8,39 @@ import vsl.plot
 // trace; the AUC is computed and shown in the plot title.
 pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	annotation1 := plot.Annotation{
-		x:     0.8
-		y:     0.2
+		x:          0.8
+		y:          0.2
+		text:       'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
+		align:      'center'
+		showarrow:  false
 		arrowcolor: 'white'
-		text:  'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
-		align: 'center'
-		showarrow:false
+		font:       plot.Font{
+			color: 'red'
+			size:  12.0
+		}
 	}
 	mut plt := plot.Plot.new()
+	// dump(rocdata_array)
 	for rocdata in rocdata_array {
+		dump(rocdata)
 		rocpoints := roc_values(rocdata.coordinates, rocdata.classifier_ids)
+		dump(rocpoints)
 		auc := auc_roc(rocpoints)
-		mut hovertext := []string{}
-		hovertext << '${rocdata.classifier_ids[0]}'
-		// for id in rocdata {
-		// 	hovertext << 'classifier ${ids}
+		classifiers_string := rocpoints.filter(it.classifier_ids != []).map(it.classifier_ids.first().str())
+		dump(classifiers_string)
+		// mut hovertexts := rocpoints.map(it.classifier_ids.str())
+		dump(auc)
+
+		// hovertext << '${rocdata.classifier_ids[0]}'
+		// for id in rocdata.classifier_ids {
+		// 	hovertexts << 'classifier ${id}'
+		// }	
 		plt.scatter(
-			x:    rocpoints.map(it.fpr)
-			y:    rocpoints.map(it.sens)
-			text: hovertext
+			x:             rocpoints.map(it.fpr)
+			y:             rocpoints.map(it.sens)
+			text:          classifiers_string
+			hovertemplate: 'classifier: %{text}<br>sensitivity: %{y:.2f}<br>1-specificity: %{x:.3f}<extra></extra>'
+			// text: ['']
 			mode: 'lines+markers'
 			name: rocdata.trace_text + '<br>auc: ${auc:.3f}'
 		)
@@ -49,14 +63,18 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 		width:       800
 		height:      600
 		xaxis:       plot.Axis{
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: 'False Positive Rate (Specificity - 1)'
 			}
+			tickmode: 'linear'
+			dtick:    0.1
 		}
 		yaxis:       plot.Axis{
-			title: plot.AxisTitle{
+			title:    plot.AxisTitle{
 				text: 'True Positive Rate (Sensitivity)'
 			}
+			tickmode: 'linear'
+			dtick:    0.1
 		}
 		annotations: [annotation1]
 	)

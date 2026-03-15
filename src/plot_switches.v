@@ -54,32 +54,33 @@ fn plot_switches(result RankingResult) {
 	)
 
 	annotation1 := plot.Annotation{
-		x:     0.3 * f64(result.binning.upper)
-		y:     max_y -0.5
-		showarrow:false
+		x:          0.3 * f64(result.binning.upper)
+		y:          max_y - 0.5
+		showarrow:  false
 		arrowcolor: 'white'
-		text:  'Hover your cursor<br>over a marker<br>to view attribute name'
-		align: 'center'
-		font:  plot.Font{
+		text:       'Hover your cursor<br>over a marker<br>to view attribute name'
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
 			size:  12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:     0.3 * f64(result.binning.upper)
-		y:     max_y - 1.5
-		showarrow:false
+		x:          0.3 * f64(result.binning.upper)
+		y:          max_y - 1.5
+		showarrow:  false
 		arrowcolor: 'white'
-		text:  'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' }
-		align: 'center'
-		font:  plot.Font{
+		text:       'Missing Values<br>' + if result.exclude_flag { 'excluded' } else { 'included' }
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
 			size:  12.0
 		}
 	}
 
 	plt.layout(
-		title:       'Switches per Continuous Attribute for "${result.path}"' + if result.limit_continuous > 0 {'<br>(${result.limit_continuous} highest-ranked continuous attributes shown)' } else {''}
+		title:       'Switches per Continuous Attribute for "${result.path}"' +
+			if result.limit_continuous > 0 { '<br>(${result.limit_continuous} highest-ranked continuous attributes shown)' } else { '' }
 		autosize:    false
 		width:       800
 		height:      600
