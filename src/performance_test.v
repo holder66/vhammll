@@ -35,32 +35,32 @@ fn testsuite_end() ? {
 	os.rmdir_all('tempfolders/tempfolder_performance')!
 }
 
-// fn test_explore() {
-// 	opts := CliOptions{}
-// 	mut r := os.execute_or_panic('./temp explore --help')
-// 	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class')
-// 	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
-// 	assert r.output.contains('Totals                      150     142 (accuracy: raw: 94.67% balanced: 94.67%)')
-// 	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
-// 	assert r.output.contains('2  1 - 6      11     3    17     3   0.786  0.850  0.786  0.850     0.786         82.35%    81.79%   0.636')
-// 	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_performance/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
-// 	assert r.output.contains('MCC (Matthews Correlation Coefficient):   0.908 [225, 16, 445, 13] using 9 attribute')
-// 	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
-// 	assert r.output.contains('reptile                           5       4 ( 80.00%)        1.000     0.800       0.889')
-// }
+fn test_explore() {
+	opts := CliOptions{}
+	mut r := os.execute_or_panic('./temp explore --help')
+	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class')
+	r = os.execute_or_panic('./temp explore -e vhammll/datasets/iris.tab')
+	assert r.output.contains('Totals                      150     142 (accuracy: raw: 94.67% balanced: 94.67%)')
+	r = os.execute_or_panic('./temp explore -e -a 2 -b 6  vhammll/datasets/leukemia34test.tab')
+	assert r.output.contains('2  1 - 6      13     1    19     1   0.929  0.950  0.929  0.950     0.929         94.12%    93.93%   0.879')
+	r = os.execute_or_panic('./temp explore  -e -o tempfolders/tempfolder_performance/breast.exr vhammll/datasets/breast-cancer-wisconsin-disc.tab')
+	assert r.output.contains('MCC (Matthews Correlation Coefficient):   0.908 [225, 16, 445, 13] using 9 attribute')
+	r = os.execute_or_panic('./temp cross  -w -e -a 13 vhammll/datasets/UCI/zoo.arff')
+	assert r.output.contains('reptile                           5       4 ( 80.00%)        1.000     0.800       0.889')
+}
 
-// fn test_verify() {
-// 	mut r := os.execute_or_panic('./temp verify -h')
-// 	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class
-//     prevalences are considered imbalanced (default 0.9; range 0.0–1.0);')
-// 	r = os.execute_or_panic('./temp verify -e -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')
-// 	assert r.output.contains('Verification of "vhammll/datasets/bcw174test" using a classifier from "vhammll/datasets/bcw350train"')
-// 	// save a classifier to a file
-// 	r = os.execute_or_panic('./temp make -e -a 33 -b 2,16 -w -o tempfolders/tempfolder_performance/soybean.cl vhammll/datasets/soybean-large-train.tab')
-// 	assert r.output.contains('Classifier from "vhammll/datasets/soybean-large-train.tab"')
-// 	r = os.execute_or_panic('./temp verify -e -w -s -k tempfolders/tempfolder_performance/soybean.cl -t vhammll/datasets/soybean-large-test.tab')
-// 	assert r.output.contains('Verification of "vhammll/datasets/soybean-large-test.tab" using a classifier from "vhammll/datasets/soybean-large-test.tab"')
-// }
+fn test_verify() {
+	mut r := os.execute_or_panic('./temp verify -h')
+	assert r.output.contains('-bpt --balance-prevalences-threshold: ratio threshold below which class
+    prevalences are considered imbalanced (default 0.9; range 0.0–1.0);')
+	r = os.execute_or_panic('./temp verify -e -t vhammll/datasets/bcw174test vhammll/datasets/bcw350train')
+	assert r.output.contains('Verification of "vhammll/datasets/bcw174test" using a classifier from "vhammll/datasets/bcw350train"')
+	// save a classifier to a file
+	r = os.execute_or_panic('./temp make -e -a 33 -b 2,16 -w -o tempfolders/tempfolder_performance/soybean.cl vhammll/datasets/soybean-large-train.tab')
+	assert r.output.contains('Classifier from "vhammll/datasets/soybean-large-train.tab"')
+	r = os.execute_or_panic('./temp verify -e -w -s -k tempfolders/tempfolder_performance/soybean.cl -t vhammll/datasets/soybean-large-test.tab')
+	assert r.output.contains('Verification of "vhammll/datasets/soybean-large-test.tab" using a classifier from "vhammll/datasets/soybean-large-test.tab"')
+}
 
 // fn test_analyze() {
 // 	mut r := os.execute_or_panic('./temp')
@@ -132,14 +132,14 @@ fn test_purge_for_missing_class_values() {
 	assert r.output.contains('4  height                      C         100.00              110.00     180.00     3')
 }
 
-// fn test_partitioning() {
-// 	path1 := 'tempfolders/tempfolder_performance/part1.tab'
-// 	path2 := 'tempfolders/tempfolder_performance/part2.tab'
-// 	path3 := 'tempfolders/tempfolder_performance/part3.tab'
-// 	mut r := os.execute_or_panic('./temp partition')
-// 	r = os.execute_or_panic('./temp partition -p# 3,2,1 -ps ${path1},${path2},${path3} -rand vhammll/datasets/developer.tab')
-// 	assert os.exists(path1)
-// 	assert os.exists(path2)
-// 	assert os.exists(path3)
-// 	assert os.read_lines(path3)!.len == 4
-// }
+fn test_partitioning() {
+	path1 := 'tempfolders/tempfolder_performance/part1.tab'
+	path2 := 'tempfolders/tempfolder_performance/part2.tab'
+	path3 := 'tempfolders/tempfolder_performance/part3.tab'
+	mut r := os.execute_or_panic('./temp partition')
+	r = os.execute_or_panic('./temp partition -p# 3,2,1 -ps ${path1},${path2},${path3} -rand vhammll/datasets/developer.tab')
+	assert os.exists(path1)
+	assert os.exists(path2)
+	assert os.exists(path3)
+	assert os.read_lines(path3)!.len == 4
+}
