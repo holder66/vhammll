@@ -1,3 +1,7 @@
+// make_classifier
+// TODO: not necessary to rank attributes if all usable attributes will be used
+// TODO: have a "compressed" flag which only uses the appropriate number of bits for each attribute, in the attr_one_bit_values array, with each attribute's value concatenated with the next and the results squeezed into u64 values.
+// actually, more fruitful might be just to use the u8 type, since it is unlikely that there would be more than 255 values for discrete attributes. And in this situation, compression is unnecessary, since we do not need bitstrings to get Hamming distances when only positive integers are involved.
 module vhammll
 
 import time
@@ -28,6 +32,8 @@ Options:
   -swt --switch-threshold: maximum permitted switches per bin count when
       -sw is active (default 2);
   -wr: when ranking attributes, weight contributions by class prevalences;
+  -pmc --purge-missing-classes: remove instances whose class value is
+      missing before training the classifier;
   -x --exclude: exclude missing values from rank value calculations.
     '
 
@@ -53,7 +59,9 @@ Options:
 //     switches_flag is active (default 2);
 // outputfile_path: if specified, saves the classifier to this file;
 // append_settings_flag / settingsfile_path: if set, appends the classifier
-//     parameters as a ClassifierSettings entry to the given settings file.
+//     parameters as a ClassifierSettings entry to the given settings file;
+// class_missing_purge_flag (-pmc): if true, removes instances whose class
+//     value is missing before training.
 // ```
 pub fn make_classifier(opts Options) Classifier {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
@@ -94,10 +102,7 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	// number_of_attributes is 0)
 	mut rank_opts := opts
 	rank_opts.binning = cl.binning
-	// Use rank_dataset (not rank_attributes) so ranking is performed on the
-	// already-loaded in-memory Dataset ds — which, during cross-validation,
-	// is the fold-excluded training partition rather than the full file.
-	ranking_result := rank_dataset(ds, rank_opts)
+	ranking_result := rank_attributes(rank_opts)
 	mut ranked_attributes := ranking_result.array_of_ranked_attributes.clone()
 
 	if opts.number_of_attributes[0] != 0 && opts.number_of_attributes[0] < ranked_attributes.len {

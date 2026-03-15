@@ -52,6 +52,8 @@ Options:
       upper binning limit); sets the switch count threshold used when -sw is
       active; drawn as a dashed reference line when -g is also set
       [Parameters.switches_threshold]
+  -pmc --purge-missing-classes, removes instances whose class value is
+      missing before ranking [LoadOptions.class_missing_purge_flag]
 
     '
 
@@ -97,6 +99,8 @@ Options:
 // `exclude_flag`: exclude missing values when calculating rank values;
 // `explore_rank`: gives start and end values for maximum binning number to be
 //     over an exploration of ranking for different binning values;
+// `class_missing_purge_flag` (-pmc): if true, removes instances whose class
+//     value is missing before ranking;
 //
 // Output options:
 // `show_flag`: print the ranked list to the console;

@@ -123,6 +123,18 @@ pub fn display_file(path string, in_opts Options) {
 					}
 					roc_points := roc_values(pairs, classifiers)
 					auc = auc_roc(roc_points)
+					if opts.graph_flag {
+						plot_mult_roc([
+							RocData{
+								coordinates:    pairs
+								classifier_ids: classifiers
+								trace_text:     'Individual classifiers'
+							},
+						], RocFiles{
+							datafile:     multiple_classifier_settings[0].datafile_path
+							settingsfile: path
+						})
+					}
 				}
 				if opts.expanded_flag {
 					println(m_u('Multiple Classifier Settings: file: ${path}' +

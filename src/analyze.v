@@ -21,6 +21,8 @@ Options:
 -h --help:   displays this message.
 -o --output: followed by the path to a file in which the analyze 
              result will be saved.
+-pmc --purge-missing-classes: remove instances whose class value is
+             missing before analysis.
 -s --show:   output results to the console.
   '
 
@@ -35,6 +37,8 @@ Options:
 // 4. a list of continuous attributes useful for training a classifier;
 // 5. a breakdown of the class attribute, showing counts for each class.
 //
+// class_missing_purge_flag (-pmc): if true, removes instances whose class
+//     value is missing before analysis;
 // outputfile_path: if specified, saves the analysis results.
 // ```
 pub fn analyze_dataset(opts Options) AnalyzeResult {
