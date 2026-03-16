@@ -158,7 +158,6 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	result.all_optimals = all_optimals
 	result.all_optimals_unique_attributes = limit_to_unique_attribute_number(settings,
 		all_optimals, opts.all_attributes_flag)
-	dump(result.all_optimals_unique_attributes)
 	if opts.generate_combinations_flag {
 		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
 			result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)

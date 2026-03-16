@@ -22,15 +22,10 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	mut plt := plot.Plot.new()
 	// dump(rocdata_array)
 	for rocdata in rocdata_array {
-		dump(rocdata)
 		rocpoints := roc_values(rocdata.coordinates, rocdata.classifier_ids)
-		dump(rocpoints)
 		auc := auc_roc(rocpoints)
 		classifiers_string := rocpoints.filter(it.classifier_ids != []).map(it.classifier_ids.first().str())
-		dump(classifiers_string)
 		// mut hovertexts := rocpoints.map(it.classifier_ids.str())
-		dump(auc)
-
 		// hovertext << '${rocdata.classifier_ids[0]}'
 		// for id in rocdata.classifier_ids {
 		// 	hovertexts << 'classifier ${id}'

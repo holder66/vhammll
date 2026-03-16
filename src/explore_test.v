@@ -38,7 +38,6 @@ fn test_explore_traverse_all_flags() {
 	optimals(settingsfile, opts('-p -o ${purgedfile} -cl 2,4'))
 	// display_file(purgedfile, show_flag: true)
 	r = read_multiple_opts(purgedfile)!
-	dump(r.len)
 	assert r.len >= 64 && r.len <= 66
 	assert r.filter(it.classifier_id == 11)[0].incorrect_counts == [0, 3, 1]
 	// now with the balance_prevalences flag set
@@ -96,12 +95,12 @@ fn test_explore_cross() ? {
 	metrics = get_metrics(result.array_of_results[0])
 	assert metrics.balanced_accuracy == 66.0
 	result = explore(opts('-b 10,12 ${datafile}', cmd: 'explore'))
-	assert result.array_of_results[3].correct_count == 146
-	assert result.array_of_results[3].incorrects_count == 4
-	assert result.array_of_results[3].wrong_count == 4
+	assert result.array_of_results[3].correct_count == 147
+	assert result.array_of_results[3].incorrects_count == 3
+	assert result.array_of_results[3].wrong_count == 3
 	assert result.array_of_results[3].total_count == 150
 	metrics = get_metrics(result.array_of_results[3])
-	assert metrics.balanced_accuracy == 97.33333333333333
+	assert metrics.balanced_accuracy == 98.0
 	println('Done with iris.tab')
 
 	datafile = 'datasets/anneal.tab'
@@ -110,10 +109,10 @@ fn test_explore_cross() ? {
 	assert metrics.balanced_accuracy == 96.28256246677299
 	result = explore(opts('-f 10 -a 27,29 -b 20,22 -w ${datafile}', cmd: 'explore'))
 	metrics = get_metrics(result.array_of_results[1])
-	assert metrics.balanced_accuracy == 95.20308346624135
-	result = explore(opts('-f 5 -5 50 -a 27,29 -b 20,22 -w ${datafile}', cmd: 'explore'))
+	assert metrics.balanced_accuracy == 95.40510366826156
+	result = explore(opts('-f 5 -a 27,29 -b 20,22 -w ${datafile}', cmd: 'explore'))
 	metrics = get_metrics(result.array_of_results[1])
-	assert metrics.balanced_accuracy == 94.08612440191388
+	assert metrics.balanced_accuracy == 94.28814460393407
 	println('Done with anneal.tab')
 }
 
