@@ -37,7 +37,8 @@ fn test_multiple_crossvalidate_mixed_attributes_developer() ? {
 	er := explore(opts('-af -b 2,7 -ms ${settingsfile} ${datafile}', cmd: 'explore'))
 	opt_res := optimals(settingsfile, opts('-cl 2,2'))
 	// assert opt_res.RocData.classifiers == ['6', '0', '43', '22']
-	assert opt_res.mcc_max_classifiers_all == [112, 113, 114, 115, 116, 117, 119, 120, 121, 122, 123, 124, 126, 127, 128, 129, 130, 131, 133, 134, 135, 136, 137, 138]
+	assert opt_res.mcc_max_classifiers_all == [112, 113, 114, 115, 116, 117, 119, 120, 121, 122,
+		123, 124, 126, 127, 128, 129, 130, 131, 133, 134, 135, 136, 137, 138]
 	assert opt_res.mcc_max_classifiers == [112, 114]
 	result := cross_validate(opts('-m# 22,23,9 -m ${settingsfile} -af ${datafile}'))
 	assert result.correct_counts == [18, 20]
